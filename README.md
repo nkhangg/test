@@ -20,7 +20,7 @@ Before that. To run project
 ```bash
 
     # run this command
-    npm run
+    npm run dev
 
 ```
 
@@ -28,29 +28,32 @@ Before that. To run project
 
 ## State Manager
 
-    Inportant
+-
+
+
+    # Inportant
 
 -   Redux - [learn about Redux](https://viblo.asia/p/hoc-react-redux-trong-15-phut-1Je5E7q0ZnL)
 
-    Inportant
+    # Inportant
 
 -   Redux Toolkit [learn about Redux Toolkit](https://redux-toolkit.js.org/introduction/getting-started)
 
 ## UI
 
-    To create
+-   # To create
 
 -   Material UI [learn about Material UI](https://mui.com/material-ui/getting-started/)
 
-    To style
+    # To style
 
 -   Tailwind CSS [learn about Tailwind CSS](https://tailwindcss.com/docs/installation)
 
-    To make animation
+    # To make animation
 
 -   Framer Motion [learn about Framer Motion](https://www.framer.com/motion/?utm_source=motion-readme-docs)
 
-    Icon
+    # Icon
 
 -   Fontawesome [learn about Fontawesome](https://fontawesome.com/search)
 
