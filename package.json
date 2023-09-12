@@ -1,0 +1,38 @@
+{
+    "name": "petfoster-font-end",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^6.4.2",
+        "@fortawesome/free-brands-svg-icons": "^6.4.2",
+        "@fortawesome/free-regular-svg-icons": "^6.4.2",
+        "@fortawesome/free-solid-svg-icons": "^6.4.2",
+        "@fortawesome/react-fontawesome": "^0.2.0",
+        "framer-motion": "^10.16.2",
+        "moment": "^2.29.4",
+        "axios": "^1.5.0",
+        "@emotion/react": "^11.11.1",
+        "@emotion/styled": "^11.11.0",
+        "@mui/material": "^5.14.8",
+        "@reduxjs/toolkit": "^1.9.5",
+        "@types/node": "20.6.0",
+        "@types/react": "18.2.21",
+        "@types/react-dom": "18.2.7",
+        "autoprefixer": "10.4.15",
+        "eslint": "8.49.0",
+        "eslint-config-next": "13.4.19",
+        "next": "13.4.19",
+        "postcss": "8.4.29",
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "react-redux": "^8.1.2",
+        "tailwindcss": "3.3.3",
+        "typescript": "5.2.2"
+    }
+}
