@@ -24,9 +24,9 @@ export default function Store({}: IStoreProps) {
 
     return (
         <div className="flex flex-col w-full justify-center items-center mt-5 gap-4">
-            <Button onClick={handleGetUsers} className="w-[200px]" variant="contained">
+            {/* <Button onClick={handleGetUsers} className="w-[200px]" variant="contained">
                 Click to get Users
-            </Button>
+            </Button> */}
             {users ? (
                 <div className="w-full flex flex-col gap-4">
                     {users.map((user) => {

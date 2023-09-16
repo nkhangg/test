@@ -1,11 +1,17 @@
 'use client';
 import React, { ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // This interface of local component. Can delete if component haven't actribute
 export interface IWrapperAnimationProps {
-    styleAnimation?: {};
+    styleAnimation?: {
+        initial: {};
+        animate: {};
+        exits: {};
+    };
+    tag?: {};
     hover?: {};
+    className?: string;
     children: ReactNode;
 }
 
@@ -15,7 +21,15 @@ export default function WrapperAnimation({
     hover = {
         scale: 1.1,
     },
+    tag,
     children,
+    className,
 }: IWrapperAnimationProps) {
-    return <motion.div whileHover={hover}>{children}</motion.div>;
+    return (
+        <AnimatePresence>
+            <motion.div className={className} whileTap={tag} animate={styleAnimation?.animate} exit={styleAnimation?.exits} initial={styleAnimation?.initial} whileHover={hover}>
+                {children}
+            </motion.div>
+        </AnimatePresence>
+    );
 }
