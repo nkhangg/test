@@ -6,7 +6,7 @@ export interface INavBarProps {}
 
 export default function NavBar({}: INavBarProps) {
     return (
-        <ul className="h-navbar flex items-center gap-1 text-white">
+        <ul className="h-navbar lg:flex hidden items-center gap-1 text-white">
             {navbar.map((nav) => {
                 return (
                     <li key={nav.title}>
