@@ -23,25 +23,28 @@ export default function Footer(props: IFooterProps) {
 
       </Grid>
       <Grid item xs={12} lg={3}>
-        <p className='text-lime-600 font-bold text-3xl pl-6 pt-6'>About Us</p>
-        <Grid item lg={4}>
-          <div className='pl-6 pt-2'>
-            <span className='border-b-2 border-slate-300 flex justify-center '></span>
+        <div className='pl-10 ml-10'>
+          <p className='text-lime-600 font-bold text-3xl pl-6 pt-6'>About Us</p>
+          <Grid item lg={4}>
+            <div className='pl-6 pt-2'>
+              <span className='border-b-2 border-slate-300 flex justify-end '></span>
+            </div>
+          </Grid>
+          <div className='pl-6 pt-4'>
+            <ul className='list-inside'>
+              <li>
+                <a href='/login' className='text-slate-50'><FontAwesomeIcon icon={faAngleRight} /> Terms & privacy policy</a>
+              </li>
+              <li className='pt-6'>
+                <a href='/login' className='text-slate-50'><FontAwesomeIcon icon={faAngleRight} /> Terms & privacy policy</a>
+              </li>
+              <li className='pt-6'>
+                <a href='/login' className='text-slate-50'><FontAwesomeIcon icon={faAngleRight} /> Terms & privacy policy</a>
+              </li>
+            </ul>
           </div>
-        </Grid>
-        <div className='pl-6 pt-4'>
-          <ul className='list-inside'>
-            <li>
-              <a href='/login' className='text-slate-50'><FontAwesomeIcon icon={faAngleRight} /> Terms & privacy policy</a>
-            </li>
-            <li className='pt-6'>
-              <a href='/login' className='text-slate-50'><FontAwesomeIcon icon={faAngleRight} /> Terms & privacy policy</a>
-            </li>
-            <li className='pt-6'>
-              <a href='/login' className='text-slate-50'><FontAwesomeIcon icon={faAngleRight} /> Terms & privacy policy</a>
-            </li>
-          </ul>
         </div>
+
       </Grid>
       <Grid item xs={12} lg={4}>
         <p className='text-lime-600 font-bold text-3xl pl-6 pt-6'>Contact Us</p>
@@ -53,13 +56,13 @@ export default function Footer(props: IFooterProps) {
         <div className='pl-6 pt-4 pr-3'>
           <ul className='list-inside'>
             <li>
-              <p className='text-slate-50'> <FontAwesomeIcon icon={faHouse} className='pr-2'/> 288, Nguyen Van Linh, An Khanh, Ninh Kieu, Can Tho</p>
+              <p className='text-slate-50'> <FontAwesomeIcon icon={faHouse} className='pr-2' /> 288, Nguyen Van Linh, An Khanh, Ninh Kieu, Can Tho</p>
             </li>
             <li className='pt-6'>
-              <a href='/login' className='text-slate-50'><FontAwesomeIcon icon={faEnvelope} className='pr-2'/> inforpetfoster@gmail.com</a>
+              <a href='/login' className='text-slate-50'><FontAwesomeIcon icon={faEnvelope} className='pr-2' /> inforpetfoster@gmail.com</a>
             </li>
             <li className='pt-6'>
-              <a href='/login' className='text-slate-50'><FontAwesomeIcon icon={faPhone} className='pr-2'/> 0913842870</a>
+              <a href='/login' className='text-slate-50'><FontAwesomeIcon icon={faPhone} className='pr-2' /> 0913842870</a>
             </li>
           </ul>
         </div>
@@ -69,7 +72,7 @@ export default function Footer(props: IFooterProps) {
           <span className='border-b-2 border-slate-300 flex justify-center '>-----------</span>
         </div>
 
-        <p className='text-slate-50 text-base pt-6 flex justify-center'>© 2023 PetFoster . All Rights Reserved.</p>
+        <p className='text-slate-50 text-base pt-6 flex justify-center my-5'>© 2023 PetFoster . All Rights Reserved.</p>
       </Grid>
     </Grid>
   );
