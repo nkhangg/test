@@ -13,7 +13,7 @@ export default function MenuYser(props: IMenuYserProps) {
     const [openMenu, setOpenMenu] = useState(false);
 
     return (
-        <div className=" flex gap-4">
+        <div className="flex gap-4 ">
             <Tippy
                 interactive
                 visible={openMenu}
@@ -42,7 +42,7 @@ export default function MenuYser(props: IMenuYserProps) {
                 }}
             >
                 <CustomBadge badgeContent={4} onClick={() => setOpenMenu((prev) => !prev)} invisible={openMenu}>
-                    <WrapperAnimation tag={{ scale: 0.9 }} hover={{}}>
+                    <WrapperAnimation hover={{}}>
                         <Avatar alt="avartar" className="cursor-pointer border-2" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
                     </WrapperAnimation>
                 </CustomBadge>

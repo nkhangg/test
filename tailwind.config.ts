@@ -16,12 +16,14 @@ const config: Config = {
             },
             width: {
                 main: '1280px',
-                'slide-btn': '68px',
+                mobile: '484px',
+
+                'slide-btn': '48px',
             },
             height: {
                 header: '80px',
                 navbar: '38px',
-                'slide-btn': '68px',
+                'slide-btn': '48px',
             },
             colors: {
                 'green-main': '#A3E635',

@@ -1,5 +1,5 @@
 'use client';
-import React, { ReactNode } from 'react';
+import React, { MouseEventHandler, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // This interface of local component. Can delete if component haven't actribute
@@ -9,10 +9,12 @@ export interface IWrapperAnimationProps {
         animate: {};
         exits: {};
     };
-    tag?: {};
+    tag?: null | {};
+    styleTag?: 'scale';
     hover?: {};
     className?: string;
     children: ReactNode;
+    onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
 // Create tag tag animation with framer motion
@@ -23,11 +25,27 @@ export default function WrapperAnimation({
     },
     tag,
     children,
+    styleTag = 'scale',
     className,
+    onClick,
 }: IWrapperAnimationProps) {
+    const tags = {
+        scale: {
+            scale: 0.9,
+        },
+    };
+
     return (
         <AnimatePresence>
-            <motion.div className={className} whileTap={tag} animate={styleAnimation?.animate} exit={styleAnimation?.exits} initial={styleAnimation?.initial} whileHover={hover}>
+            <motion.div
+                onClick={onClick}
+                className={className}
+                whileTap={tag || tags[styleTag]}
+                animate={styleAnimation?.animate}
+                exit={styleAnimation?.exits}
+                initial={styleAnimation?.initial}
+                whileHover={hover}
+            >
                 {children}
             </motion.div>
         </AnimatePresence>

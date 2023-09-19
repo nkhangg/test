@@ -1,4 +1,4 @@
-import { faHeart, faRightFromBracket, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faHome, faRightFromBracket, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
 
 export const navbar = [
     { title: 'Home', href: '/' },
