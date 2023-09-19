@@ -18,10 +18,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Providers>
                 <ThemeRegistry>
                     <body>
-
                         <Container>{children}</Container>
-
-                        <Footer></Footer>
+                        <Footer />
                     </body>
                 </ThemeRegistry>
             </Providers>
