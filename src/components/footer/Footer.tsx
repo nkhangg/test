@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Grid } from '@mui/material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouse, faEnvelope, faPhone, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
 export interface IFooterProps {
 
@@ -30,13 +32,13 @@ export default function Footer(props: IFooterProps) {
         <div className='pl-6 pt-4'>
           <ul className='list-inside'>
             <li>
-              <a href='/login' className='text-slate-50'>> Terms & privacy policy</a>
+              <a href='/login' className='text-slate-50'><FontAwesomeIcon icon={faAngleRight} /> Terms & privacy policy</a>
             </li>
             <li className='pt-6'>
-              <a href='/login' className='text-slate-50'>> Terms & privacy policy</a>
+              <a href='/login' className='text-slate-50'><FontAwesomeIcon icon={faAngleRight} /> Terms & privacy policy</a>
             </li>
             <li className='pt-6'>
-              <a href='/login' className='text-slate-50'>> Terms & privacy policy</a>
+              <a href='/login' className='text-slate-50'><FontAwesomeIcon icon={faAngleRight} /> Terms & privacy policy</a>
             </li>
           </ul>
         </div>
@@ -51,13 +53,13 @@ export default function Footer(props: IFooterProps) {
         <div className='pl-6 pt-4 pr-3'>
           <ul className='list-inside'>
             <li>
-              <p className='text-slate-50'> <b>Address:</b>  288, Nguyen Van Linh, An Khanh, Ninh Kieu, Can Tho</p>
+              <p className='text-slate-50'> <FontAwesomeIcon icon={faHouse} className='pr-2'/> 288, Nguyen Van Linh, An Khanh, Ninh Kieu, Can Tho</p>
             </li>
             <li className='pt-6'>
-              <a href='/login' className='text-slate-50'><b>Email:</b> inforpetfoster@gmail.com</a>
+              <a href='/login' className='text-slate-50'><FontAwesomeIcon icon={faEnvelope} className='pr-2'/> inforpetfoster@gmail.com</a>
             </li>
             <li className='pt-6'>
-              <a href='/login' className='text-slate-50'><b>Phone:</b> 0913842870</a>
+              <a href='/login' className='text-slate-50'><FontAwesomeIcon icon={faPhone} className='pr-2'/> 0913842870</a>
             </li>
           </ul>
         </div>
