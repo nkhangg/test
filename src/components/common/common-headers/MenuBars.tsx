@@ -1,16 +1,19 @@
 'use client';
+import classNames from 'classnames';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar } from '@mui/material';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CustomBadge, WrapperAnimation } from '@/components';
 import { listProfile, navbar } from '@/datas/header';
 import Link from 'next/link';
 
-export interface IMenuBarsProps {}
+export interface IMenuBarsProps {
+    isScroll: boolean;
+}
 
-export default function MenuBars(props: IMenuBarsProps) {
+function MenuBars({ isScroll }: IMenuBarsProps) {
     const [open, setOpen] = useState(false);
 
     const handleClick = () => {
@@ -19,7 +22,13 @@ export default function MenuBars(props: IMenuBarsProps) {
 
     return (
         <>
-            <WrapperAnimation onClick={handleClick} className="cursor-pointer text-xl">
+            <WrapperAnimation
+                onClick={handleClick}
+                className={classNames('cursor-pointer text-xl', {
+                    'text-[#111]': isScroll,
+                    'text-white': !isScroll,
+                })}
+            >
                 <CustomBadge badgeContent={4} onClick={() => setOpen((prev) => !prev)} invisible={open}>
                     <FontAwesomeIcon icon={faBars} />
                 </CustomBadge>
@@ -76,3 +85,5 @@ export default function MenuBars(props: IMenuBarsProps) {
         </>
     );
 }
+
+export default memo(MenuBars);
