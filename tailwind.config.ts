@@ -27,10 +27,12 @@ const config: Config = {
             },
             colors: {
                 'green-main': '#A3E635',
+                'green-main-dark': '#65A30D',
                 'green-86EFAC': '#86EFAC',
             },
             borderColor: {
                 'green-main': '#A3E635',
+                'green-main-dark': '#65A30D',
             },
             backgroundColor: {
                 'green-65a30d': '#65A30D',
