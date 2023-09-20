@@ -21,7 +21,7 @@ export default function MenuYser(props: IMenuYserProps) {
                 placement="bottom-end"
                 render={(attr) => {
                     return (
-                        <ul className="w-[188px] bg-[#F2F2F2] text-[#4C4C4C] rounded-lg overflow-hidden" tabIndex={0} {...attr}>
+                        <ul className="w-[188px] bg-[#F2F2F2] text-[#4C4C4C] rounded-lg overflow-hidden shadow-xl" tabIndex={0} {...attr}>
                             {listProfile.map((profile, index) => {
                                 return (
                                     <li

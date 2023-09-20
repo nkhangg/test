@@ -7,6 +7,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
+import style from './styles/banner.module.css';
 export interface IBannerProps {}
 
 export default function Banner(props: IBannerProps) {
@@ -23,7 +24,7 @@ export default function Banner(props: IBannerProps) {
     useEffect(() => {
         const idInterval = setInterval(() => {
             slider.current?.slickNext();
-        }, 8000);
+        }, 20000);
 
         return () => {
             clearInterval(idInterval);
@@ -31,13 +32,16 @@ export default function Banner(props: IBannerProps) {
     }, []);
 
     return (
-        <div className="w-full max-h-[660px] relative overflow-hidden select-none">
+        <div className={`w-full max-h-[660px] relative overflow-hidden select-none ${style['box-btn']}`}>
             <Slider ref={slider} {...settings}>
-                <img src="/images/1.svg" alt="" />
-                <img src="/images/2.svg" alt="" />
+                <img src="/images/1.svg" alt="slide" />
+                <img src="/images/2.svg" alt="slide" />
+                <img src="/images/3.jpg" alt="slide" />
             </Slider>
 
-            <div className="absolute hidden xl:w-main m-auto top-[50%] left-0 right-0 text-green-86EFAC text-sm md:text-xl lg:flex lg:w-[90%] items-center justify-between">
+            <div
+                className={`${style['box-btn-items']} absolute px-10 lg:px-12 w-full m-auto top-[50%] left-0 right-0 text-green-86EFAC text-sm  items-center justify-between hidden`}
+            >
                 <motion.div
                     whileHover={{ x: -10 }}
                     whileTap={{ scale: 0.9 }}
