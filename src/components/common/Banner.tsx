@@ -39,7 +39,9 @@ export default function Banner(props: IBannerProps) {
                 <img src="/images/3.jpg" alt="slide" />
             </Slider>
 
-            <div className={`${style['box-btn-items']} absolute px-12 w-full m-auto top-[50%] left-0 right-0 text-green-86EFAC text-sm  items-center justify-between hidden`}>
+            <div
+                className={`${style['box-btn-items']} absolute px-10 lg:px-12 w-full m-auto top-[50%] left-0 right-0 text-green-86EFAC text-sm  items-center justify-between hidden`}
+            >
                 <motion.div
                     whileHover={{ x: -10 }}
                     whileTap={{ scale: 0.9 }}
