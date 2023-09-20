@@ -32,11 +32,10 @@ export default function Banner(props: IBannerProps) {
     }, []);
 
     return (
-        <div className={`w-full max-h-[660px] relative overflow-hidden select-none ${style['box-btn']}`}>
+        <div className={`w-full max-h-[166px] md:max-h-[220px] lg:max-h-[540px] relative overflow-hidden select-none ${style['box-btn']}`}>
             <Slider ref={slider} {...settings}>
-                <img src="/images/1.svg" alt="slide" />
-                <img src="/images/2.svg" alt="slide" />
-                <img src="/images/3.jpg" alt="slide" />
+                <img className="object-cover h-full" src="/images/1.svg" alt="slide" />
+                <img className="object-cover h-full" src="/images/2.svg" alt="slide" />
             </Slider>
 
             <div

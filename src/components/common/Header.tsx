@@ -36,7 +36,7 @@ export default function Header({}: IHeaderProps) {
 
             {/* responcesive */}
             <div className=" m-auto h-full text-white flex items-center justify-between select-none lg:hidden">
-                <MenuBars />
+                <MenuBars isScroll={isChangeBg} />
             </div>
         </header>
     );
