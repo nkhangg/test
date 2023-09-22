@@ -5,6 +5,7 @@ import Favicon from '/public/favicon.ico';
 import '../styles/globals.css';
 import { Providers } from '@/redux/provider';
 import { Container } from '@mui/material';
+import Footer from '@/components/footer/Footer';
 
 
 export const metadata: Metadata = {
