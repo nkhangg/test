@@ -17,7 +17,7 @@ export interface IImpactOfYearProps {}
 export default function ImpactOfYear(props: IImpactOfYearProps) {
     return (
         <div>
-            <div className="w-full min-h-[1000px]">
+            <div className="w-full ">
                 <div className="w-full min-h-[315px] bg-[#F1F1F1]  md:px-0">
                     <div className="px-10 flex flex-col items-center">
                         <h1
@@ -39,7 +39,7 @@ export default function ImpactOfYear(props: IImpactOfYearProps) {
                         </div>
                     </div>
                 </div>
-                <div className="w-full h-full">
+                <div className="w-full h-full max-h-[200px]">
                     <img loading="lazy" src={'/images/clip-path.svg'} alt="clip-path" />
                 </div>
             </div>

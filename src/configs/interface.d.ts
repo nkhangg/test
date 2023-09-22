@@ -21,3 +21,31 @@ export interface IInitAppStoreState {
     numberCart: number;
     user: IUser | null;
 }
+
+export interface IPet {
+    id: string | number;
+    name: string;
+    image: string;
+    breed: string;
+    type: string;
+    size: string;
+    sex: string;
+    fostered: string | number;
+    description: string;
+    fosterDate: number;
+    like: boolean;
+}
+
+export interface IPost {
+    id: number | string;
+    title: string;
+    thumbnail: string;
+    contents: string;
+    createdAt: string | number;
+    updatedAt: string | number;
+}
+
+export interface IPostsPreview {
+    primary: IPost;
+    propose: IPost[];
+}

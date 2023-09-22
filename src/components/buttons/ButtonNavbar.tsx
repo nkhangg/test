@@ -27,8 +27,8 @@ function ButtonNavbar({ href, contents, border, isScroll }: IButtonNavbarProps) 
                     {
                         'text-green-main': path === href && !isScroll,
                         'text-green-main-dark': path === href && isScroll,
-                        'border-green-main': border && !isScroll,
-                        'border-green-main-dark': border && isScroll,
+                        'border-green-main': Boolean(border && !isScroll),
+                        'border-green-main-dark': Boolean(border && isScroll),
                         'border-transparent': !border,
                         'hover:text-green-main-dark': isScroll,
                         'hover:text-green-main': !isScroll,

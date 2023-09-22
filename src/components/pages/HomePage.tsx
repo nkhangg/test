@@ -1,8 +1,9 @@
 import * as React from 'react';
-import Container from '@mui/material/Container';
 
 import { Box } from '@mui/material';
-import { ImpactOfYear } from '..';
+import { Feedback, ImpactOfYear, KnowldegeAboutFoster, Pets } from '..';
+import { AboutCom } from '../common';
+import { homePageData } from '@/datas/home-page';
 
 export interface IHomePageProps {}
 
@@ -12,6 +13,10 @@ export default function HomePage(props: IHomePageProps) {
     return (
         <>
             <ImpactOfYear />
+            <AboutCom />
+            <Pets data={homePageData.pets} />
+            <Feedback />
+            <KnowldegeAboutFoster data={homePageData.postsPreview} />
         </>
     );
 }
