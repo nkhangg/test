@@ -24,6 +24,8 @@ export { default as Pets } from './products-and-pets/Pets';
 
 // components
 export { default as Feedback } from './common/common-components/Feedback';
+export { default as MissionVison } from './common/common-components/mission-vison/MissionVison';
+export { default as MissionVisonItem } from './common/common-components/mission-vison/MissionVisonItem';
 export { default as KnowldegeAboutFoster } from './common/common-components/knowldeges/KnowldegeAboutFoster';
 export { default as KnowldegeAboutFosterPreview } from './common/common-components/knowldeges/KnowldegeAboutFosterPreview';
 export { default as KnowldegeAboutFosterItem } from './common/common-components/knowldeges/KnowldegeAboutFosterItem';

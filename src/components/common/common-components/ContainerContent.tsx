@@ -9,7 +9,7 @@ export interface IContainerContentProps {
 
 export default function ContainerContent({ children, className, classNameContainer }: IContainerContentProps) {
     return (
-        <div
+        <section
             className={classNames('w-full h-full', {
                 [classNameContainer ?? '']: !!classNameContainer,
             })}
@@ -23,6 +23,6 @@ export default function ContainerContent({ children, className, classNameContain
                     {children}
                 </div>
             </section>
-        </div>
+        </section>
     );
 }

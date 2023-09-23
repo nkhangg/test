@@ -7,18 +7,20 @@ export interface IBoxTitleProps {
     title: string;
     locationTitle?: 'center' | 'left' | 'right';
     background?: string;
+    className?: string;
 }
 
-export default function BoxTitle({ children, title, locationTitle = 'center', background }: IBoxTitleProps) {
+export default function BoxTitle({ children, title, locationTitle = 'center', background, className }: IBoxTitleProps) {
     return (
         <ContainerContent
-            classNameContainer={classNames('min-h-[1000px]', {
+            className={className}
+            classNameContainer={classNames('', {
                 'bg-white': !background,
                 [background ?? '']: background,
             })}
         >
             <h2
-                className={classNames('text-black-main py-[48px] text-4xl font-medium', {
+                className={classNames('text-black-main mt-24 pb-[48px] text-4xl font-medium', {
                     ['text-' + locationTitle]: true,
                 })}
             >
