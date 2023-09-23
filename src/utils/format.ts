@@ -41,3 +41,13 @@ export function toAbbrevNumber(n: number) {
     base = abbrev.indexOf(suffix) + 1;
     return suffix ? rnd(n / 1000 ** base, 2) + suffix : '' + n;
 }
+
+export function capitalize(value: string) {
+    const words = value.split(' ');
+
+    return words
+        .map((word) => {
+            return word[0].toUpperCase() + word.substring(1);
+        })
+        .join(' ');
+}
