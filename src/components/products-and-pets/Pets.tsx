@@ -13,7 +13,7 @@ export interface IPetsProps {
 
 export default function Pets({ data, heading, bottom = 'load-more' }: IPetsProps) {
     return (
-        <ContainerContent classNameContainer="bg-[#F5FAFF] mt-[30px] pt-[50px]">
+        <ContainerContent classNameContainer="bg-[#F5FAFF] mt-[30px] pt-24">
             {heading ? heading : <h2 className="text-black-main text-center pb-[35px] text-4xl font-medium">RECENTLY FOSTER</h2>}
 
             <div className="w-full grid md:grid-cols-3 lg:grid-cols-4 gap-[20px] gap-y-9">
