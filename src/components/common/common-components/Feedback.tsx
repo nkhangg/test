@@ -5,24 +5,13 @@ import { InputLabel, TextField as Tx, TextareaAutosize, styled } from '@mui/mate
 import { BoxTitle, MainButton, TextArea, TextField } from '@/components';
 import Image from 'next/image';
 
-const MyTextField = styled(Tx)({
-    '& .MuiOutlinedInput-root': {
-        '&.Mui-focused fieldset': {
-            border: '1px solid #5FA503', // customized
-        },
-    },
-    '& .MuiOutlinedInput-root:hover': {
-        '& fieldset': {
-            border: '1px solid #5FA503', // customized
-        },
-    },
-});
+export interface IDonationComProps {
+    className?: string;
+}
 
-export interface IDonationComProps {}
-
-export default function DonationCom(props: IDonationComProps) {
+export default function DonationCom({ className }: IDonationComProps) {
     return (
-        <BoxTitle title="FEEDBACK & SUPPORT US">
+        <BoxTitle className={className} title="FEEDBACK & SUPPORT US">
             <div className="w-full gap-[90px] grid grid-cols-1 lg:grid-cols-2 max-w-[100%]">
                 <div className="w-full flex justify-center lg:justify-end">
                     <div className="max-w-[505px] w-full bg-[#F8F6FC] px-9 py-8 rounded-2xl text-black-main shadow-primary">

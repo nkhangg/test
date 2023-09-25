@@ -100,7 +100,7 @@ export default function Footer(props: IFooterProps) {
         //         </Grid>
         //     </div>
         // </footer>
-        <footer className="bg-[#2F2E2E] pt-20 pb-14 max-w-[100%] overflow-hidden">
+        <footer className="bg-[#2F2E2E] pt-20 pb-14 max-w-[100%] overflow-hidden mt-[10%]">
             <ContainerContent className="text-white">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-[74px] ">
                     <div className=" lg:col-span-2 flex flex-col gap-[30px] ">

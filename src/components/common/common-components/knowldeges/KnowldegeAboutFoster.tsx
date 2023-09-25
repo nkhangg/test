@@ -5,11 +5,12 @@ import * as React from 'react';
 
 export interface IKnowldegeAboutFosterProps {
     data: IPostsPreview;
+    className?: string;
 }
 
-export default function KnowldegeAboutFoster({ data }: IKnowldegeAboutFosterProps) {
+export default function KnowldegeAboutFoster({ data, className }: IKnowldegeAboutFosterProps) {
     return (
-        <BoxTitle title="SHARING KNOWLDEGE ABOUT FOSTER">
+        <BoxTitle className={className} title="SHARING KNOWLDEGE ABOUT FOSTER">
             <div className="w-full p-11 grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-9 bg-[#F8F6FC] rounded-[20px] lg:max-h-[726px] shadow-primary">
                 <KnowldegeAboutFosterPreview data={data.primary} />
                 <ul className="flex-1 h-full flex flex-col items-center gap-4">
