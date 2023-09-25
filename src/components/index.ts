@@ -6,11 +6,14 @@ export { default as DivAnitmation } from './animations/DivAnitmation';
 export { default as CustomButton } from './buttons/CustomButton';
 export { default as ButtonNavbar } from './buttons/ButtonNavbar';
 export { default as MainButton } from './buttons/MainButton';
+export { default as HandCatButton } from './buttons/HandCatButton';
 
 // inputs
 export { default as Find } from './inputs/Find';
 export { default as TextField } from './inputs/TextField';
 export { default as TextArea } from './inputs/TextArea';
+export { default as Select } from './inputs/Select';
+export { default as MenuDropDown } from './inputs/MenuDropDown';
 
 // bages
 export { default as CustomBadge } from './badges/CustomBadge';
@@ -32,3 +35,7 @@ export { default as KnowldegeAboutFosterItem } from './common/common-components/
 
 // boxs
 export { default as BoxTitle } from './boxs/BoxTitle';
+
+// paginations
+
+export { default as Pagination } from './pagination/Pagination';

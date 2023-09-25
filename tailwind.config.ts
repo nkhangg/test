@@ -38,6 +38,7 @@ const config: Config = {
             borderColor: {
                 'green-main': '#A3E635',
                 'green-main-dark': '#65A30D',
+                'gray-primary': '#DBDBDB',
             },
             backgroundColor: {
                 'green-65a30d': '#65A30D',
