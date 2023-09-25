@@ -4,3 +4,5 @@ export type ValidTags = keyof JSX.IntrinsicElements;
 export type ApiGetUsers = () => Promise<IUser[]>;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export type SortType = string | null;
