@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faEnvelope, faPhone, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
 
-export interface IFooterProps {}
+export interface IFooterProps { }
 
 export default function Footer(props: IFooterProps) {
     return (
@@ -17,7 +17,7 @@ export default function Footer(props: IFooterProps) {
                         </p>
                         <Grid item lg={2}>
                             <div className="pt-2">
-                                <span className="border-b-2 border-slate-300 flex justify-center "></span>
+                                <span className="border-b-2 border-slate-300 flex justify-center w-24"></span>
                             </div>
                         </Grid>
 
@@ -31,7 +31,7 @@ export default function Footer(props: IFooterProps) {
                             <p className="text-lime-600 font-bold text-3xl pl-6 pt-6">About Us</p>
                             <Grid item lg={4}>
                                 <div className="pl-6 pt-2">
-                                    <span className="border-b-2 border-slate-300 flex justify-end "></span>
+                                    <span className="border-b-2 border-slate-300 flex justify-end w-24"></span>
                                 </div>
                             </Grid>
                             <div className="pl-6 pt-4">
@@ -59,7 +59,7 @@ export default function Footer(props: IFooterProps) {
                         <p className="text-lime-600 font-bold text-3xl pl-6 pt-6">Contact Us</p>
                         <Grid item lg={3}>
                             <div className="pl-6 pt-2">
-                                <span className="border-b-2 border-slate-300 flex justify-center "></span>
+                                <span className="border-b-2 border-slate-300 flex justify-center w-24"></span>
                             </div>
                         </Grid>
                         <div className="pl-6 pt-4 pr-3">
