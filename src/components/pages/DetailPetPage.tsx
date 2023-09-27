@@ -28,12 +28,12 @@ export default function DetailPetPage({ params }: IDetailPetPageProps) {
         <>
             <ContainerContent className="pt-24">
                 <div className="text-black-main">
-                    <h2 className="uppercase font-bold text-7xl mb-11 pl-4 md:pl-14">pet details</h2>
+                    <h2 className="uppercase font-bold text-4xl mb-11 pl-4 md:pl-14">pet details</h2>
                     <div className=" py-[30px] pr-4 pl-4 md:pl-14 rounded-[18px] shadow-primary">
                         <div className="w-full flex flex-col md:flex-row gap-10">
                             <PreviewImage images={detailDataPets.images} />
                             <div className="w-full md:w-[40%] ">
-                                <div className="text-4xl font-bold text-green-dark-md uppercase pb-1 border-b border-gray-[#DBDBDB]">
+                                <div className="text-[32px] font-bold text-green-dark-md uppercase pb-1 border-b border-gray-[#DBDBDB]">
                                     <h4>{detailDataPets.name}</h4>
                                 </div>
                                 <ul className="mt-[22px] mb-10 flex flex-col gap-4">
