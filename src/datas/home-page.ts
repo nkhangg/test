@@ -115,7 +115,8 @@ export const homePageData = {
             breed: 'husky',
             name: 'lokbok',
             image: 'https://ichef.bbci.co.uk/news/976/cpsprodpb/17638/production/_124800859_gettyimages-817514614.jpg',
-            description: `The dog was hit by a car, broke his leg, and lost his eye for 2-3 days at an intersection`,
+            description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non nulla doloremque at dolorem libero ut, sequi nam explicabo iste maxime beatae, magnam facere aut fuga laudantium amet tenetur consectetur esse minima molestiae. Quam, sit quis doloribus saepe provident sapiente?
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non nulla doloremque at dolorem libero ut, sequi nam explicabo iste maxime beatae, magnam facere aut fuga laudantium amet tenetur consectetur esse minima molestiae. Quam, sit quis doloribus saepe provident sapiente?`,
             fostered: '12/09/2022',
             size: 'medium',
             sex: 'male',
