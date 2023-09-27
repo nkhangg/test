@@ -5,7 +5,7 @@ import Favicon from '/public/favicon.ico';
 import '../styles/globals.css';
 import { Providers } from '@/redux/provider';
 import { Banner, Header } from '@/components/common';
-import Footer from '@/components/footer/Footer';
+import Footer from '@/components/common/common-footer/Footer';
 
 export const metadata: Metadata = {
     title: 'Home page | Petfoster',
