@@ -14,6 +14,7 @@ export { default as TextField } from './inputs/TextField';
 export { default as TextArea } from './inputs/TextArea';
 export { default as Select } from './inputs/Select';
 export { default as MenuDropDown } from './inputs/MenuDropDown';
+export { default as DivTextfield } from './inputs/DivTextfield';
 
 // bages
 export { default as CustomBadge } from './badges/CustomBadge';

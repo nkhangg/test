@@ -1,11 +1,12 @@
 import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 import { ContainerContent } from '../common';
+import { LocationTileType } from '@/configs/types';
 
 export interface IBoxTitleProps {
     children: ReactNode;
     title: string;
-    locationTitle?: 'center' | 'left' | 'right';
+    locationTitle?: LocationTileType;
     background?: string;
     className?: string;
 }

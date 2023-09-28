@@ -5,9 +5,9 @@ import { dataTakeAction } from '@/datas/take-action';
 import { SortType } from '@/configs/types';
 import { MenuDropDown, Pagination, Pet } from '..';
 
-export interface ITakeActionPageProps {}
+export interface AdoptPageProps {}
 
-export default function TakeActionPage({}: ITakeActionPageProps) {
+export default function AdoptPage({}: AdoptPageProps) {
     return (
         <ContainerContent className="">
             <Sort

@@ -6,3 +6,7 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 export type SortType = string | null;
+
+export type LocationTileType = 'center' | 'left' | 'right';
+
+export type PagesProfileType = 'me' | 'history' | 'logout';
