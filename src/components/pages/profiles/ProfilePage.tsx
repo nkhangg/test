@@ -43,7 +43,7 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                                     height: 60,
                                 }}
                                 alt="avatar"
-                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThFQPZ_nHFMIS31UMTZ4MPTVbdC8yre9x8Z4mK7PbQ&s"
+                                src="https://ngungonblog.files.wordpress.com/2016/03/pussinboots.gif?w=1200"
                             />
                             <span className="font-medium text-lg">Qian Qian</span>
                         </div>
