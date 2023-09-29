@@ -63,7 +63,7 @@ export default function Pet({ data }: IPetProps) {
                         I have waited for <strong className="text-fill-heart font-bold">{data.fosterDate}</strong> days
                     </span>
 
-                    <Link href={links.pet} className="flex items-center text cursor-pointer gap-1">
+                    <Link href={links.pet + `${data.id}/${data.name}`} className="flex items-center text cursor-pointer gap-1">
                         <span className="hover:underline text-green-main-dark">Details</span>
                         <img src="/icons/hand-cat-small.svg" alt="hand-cat-icon-small" />
                     </Link>
