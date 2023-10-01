@@ -22,7 +22,7 @@ export default function ImageAniamtion({ className, animation = 'scaleAndRotate'
 
     const animationTypes: animationType = {
         scaleAndRotate: { scale: 1.4, rotate: 4 },
-        scale: { scale: 1.1 },
+        scale: { scale: 1.2 },
         none: {},
     };
 

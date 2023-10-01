@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { ContainerContent, Sort } from '../common';
-import { dataTakeAction } from '@/datas/take-action';
+import { dataTakeAction } from '@/datas/adopt';
 import { SortType } from '@/configs/types';
 import { MenuDropDown, Pagination, Pet } from '..';
 

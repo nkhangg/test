@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 import style from './styles/banner.module.css';
+import { MainButton } from '..';
 export interface IBannerProps {}
 
 export default function Banner(props: IBannerProps) {
@@ -36,6 +37,17 @@ export default function Banner(props: IBannerProps) {
             <Slider ref={slider} {...settings}>
                 <img className="object-cover h-full" src="/images/1.svg" alt="slide" />
                 <img className="object-cover h-full" src="/images/2.svg" alt="slide" />
+                <div className="w-full h-full relative">
+                    <img className="object-cover w-full h-full" src="/images/4.svg" alt="slide" />
+
+                    <div className="absolute top-[30%] right-[50%] text-black-main">
+                        <h3 className="text-[32px] drop-shadow-md font-bold w-[500px] [text-shadow:_1px_1px_0px_rgb(255_255_255)]">
+                            SAVE OFF <span className="text-[#FF7A00]">10 - 15%</span> ON ALL PRODUCTS
+                        </h3>
+                        <p className="text-lg [text-shadow:_1px_1px_0px_rgb(255_255_255)]">Pet food and products are from the best manufacturers.</p>
+                        <MainButton background="bg-[#FF7A00]" className="mt-[25px]" title="Shop now" />
+                    </div>
+                </div>
             </Slider>
 
             <div
