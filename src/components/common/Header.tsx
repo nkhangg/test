@@ -22,6 +22,7 @@ export default function Header({}: IHeaderProps) {
             className={classNames(`h-[40px] lg:h-header w-full fixed inset-0 z-50  transition-colors ease-linear px-10`, {
                 'bg-white': isChangeBg,
                 'shadow-xl': isChangeBg,
+                'bg-[rgba(0,0,0,.4)]': !isChangeBg,
             })}
         >
             <div className=" w-main m-auto h-full lg:flex  xl:w-main items-center justify-between max-w-[100%] hidden">

@@ -34,6 +34,7 @@ const config: Config = {
                 'green-5FA503': '#5FA503',
                 'black-main': '#374151',
                 'fill-heart': '#FB7185',
+                'gray-primary': '#838383',
             },
             borderColor: {
                 'green-main': '#A3E635',
@@ -49,6 +50,9 @@ const config: Config = {
             },
             boxShadow: {
                 primary: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+            },
+            gridAutoColumns: {
+                '5item': '21%',
             },
         },
     },

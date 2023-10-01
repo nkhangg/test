@@ -27,6 +27,10 @@ export { default as ImpactOfYear } from './impacts/ImpactOfYear';
 export { default as Pet } from './products-and-pets/Pet';
 export { default as Pets } from './products-and-pets/Pets';
 export { default as PreviewImage } from './products-and-pets/components/PreviewImage';
+export { default as Product } from './products-and-pets/Product';
+export { default as Products } from './products-and-pets/Products';
+export { default as ProductRecent } from './products-and-pets/ProductRecent';
+export { default as ProductRecents } from './products-and-pets/ProductRecents';
 
 // components
 export { default as Feedback } from './common/common-components/Feedback';
