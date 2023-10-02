@@ -2,7 +2,7 @@
 import ThemeRegistry from '@/theme/ThemeRegistry';
 import type { Metadata } from 'next';
 import Favicon from '/public/favicon.ico';
-import '../styles/globals.css';
+import '../../styles/globals.css';
 import { Providers } from '@/redux/provider';
 import { Banner, HeaderDynamic, HeaderFill } from '@/components/common';
 import Footer from '@/components/common/common-footer/Footer';
@@ -15,15 +15,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en">
-            <Providers>
-                <ThemeRegistry>
-                    <body>
-                        {children}
-                        <Footer />
-                    </body>
-                </ThemeRegistry>
-            </Providers>
-        </html>
+        <>
+            <HeaderFill />
+            <main className="mt-[85px]">{children}</main>
+        </>
     );
 }
