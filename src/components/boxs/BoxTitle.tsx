@@ -10,9 +10,10 @@ export interface IBoxTitleProps {
     background?: string;
     className?: string;
     underlineTitle?: boolean;
+    fontSizeTitle?: string;
 }
 
-export default function BoxTitle({ children, title, locationTitle = 'center', background, className, underlineTitle }: IBoxTitleProps) {
+export default function BoxTitle({ children, title, locationTitle = 'center', background, className, underlineTitle, fontSizeTitle = 'text-[32px]' }: IBoxTitleProps) {
     return (
         <ContainerContent
             className={className}
@@ -22,10 +23,11 @@ export default function BoxTitle({ children, title, locationTitle = 'center', ba
             })}
         >
             <h2
-                className={classNames('text-black-main mt-24  text-4xl font-medium ', {
+                className={classNames('text-black-main mt-24   font-medium ', {
                     ['text-' + locationTitle]: true,
                     ['pb-[14px] mb-[34px] border-b border-gray-primary']: underlineTitle,
                     ['pb-[48px]']: !underlineTitle,
+                    [fontSizeTitle]: true,
                 })}
             >
                 {title.toUpperCase()}

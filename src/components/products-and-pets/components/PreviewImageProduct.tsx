@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 import { ImageAnimation } from '@/components';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -38,10 +38,9 @@ const variants = {
 
 export interface IPreviewImageProps {
     images: string[];
-    width?: string;
 }
 
-export default function PreviewImage({ images, width = 'md:w-[60%]' }: IPreviewImageProps) {
+function PreviewImageProduct({ images }: IPreviewImageProps) {
     const [curImage, setCurImage] = useState(0);
     const [direction, setDirection] = useState(0);
 
@@ -69,13 +68,9 @@ export default function PreviewImage({ images, width = 'md:w-[60%]' }: IPreviewI
     }
 
     return (
-        <div
-            className={classNames('w-full  flex flex-col items-center gap-[30px] select-none', {
-                [width]: true,
-            })}
-        >
+        <div className={classNames('w-full flex flex-col  items-center gap-[30px] select-none')}>
             <AnimatePresence initial={false} custom={direction}>
-                <div className="w-full h-full rounded-xl overflow-hidden relative">
+                <div className="w-full h-full rounded-xl overflow-hidden relative max-h-[386px]">
                     <motion.img
                         variants={variants}
                         animate="animate"
@@ -83,12 +78,12 @@ export default function PreviewImage({ images, width = 'md:w-[60%]' }: IPreviewI
                         exit="exit"
                         src={images[curImage]}
                         alt="slides"
-                        className="w-full h-[200px] md:h-full md:max-h-[392px] object-cover"
+                        className="w-full h-[200px] md:h-full md:max-h-[392px] object-contain"
                         key={images[curImage]}
                         custom={direction}
                     />
 
-                    <div className="absolute px-5 top-[50%] flex items-center justify-between w-full">
+                    <div className="absolute px-5 top-[50%] flex items-center justify-between w-full md:hidden">
                         <motion.div
                             onClick={prevStep}
                             whileHover={{ x: -10 }}
@@ -103,7 +98,7 @@ export default function PreviewImage({ images, width = 'md:w-[60%]' }: IPreviewI
                             whileHover={{ x: 10 }}
                             whileTap={{ scale: 0.9 }}
                             className="w-slide-btn h-slide-btn bg-[rgba(255,255,255,0.4)] top-[50%] 
-                            flex items-center rounded-full justify-center cursor-pointer"
+                            flex items-center rounded-full justify-center cursor-pointer md:hidden"
                         >
                             <FontAwesomeIcon icon={faChevronRight} />
                         </motion.div>
@@ -111,7 +106,7 @@ export default function PreviewImage({ images, width = 'md:w-[60%]' }: IPreviewI
                 </div>
             </AnimatePresence>
 
-            <div className="grid-cols-4 h-[148px] gap-4 hidden md:grid">
+            <div className="grid-cols-4 h-[95px] gap-4 hidden md:grid">
                 {images.map((img, index) => {
                     return (
                         <div
@@ -131,3 +126,5 @@ export default function PreviewImage({ images, width = 'md:w-[60%]' }: IPreviewI
         </div>
     );
 }
+
+export default memo(PreviewImageProduct);

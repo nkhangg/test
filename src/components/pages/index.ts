@@ -8,3 +8,4 @@ export { default as DetailPetPage } from './DetailPetPage';
 export { default as TakeAtionPage } from './take-action/TakeAtionPage';
 export { default as Overview } from './take-action/Overview';
 export { default as CategoriesOverview } from './take-action/CategoriesOverview';
+export { default as DetailProductPage } from './detail-product/DetailProductPage';

@@ -12,7 +12,7 @@ export interface IFooterProps {}
 
 export default function Footer(props: IFooterProps) {
     return (
-        <footer className="bg-[#2F2E2E] pt-20 pb-14 max-w-[100%] overflow-hidden mt-[10%]">
+        <footer className="bg-[#2F2E2E] pt-12 pb-14 max-w-[100%] overflow-hidden mt-[10%]">
             <ContainerContent className="text-white">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-[74px] ">
                     <div className=" lg:col-span-2 flex flex-col gap-[30px] ">
@@ -42,11 +42,11 @@ export default function Footer(props: IFooterProps) {
                     </div>
                     <div className="flex flex-col gap-[30px]">
                         <div className="w-fit">
-                            <h4 className="text-[25px] text-green-5FA503 font-bold leading-[42px]">ABOUT US</h4>
+                            <h4 className="text-[25px] text-green-5FA503 font-bold leading-[42px] uppercase">Contact us</h4>
                             <div className="w-3/4 h-[3px] bg-white"></div>
                         </div>
                         <ul className="flex flex-col gap-5">
-                            {dataFooter.contats.map((item) => {
+                            {dataFooter.contacts.map((item) => {
                                 return (
                                     <li key={item.title} className="flex items-center gap-2 hover:underline cursor-pointer">
                                         <FontAwesomeIcon className="text-xl h-5 w-5" icon={item.icon} />
@@ -58,7 +58,7 @@ export default function Footer(props: IFooterProps) {
                     </div>
                 </div>
 
-                <div className="bg-white h-[1px] w-full mt-24"></div>
+                <div className="bg-white h-[1px] w-full mt-16"></div>
 
                 <div className="fixed bottom-[2%] right-[2%]">
                     <Fab color="primary" aria-label="add">
