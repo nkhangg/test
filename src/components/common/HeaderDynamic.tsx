@@ -8,7 +8,7 @@ import { useMotionValueEvent, useScroll } from 'framer-motion';
 
 export interface IHeaderProps {}
 
-export default function Header({}: IHeaderProps) {
+export default function HeaderDynamic({}: IHeaderProps) {
     const { scrollY } = useScroll();
 
     const [isChangeBg, setIsChangeBg] = useState(false);

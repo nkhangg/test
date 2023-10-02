@@ -5,7 +5,7 @@ export const profileUiData = {
         {
             title: 'my profile',
             icon: faUserPen,
-            link: '/profile/me',
+            link: '/profile',
         },
         {
             title: 'ORDER HISTORY',

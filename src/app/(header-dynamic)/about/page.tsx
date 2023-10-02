@@ -1,8 +1,8 @@
 import { AboutPage } from '@/components/pages';
 import React from 'react';
 
-export interface ILoginProps {}
+export interface IAboutProps {}
 
-export default function Login(props: ILoginProps) {
+export default function About(props: IAboutProps) {
     return <AboutPage />;
 }
