@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { links } from '@/datas/links';
 import { WrapperAnimation } from '..';
 import { IPet } from '@/configs/interface';
-import { capitalize } from '@/utils/format';
+import { capitalize, stringToUrl } from '@/utils/format';
 
 export interface IPetProps {
     data: IPet;
@@ -63,7 +63,7 @@ export default function Pet({ data }: IPetProps) {
                         I have waited for <strong className="text-fill-heart font-bold">{data.fosterDate}</strong> days
                     </span>
 
-                    <Link href={links.pet + `${data.id}/${data.name}`} className="flex items-center text cursor-pointer gap-1">
+                    <Link href={links.pet + `${data.id}/${stringToUrl(data.name)}`} className="flex items-center text cursor-pointer gap-1">
                         <span className="hover:underline text-green-main-dark">Details</span>
                         <img src="/icons/hand-cat-small.svg" alt="hand-cat-icon-small" />
                     </Link>

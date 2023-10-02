@@ -40,7 +40,7 @@ export interface IProduct {
     name: string;
     image: string;
     branch: string;
-    size: string[];
+    size: string[] | number[];
     rating: number;
     price: number;
     oldPrice: number;

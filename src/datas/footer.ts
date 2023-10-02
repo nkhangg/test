@@ -16,7 +16,7 @@ export const dataFooter = {
             link: '/',
         },
     ],
-    contats: [
+    contacts: [
         {
             title: '288 Nguyen Van Linh, An Khanh, Ninh Kieu, Can Tho',
             icon: faHouse,

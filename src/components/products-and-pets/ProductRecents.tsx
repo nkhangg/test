@@ -7,12 +7,13 @@ import { IProduct } from '@/configs/interface';
 export interface IProductRencentProps {
     data: IProduct[];
     title: string;
+    fontSizeTitle?: string;
 }
 
-export default function ProductRencent({ data, title }: IProductRencentProps) {
+export default function ProductRencent({ data, title, fontSizeTitle }: IProductRencentProps) {
     const [isHideScroll, setIsHideScroll] = useState(true);
     return (
-        <BoxTitle title={title} locationTitle="left" underlineTitle>
+        <BoxTitle title={title} locationTitle="left" underlineTitle fontSizeTitle={fontSizeTitle}>
             <div
                 style={{
                     // gridAutoColumns: '21%',

@@ -24,7 +24,7 @@ export default function ProductRecent({ data }: IProductRecentProps) {
                     value={data.rating}
                     readOnly
                 />
-                <h4 className="line-clamp-1 text-[#374151] text-1xl">{data.name}</h4>
+                <h4 className="line-clamp-1 text-[#374151] text-sm">{data.name}</h4>
 
                 <div className="">
                     <span className="text-[#EF4444] text-lg">{data.price}</span>
