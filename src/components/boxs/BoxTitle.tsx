@@ -11,9 +11,23 @@ export interface IBoxTitleProps {
     className?: string;
     underlineTitle?: boolean;
     fontSizeTitle?: string;
+    fontWeigth?: string;
+    mbUnderline?: string;
+    mt?: string;
 }
 
-export default function BoxTitle({ children, title, locationTitle = 'center', background, className, underlineTitle, fontSizeTitle = 'text-[32px]' }: IBoxTitleProps) {
+export default function BoxTitle({
+    children,
+    title,
+    locationTitle = 'center',
+    background,
+    className,
+    underlineTitle,
+    fontSizeTitle = 'text-[32px]',
+    fontWeigth = 'font-medium',
+    mbUnderline = 'mb-[34px]',
+    mt = 'mt-24',
+}: IBoxTitleProps) {
     return (
         <ContainerContent
             className={className}
@@ -23,11 +37,14 @@ export default function BoxTitle({ children, title, locationTitle = 'center', ba
             })}
         >
             <h2
-                className={classNames('text-black-main mt-24   font-medium ', {
+                className={classNames('text-black-main  ', {
                     ['text-' + locationTitle]: true,
-                    ['pb-[14px] mb-[34px] border-b border-gray-primary']: underlineTitle,
+                    ['pb-[14px] border-b border-gray-primary']: underlineTitle,
+                    [mbUnderline]: true,
                     ['pb-[48px]']: !underlineTitle,
                     [fontSizeTitle]: true,
+                    [fontWeigth]: true,
+                    [mt]: true,
                 })}
             >
                 {title.toUpperCase()}

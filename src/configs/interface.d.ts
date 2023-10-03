@@ -60,3 +60,14 @@ export interface IPostsPreview {
     primary: IPost;
     propose: IPost[];
 }
+
+export interface ICart {
+    id: string | number;
+    image: string;
+    name: string;
+    branch: string;
+    size: string | number;
+    price: number;
+    quantity: number;
+    repo: number;
+}

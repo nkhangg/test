@@ -9,3 +9,6 @@ export { default as TakeAtionPage } from './take-action/TakeAtionPage';
 export { default as Overview } from './take-action/Overview';
 export { default as CategoriesOverview } from './take-action/CategoriesOverview';
 export { default as DetailProductPage } from './detail-product/DetailProductPage';
+export { default as CartPage } from './cart/CartPage';
+export { default as Carts } from './cart/Carts';
+export { default as Cart } from './cart/Cart';
