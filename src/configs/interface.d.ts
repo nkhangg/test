@@ -71,3 +71,18 @@ export interface ICart {
     quantity: number;
     repo: number;
 }
+
+// phân trang
+export interface IOtherHistory {
+    id: string | number;
+    datePlace: string | number;
+    total: number;
+    state: 'buy' | 'cancel'; // vd buy | cancel
+    stateMessage: string; //vd: Delivery on October 1, 2023
+    products: ICart[];
+}
+
+export interface IOtherHistories {
+    data: IOtherHistory[];
+    paginationTotal: 10; // số lượng trang ( vd: phân được 10 trang )
+}

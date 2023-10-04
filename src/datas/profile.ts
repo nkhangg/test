@@ -10,7 +10,7 @@ export const profileUiData = {
         {
             title: 'ORDER HISTORY',
             icon: faUserPen,
-            link: '/profile/history',
+            link: '/other-history',
         },
         {
             title: 'LOG OUT',
