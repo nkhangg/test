@@ -8,7 +8,7 @@ import { ContainerContent } from '..';
 import Link from 'next/link';
 import { dataFooter } from '@/datas/footer';
 
-export interface IFooterProps {}
+export interface IFooterProps { }
 
 export default function Footer(props: IFooterProps) {
     return (
