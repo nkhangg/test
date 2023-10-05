@@ -14,6 +14,9 @@ export default function TextField(props: TextFieldProps) {
                 border: '1px solid #5FA503', // customized
             },
         },
+        '& .MuiFormLabel-root': {
+            color: '#6C6C6C', // or black
+        },
     });
     return <MyTextField {...props} variant="outlined" />;
 }
