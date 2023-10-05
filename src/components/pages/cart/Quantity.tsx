@@ -16,6 +16,8 @@ export default function Quantity({ maxValue, initValue, onQuantity }: IQuantityP
     const [value, setValue] = useState(initValue || 1);
 
     const handlePlus = () => {
+        if (maxValue <= 0) return 0;
+
         setValue((prev) => {
             if (prev > maxValue - 1) return prev;
 
@@ -24,6 +26,7 @@ export default function Quantity({ maxValue, initValue, onQuantity }: IQuantityP
     };
 
     const handleMinus = () => {
+        if (maxValue <= 0) return 0;
         setValue((prev) => {
             if (prev <= 1) return 1;
             return prev - 1;
