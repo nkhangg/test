@@ -1,16 +1,20 @@
 'use client';
 import { CustomBadge, WrapperAnimation } from '@/components';
+import { RootState } from '@/configs/types';
 import { listProfile } from '@/datas/header';
+import { useAppSelector } from '@/hooks/reduxHooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar } from '@mui/material';
 import Tippy from '@tippyjs/react/headless';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export interface IMenuYserProps {}
 
-export default function MenuYser(props: IMenuYserProps) {
+export default function MenuUser(props: IMenuYserProps) {
     const [openMenu, setOpenMenu] = useState(false);
+
+    const { cartUser } = useAppSelector((state: RootState) => state.cartReducer);
 
     return (
         <div className="flex gap-4 ">
@@ -41,7 +45,7 @@ export default function MenuYser(props: IMenuYserProps) {
                     );
                 }}
             >
-                <CustomBadge badgeContent={4} onClick={() => setOpenMenu((prev) => !prev)} invisible={openMenu}>
+                <CustomBadge badgeContent={cartUser.length} onClick={() => setOpenMenu((prev) => !prev)} invisible={openMenu || cartUser.length <= 0}>
                     <WrapperAnimation hover={{}}>
                         <Avatar alt="avartar" className="cursor-pointer border-2" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
                     </WrapperAnimation>

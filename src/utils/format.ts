@@ -55,3 +55,7 @@ export function capitalize(value: string) {
 export const toGam = (value: number) => {
     return value < 1000 ? value + 'g' : value / 1000 + 'kg';
 };
+
+export const urlToString = (value: string) => {
+    return value.replaceAll('-', ' ');
+};

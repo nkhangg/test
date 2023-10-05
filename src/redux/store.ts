@@ -20,10 +20,10 @@ const createNoopStorage = () => {
 
 const storage = typeof window !== 'undefined' ? createWebStorage('local') : createNoopStorage();
 const persistConfig = {
-    key: 'carts',
-    version: 1,
+    key: 'cart-user',
+    version: 9,
     storage: storage,
-    whitelist: ['carts'],
+    whitelist: ['carts', 'cartUser'],
 };
 
 const persistedReducer = persistReducer(persistConfig, cartReducer);

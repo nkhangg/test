@@ -1,10 +1,11 @@
 import { ICart, IInitAppStoreState, IUser } from '@/configs/interface';
+import { dataCart } from '@/datas/cart-data';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // init a store for app
 
-const initState: { carts: ICart[] } = {
-    carts: [],
+const initState: { cartUser: ICart[] } = {
+    cartUser: [],
 };
 
 export const cart = createSlice({
@@ -12,16 +13,19 @@ export const cart = createSlice({
     initialState: initState,
     reducers: {
         addCart: (state, action: PayloadAction<ICart>) => {
-            state.carts.push(action.payload);
-        },
-        removeCart: (state, action: PayloadAction<ICart>) => {
-            let newCarts = state.carts.filter((item) => {
-                return item.id != action.payload.id;
-            });
+            const index = state.cartUser.indexOf(action.payload);
+
+            console.log('index in store: ' + index);
+
             return {
                 ...state,
-                carts: [...newCarts],
+                cartUser: [...state.cartUser, action.payload],
             };
+        },
+        removeCart: (state, action: PayloadAction<{ data: ICart; index: number }>) => {
+            console.log(action.payload.index);
+
+            state.cartUser.splice(action.payload.index, 1);
         },
     },
 });

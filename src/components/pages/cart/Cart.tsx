@@ -7,18 +7,28 @@ import Quantity from './Quantity';
 import { Checkbox } from '@mui/material';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { addCart, removeCart } from '@/redux/slice/cartsSlide';
+import { useDispatch } from 'react-redux';
 
 export interface ICartProps {
     data: ICart;
+    index: number;
 }
 
-function Cart({ data }: ICartProps) {
+function Cart({ data, index }: ICartProps) {
     const [quantity, setQuantity] = useState(data.quantity);
 
-    const dispatch = useAppDispatch();
+    const dispatch = useDispatch();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setChecked(event.target.checked);
+
+        if (checked) {
+            // dispatch(addCart({ ...data, checked: true }));
+        }
+    };
+
+    const handleRemove = () => {
+        dispatch(removeCart({ data, index }));
     };
 
     const [checked, setChecked] = React.useState(data.checked);
@@ -31,14 +41,6 @@ function Cart({ data }: ICartProps) {
         // setCart([...arr]);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [quantity]);
-
-    useEffect(() => {
-        if (checked) {
-            dispatch(addCart(data));
-        } else {
-            dispatch(removeCart(data));
-        }
-    }, [checked, data, dispatch]);
 
     return (
         <div className="flex items-center py-[34px] h-[170px] border-b border-gray-primary text-black-main max-w-full">
@@ -71,7 +73,9 @@ function Cart({ data }: ICartProps) {
                     }}
                     maxValue={data.repo}
                 />
-                <span className="cursor-pointer hover:underline text-violet-primary">Remove</span>
+                <span onClick={handleRemove} className="cursor-pointer hover:underline text-violet-primary">
+                    Remove
+                </span>
             </div>
             <div className="ml-2 md:w-[20%] flex items-center justify-center text-sm md:text-xl md:ml-0">
                 <span>{toCurrency(data.price * quantity <= 0 ? data.price : data.price * quantity)}</span>
