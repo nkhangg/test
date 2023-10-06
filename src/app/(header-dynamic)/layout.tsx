@@ -1,11 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import ThemeRegistry from '@/theme/ThemeRegistry';
+import '../../styles/globals.css';
 import type { Metadata } from 'next';
 import Favicon from '/public/favicon.ico';
-import '../../styles/globals.css';
-import { Providers } from '@/redux/provider';
-import { Banner, HeaderDynamic } from '@/components/common';
-import Footer from '@/components/common/common-footer/Footer';
+import { Banner, Header } from '@/components/common';
 
 export const metadata: Metadata = {
     title: 'Home page | Petfoster',
@@ -16,7 +13,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <>
-            <HeaderDynamic />
+            <Header />
             <Banner />
             <main className="">{children}</main>
         </>

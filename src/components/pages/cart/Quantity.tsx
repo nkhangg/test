@@ -16,6 +16,8 @@ export default function Quantity({ maxValue, initValue, onQuantity }: IQuantityP
     const [value, setValue] = useState(initValue || 1);
 
     const handlePlus = () => {
+        if (maxValue <= 0) return 0;
+
         setValue((prev) => {
             if (prev > maxValue - 1) return prev;
 
@@ -24,6 +26,7 @@ export default function Quantity({ maxValue, initValue, onQuantity }: IQuantityP
     };
 
     const handleMinus = () => {
+        if (maxValue <= 0) return 0;
         setValue((prev) => {
             if (prev <= 1) return 1;
             return prev - 1;
@@ -48,7 +51,7 @@ export default function Quantity({ maxValue, initValue, onQuantity }: IQuantityP
                 [robotoFlex.className]: true,
             })}
         >
-            <ul className={classNames('flex items-center rounded-md py-[8px] bg-[#F2F2F2] text-lg')}>
+            <ul className={classNames('flex items-center rounded-md py-2 md:py-[8px] bg-[#F2F2F2] text-sm md:text-lg')}>
                 <motion.li
                     onClick={handleMinus}
                     whileTap={{

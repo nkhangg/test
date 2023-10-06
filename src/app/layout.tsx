@@ -4,7 +4,6 @@ import type { Metadata } from 'next';
 import Favicon from '/public/favicon.ico';
 import '../styles/globals.css';
 import { Providers } from '@/redux/provider';
-import { Banner, HeaderDynamic, HeaderFill } from '@/components/common';
 import Footer from '@/components/common/common-footer/Footer';
 
 export const metadata: Metadata = {

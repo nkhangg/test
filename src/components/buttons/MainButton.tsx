@@ -1,5 +1,5 @@
 'use client';
-import React, { CSSProperties } from 'react';
+import React, { MouseEventHandler } from 'react';
 import classNames from 'classnames';
 import { CustomButton, WrapperAnimation } from '..';
 
@@ -10,11 +10,12 @@ export interface IMainButtonProps {
     height?: number | string;
     background?: string;
     href?: string;
+    onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
-export default function MainButton({ className, title, width, height, background = 'bg-[#5FA503]', href }: IMainButtonProps) {
+export default function MainButton({ className, title, width, height, background = 'bg-[#5FA503]', href, onClick }: IMainButtonProps) {
     return (
-        <WrapperAnimation hover={{ y: -2 }}>
+        <WrapperAnimation onClick={onClick} hover={{ y: -2 }}>
             <CustomButton
                 href={href}
                 style={width || height ? { width: width, height: height } : undefined}

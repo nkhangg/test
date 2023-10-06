@@ -17,6 +17,16 @@ export interface IUser {
     email?: string;
 }
 
+export interface IProfile {
+    id: string;
+    username: string;
+    fullname: string;
+    email: string;
+    phone: string;
+    genther: boolean;
+    birthday: number; // Cứ trả về Date trong java bình thường
+}
+
 export interface IInitAppStoreState {
     numberCart: number;
     user: IUser | null;
@@ -70,4 +80,23 @@ export interface ICart {
     price: number;
     quantity: number;
     repo: number;
+    checked?: boolean;
+}
+
+export interface IChart {
+    title: string[]; // mảng các tháng
+    data: {
+        name: string; // tên mảng dữ liệu
+        data: number[]; // mảng dữ liệu
+    };
+}
+export interface IImpactOfYear {
+    title: string; // mảng các tháng
+    data: number;
+}
+
+export interface IStatisDashboard {
+    revenue: ICart;
+    product: IChart;
+    impactOfYear: IImpactOfYear[];
 }

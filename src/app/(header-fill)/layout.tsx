@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import Favicon from '/public/favicon.ico';
 import '../../styles/globals.css';
 import { Providers } from '@/redux/provider';
-import { Banner, HeaderDynamic, HeaderFill } from '@/components/common';
+import { Banner, Header } from '@/components/common';
 import Footer from '@/components/common/common-footer/Footer';
 
 export const metadata: Metadata = {
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <>
-            <HeaderFill />
+            <Header dynamic={false} />
             <main className="mt-[85px]">{children}</main>
         </>
     );

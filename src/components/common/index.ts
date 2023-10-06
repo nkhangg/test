@@ -1,5 +1,4 @@
-export { default as HeaderDynamic } from './HeaderDynamic';
-export { default as HeaderFill } from './HeaderFill';
+export { default as Header } from './Header';
 export { default as Banner } from './Banner';
 export { default as BannerTakeAction } from './BannerTakeAction';
 export { default as Sort } from './Sort';
