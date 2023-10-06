@@ -51,7 +51,7 @@ export default function Quantity({ maxValue, initValue, onQuantity }: IQuantityP
                 [robotoFlex.className]: true,
             })}
         >
-            <ul className={classNames('flex items-center rounded-md py-[8px] bg-[#F2F2F2] text-lg')}>
+            <ul className={classNames('flex items-center rounded-md py-2 md:py-[8px] bg-[#F2F2F2] text-sm md:text-lg')}>
                 <motion.li
                     onClick={handleMinus}
                     whileTap={{

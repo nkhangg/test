@@ -1,46 +1,12 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
+import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { appReducer, cartReducer } from './slice';
-import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
-
-const createNoopStorage = () => {
-    return {
-        getItem(_key: string) {
-            return Promise.resolve(null);
-        },
-        setItem(_key: string, value: any) {
-            return Promise.resolve(value);
-        },
-        removeItem(_key: string) {
-            return Promise.resolve();
-        },
-    };
-};
-
-const storage = typeof window !== 'undefined' ? createWebStorage('local') : createNoopStorage();
-const persistConfig = {
-    key: 'cart-user',
-    version: 9,
-    storage: storage,
-    whitelist: ['carts', 'cartUser'],
-};
-
-const persistedReducer = persistReducer(persistConfig, cartReducer);
-
-const rootReducer = combineReducers({
-    appReducer,
-    cartReducer: persistedReducer,
-});
 
 export const store = configureStore({
-    reducer: rootReducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-            },
-        }),
+    reducer: {
+        appReducer,
+        cartReducer,
+    },
 });
 
 setupListeners(store.dispatch);

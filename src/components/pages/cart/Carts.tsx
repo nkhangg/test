@@ -1,11 +1,12 @@
 'use client';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import Cart from './Cart';
 import { dataCart } from '@/datas/cart-data';
 import { ICart } from '@/configs/interface';
 import { Checkbox } from '@mui/material';
-import { useAppSelector } from '@/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
+import { checkedAll, setCheckedAllCartItem, updateDataCartWhenMount } from '@/redux/slice/cartsSlide';
 
 export interface ICartsProps {
     data: ICart[];
@@ -13,12 +14,19 @@ export interface ICartsProps {
 }
 
 export default function Carts({ data, onTotal }: ICartsProps) {
-    const { cartUser } = useAppSelector((state: RootState) => state.cartReducer);
+    const { cartUser, checkAll } = useAppSelector((state: RootState) => state.cartReducer);
+    const [checked, setChecked] = useState(checkAll);
+
+    const dispatch = useAppDispatch();
+
+    const cartUserMemo = useMemo(() => {
+        return cartUser;
+    }, [cartUser]);
 
     const total = useMemo(() => {
-        if (cartUser.length <= 0) return 0;
+        if (cartUserMemo.length <= 0) return 0;
 
-        const newCart = cartUser.filter((item) => {
+        const newCart = cartUserMemo.filter((item) => {
             return item.checked;
         });
 
@@ -26,7 +34,18 @@ export default function Carts({ data, onTotal }: ICartsProps) {
             return (result += item.price * item.quantity);
         }, 0);
         return results;
-    }, [cartUser]);
+    }, [cartUserMemo]);
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setChecked(event.target.checked);
+
+        dispatch(checkedAll({ checked: event.target.checked }));
+        dispatch(setCheckedAllCartItem(event.target.checked));
+    };
+
+    useEffect(() => {
+        setChecked(checkAll);
+    }, [checkAll]);
 
     useEffect(() => {
         if (!onTotal) return;
@@ -34,17 +53,24 @@ export default function Carts({ data, onTotal }: ICartsProps) {
         onTotal(total);
     }, [total, onTotal]);
 
+    useEffect(() => {
+        if (!data || data.length <= 0) return;
+
+        dispatch(updateDataCartWhenMount(data));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <>
-            <div className="flex items-center py-4 text-xl border-b border-gray-primary font-semibold text-black-main">
+            <div className="flex items-center py-4 text-sm md:text-1xl border-b border-gray-primary font-semibold text-black-main">
                 <div className="w-[8%] flex items-center">
-                    <Checkbox />
+                    <Checkbox onChange={handleChange} checked={checked} />
                 </div>
                 <div className="flex-1 ml-8 flex flex-col items-center justify-center gap-5">
                     <span>Product</span>
                 </div>
 
-                <div className="lg:w-[10%] flex flex-col items-center justify-center">
+                <div className="w-[40%] lg:w-[10%] flex flex-col items-center justify-center">
                     <span>Quantity</span>
                 </div>
                 <div className="ml-2 md:w-[20%] flex items-center justify-center">
