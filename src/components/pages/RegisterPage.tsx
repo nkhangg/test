@@ -1,11 +1,11 @@
 'use client';
-import { Button, FormControl, InputLabel, Grid, MenuItem } from '@mui/material';
+import { Button, FormControl, InputLabel, Grid, MenuItem, Typography, Box, Stack } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import React, { useState } from 'react';
 import ContainerContent from '@/components/common/common-components/ContainerContent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareFacebook, faSquareGooglePlus } from '@fortawesome/free-brands-svg-icons';
-import { TextField, WrapperAnimation, Select } from '..';
+import { TextField, WrapperAnimation, Select, RoudedButton, SocialButton } from '..';
 import Link from 'next/link';
 
 export interface IRegisterPageProps {}
@@ -14,140 +14,73 @@ export default function RegisterPage(props: IRegisterPageProps) {
     const handleChange = (event: SelectChangeEvent<any>) => {
         // setAge(event.target.value as string);
     };
-    const useStyle = {
-        Button: {
-            '&:hover': {
-                backgroundColor: '#ffffff !important',
-                boxShadow: 'none !important',
-            },
-            '&:active': {
-                boxShadow: 'none !important',
-                backgroundColor: '#3c52b2 !important',
-            },
-        },
-    };
 
     return (
-        <ContainerContent>
-            <Grid container spacing={2}>
-                <Grid item lg={4} xs={12}>
-                    <div className="mt-28 pl-4">
-                        <p className="font-black text-4xl pl-3">SIGN UP</p>
-                    </div>
-                </Grid>
-                <Grid item lg={6} xs={12}>
-                    <div className="mt-24 flex flex-col md:flex-row items-center justify-center gap-4 w-full">
-                        <p className="text-xl whitespace-nowrap">Or sign in with</p>
-                        <div className="px-5 w-full md:w-auto">
-                            <WrapperAnimation hover={{ y: -2 }}>
-                                <Button variant="contained" color="primary" className="w-full md:w-[200px] place-content-center " sx={{ p: '10px', backgroundColor: '#0284C7' }}>
-                                    <FontAwesomeIcon icon={faSquareFacebook} className="w-[42px] h-[36px] mr-3" />
-                                    <span className="text-center tracking-widest font-black">Facebook</span>
-                                </Button>
-                            </WrapperAnimation>
-                        </div>
-                        <div className="px-5 w-full md:w-auto">
-                            <WrapperAnimation hover={{ y: -2 }}>
-                                <Button
-                                    variant="contained"
-                                    className=" w-full md:w-[200px] place-content-center "
-                                    sx={{
-                                        p: '10px',
-                                        backgroundColor: '#0D9488',
-                                        '&:hover': {
-                                            backgroundColor: '#0D9488',
-                                            boxShadow: 'none !important',
-                                        },
-                                        '&:active': {
-                                            boxShadow: 'none !important',
-                                            backgroundColor: '#3c52b2 !important',
-                                        },
-                                    }}
-                                >
-                                    <FontAwesomeIcon icon={faSquareGooglePlus} className="w-[42px] h-[36px] mr-3" />
-                                    <span className="text-center tracking-widest font-black">Google</span>
-                                </Button>
-                            </WrapperAnimation>
-                        </div>
-                    </div>
-                </Grid>
-                <Grid item lg={6} xs={12}>
-                    <div className="mt-4 p-4">
-                        <div className="p-3 rounded-lg">
-                            <FormControl className="w-full">
-                                <TextField id="filled-basic" label="Username" variant="filled" />
-                            </FormControl>
-                        </div>
-                    </div>
-                </Grid>
-                <Grid item lg={6} xs={12}>
-                    <div className="mt-4  p-4">
-                        <div className="p-3  rounded-lg">
-                            <FormControl className="w-full mt-2">
-                                <TextField id="filled-basic" label="Full Name" variant="filled" />
-                            </FormControl>
-                        </div>
-                    </div>
-                </Grid>
-                <Grid item lg={6} xs={12}>
-                    <div className="mt-4 p-4">
-                        <div className="p-3  rounded-lg">
-                            <FormControl className="w-full md:w-80">
-                                <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-                                <Select labelId="demo-simple-select-label" id="demo-simple-select" label="Gender" onChange={(e) => handleChange(e)}>
-                                    <MenuItem value={'false'}>Female</MenuItem>
-                                    <MenuItem value={'true'}>Male</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div>
-                    </div>
-                </Grid>
-                <Grid item lg={6} xs={12}>
-                    <div className="mt-4  p-4">
-                        <div className="p-3  rounded-lg">
-                            <FormControl className="w-full mt-2">
-                                <TextField id="filled-basic" label="Email" variant="filled" />
-                            </FormControl>
-                        </div>
-                    </div>
-                </Grid>
-                <Grid item lg={6} xs={12}>
-                    <div className="mt-4  p-4">
-                        <div className="p-3  rounded-lg">
-                            <FormControl className="w-full mt-2">
-                                <TextField id="filled-basic" label="Password" variant="filled" />
-                            </FormControl>
-                        </div>
-                    </div>
-                </Grid>
-                <Grid item lg={6} xs={12}>
-                    <div className="mt-4 p-4">
-                        <div className="p-3  rounded-lg">
-                            <FormControl className="w-full mt-2">
-                                <TextField id="filled-basic" label="Password Confirm" variant="filled" />
-                            </FormControl>
-                        </div>
-                    </div>
-                </Grid>
+        <ContainerContent className="pt-24">
+            <Grid container sx={{ px: '10%' }} spacing={'20px'}>
+                <Grid item xs={12} md={12} lg={12} sx={{ mb: '2%' }}>
+                    <div className="flex flex-col md:flex-row items-center md:justify-between w-full gap-4 md:gap-2">
+                        <Typography variant="h3" fontSize={{ xs: 18, md: 22, lg: 32 }} fontWeight={600} className="uppercase text-[#4D4D4D]">
+                            SIGN UP
+                        </Typography>
 
-                <Grid item lg={12} xs={12}>
-                    <div className="pl-4">
-                        <p className="pl-3 text-lg font-thin tracking-widest">
-                            Already have an account?
-                            <Link href={'/login'} className="text-sky-500 font-thin hover:underline">
-                                Log in
-                            </Link>
-                        </p>
+                        <div className="w-full md:w-[60%] flex-col md:flex-row flex items-center justify-between gap-4">
+                            <span className=" whitespace-nowrap ">Or sign in with</span>
+
+                            <SocialButton mt="mt-0" title="Facebook" icon={faSquareFacebook} />
+                            <SocialButton mt="mt-0" title="Google" background="#0D9488" icon={faSquareGooglePlus} />
+                        </div>
                     </div>
                 </Grid>
-                <Grid item lg={6} xs={12}>
-                    <div className="pl-4 mt-10 flex items-center justify-center md:justify-start">
-                        <WrapperAnimation hover={{ y: -2 }}>
-                            <Button variant="contained" className="w-[250px] h-[50px] uppercase" sx={{ borderRadius: '50px', backgroundColor: '#374151' }}>
-                                <span className="text-xl font-medium">Sign up</span>
-                            </Button>
-                        </WrapperAnimation>
-                    </div>
+                <Grid item xs={12} md={6} lg={6}>
+                    <Stack spacing={'20px'}>
+                        <TextField id="username" label="Username" size="small" />
+
+                        <FormControl className="w-full md:w-80">
+                            <InputLabel
+                                size="small"
+                                id="genther"
+                                sx={{
+                                    color: '#6C6C6C !important',
+                                    fontSize: '14px !important',
+                                }}
+                            >
+                                Gender
+                            </InputLabel>
+                            <Select labelId="genther" id="genther-select" size="small" label="Gender" onChange={(e) => handleChange(e)}>
+                                <MenuItem value={'false'} sx={{ fontSize: '14px !important' }}>
+                                    Female
+                                </MenuItem>
+                                <MenuItem value={'true'} sx={{ fontSize: '14px !important' }}>
+                                    Male
+                                </MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Stack>
+                </Grid>
+                <Grid item xs={12} md={6} lg={6}>
+                    <Stack spacing={'20px'}>
+                        <TextField id="full-name" label="Full Name" size="small" />
+                        <TextField id="email" label="Email" size="small" />
+                    </Stack>
+                </Grid>
+                <Grid item xs={12} md={6} lg={6}>
+                    <TextField id="password" label="Password" size="small" />
+                </Grid>
+                <Grid item xs={12} md={6} lg={6}>
+                    <TextField id="confirm-password" label="Password Confirm" size="small" />
+                </Grid>
+                <Grid item xs={12} md={6} lg={6}>
+                    <Box>
+                        <Typography variant="subtitle2" sx={{ mt: '20px', fontSize: { xs: '12px', md: '13px', lg: '14px' } }}>
+                            Need an account?
+                            <Link href={'/register'} className="text-blue-primary hover:underline ml-1">
+                                Sign up
+                            </Link>
+                        </Typography>
+
+                        <RoudedButton title={'SIGN UP'} />
+                    </Box>
                 </Grid>
             </Grid>
         </ContainerContent>

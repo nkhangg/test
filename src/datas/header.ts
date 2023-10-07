@@ -12,7 +12,7 @@ export const navbar = [
 export const listProfile = [
     {
         title: 'Profile',
-        href: '/profile/me',
+        href: '/profile',
         icon: faUser,
     },
     {

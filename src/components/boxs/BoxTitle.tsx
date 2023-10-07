@@ -20,7 +20,7 @@ export default function BoxTitle({
     children,
     title,
     locationTitle = 'center',
-    background,
+    background = 'bg-white',
     className,
     underlineTitle,
     fontSizeTitle = 'text-[32px]',
@@ -32,8 +32,7 @@ export default function BoxTitle({
         <ContainerContent
             className={className}
             classNameContainer={classNames('', {
-                'bg-white': !background,
-                [background ?? '']: background,
+                [background]: true,
             })}
         >
             <h2

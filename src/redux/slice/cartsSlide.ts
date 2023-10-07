@@ -35,6 +35,8 @@ export const cart = createSlice({
             };
             addCartTolocal(newObj.cartUser);
 
+            console.log(newObj.cartUser);
+
             return {
                 ...newObj,
             };
@@ -92,17 +94,14 @@ export const cart = createSlice({
 
         updateDataCartWhenMount: (state, action: PayloadAction<ICart[]>) => {
             const newStateCartUser = [...state.cartUser];
-
             newStateCartUser.sort();
             action.payload.sort();
-
             const newCartUser = newStateCartUser.map((item, index) => {
                 return {
                     ...item,
                     repo: action.payload[index].repo,
                 };
             });
-
             addCartTolocal(newCartUser);
             return {
                 ...state,

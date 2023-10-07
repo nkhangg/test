@@ -15,8 +15,9 @@ export default function TextField(props: TextFieldProps) {
             },
         },
         '& .MuiFormLabel-root': {
-            color: '#6C6C6C', // or black
+            color: '#6C6C6C !important',
+            fontSize: '14px !important',
         },
     });
-    return <MyTextField {...props} variant="outlined" />;
+    return <MyTextField {...props} variant="outlined" fullWidth />;
 }
