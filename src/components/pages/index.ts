@@ -13,3 +13,5 @@ export { default as DetailProductPage } from './detail-product/DetailProductPage
 export { default as CartPage } from './cart/CartPage';
 export { default as Carts } from './cart/Carts';
 export { default as Cart } from './cart/Cart';
+export { default as AskConditionPage } from './AskConditionPage';
+export { default as ResetPasswordPage } from './ResetPasswordPage';
