@@ -1,8 +1,9 @@
 'use client';
 import React from 'react';
 import { TextFieldProps, TextField as Tx } from '@mui/material';
+import Validate from '@/utils/validate';
 
-export default function TextField(props: TextFieldProps) {
+export default function TextField(props: TextFieldProps & { message?: string }) {
     return (
         <Tx
             sx={{
@@ -22,6 +23,8 @@ export default function TextField(props: TextFieldProps) {
                 },
             }}
             {...props}
+            error={Validate.isNotBlank(props.message || '')}
+            helperText={Validate.isNotBlank(props.message || '') && props.message}
             variant="outlined"
             fullWidth
         />

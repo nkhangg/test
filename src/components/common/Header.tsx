@@ -26,11 +26,11 @@ export default function Header({ dynamic = true }: IHeaderProps) {
     });
 
     useEffect(() => {
-        console.log('reloaded', token);
+        // console.log('reloaded', token);
         (async () => {
             const actionResult = dispatch(fetchUserByToken());
             const curUser = unwrapResult(await actionResult);
-            console.log(curUser);
+            // console.log(curUser);
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token]);

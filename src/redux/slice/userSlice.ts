@@ -1,6 +1,3 @@
-import { login } from '@/apis/user';
-import { IInitAppStoreState, ILoginDataResponse, IUser } from '@/configs/interface';
-import { UserFormType } from '@/configs/types';
 import { getTokenFromCookie } from '@/utils/cookie';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
