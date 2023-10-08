@@ -1,11 +1,11 @@
 'use client';
-import { Button, FormControl, InputLabel, Grid, MenuItem, Typography, Box, Stack } from '@mui/material';
+import { Button, FormControl, InputLabel, Grid, MenuItem, Typography, Box, Stack, AlertColor } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import React, { ChangeEvent, FocusEvent, FormEvent, useState } from 'react';
 import ContainerContent from '@/components/common/common-components/ContainerContent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareFacebook, faSquareGooglePlus } from '@fortawesome/free-brands-svg-icons';
-import { TextField, WrapperAnimation, Select, RoudedButton, SocialButton, LoadingPrimary } from '..';
+import { TextField, WrapperAnimation, Select, RoudedButton, SocialButton, LoadingPrimary, Notifycation } from '..';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import Validate from '@/utils/validate';
@@ -28,7 +28,7 @@ export default function RegisterPage(props: IRegisterPageProps) {
     const [form, setForm] = useState<RegisterFormData>(initData);
     const [errors, setErrors] = useState<RegisterFormData>(initData);
     const [loading, setLoading] = useState(false);
-    const [notifycation, setnotifycation] = useState({ type: '', title: '', open: false });
+    const [notifycation, setnotifycation] = useState<{ title: string; type: AlertColor; open: boolean }>({ type: 'success', title: '', open: false });
 
     const router = useRouter();
 
@@ -102,9 +102,20 @@ export default function RegisterPage(props: IRegisterPageProps) {
                 return;
             }
 
+            setnotifycation({
+                open: true,
+                title: 'Register successfuly, please login to use website !',
+                type: 'success',
+            });
+
             router.push('/login');
         } catch (error) {
             console.log('error in register page: ' + error);
+            setnotifycation({
+                open: true,
+                title: 'Something went wrong !',
+                type: 'error',
+            });
         }
     };
 
@@ -216,6 +227,12 @@ export default function RegisterPage(props: IRegisterPageProps) {
             </Grid>
 
             {loading && <LoadingPrimary />}
+            <Notifycation
+                onClose={(e) => {
+                    setnotifycation({ ...notifycation, open: false });
+                }}
+                {...notifycation}
+            />
         </ContainerContent>
     );
 }

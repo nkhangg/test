@@ -11,7 +11,7 @@ export interface INotifycationProps {
 
 export default function Notifycation({ title, autohide = 2000, open, type = 'success', onClose }: INotifycationProps) {
     return (
-        <Snackbar onClose={onClose} open={open} autoHideDuration={autohide}>
+        <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} onClose={onClose} open={open} autoHideDuration={autohide}>
             <Alert onClose={onClose} severity={type} sx={{ width: '100%' }}>
                 {title}
             </Alert>
