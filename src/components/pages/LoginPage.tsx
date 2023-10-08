@@ -1,7 +1,7 @@
 'use client';
 import React, { ChangeEvent, FocusEvent, FormEvent, useState } from 'react';
-import { BoxSign, LoadingPrimary, TextField } from '..';
-import { Backdrop, CircularProgress, Stack } from '@mui/material';
+import { BoxSign, LoadingPrimary, TextField, Notifycation } from '..';
+import { Stack } from '@mui/material';
 import Validate from '@/utils/validate';
 import { UserFormType } from '@/configs/types';
 import { useRouter } from 'next/navigation';
@@ -13,6 +13,8 @@ export interface ILoginPageProps {}
 
 export default function LoginPage(props: ILoginPageProps) {
     const [loading, setLoading] = useState(false);
+    const [notifycation, setnotifycation] = useState(false);
+
     const dispatch = useDispatch();
 
     const router = useRouter();
@@ -90,6 +92,8 @@ export default function LoginPage(props: ILoginPageProps) {
             dispatch(setToken(res.token));
         } catch (error) {
             console.log('error in login page: ' + error);
+            setLoading(false);
+            setnotifycation(true);
         }
     };
 
@@ -123,6 +127,14 @@ export default function LoginPage(props: ILoginPageProps) {
             </Stack>
 
             {loading && <LoadingPrimary />}
+            <Notifycation
+                onClose={(e) => {
+                    setnotifycation(false);
+                }}
+                open={notifycation}
+                title="Something went wrong !"
+                type="error"
+            />
         </BoxSign>
     );
 }
