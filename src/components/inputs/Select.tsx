@@ -18,7 +18,6 @@ export default function Select({ children, ...props }: ISelectProps & SelectProp
                     borderColor: '#5FA503',
                 },
             }}
-            displayEmpty
         >
             {children}
         </Sl>

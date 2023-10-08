@@ -18,7 +18,7 @@ export interface IUser {
     password: string;
     email?: string;
 }
-export interface ILoginDataResponse {
+export interface ISignDataResponse {
     message: string;
     token: string;
     errors: UserFormType | null;

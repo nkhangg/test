@@ -9,14 +9,30 @@ const Validate = {
         return value.trim().length > 0;
     },
 
-    username(value: string, max = 16): ValidateType {
+    isSpecialChars(value: string): boolean {
         const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+        return specialChars.test(value);
+    },
 
+    isEmail(value: string): boolean {
+        const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        return re.test(value);
+    },
+
+    isNumber(value: string): boolean {
+        const num = /^\d+$/;
+
+        return num.test(value);
+    },
+
+    username(value: string, max = 16): ValidateType {
         if (this.isBlank(value)) return { message: 'Username is not blank ', error: true };
+
+        if (this.isNumber(value)) return { message: 'Username is not numberic ', error: true };
 
         if (value.length > max) return { message: `Username must be less than ${max} characters`, error: true };
 
-        if (specialChars.test(value)) return { message: 'Username is not include special characters ', error: true };
+        if (this.isSpecialChars(value)) return { message: 'Username is not include special characters ', error: true };
 
         return { message: '', error: false };
     },
@@ -31,12 +47,36 @@ const Validate = {
         return { message: '', error: false };
     },
 
-    isPassword(value: string, min = 6): ValidateType {
-        const valueTrim = value.trim();
+    email(value: string): ValidateType {
+        if (this.isBlank(value)) return { message: 'Email is not blank ', error: true };
 
-        if (valueTrim.length <= 0) return { message: 'Password is not blank ', error: true };
+        if (!this.isEmail(value)) return { message: 'Email invalid, please try a other email ', error: true };
 
-        if (valueTrim.length < min) return { message: `Password must be longer than ${min} characters`, error: true };
+        return { message: '', error: false };
+    },
+
+    gender(value: string): ValidateType {
+        if (this.isBlank(value)) return { message: 'Gender is not blank ', error: true };
+
+        return { message: '', error: false };
+    },
+
+    fullname(value: string): ValidateType {
+        if (this.isBlank(value)) return { message: 'Fullname is not blank ', error: true };
+
+        if (this.isSpecialChars(value)) return { message: 'Fullname is not include special characters ', error: true };
+
+        return { message: '', error: false };
+    },
+
+    confirmPassword(value: string, password?: string): ValidateType {
+        if (this.isBlank(value)) return { message: 'Password Confirm is not blank ', error: true };
+
+        const validPass = this.password(value);
+
+        if (validPass.error) return validPass;
+
+        if (password !== value) return { message: 'Password Confirm is not match with password ', error: true };
 
         return { message: '', error: false };
     },
