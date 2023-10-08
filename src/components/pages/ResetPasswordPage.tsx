@@ -15,8 +15,11 @@ export default function ResetPassword(props: IResetPasswordProps) {
 
     const validate = () => {
         let flag = true;
-        if (!Validate.isPassword(password)) {
-            setError('Password must be longer than 6 characters');
+
+        const { message, error } = Validate.isPassword(password);
+
+        if (error) {
+            setError(message);
             flag = false;
         } else {
             setError('');
@@ -40,7 +43,7 @@ export default function ResetPassword(props: IResetPasswordProps) {
         validate();
     };
     return (
-        <BoxSign title="RESET PASSWORD">
+        <BoxSign title="RESET PASSWORD" onSubmit={handleSubmit}>
             <Typography
                 variant="subtitle1"
                 fontSize={{ xs: 12, md: 13, lg: 14 }}
@@ -57,7 +60,6 @@ export default function ResetPassword(props: IResetPasswordProps) {
                 error={error.length > 0}
                 helperText={error}
                 onBlur={handleBlur}
-                autoFocus
                 value={password}
                 onChange={handleChange}
                 type="password"

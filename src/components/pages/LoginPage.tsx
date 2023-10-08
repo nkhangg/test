@@ -1,32 +1,128 @@
 'use client';
-import { IUser } from '@/configs/interface';
-import { RootState } from '@/configs/types';
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { addUser } from '@/redux/slice/appSlice';
-import { Button, FormControl, FormControlLabel, InputLabel, Input, FormHelperText, Grid, MenuItem, Stack } from '@mui/material';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import React, { useState } from 'react';
-import ContainerContent from '@/components/common/common-components/ContainerContent';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquareFacebook, faSquareGooglePlus } from '@fortawesome/free-brands-svg-icons';
-import { BoxSign, SocialButton, TextField, WrapperAnimation } from '..';
-import Link from 'next/link';
+import React, { ChangeEvent, FocusEvent, FormEvent, useState } from 'react';
+import { BoxSign, LoadingPrimary, TextField } from '..';
+import { Backdrop, CircularProgress, Stack } from '@mui/material';
+import Validate from '@/utils/validate';
+import { UserFormType } from '@/configs/types';
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { login } from '@/apis/user';
+import { setToken } from '@/redux/slice/userSlice';
 
 export interface ILoginPageProps {}
 
 export default function LoginPage(props: ILoginPageProps) {
-    const [age, setAge] = React.useState('');
+    const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value as string);
+    const router = useRouter();
+    const initalDataForm = {
+        username: '',
+        password: '',
+    };
+
+    const [form, setForm] = useState<UserFormType>(initalDataForm);
+
+    const [errors, setErrors] = useState<UserFormType>(initalDataForm);
+
+    const validate = () => {
+        let flag = true;
+
+        const validErrors: UserFormType = initalDataForm;
+
+        const validUsername = Validate.username(form.username);
+        const validPassword = Validate.password(form.password);
+
+        validErrors.username = validUsername.message;
+        validErrors.password = validPassword.message;
+
+        if (validUsername.error) {
+            flag = false;
+        }
+        if (validPassword.error) {
+            flag = false;
+        }
+
+        setErrors(validErrors);
+
+        return flag;
+    };
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+        const dynamicKey = e.target.name as keyof UserFormType;
+
+        const { message } = Validate[dynamicKey](e.target.value);
+
+        setErrors({
+            ...errors,
+            [dynamicKey]: message,
+        });
+    };
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (!validate()) return;
+
+        try {
+            setLoading(true);
+            const res = await login(form);
+            setLoading(false);
+            if (res.errors && Object.keys(res.errors).length > 0) {
+                setErrors({
+                    username: res.errors.username ? res.errors.username : '',
+                    password: res.errors.password ? res.errors.password : '',
+                });
+
+                return;
+            }
+
+            // all good
+
+            router.push('/');
+            dispatch(setToken(res.token));
+        } catch (error) {
+            console.log('error in login page: ' + error);
+        }
     };
 
     return (
-        <BoxSign onSubmit={(e) => e.preventDefault()} title="SIGN IN" titleBtn="SIGN IN">
+        <BoxSign onSubmit={handleSubmit} title="SIGN IN" titleBtn="SIGN IN">
             <Stack spacing={'20px'}>
-                <TextField type="text" name="username" label={'Username'} size="small" fullWidth />
-                <TextField type="password" name="password" label={'Password'} size="small" fullWidth />
+                <TextField
+                    onBlur={handleBlur}
+                    error={Validate.isNotBlank(errors.username)}
+                    helperText={Validate.isNotBlank(errors.username) && errors.username}
+                    onChange={handleChange}
+                    value={form.username}
+                    type="text"
+                    name="username"
+                    label={'Username'}
+                    size="small"
+                    fullWidth
+                />
+                <TextField
+                    onBlur={handleBlur}
+                    error={Validate.isNotBlank(errors.password)}
+                    helperText={Validate.isNotBlank(errors.password) && errors.password}
+                    onChange={handleChange}
+                    value={form.password}
+                    type="password"
+                    name="password"
+                    label={'Password'}
+                    size="small"
+                    fullWidth
+                />
             </Stack>
+
+            {loading && <LoadingPrimary />}
         </BoxSign>
     );
 }

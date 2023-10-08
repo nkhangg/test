@@ -1,3 +1,5 @@
+import { UserFormType } from './types';
+
 export interface Action<T, P> {
     readonly type: T;
     readonly data?: P;
@@ -15,6 +17,11 @@ export interface IUser {
     username: string;
     password: string;
     email?: string;
+}
+export interface ILoginDataResponse {
+    message: string;
+    token: string;
+    errors: UserFormType | null;
 }
 
 export interface IProfile {
