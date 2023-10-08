@@ -3,6 +3,7 @@ import { CustomBadge, WrapperAnimation } from '@/components';
 import { RootState } from '@/configs/types';
 import { listProfile } from '@/datas/header';
 import { useAppSelector } from '@/hooks/reduxHooks';
+import { contants } from '@/utils/contants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar } from '@mui/material';
 import Tippy from '@tippyjs/react/headless';
@@ -17,6 +18,7 @@ export default function MenuUser(props: IMenuYserProps) {
     const [isClient, setisClient] = useState(false);
 
     const { cartUser } = useAppSelector((state: RootState) => state.cartReducer);
+    const { user } = useAppSelector((state: RootState) => state.userReducer);
 
     useEffect(() => {
         setisClient(true);
@@ -54,7 +56,7 @@ export default function MenuUser(props: IMenuYserProps) {
                 >
                     <CustomBadge badgeContent={cartUser.length} onClick={() => setOpenMenu((prev) => !prev)} invisible={openMenu || cartUser.length <= 0}>
                         <WrapperAnimation hover={{}}>
-                            <Avatar alt="avartar" className="cursor-pointer border-2" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
+                            <Avatar alt="avartar" className="cursor-pointer border-2" src={user?.avatar || contants.avartarDefault} />
                         </WrapperAnimation>
                     </CustomBadge>
                 </Tippy>

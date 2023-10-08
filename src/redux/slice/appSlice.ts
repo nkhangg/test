@@ -1,5 +1,8 @@
 import { IInitAppStoreState, IUser } from '@/configs/interface';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getTokenFromCookie } from '@/utils/cookie';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+export const loginRedux = createAsyncThunk('app/login', async () => {});
 
 // init a store for app
 

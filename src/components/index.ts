@@ -48,5 +48,7 @@ export { default as BoxTitle } from './boxs/BoxTitle';
 export { default as BoxSign } from './boxs/BoxSign';
 
 // paginations
-
 export { default as Pagination } from './pagination/Pagination';
+
+// loadings
+export { default as LoadingPrimary } from './common/loadings/LoadingPrimary';

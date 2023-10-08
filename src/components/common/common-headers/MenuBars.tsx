@@ -21,6 +21,7 @@ function MenuBars({ isScroll }: IMenuBarsProps) {
     const [isClient, setIsClient] = useState(false);
 
     const { cartUser } = useAppSelector((state: RootState) => state.cartReducer);
+    const { user } = useAppSelector((state: RootState) => state.userReducer);
 
     const handleClick = () => {
         setOpen(!open);
@@ -57,8 +58,8 @@ function MenuBars({ isScroll }: IMenuBarsProps) {
                                     className="w-[80%] h-screen bg-white relative pt-4 pl-4 overflow-auto"
                                 >
                                     <div className="flex flex-col gap-2 pt-4 pl-5 mb-5">
-                                        <Avatar alt="avartar" sx={{ width: 80, height: 80 }} className="cursor-pointer border-2" src={contants.avartarDefault} />
-                                        <h2 className="font-medium ">Pham Khang</h2>
+                                        <Avatar alt="avartar" sx={{ width: 80, height: 80 }} className="cursor-pointer border-2" src={user?.avatar || contants.avartarDefault} />
+                                        <h2 className="font-medium ">{user?.username}</h2>
                                     </div>
                                     <ul className="py-2 mb-3 border-b border-[#ebebeb] text-sm">
                                         {listProfile.map((item) => {

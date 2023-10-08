@@ -1,11 +1,14 @@
 'use client';
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MenuBars, MenuUser, Navbar } from '.';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
-import dynamic from 'next/dynamic';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import { RootState } from '@/configs/types';
+import { fetchUserByToken } from '@/redux/slice/userSlice';
+import { unwrapResult } from '@reduxjs/toolkit';
 export interface IHeaderProps {
     dynamic?: boolean;
 }
@@ -14,10 +17,23 @@ export default function Header({ dynamic = true }: IHeaderProps) {
     const { scrollY } = useScroll();
 
     const [isChangeBg, setIsChangeBg] = useState(false);
+    const { token } = useAppSelector((state: RootState) => state.userReducer);
+    const { user } = useAppSelector((state: RootState) => state.userReducer);
+    const dispatch = useAppDispatch();
 
     useMotionValueEvent(scrollY, 'change', (latest) => {
         setIsChangeBg(latest > 0);
     });
+
+    useEffect(() => {
+        console.log('reloaded', token);
+        (async () => {
+            const actionResult = dispatch(fetchUserByToken());
+            const curUser = unwrapResult(await actionResult);
+            console.log(curUser);
+        })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [token]);
 
     return (
         <>
@@ -42,8 +58,12 @@ export default function Header({ dynamic = true }: IHeaderProps) {
 
                         <Navbar isScroll={isChangeBg} />
 
-                        {true ? (
-                            <div className="flex items-center justify-center gap-1">
+                        {!user ? (
+                            <div
+                                className={classNames('flex items-center justify-center gap-1 font-medium', {
+                                    ['text-white']: !isChangeBg,
+                                })}
+                            >
                                 <Link className="hover:underline text-1xl" href={'/login'}>
                                     Login
                                 </Link>
@@ -75,8 +95,8 @@ export default function Header({ dynamic = true }: IHeaderProps) {
 
                         <Navbar isScroll={true} />
 
-                        {true ? (
-                            <div className="flex items-center justify-center gap-1">
+                        {!user ? (
+                            <div className="flex items-center justify-center gap-1 font-medium">
                                 <Link className="hover:underline text-1xl" href={'/login'}>
                                     Login
                                 </Link>
