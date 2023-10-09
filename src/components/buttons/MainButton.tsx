@@ -10,6 +10,10 @@ export interface IMainButtonProps {
     height?: number | string;
     background?: string;
     href?: string;
+    upercase?: boolean;
+}
+
+export default function MainButton({ className, title, width, height, background = 'bg-[#5FA503]', href, upercase = true }: IMainButtonProps) {
     onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
@@ -26,7 +30,13 @@ export default function MainButton({ className, title, width, height, background
                     [background]: true,
                 })}
             >
-                <span>{title.toUpperCase()}</span>
+                <span
+                    className={classNames('', {
+                        ['uppercase']: upercase,
+                    })}
+                >
+                    {title}
+                </span>
             </CustomButton>
         </WrapperAnimation>
     );
