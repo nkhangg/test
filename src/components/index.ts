@@ -34,6 +34,7 @@ export { default as Product } from './products-and-pets/Product';
 export { default as Products } from './products-and-pets/Products';
 export { default as ProductRecent } from './products-and-pets/ProductRecent';
 export { default as ProductRecents } from './products-and-pets/ProductRecents';
+export { default as SekeletonProduct } from './products-and-pets/SekeletonProduct';
 
 // components
 export { default as Feedback } from './common/common-components/Feedback';

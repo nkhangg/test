@@ -5,13 +5,6 @@ export interface Action<T, P> {
     readonly data?: P;
 }
 
-export interface IResponce<T> {
-    message: string;
-    status: number;
-    errors: boolean;
-    data: T;
-}
-
 export interface IUser {
     id?: number;
     username: string;
@@ -106,4 +99,20 @@ export interface IStatisDashboard {
     revenue: ICart;
     product: IChart;
     impactOfYear: IImpactOfYear[];
+}
+
+export interface IBaseResponse<T> {
+    message: string;
+    status: number;
+    errors: boolean;
+    data: T;
+}
+
+export interface ApiTakeAction {
+    newArrivals: IProduct[];
+}
+
+export interface ApiBestSeller {
+    data: IProduct[];
+    pages: number;
 }
