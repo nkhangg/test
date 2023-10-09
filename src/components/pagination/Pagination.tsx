@@ -27,7 +27,11 @@ function Pagination({ pages, pageLimit = 4, maxPageLimit = 4, minPageLimit = 0, 
     };
 
     const pagesArr: number[] = [];
-    for (let i = 1; i <= Math.ceil(pages / itemsPerPage); i++) {
+    // for (let i = 1; i <= Math.ceil(pages / itemsPerPage); i++) {
+    //     pagesArr.push(i);
+    // }
+
+    for (let i = 1; i <= pages; i++) {
         pagesArr.push(i);
     }
 
