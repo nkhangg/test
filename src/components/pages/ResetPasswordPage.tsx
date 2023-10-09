@@ -16,7 +16,7 @@ export default function ResetPassword(props: IResetPasswordProps) {
     const validate = () => {
         let flag = true;
 
-        const { message, error } = Validate.isPassword(password);
+        const { message, error } = Validate.password(password);
 
         if (error) {
             setError(message);

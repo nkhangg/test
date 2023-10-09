@@ -28,7 +28,7 @@ export default function LoginPage(props: ILoginPageProps) {
     const [errors, setErrors] = useState<UserFormType>(initalDataForm);
 
     const validate = () => {
-        let flag = true;
+        let flag = false;
 
         const validErrors: UserFormType = initalDataForm;
 
@@ -39,10 +39,10 @@ export default function LoginPage(props: ILoginPageProps) {
         validErrors.password = validPassword.message;
 
         if (validUsername.error) {
-            flag = false;
+            flag = true;
         }
         if (validPassword.error) {
-            flag = false;
+            flag = true;
         }
 
         setErrors(validErrors);
@@ -71,7 +71,7 @@ export default function LoginPage(props: ILoginPageProps) {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!validate()) return;
+        if (validate()) return;
 
         try {
             setLoading(true);
