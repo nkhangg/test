@@ -11,13 +11,10 @@ export interface IMainButtonProps {
     background?: string;
     href?: string;
     upercase?: boolean;
-}
-
-export default function MainButton({ className, title, width, height, background = 'bg-[#5FA503]', href, upercase = true }: IMainButtonProps) {
     onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
-export default function MainButton({ className, title, width, height, background = 'bg-[#5FA503]', href, onClick }: IMainButtonProps) {
+export default function MainButton({ className, title, width, height, background = 'bg-[#5FA503]', href, upercase = true, onClick }: IMainButtonProps) {
     return (
         <WrapperAnimation onClick={onClick} hover={{ y: -2 }}>
             <CustomButton
