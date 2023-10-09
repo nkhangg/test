@@ -56,7 +56,7 @@ export interface IProduct {
     id: string | number;
     name: string;
     image: string;
-    branch: string;
+    brand: string;
     size: string[] | number[];
     rating: number;
     price: number;

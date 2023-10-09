@@ -9,12 +9,12 @@ export default function TextField(props: TextFieldProps & { message?: string }) 
             sx={{
                 '& .MuiOutlinedInput-root': {
                     '&.Mui-focused fieldset': {
-                        border: '1px solid #5FA503', // customized
+                        border: '1px solid #6366F1', // customized
                     },
                 },
                 '& .MuiOutlinedInput-root:hover': {
                     '& fieldset': {
-                        border: '1px solid #5FA503', // customized
+                        border: '1px solid #6366F1', // customized
                     },
                 },
                 '& .MuiFormLabel-root': {

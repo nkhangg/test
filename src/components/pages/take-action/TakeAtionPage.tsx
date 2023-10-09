@@ -16,7 +16,7 @@ export default function TakeAtionPage(props: ITakeAtionPageProps) {
             </ContainerContent>
             <Products data={takeActionPageData.newArrivals} title="NEW ARRIVALS" />
             <BannerTakeAction />
-            <Products data={takeActionPageData.bestSellers} title="BEST SELLERS" pagination />
+            <Products data={takeActionPageData.bestSellers.data} title="BEST SELLERS" pagination />
             <ProductRecents title={'YOUR RECENT VIEW'} data={takeActionPageData.recents} />
         </>
     );

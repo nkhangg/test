@@ -72,7 +72,7 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
                                 <p className=" md:ml-3">1234 reviews</p>
                             </div>
                             <span className="mt-[22px] inline-block">
-                                Manufacturer: <b>{dataDetailProductPage.branch}</b>
+                                Manufacturer: <b>{dataDetailProductPage.brand}</b>
                             </span>
 
                             <p className="line-clamp-6 mt-5 mb-7 text-1xl leading-8 text-[#374151] text-justify">{dataDetailProductPage.desciption}</p>
@@ -101,7 +101,7 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
                                         dispatch(
                                             addCart({
                                                 id: params.id,
-                                                branch: dataDetailProductPage.branch,
+                                                branch: dataDetailProductPage.brand,
                                                 image: dataDetailProductPage.image,
                                                 name: dataDetailProductPage.name,
                                                 price: dataDetailProductPage.sizeAndPrice[indexSizeAndPrice].price,
