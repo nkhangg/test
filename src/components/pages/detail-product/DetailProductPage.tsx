@@ -7,10 +7,12 @@ import { MainButton, PreviewImageProduct, ProductRecents } from '../..';
 import { dataDetailProductPage } from '@/datas/detail-product';
 import { Nunito_Sans, Roboto_Flex } from 'next/font/google';
 import classNames from 'classnames';
-import { toCurrency } from '@/utils/format';
+import { toCurrency, urlToString } from '@/utils/format';
 import Sizes from './Sizes';
 import Quantity from './Quantity';
 import DesAndReview from './DesAndReview';
+import { useAppDispatch } from '@/hooks/reduxHooks';
+import { addCart } from '@/redux/slice/cartsSlide';
 const nunitoSans = Nunito_Sans({ subsets: ['latin'], style: ['normal', 'italic'], weight: ['300', '400', '500', '600', '700', '800'] });
 const robotoFlex = Roboto_Flex({ subsets: ['latin'], style: ['normal'], weight: ['300', '400', '500', '600', '700', '800'] });
 export interface IDetailProductPageProps {
@@ -22,6 +24,9 @@ export interface IDetailProductPageProps {
 
 export default function DetailProductPage({ params }: IDetailProductPageProps) {
     const [indexSizeAndPrice, setIndexSizeAndPrice] = useState(0);
+    const [quantity, setQuantity] = useState(1);
+
+    const dispatch = useAppDispatch();
 
     return (
         <>
@@ -67,7 +72,7 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
                                 <p className=" md:ml-3">1234 reviews</p>
                             </div>
                             <span className="mt-[22px] inline-block">
-                                Manufacturer: <b>{dataDetailProductPage.branch}</b>
+                                Manufacturer: <b>{dataDetailProductPage.brand}</b>
                             </span>
 
                             <p className="line-clamp-6 mt-5 mb-7 text-1xl leading-8 text-[#374151] text-justify">{dataDetailProductPage.desciption}</p>
@@ -84,12 +89,30 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
                             <Quantity
                                 onQuantity={(quantity: number) => {
                                     console.log(quantity);
+                                    setQuantity(quantity);
                                 }}
                                 maxValue={dataDetailProductPage.sizeAndPrice[indexSizeAndPrice].repo}
                             />
 
                             <div className="mt-[50px] flex items-center gap-5">
-                                <MainButton title="add to card" />
+                                <MainButton
+                                    title="add to card"
+                                    onClick={() => {
+                                        dispatch(
+                                            addCart({
+                                                id: params.id,
+                                                branch: dataDetailProductPage.brand,
+                                                image: dataDetailProductPage.image,
+                                                name: dataDetailProductPage.name,
+                                                price: dataDetailProductPage.sizeAndPrice[indexSizeAndPrice].price,
+                                                quantity: quantity,
+                                                repo: dataDetailProductPage.sizeAndPrice[indexSizeAndPrice].repo,
+                                                size: dataDetailProductPage.sizeAndPrice[indexSizeAndPrice].size,
+                                                checked: true,
+                                            }),
+                                        );
+                                    }}
+                                />
                                 <MainButton background="bg-orange-primary" title="buy now" />
                             </div>
                         </div>

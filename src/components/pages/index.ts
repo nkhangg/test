@@ -1,5 +1,6 @@
 export { default as HomePage } from './HomePage';
 export { default as LoginPage } from './LoginPage';
+export { default as RegisterPage } from './RegisterPage';
 export { default as AboutPage } from './AboutPage';
 export { default as AdoptPage } from './AdoptPage';
 export { default as ProfilePage } from './profiles/ProfilePage';
@@ -13,3 +14,5 @@ export { default as CartPage } from './cart/CartPage';
 export { default as Carts } from './cart/Carts';
 export { default as Cart } from './cart/Cart';
 export { default as OtherHistoryPage } from './orther-histories/OtherHistoryPage';
+export { default as AskConditionPage } from './AskConditionPage';
+export { default as ResetPasswordPage } from './ResetPasswordPage';

@@ -8,6 +8,8 @@ export { default as CustomButton } from './buttons/CustomButton';
 export { default as ButtonNavbar } from './buttons/ButtonNavbar';
 export { default as MainButton } from './buttons/MainButton';
 export { default as HandCatButton } from './buttons/HandCatButton';
+export { default as SocialButton } from './buttons/SocialButton';
+export { default as RoudedButton } from './buttons/RoudedButton';
 
 // inputs
 export { default as Find } from './inputs/Find';
@@ -32,6 +34,7 @@ export { default as Product } from './products-and-pets/Product';
 export { default as Products } from './products-and-pets/Products';
 export { default as ProductRecent } from './products-and-pets/ProductRecent';
 export { default as ProductRecents } from './products-and-pets/ProductRecents';
+export { default as SekeletonProduct } from './products-and-pets/SekeletonProduct';
 
 // components
 export { default as Feedback } from './common/common-components/Feedback';
@@ -43,7 +46,13 @@ export { default as KnowldegeAboutFosterItem } from './common/common-components/
 
 // boxs
 export { default as BoxTitle } from './boxs/BoxTitle';
+export { default as BoxSign } from './boxs/BoxSign';
 
 // paginations
-
 export { default as Pagination } from './pagination/Pagination';
+
+// loadings
+export { default as LoadingPrimary } from './common/loadings/LoadingPrimary';
+
+// notifycation
+export { default as Notifycation } from './notifycations/Notifycation';

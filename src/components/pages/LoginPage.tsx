@@ -1,51 +1,138 @@
 'use client';
-import { IUser } from '@/configs/interface';
-import { RootState } from '@/configs/types';
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { addUser } from '@/redux/slice/appSlice';
-import { Button, FormControl, FormControlLabel, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import React, { ChangeEvent, FocusEvent, FormEvent, useState } from 'react';
+import { BoxSign, LoadingPrimary, TextField, Notifycation } from '..';
+import { Stack } from '@mui/material';
+import Validate from '@/utils/validate';
+import { UserFormType } from '@/configs/types';
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { login } from '@/apis/user';
+import { setToken } from '@/redux/slice/userSlice';
 
 export interface ILoginPageProps {}
 
 export default function LoginPage(props: ILoginPageProps) {
-    // get user from store redux
-    const user: IUser | null = useAppSelector((state: RootState) => state.appReducer.user);
+    const [loading, setLoading] = useState(false);
+    const [notifycation, setnotifycation] = useState(false);
 
-    // dispatch user to store redux
-    const dispatch = useAppDispatch();
+    const dispatch = useDispatch();
 
-    // local state in component
-    const [values, setValues] = useState<IUser>({
+    const router = useRouter();
+    const initalDataForm = {
         username: '',
         password: '',
-    });
+    };
 
-    // handle dispatch action and send payload to store
-    const handleDispatchUser = () => {
-        dispatch(addUser(values));
+    const [form, setForm] = useState<UserFormType>(initalDataForm);
+
+    const [errors, setErrors] = useState<UserFormType>(initalDataForm);
+
+    const validate = () => {
+        let flag = false;
+
+        const validErrors: UserFormType = initalDataForm;
+
+        const validUsername = Validate.username(form.username);
+        const validPassword = Validate.password(form.password);
+
+        validErrors.username = validUsername.message;
+        validErrors.password = validPassword.message;
+
+        if (validUsername.error) {
+            flag = true;
+        }
+        if (validPassword.error) {
+            flag = true;
+        }
+
+        setErrors(validErrors);
+
+        return flag;
+    };
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+        const dynamicKey = e.target.name as keyof UserFormType;
+
+        const { message } = Validate[dynamicKey](e.target.value);
+
+        setErrors({
+            ...errors,
+            [dynamicKey]: message,
+        });
+    };
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (validate()) return;
+
+        try {
+            setLoading(true);
+            const res = await login(form);
+            setLoading(false);
+            if (res.errors && Object.keys(res.errors).length > 0) {
+                setErrors({
+                    username: res.errors.username ? res.errors.username : '',
+                    password: res.errors.password ? res.errors.password : '',
+                });
+
+                return;
+            }
+
+            // all good
+
+            router.push('/');
+            dispatch(setToken(res.token));
+        } catch (error) {
+            console.log('error in login page: ' + error);
+            setLoading(false);
+            setnotifycation(true);
+        }
     };
 
     return (
-        <div className="flex flex-col gap-4 items-center justify-center h-screen">
-            <FormControl className="w-[400px] flex flex-col gap-4">
-                <h2 className="text-center text-xl font-bold">Login</h2>
-                <TextField onChange={(e) => setValues({ ...values, username: e.target.value })} id="username" label="Username" variant="standard" />
-                <TextField type="password" onChange={(e) => setValues({ ...values, password: e.target.value })} id="password" label="Password" variant="standard" />
+        <BoxSign onSubmit={handleSubmit} title="SIGN IN" titleBtn="SIGN IN">
+            <Stack spacing={'20px'}>
+                <TextField
+                    message={errors.username}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={form.username}
+                    type="text"
+                    name="username"
+                    label={'Username'}
+                    size="small"
+                    fullWidth
+                />
+                <TextField
+                    onBlur={handleBlur}
+                    message={errors.password}
+                    onChange={handleChange}
+                    value={form.password}
+                    type="password"
+                    name="password"
+                    label={'Password'}
+                    size="small"
+                    fullWidth
+                />
+            </Stack>
 
-                <Button onClick={handleDispatchUser} variant="contained">
-                    Login
-                </Button>
-            </FormControl>
-
-            {user ? (
-                <div className="flex flex-col gap-2 w-[400px]">
-                    <span className="font-bold">Username: {user?.username}</span>
-                    <span className="font-bold">Password: {user?.password}</span>
-                </div>
-            ) : (
-                ''
-            )}
-        </div>
+            {loading && <LoadingPrimary />}
+            <Notifycation
+                onClose={(e) => {
+                    setnotifycation(false);
+                }}
+                open={notifycation}
+                title="Something went wrong !"
+                type="error"
+            />
+        </BoxSign>
     );
 }

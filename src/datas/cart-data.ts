@@ -10,6 +10,7 @@ export const dataCart = [
         price: 27000,
         quantity: 1,
         repo: 10,
+        checked: false,
     },
     {
         id: 2,
@@ -20,6 +21,7 @@ export const dataCart = [
         price: 27000,
         quantity: 1,
         repo: 10,
+        checked: false,
     },
     {
         id: 3,
@@ -30,6 +32,7 @@ export const dataCart = [
         price: 27000,
         quantity: 1,
         repo: 10,
+        checked: false,
     },
     {
         id: 4,
@@ -40,6 +43,7 @@ export const dataCart = [
         price: 27000,
         quantity: 1,
         repo: 10,
+        checked: false,
     },
     {
         id: 5,
@@ -49,7 +53,9 @@ export const dataCart = [
         name: 'Hạt Royal Canin X-Small Adult Cho Chó Trưởng Thành Giống Siêu Nhỏ',
         price: 27000,
         quantity: 1,
-        repo: 10,
+        repo: 0,
+
+        checked: false,
     },
     {
         id: 6,
@@ -60,6 +66,7 @@ export const dataCart = [
         price: 27000,
         quantity: 1,
         repo: 10,
+        checked: false,
     },
     {
         id: 7,
@@ -72,6 +79,7 @@ export const dataCart = [
         price: 27000,
         quantity: 1,
         repo: 10,
+        checked: false,
     },
     {
         id: 8,
@@ -83,6 +91,7 @@ export const dataCart = [
         price: 27000,
         quantity: 1,
         repo: 10,
+        checked: false,
     },
     {
         id: 9,
@@ -94,6 +103,7 @@ export const dataCart = [
         price: 27000,
         quantity: 1,
         repo: 10,
+        checked: false,
     },
     {
         id: 10,
@@ -104,6 +114,7 @@ export const dataCart = [
         price: 27000,
         quantity: 1,
         repo: 10,
+        checked: false,
     },
     {
         id: 11,
@@ -114,5 +125,6 @@ export const dataCart = [
         price: 27000,
         quantity: 3,
         repo: 10,
+        checked: false,
     },
 ] as ICart[];

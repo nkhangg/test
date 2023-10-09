@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { IProduct } from '@/configs/interface';
 import { links } from '@/datas/links';
-import { capitalize, stringToUrl, toCurrency } from '@/utils/format';
+import { capitalize, stringToUrl, toCurrency, toGam } from '@/utils/format';
 import { Rating } from '@mui/material';
 import Link from 'next/link';
 import * as React from 'react';
@@ -22,8 +22,8 @@ export default function Product({ data }: IProductProps) {
             </div>
             <div className="px-[20px] w-full">
                 <div className="flex items-center justify-between w-full text-gray-primary text-sm ">
-                    <span>{capitalize(data.branch)}</span>
-                    <p>{data.size[0]}</p>
+                    <span>{capitalize(data.brand)}</span>
+                    <p>{toGam(data.size[0] as number)}</p>
                 </div>
                 <Link href={links.produt + `${data.id}/${stringToUrl(data.name)}`} className="text-1xl line-clamp-2 hover:underline cursor-pointer mt-2 mb-1">
                     {data.name}

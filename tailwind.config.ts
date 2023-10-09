@@ -37,6 +37,7 @@ const config: Config = {
                 'gray-primary': '#838383',
                 'red-primary': '#EF4444',
                 'violet-primary': '#505DE8',
+                'blue-primary': '#0EA5E9',
             },
             borderColor: {
                 'green-main': '#A3E635',
@@ -44,6 +45,7 @@ const config: Config = {
                 'gray-primary': '#DBDBDB',
                 'orange-primary': '#FF7A00',
                 'violet-primary': '#505DE8',
+                'red-primary': '#EF4444',
             },
             backgroundColor: {
                 'green-65a30d': '#65A30D',
