@@ -11,9 +11,18 @@ export interface IBoxSignProps {
     children: ReactNode;
     title: string;
     titleBtn?: string;
+    link?: { link: string; content: string; contentLink: string };
+    showForgot?: boolean;
 }
 
-export default function BoxSign({ onSubmit, children, title, titleBtn = 'send' }: IBoxSignProps) {
+export default function BoxSign({
+    onSubmit,
+    children,
+    title,
+    titleBtn = 'send',
+    link = { link: '/register', contentLink: 'Sign up', content: 'Need an account?' },
+    showForgot = true,
+}: IBoxSignProps) {
     return (
         <ContainerContent className="pt-24 text-black-main">
             <Grid container>
@@ -37,12 +46,21 @@ export default function BoxSign({ onSubmit, children, title, titleBtn = 'send' }
 
                     {children}
 
-                    <Typography variant="subtitle2" sx={{ mt: '20px', fontSize: { xs: '12px', md: '13px', lg: '14px' } }}>
-                        Need an account?
-                        <Link href={'/register'} className="text-blue-primary hover:underline ml-1">
-                            Sign up
-                        </Link>
-                    </Typography>
+                    <Stack direction={'row'} sx={{ justifyContent: 'space-between' }}>
+                        <Typography variant="subtitle2" sx={{ mt: '20px', fontSize: { xs: '12px', md: '13px', lg: '14px' } }}>
+                            {link.content}
+                            <Link href={link.link} className="text-blue-primary hover:underline ml-1">
+                                {link.contentLink}
+                            </Link>
+                        </Typography>
+                        {showForgot && (
+                            <Typography variant="subtitle2" sx={{ mt: '20px', fontSize: { xs: '12px', md: '13px', lg: '14px' } }}>
+                                <Link href={'/profile/reset-password'} className="text-blue-primary hover:underline ml-1">
+                                    Forgot password ?
+                                </Link>
+                            </Typography>
+                        )}
+                    </Stack>
 
                     <RoudedButton title={titleBtn} />
                 </Grid>

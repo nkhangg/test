@@ -126,7 +126,7 @@ export default function LoginPage(props: ILoginPageProps) {
 
             {loading && <LoadingPrimary />}
             <Notifycation
-                onClose={(e) => {
+                onClose={() => {
                     setnotifycation(false);
                 }}
                 open={notifycation}

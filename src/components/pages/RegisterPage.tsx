@@ -215,9 +215,9 @@ export default function RegisterPage(props: IRegisterPageProps) {
                 <Grid item xs={12} md={6} lg={6}>
                     <Box>
                         <Typography variant="subtitle2" sx={{ mt: '20px', fontSize: { xs: '12px', md: '13px', lg: '14px' } }}>
-                            Need an account?
-                            <Link href={'/register'} className="text-blue-primary hover:underline ml-1">
-                                Sign up
+                            Already have an account?
+                            <Link href={'/login'} className="text-blue-primary hover:underline ml-1">
+                                Log in
                             </Link>
                         </Typography>
 

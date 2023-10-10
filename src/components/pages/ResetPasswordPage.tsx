@@ -43,7 +43,7 @@ export default function ResetPassword(props: IResetPasswordProps) {
         validate();
     };
     return (
-        <BoxSign title="RESET PASSWORD" onSubmit={handleSubmit}>
+        <BoxSign showForgot={false} title="RESET PASSWORD" onSubmit={handleSubmit}>
             <Typography
                 variant="subtitle1"
                 fontSize={{ xs: 12, md: 13, lg: 14 }}
