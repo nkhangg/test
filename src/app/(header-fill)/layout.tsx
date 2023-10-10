@@ -18,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <>
             <Header dynamic={false} />
             <main className="mt-[85px]">{children}</main>
+            <Footer />
         </>
     );
 }
