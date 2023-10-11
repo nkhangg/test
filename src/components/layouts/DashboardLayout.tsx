@@ -31,14 +31,18 @@ export default function DashboardLayout({ children }: IDashboardLayoutProps) {
             <PageWrapper className="page-wrapper">
                 <Header toggleMobileSidebar={() => setMobileSidebarOpen(true)} />
 
-                <Container
+                <Box
                     sx={{
                         paddingTop: '20px',
-                        maxWidth: '1200px',
+                        width: '100%',
+                        maxWidth: '100%',
+                        px: { xs: '24px', md: '10%', lg: '10%' },
+                        margin: '0 auto',
+                        overflow: 'hidden',
                     }}
                 >
                     <Box sx={{ minHeight: 'calc(100vh - 170px)' }}>{children}</Box>
-                </Container>
+                </Box>
             </PageWrapper>
         </MainWrapper>
     );

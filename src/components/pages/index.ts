@@ -16,3 +16,5 @@ export { default as Cart } from './cart/Cart';
 export { default as OtherHistoryPage } from './orther-histories/OtherHistoryPage';
 export { default as AskConditionPage } from './AskConditionPage';
 export { default as ResetPasswordPage } from './ResetPasswordPage';
+export { default as DashboardPage } from './admin/DashboardPage';
+export { default as ProductManagePage } from './admin/ProductManagePage';

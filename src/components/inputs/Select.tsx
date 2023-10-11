@@ -12,10 +12,10 @@ export default function Select({ children, ...props }: ISelectProps & SelectProp
             {...props}
             sx={{
                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    border: '1px solid #5FA503',
+                    border: '1px solid #6366F1',
                 },
                 '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#5FA503',
+                    borderColor: '#6366F1',
                 },
             }}
         >

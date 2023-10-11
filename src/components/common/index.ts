@@ -11,3 +11,4 @@ export { default as ContainerContent } from './common-components/ContainerConten
 //admin
 
 export { default as PageContainer } from './common-components/admin/PageContainer';
+export { default as SelectImages } from './SelectImages';

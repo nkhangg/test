@@ -131,3 +131,44 @@ export interface IOtherHistories {
     data: IOtherHistory[];
     paginationTotal: 10; // số lượng trang ( vd: phân được 10 trang )
 }
+
+export interface IDashboard {
+    reports: {
+        dailyOrders: IReport;
+        dailyRevenue: IReport;
+        users: IReport;
+    };
+    salesOverview: {
+        revenue: IDataCharts;
+        productRevenueByType: IDataCharts;
+    };
+    productRevenueByDate: {
+        data: IProductRevenueTableItem[];
+        total: number;
+    };
+}
+
+export interface IProductRevenueTableItem {
+    id: string | number;
+    name: string;
+    brand: string;
+    quantity: number;
+    size: number;
+    revenue: number;
+}
+
+export interface IReport {
+    value: number;
+    percentYesterday?: number;
+}
+
+export interface IDataCharts {
+    categories: string[];
+    data: IDataChart[];
+    total: number;
+}
+
+export interface IDataChart {
+    name: string;
+    data: number[];
+}
