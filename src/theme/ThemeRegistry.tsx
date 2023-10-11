@@ -14,25 +14,6 @@ const themeOptions: ThemeOptions = {
     typography: {
         fontFamily: poppins.style.fontFamily,
         fontSize: 14,
-        body1: {
-            fontSize: '0.875rem',
-            fontWeight: 400,
-            lineHeight: '1.334rem',
-        },
-        body2: {
-            fontSize: '0.75rem',
-            letterSpacing: '0rem',
-            fontWeight: 400,
-            lineHeight: '1rem',
-        },
-        subtitle1: {
-            fontSize: '0.875rem',
-            fontWeight: 400,
-        },
-        subtitle2: {
-            fontSize: '0.875rem',
-            fontWeight: 400,
-        },
     },
     palette: {
         background: {

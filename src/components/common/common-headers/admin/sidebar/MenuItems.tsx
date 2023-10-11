@@ -1,5 +1,4 @@
-import { IconAperture, IconCopy, IconLayoutDashboard, IconLogin, IconMoodHappy, IconTypography, IconUserPlus } from '@tabler/icons-react';
-
+import { IconCopy, IconLayoutDashboard, IconBox, IconDog } from '@tabler/icons-react';
 const Menuitems = [
     {
         navlabel: true,
@@ -19,13 +18,13 @@ const Menuitems = [
     {
         id: 2,
         title: 'Products',
-        icon: IconTypography,
+        icon: IconBox,
         href: '/admin/dashboard/product',
     },
     {
         id: 3,
         title: 'Pets',
-        icon: IconCopy,
+        icon: IconDog,
         href: '/admin/dashboard/pet',
     },
 ];

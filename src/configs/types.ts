@@ -35,3 +35,16 @@ export type PagesProfileType = 'me' | 'history' | 'logout';
 export type ValidateType = { message: string; error: boolean };
 
 export type UserFormType = { username: string; password: string };
+
+export type RepoType = {
+    size: number;
+    quantity: number;
+    inPrice: number;
+    outPrice: number;
+};
+export type RepoTypeErrors = {
+    size: string;
+    quantity: string;
+    inPrice: string;
+    outPrice: string;
+};

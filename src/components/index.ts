@@ -18,6 +18,7 @@ export { default as TextArea } from './inputs/TextArea';
 export { default as Select } from './inputs/Select';
 export { default as MenuDropDown } from './inputs/MenuDropDown';
 export { default as DivTextfield } from './inputs/DivTextfield';
+export { default as DynamicInput } from './inputs/DynamicInput';
 
 // bages
 export { default as CustomBadge } from './badges/CustomBadge';
@@ -47,6 +48,7 @@ export { default as KnowldegeAboutFosterItem } from './common/common-components/
 // boxs
 export { default as BoxTitle } from './boxs/BoxTitle';
 export { default as BoxSign } from './boxs/BoxSign';
+export { default as CardInfo } from './boxs/CardInfo';
 
 // paginations
 export { default as Pagination } from './pagination/Pagination';

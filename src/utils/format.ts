@@ -53,9 +53,17 @@ export function capitalize(value: string) {
 }
 
 export const toGam = (value: number) => {
-    return value < 1000 ? value + 'g' : value / 1000 + 'kg';
+    return value < 1000 ? value + 'g' : (value / 1000).toFixed(0) + 'kg';
 };
 
 export const urlToString = (value: string) => {
     return value.replaceAll('-', ' ');
+};
+
+export const fileToUrl = (file: File, callback?: (url: string) => void) => {
+    const urlObj = URL.createObjectURL(file);
+    if (callback) {
+        callback(urlObj);
+    }
+    return urlObj;
 };
