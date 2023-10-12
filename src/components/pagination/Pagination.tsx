@@ -3,6 +3,7 @@ import React, { MouseEvent, memo, useEffect, useState } from 'react';
 import { HandCatButton } from '..';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import classNames from 'classnames';
 
 export interface IPaginationProps {
     pages: number;
@@ -10,9 +11,10 @@ export interface IPaginationProps {
     maxPageLimit?: number;
     minPageLimit?: number;
     onPage?: (page: number) => void;
+    py?: string;
 }
 
-function Pagination({ pages, pageLimit = 4, maxPageLimit = 4, minPageLimit = 0, onPage }: IPaginationProps) {
+function Pagination({ pages, pageLimit = 4, maxPageLimit = 4, minPageLimit = 0, py = 'py-[70px]', onPage }: IPaginationProps) {
     const _height = '48px';
 
     const [currentPage, setcurrentPage] = useState(1);
@@ -77,7 +79,11 @@ function Pagination({ pages, pageLimit = 4, maxPageLimit = 4, minPageLimit = 0, 
     }, [currentPage, onPage]);
 
     return (
-        <div className="py-[70px] flex items-center justify-center gap-1 md:gap-4 lg:gap-8 w-full select-none">
+        <div
+            className={classNames(' flex items-center justify-center gap-1 md:gap-4 lg:gap-8 w-full select-none', {
+                [py]: true,
+            })}
+        >
             <HandCatButton size={_height} onClick={handlePrevbtn} disable={currentPage == pagesArr[0] ? true : false} title={<FontAwesomeIcon icon={faChevronLeft} />} />
 
             {pageDecrementBtn}

@@ -17,4 +17,5 @@ export { default as OtherHistoryPage } from './orther-histories/OtherHistoryPage
 export { default as AskConditionPage } from './AskConditionPage';
 export { default as ResetPasswordPage } from './ResetPasswordPage';
 export { default as DashboardPage } from './admin/DashboardPage';
-export { default as ProductManagePage } from './admin/ProductManagePage';
+export { default as CreateOrUpdateProductPage } from './admin/products/CreateOrUpdateProductPage';
+export { default as ProductManagePage } from './admin/products/ProductManagePage';

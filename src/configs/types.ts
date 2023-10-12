@@ -48,3 +48,5 @@ export type RepoTypeErrors = {
     inPrice: string;
     outPrice: string;
 };
+
+export type ModeType = 'create' | 'update';

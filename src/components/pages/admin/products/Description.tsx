@@ -1,7 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 import React, { memo, useEffect, useState } from 'react';
-import './styles/texteditor.module.css';
+import '../styles/texteditor.module.css';
 import 'react-quill/dist/quill.snow.css';
 import { CardInfo } from '@/components';
 const ReactQuill = dynamic(
