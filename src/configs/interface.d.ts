@@ -172,3 +172,10 @@ export interface IDataChart {
     name: string;
     data: number[];
 }
+
+export interface IRepository {
+    size: number;
+    quantity: number;
+    inPrice: number;
+    outPrice: number;
+}

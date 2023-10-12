@@ -1,5 +1,5 @@
+import React from 'react';
 import { ProductManagePage } from '@/components/pages';
-import * as React from 'react';
 
 export interface IProductProps {}
 

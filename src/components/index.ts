@@ -19,6 +19,7 @@ export { default as Select } from './inputs/Select';
 export { default as MenuDropDown } from './inputs/MenuDropDown';
 export { default as DivTextfield } from './inputs/DivTextfield';
 export { default as DynamicInput } from './inputs/DynamicInput';
+export { default as Comfirm } from './inputs/Comfirm';
 
 // bages
 export { default as CustomBadge } from './badges/CustomBadge';
@@ -36,6 +37,7 @@ export { default as Products } from './products-and-pets/Products';
 export { default as ProductRecent } from './products-and-pets/ProductRecent';
 export { default as ProductRecents } from './products-and-pets/ProductRecents';
 export { default as SekeletonProduct } from './products-and-pets/SekeletonProduct';
+export { default as SekeletonTableItems } from './products-and-pets/SekeletonTableItems';
 
 // components
 export { default as Feedback } from './common/common-components/Feedback';

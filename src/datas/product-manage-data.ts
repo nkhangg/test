@@ -1,3 +1,4 @@
+import { IRepository } from '@/configs/interface';
 import { toGam } from '@/utils/format';
 
 export const productManageData = {
@@ -50,3 +51,279 @@ export const productManageData = {
         },
     ],
 };
+
+interface IProductManageList {
+    id: string | number;
+    image: string;
+    name: string;
+    brand: string;
+    type: string;
+    repo: IRepository[];
+}
+
+export const productManageListData = [
+    {
+        id: 1,
+        image: 'https://bizweb.dktcdn.net/100/229/172/products/125382699-1787018864786630-4599836884327070559-n.jpg?v=1605709115500',
+        brand: 'Zenith',
+        name: 'Hạt Royal Canin X-Small Adult Cho Chó Trưởng Thành Giống Siêu Nhỏ',
+        type: 'Cat Food',
+        repo: [
+            {
+                size: 200,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 300,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 400,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 1000,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+        ],
+    },
+    {
+        id: 2,
+        image: 'https://bizweb.dktcdn.net/100/229/172/products/125382699-1787018864786630-4599836884327070559-n.jpg?v=1605709115500',
+        brand: 'Zenith',
+        name: 'Hạt Royal Canin X-Small Adult Cho Chó Trưởng Thành Giống Siêu Nhỏ',
+        type: 'Dog Food',
+        repo: [
+            {
+                size: 200,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 300,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 400,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 1000,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+        ],
+    },
+    {
+        id: 3,
+        image: 'https://bizweb.dktcdn.net/100/229/172/products/125382699-1787018864786630-4599836884327070559-n.jpg?v=1605709115500',
+        brand: 'Zenith',
+        name: 'Hạt Royal Canin X-Small Adult Cho Chó Trưởng Thành Giống Siêu Nhỏ',
+        type: 'Cat Food',
+        repo: [
+            {
+                size: 200,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 300,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 400,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 1000,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+        ],
+    },
+    {
+        id: 4,
+        image: 'https://bizweb.dktcdn.net/100/229/172/products/125382699-1787018864786630-4599836884327070559-n.jpg?v=1605709115500',
+        brand: 'Zenith',
+        name: 'Hạt Royal Canin X-Small Adult Cho Chó Trưởng Thành Giống Siêu Nhỏ',
+        type: 'Cat Food',
+        repo: [
+            {
+                size: 200,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 300,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 400,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 1000,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+        ],
+    },
+    {
+        id: 5,
+        image: 'https://bizweb.dktcdn.net/100/229/172/products/125382699-1787018864786630-4599836884327070559-n.jpg?v=1605709115500',
+        brand: 'Zenith',
+        name: 'Hạt Royal Canin X-Small Adult Cho Chó Trưởng Thành Giống Siêu Nhỏ',
+        type: 'Cat Food',
+        repo: [
+            {
+                size: 200,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 300,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 400,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 1000,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+        ],
+    },
+    {
+        id: 6,
+        image: 'https://bizweb.dktcdn.net/100/229/172/products/125382699-1787018864786630-4599836884327070559-n.jpg?v=1605709115500',
+        brand: 'Zenith',
+        name: 'Hạt Royal Canin X-Small Adult Cho Chó Trưởng Thành Giống Siêu Nhỏ',
+        type: 'Cat Food',
+        repo: [
+            {
+                size: 200,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 300,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 400,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 1000,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+        ],
+    },
+    {
+        id: 7,
+        image: 'https://bizweb.dktcdn.net/100/229/172/products/125382699-1787018864786630-4599836884327070559-n.jpg?v=1605709115500',
+        brand: 'Zenith',
+        name: 'Hạt Royal Canin X-Small Adult Cho Chó Trưởng Thành Giống Siêu Nhỏ',
+        type: 'Cat Food',
+        repo: [
+            {
+                size: 200,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 300,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 400,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 1000,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+        ],
+    },
+    {
+        id: 8,
+        image: 'https://bizweb.dktcdn.net/100/229/172/products/125382699-1787018864786630-4599836884327070559-n.jpg?v=1605709115500',
+        brand: 'Zenith',
+        name: 'Hạt Royal Canin X-Small Adult Cho Chó Trưởng Thành Giống Siêu Nhỏ',
+        type: 'Cat Food',
+        repo: [
+            {
+                size: 200,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 300,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 400,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+            {
+                size: 1000,
+                quantity: 100,
+                inPrice: 200000,
+                outPrice: 220000,
+            },
+        ],
+    },
+] as IProductManageList[];

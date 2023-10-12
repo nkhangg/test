@@ -1,18 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import { CardInfo, DynamicInput, TextField } from '@/components';
+import { CardInfo, DynamicInput, TextField, Notifycation } from '@/components';
 import { SelectImages } from '@/components/common';
 import { DashboardCard } from '@/components/dashboard';
 import { Button, CircularProgress, Grid, MenuItem, Stack, capitalize } from '@mui/material';
 import Link from 'next/link';
 import React, { ChangeEvent, FocusEvent, useState } from 'react';
-import ComInput from './ComInput';
 import Repository from './Repository';
 import dynamic from 'next/dynamic';
 import { productManageData } from '@/datas/product-manage-data';
 import Validate from '@/utils/validate';
-import { Cases } from '@mui/icons-material';
-import { RepoType } from '@/configs/types';
+import { ModeType, RepoType } from '@/configs/types';
+import { INotifycationProps } from '@/components/notifycations/Notifycation';
+import ComInput from './ComInput';
 const Description = dynamic(() => import('./Description'), {
     loading: () => (
         <Stack justifyContent={'center'} alignItems={'center'}>
@@ -49,21 +49,23 @@ const initData: DataProductType = {
 };
 const initDataErrors: DataProductErrorsType = {
     name: '',
-    brand: productManageData.branhs[0].id,
-    type: productManageData.types[0].id,
+    brand: '',
+    type: '',
     images: '',
     description: '',
     repo: '',
 };
 
-export interface IProductManagePageProps {}
+export interface ICreateOrUpdateProductProps {
+    mode: ModeType;
+    dataOusite?: DataProductType;
+}
 
-export default function ProductManagePage(props: IProductManagePageProps) {
-    const [data, setData] = useState<DataProductType>(initData);
+export default function CreateOrUpdateProduct({ mode, dataOusite }: ICreateOrUpdateProductProps) {
+    const [data, setData] = useState<DataProductType>(dataOusite ? (mode === 'update' ? dataOusite : initData) : initData);
     const [errors, setErrors] = useState<DataProductErrorsType>(initDataErrors);
-    // select
 
-    const [ortherBrand, setOrtherBrand] = useState(false);
+    const [notify, setNotify] = useState<INotifycationProps>({ title: '', type: 'error', open: false });
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setData({
@@ -116,9 +118,16 @@ export default function ProductManagePage(props: IProductManagePageProps) {
     };
 
     const handleSubmit = () => {
-        if (validate()) return;
-        console.log(validate());
+        if (validate()) {
+            setNotify({
+                ...notify,
+                open: true,
+                title: `Incomplete data`,
+            });
+        }
+        console.log(data);
     };
+
     return (
         <DashboardCard
             title="Product Manage"
@@ -204,10 +213,11 @@ export default function ProductManagePage(props: IProductManagePageProps) {
                 <CardInfo>
                     <Stack direction={'row'} justifyContent={'flex-end'}>
                         <Button onClick={handleSubmit} variant="outlined">
-                            Create
+                            {capitalize(mode)}
                         </Button>
                     </Stack>
                 </CardInfo>
+                <Notifycation onClose={() => setNotify({ ...notify, open: false })} {...notify} />
             </>
         </DashboardCard>
     );
