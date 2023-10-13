@@ -11,8 +11,10 @@ import { toCurrency, urlToString } from '@/utils/format';
 import Sizes from './Sizes';
 import Quantity from './Quantity';
 import DesAndReview from './DesAndReview';
-import { useAppDispatch } from '@/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { addCart } from '@/redux/slice/cartsSlide';
+import { RootState } from '@/configs/types';
+import { pushNoty } from '@/redux/slice/appSlice';
 const nunitoSans = Nunito_Sans({ subsets: ['latin'], style: ['normal', 'italic'], weight: ['300', '400', '500', '600', '700', '800'] });
 const robotoFlex = Roboto_Flex({ subsets: ['latin'], style: ['normal'], weight: ['300', '400', '500', '600', '700', '800'] });
 export interface IDetailProductPageProps {
@@ -26,7 +28,52 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
     const [indexSizeAndPrice, setIndexSizeAndPrice] = useState(0);
     const [quantity, setQuantity] = useState(1);
 
+    const { user } = useAppSelector((state: RootState) => state.userReducer);
+
     const dispatch = useAppDispatch();
+
+    const handleAddToCart = () => {
+        if (!user) {
+            console.log('in cart');
+
+            dispatch(
+                pushNoty({
+                    title: 'Please login to use !',
+                    open: true,
+                    type: 'error',
+                }),
+            );
+            return;
+        }
+        dispatch(
+            addCart({
+                id: params.id,
+                branch: dataDetailProductPage.brand,
+                image: dataDetailProductPage.image,
+                name: dataDetailProductPage.name,
+                price: dataDetailProductPage.sizeAndPrice[indexSizeAndPrice].price,
+                quantity: quantity,
+                repo: dataDetailProductPage.sizeAndPrice[indexSizeAndPrice].repo,
+                size: dataDetailProductPage.sizeAndPrice[indexSizeAndPrice].size,
+                checked: true,
+            }),
+        );
+    };
+
+    const handleBuyNow = () => {
+        if (!user) {
+            console.log('in cart');
+
+            dispatch(
+                pushNoty({
+                    title: 'Please login to use !',
+                    open: true,
+                    type: 'error',
+                }),
+            );
+            return;
+        }
+    };
 
     return (
         <>
@@ -95,25 +142,8 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
                             />
 
                             <div className="mt-[50px] flex items-center gap-5">
-                                <MainButton
-                                    title="add to card"
-                                    onClick={() => {
-                                        dispatch(
-                                            addCart({
-                                                id: params.id,
-                                                branch: dataDetailProductPage.brand,
-                                                image: dataDetailProductPage.image,
-                                                name: dataDetailProductPage.name,
-                                                price: dataDetailProductPage.sizeAndPrice[indexSizeAndPrice].price,
-                                                quantity: quantity,
-                                                repo: dataDetailProductPage.sizeAndPrice[indexSizeAndPrice].repo,
-                                                size: dataDetailProductPage.sizeAndPrice[indexSizeAndPrice].size,
-                                                checked: true,
-                                            }),
-                                        );
-                                    }}
-                                />
-                                <MainButton background="bg-orange-primary" title="buy now" />
+                                <MainButton title="add to card" onClick={handleAddToCart} />
+                                <MainButton onClick={handleBuyNow} background="bg-orange-primary" title="buy now" />
                             </div>
                         </div>
                     </Grid>

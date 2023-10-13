@@ -1,5 +1,5 @@
 import { store } from '@/redux/store';
-import { ApiBestSeller, ApiTakeAction, IBaseResponse, ISignDataResponse, IUser } from './interface';
+import { ApiBestSeller, ApiTakeAction, IBaseResponse, IProfile, ISignDataResponse, IUser } from './interface';
 
 export type ValidTags = keyof JSX.IntrinsicElements;
 
@@ -13,6 +13,10 @@ export type ApiTakeActionType = () => Promise<IBaseResponse<ApiTakeAction>>;
 
 export type ApiBestSellerType = (page: number | undefined) => Promise<IBaseResponse<ApiBestSeller>>;
 
+export type ApiGetCurUser = () => Promise<IBaseResponse<IProfile>>;
+
+export type ApiUpdateCurUser = (data: DataRequestUpdateUser) => Promise<IBaseResponse<IProfile>>;
+
 export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
@@ -24,6 +28,25 @@ export type RegisterFormData = {
     email: string;
     password: string;
     confirmPassword: string;
+};
+
+export type ProfileType = {
+    fullname: string;
+    email: string;
+    phone: string;
+    gender: string;
+    birthday: string;
+    address: string;
+};
+
+export type DataRequestUpdateUser = {
+    fullname: string;
+    email: string;
+    phone: string;
+    gender: string;
+    birthday: string;
+    address: string;
+    avatar?: string;
 };
 
 export type SortType = string | null;

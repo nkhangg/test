@@ -1,6 +1,9 @@
-import { ApiLogin, ApiRegister } from '@/configs/types';
+import { ApiGetCurUser, ApiLogin, ApiRegister, ApiUpdateCurUser, DataRequestUpdateUser } from '@/configs/types';
 import axios from '../configs/axios';
 import { setTokenToCookie } from '@/utils/cookie';
+import { IProfile } from '@/configs/interface';
+import { dataURLtoFile } from '@/utils/format';
+import moment from 'moment';
 
 export const login: ApiLogin = async (data) => {
     const res = await axios({
@@ -19,6 +22,38 @@ export const register: ApiRegister = async (data) => {
         method: 'POST',
         url: 'register',
         data,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const curUser: ApiGetCurUser = async () => {
+    const res = await axios({
+        method: 'GET',
+        url: 'user/profile',
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const updateUser: ApiUpdateCurUser = async (data: DataRequestUpdateUser) => {
+    console.log(data, { ...data, gender: data.gender === 'Male', avartar: data.avatar ? dataURLtoFile(data.avatar) : null, birthday: moment(data.birthday).format('D/MM/yyyy') });
+    const res = await axios({
+        method: 'POST',
+        url: 'user/profile',
+        headers: {
+            'content-type': 'multipart/form-data',
+        },
+        data: {
+            ...data,
+            gender: data.gender === 'Male',
+            avartar: data.avatar ? dataURLtoFile(data.avatar) : null,
+            birthday: moment(data.birthday).format('D/MM/yyyy'),
+        },
     });
 
     if (!res) return null;

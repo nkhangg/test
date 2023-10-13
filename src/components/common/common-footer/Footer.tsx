@@ -8,10 +8,17 @@ import Image from 'next/image';
 import { ContainerContent } from '..';
 import Link from 'next/link';
 import { dataFooter } from '@/datas/footer';
+import { Notifycation } from '@/components';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import { RootState } from '@/configs/types';
+import { closeNoty } from '@/redux/slice/appSlice';
 
-export interface IFooterProps { }
+export interface IFooterProps {}
 
 export default function Footer(props: IFooterProps) {
+    const { notifycation } = useAppSelector((state: RootState) => state.appReducer);
+
+    const dispath = useAppDispatch();
     return (
         <footer className="bg-[#2F2E2E] pt-12 pb-14 max-w-[100%] overflow-hidden mt-[10%]">
             <ContainerContent className="text-white">
@@ -70,6 +77,13 @@ export default function Footer(props: IFooterProps) {
                 <div className="flex items-center justify-center py-14">
                     <p>{dataFooter.coppyRight}</p>
                 </div>
+
+                <Notifycation
+                    onClose={() => {
+                        dispath(closeNoty());
+                    }}
+                    {...notifycation}
+                />
             </ContainerContent>
         </footer>
     );

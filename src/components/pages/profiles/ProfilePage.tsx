@@ -1,69 +1,216 @@
 'use client';
-import { BoxTitle, DivTextfield, MainButton, TextArea, TextField } from '@/components';
-import { ContainerContent } from '@/components/common';
+import style from './styles/product.module.css';
+import { AvartarEdit, BoxTitle, DivTextfield, LoadingPrimary, MainButton } from '@/components';
 import { profileUiData } from '@/datas/profile';
-import { IconDefinition, faUserPen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, Grid } from '@mui/material';
 import classNames from 'classnames';
-import { useRouter } from 'next/navigation';
-import React, { FormEvent, InputHTMLAttributes, MouseEvent, useEffect, useState } from 'react';
-import { ContentTag } from '..';
-import { PagesProfileType } from '@/configs/types';
+import React, { ChangeEvent, FocusEvent, FormEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
+import Validate from '@/utils/validate';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import { ProfileType, RootState } from '@/configs/types';
+import { notFound, useRouter } from 'next/navigation';
+import { pushNoty } from '@/redux/slice/appSlice';
+import { IProfile } from '@/configs/interface';
+import moment from 'moment';
+import { contants } from '@/utils/contants';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { curUser, updateUser } from '@/apis/user';
+import { fetchUserByToken, update } from '@/redux/slice/userSlice';
+import { clearToken } from '@/utils/cookie';
 
 export interface IProfilePageProps {
     pages: [string];
 }
 
+const initdata = {
+    fullname: '',
+    email: '',
+    phone: '',
+    gender: 'Male',
+    birthday: '',
+    address: '',
+};
+const initdataErrors = {
+    fullname: '',
+    email: '',
+    phone: '',
+    gender: '',
+    birthday: '',
+    address: '',
+};
+
 export default function ProfilePage({ pages }: IProfilePageProps) {
+    const { user } = useAppSelector((state: RootState) => state.userReducer);
+    const dispatch = useAppDispatch();
+    const [form, setForm] = useState<ProfileType>(initdata);
+    const [errors, setErrors] = useState<ProfileType>(initdataErrors);
+    const [avartar, setAvartar] = useState(user?.avatar);
+
     const router = useRouter();
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+
+    const [loading, setLoading] = useState(false);
+
+    const [openEditor, setOpenEditor] = useState(false);
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (validate()) return;
+
+        try {
+            setLoading(true);
+            const response = await updateUser({ ...form, avatar: avartar });
+            setLoading(false);
+            if (response.errors) {
+                setErrors({
+                    ...errors,
+                    ...(response.errors as unknown as ProfileType),
+                });
+
+                return;
+            }
+
+            dispatch(
+                pushNoty({
+                    title: 'Update Successfuly',
+                    open: true,
+                    type: 'success',
+                    autohide: 5000,
+                }),
+            );
+
+            dispatch(fetchUserByToken());
+
+            router.refresh();
+        } catch (error) {
+            console.log('errors in product page when update' + error);
+            setLoading(false);
+            dispatch(fetchUserByToken());
+            router.push('/');
+        }
+
+        // (async () => {
+        //     const curUserupdated = unwrapResult(await response);
+        //     console.log('in product page when update: ', curUserupdated);
+        // })();
     };
 
-    const handleClickProfileMethod = (
-        e: MouseEvent,
-        item: {
-            title: string;
-            icon: IconDefinition;
-            link: string;
-        },
-    ) => {
-        router.push(item.link);
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setForm({
+            ...form,
+            [event.target.name]: event.target.value,
+        });
     };
+
+    const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+        const dynamicKey = e.target.name as keyof ProfileType;
+
+        const { message } = Validate[dynamicKey](e.target.value);
+        setErrors({
+            ...errors,
+            [dynamicKey]: message,
+        });
+    };
+
+    const validate = () => {
+        let flag = false;
+        const validateErrors: ProfileType = { ...initdataErrors };
+
+        const keys: string[] = Object.keys(validateErrors);
+
+        keys.forEach((key) => {
+            const dynamic = key as keyof ProfileType;
+
+            const { message, error } = Validate[dynamic](form[dynamic]);
+            validateErrors[dynamic] = message;
+            flag = error;
+        });
+
+        setErrors(validateErrors);
+
+        return flag;
+    };
+
+    useEffect(() => {
+        if (!user) {
+            dispatch(
+                pushNoty({
+                    title: 'Some thing went wrong, please re-login to use continue !',
+                    open: true,
+                    type: 'error',
+                }),
+            );
+            dispatch(fetchUserByToken());
+            router.push('/');
+            return;
+        }
+
+        console.log(user);
+        setForm({
+            fullname: user?.fullname || '',
+            email: user?.email || '',
+            phone: user?.phone || '',
+            gender: user?.gender ? 'Male' : 'Female',
+            birthday: user?.birthday ? moment(user?.birthday).format('yyyy-MM-D') : '',
+            address: user?.address || '',
+        });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
+
     return (
         <BoxTitle locationTitle="left" title="MY ACCOUNT">
-            <Grid container spacing={'10px'} className="min-h-[718px]">
+            <Grid container spacing={'10px'} className="min-h-[518px]">
                 <Grid item xs={12} md={4} lg={3}>
                     <div className="py-[25px] px-9 w-full h-full bg-[#f2f2f2] rounded">
                         <div className="flex items-center gap-2 mb-[38px]">
-                            <Avatar
-                                sx={{
-                                    width: 60,
-                                    height: 60,
-                                }}
-                                alt="avatar"
-                                src="https://ngungonblog.files.wordpress.com/2016/03/pussinboots.gif?w=1200"
-                            />
-                            <span className="font-medium text-lg">Qian Qian</span>
+                            <div
+                                className={classNames('relative rounded-full overflow-hidden', {
+                                    [style['avatar']]: true,
+                                })}
+                            >
+                                <Avatar
+                                    sx={{
+                                        width: 60,
+                                        height: 60,
+                                    }}
+                                    alt="avatar"
+                                    src={avartar || contants.avartarDefault}
+                                />
+
+                                <div
+                                    onClick={() => setOpenEditor(true)}
+                                    className={classNames(
+                                        'absolute bg-[rgba(0,0,0,.4)] inset-0 flex items-center justify-center text-white transition-all ease-linear cursor-pointer',
+                                        {
+                                            [style['avatar-backdrop']]: true,
+                                        },
+                                    )}
+                                >
+                                    <FontAwesomeIcon icon={faEdit} />
+                                </div>
+                            </div>
+                            <span className="font-medium text-lg">{user?.username}</span>
                         </div>
 
                         <ul>
                             {profileUiData.listMethod.map((item) => {
                                 return (
-                                    <li onClick={(e) => handleClickProfileMethod(e, item)} key={item.title} className={''}>
+                                    <li key={item.title} className={''}>
                                         <Link
                                             className={classNames(
-                                                `flex items-center gap-3 text-black-main text-1xl px-[18px] py-4 border-b 
-                                border-[#DEDEDE] w-full hover:bg-green-65a30d rounded hover:text-white transition-all ease-linear cursor-pointer`,
+                                                `flex items-center gap-3 text-black-main text-sm px-[18px] py-2 border-b 
+                                                border-[#DEDEDE] w-full hover:bg-green-65a30d rounded hover:text-white transition-all 
+                                                ease-linear cursor-pointer mb-1 text-1xl`,
                                                 {
                                                     'bg-green-65a30d text-white': item.link === '/profile',
                                                 },
                                             )}
                                             href={item.link}
                                         >
-                                            <FontAwesomeIcon className="text-2xl" icon={item.icon} />
+                                            <FontAwesomeIcon className="text-1xl" icon={item.icon} />
                                             <p className=" uppercase">{item.title}</p>
                                         </Link>
                                     </li>
@@ -73,24 +220,91 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                     </div>
                 </Grid>
                 <Grid item xs={12} md={8} lg={9}>
-                    <form onSubmit={handleSubmit} className="px-14 py-[60px] w-full h-full bg-[#f2f2f2] rounded">
+                    <form onSubmit={handleSubmit} className="px-14 py-[60px] w-full h-full bg-[#f2f2f2] rounded flex flex-col justify-between">
                         <div className="flex flex-col justify-between gap-[22px]">
-                            <DivTextfield name="fullname" label="Full name" />
+                            <DivTextfield
+                                propsInput={{
+                                    name: 'fullname',
+                                    value: form.fullname,
+                                    message: errors.fullname,
+                                    onChange: handleChange,
+                                    onBlur: handleBlur,
+                                }}
+                                label="Full name"
+                            />
 
                             <div className="flex items-center gap-[22px] lg:gap-12 flex-col md:flex-row">
                                 <div className="flex items-center flex-col w-full gap-[22px]">
-                                    <DivTextfield name="email" label="Email" type="email" />
-                                    <DivTextfield name="genther" label="Gender" />
+                                    <DivTextfield
+                                        propsInput={{
+                                            disabled: true,
+                                            name: 'email',
+                                            type: 'email',
+                                            onChange: handleChange,
+                                            onBlur: handleBlur,
+                                            value: form.email,
+                                            message: errors.email,
+                                        }}
+                                        label="Email"
+                                    />
+                                    <DivTextfield
+                                        dataSelect={[
+                                            {
+                                                id: 'Male',
+                                                name: 'Male',
+                                            },
+                                            {
+                                                id: 'Female',
+                                                name: 'Female',
+                                            },
+                                        ]}
+                                        propsInput={{
+                                            name: 'gender',
+                                            onChange: handleChange,
+                                            onBlur: handleBlur,
+                                            value: form.gender,
+                                            message: errors.gender,
+                                        }}
+                                        label="Gender"
+                                    />
                                 </div>
                                 <div className="flex items-center flex-col w-full gap-[22px]">
-                                    <DivTextfield name="phoneNumber" label="Phone number" />
-                                    <DivTextfield name="birthday" label="Birthday" type="date" />
+                                    <DivTextfield
+                                        propsInput={{
+                                            name: 'phone',
+                                            onChange: handleChange,
+                                            onBlur: handleBlur,
+                                            value: form.phone,
+                                            message: errors.phone,
+                                        }}
+                                        label="Phone number"
+                                    />
+                                    <DivTextfield
+                                        propsInput={{
+                                            name: 'birthday',
+                                            type: 'date',
+                                            onChange: handleChange,
+                                            onBlur: handleBlur,
+                                            value: form.birthday,
+                                            message: errors.birthday,
+                                        }}
+                                        label="Birthday"
+                                    />
                                 </div>
                             </div>
 
-                            <DivTextfield name="address" label="Address" />
-                            <DivTextfield name="password" label="Current Password (Skip if you don’t want to change the password)" type="password" />
-                            <DivTextfield name="confirm-password" label="Confirm new password" type="password" />
+                            <DivTextfield
+                                propsInput={{
+                                    name: 'address',
+                                    onChange: handleChange,
+                                    onBlur: handleBlur,
+                                    value: form.address,
+                                    message: errors.address,
+                                }}
+                                label="Address"
+                            />
+                            {/* <DivTextfield name="password" label="Current Password (Skip if you don’t want to change the password)" type="password" />
+                            <DivTextfield name="confirm-password" label="Confirm new password" type="password" /> */}
                         </div>
 
                         <div className="flex items-center justify-center w-full">
@@ -99,6 +313,16 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                     </form>
                 </Grid>
             </Grid>
+
+            <AvartarEdit
+                setOpen={setOpenEditor}
+                onAvartar={(avatar) => {
+                    setAvartar(avatar || user?.avatar);
+                }}
+                open={openEditor}
+            />
+
+            {loading && <LoadingPrimary />}
         </BoxTitle>
     );
 }

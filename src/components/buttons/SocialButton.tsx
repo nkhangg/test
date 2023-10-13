@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { MouseEventHandler } from 'react';
 import { WrapperAnimation } from '..';
 import { Button, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,12 +7,13 @@ import classNames from 'classnames';
 
 export interface ISocialButtonProps {
     title: string;
-    icon: IconProp;
+    icon?: IconProp;
     background?: string;
     mt?: string;
+    onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
-export default function SocialButton({ title, icon, background = '#0284C7', mt = 'mt-4' }: ISocialButtonProps) {
+export default function SocialButton({ title, icon, background = '#0284C7', mt = 'mt-4', onClick }: ISocialButtonProps) {
     return (
         <WrapperAnimation
             hover={{ y: -2 }}
@@ -22,6 +23,7 @@ export default function SocialButton({ title, icon, background = '#0284C7', mt =
             })}
         >
             <Button
+                onClick={onClick}
                 sx={{
                     backgroundColor: background,
                     px: '20px',
@@ -35,7 +37,7 @@ export default function SocialButton({ title, icon, background = '#0284C7', mt =
                     width: '100%',
                 }}
             >
-                <FontAwesomeIcon className="text-[20px] mr-2" icon={icon} />
+                {icon && <FontAwesomeIcon className="text-[20px] mr-2" icon={icon} />}
                 <Typography>{title}</Typography>
             </Button>
         </WrapperAnimation>

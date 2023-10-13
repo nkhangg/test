@@ -7,12 +7,13 @@ import { contants } from '@/utils/contants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar } from '@mui/material';
 import Tippy from '@tippyjs/react/headless';
+import classNames from 'classnames';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 export interface IMenuYserProps {}
 
-export default function MenuUser(props: IMenuYserProps) {
+export default function MenuUser({}: IMenuYserProps) {
     const [openMenu, setOpenMenu] = useState(false);
 
     const [isClient, setisClient] = useState(false);

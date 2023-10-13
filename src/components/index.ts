@@ -20,6 +20,7 @@ export { default as MenuDropDown } from './inputs/MenuDropDown';
 export { default as DivTextfield } from './inputs/DivTextfield';
 export { default as DynamicInput } from './inputs/DynamicInput';
 export { default as Comfirm } from './inputs/Comfirm';
+export { default as AvartarEdit } from './inputs/AvartarEdit';
 
 // bages
 export { default as CustomBadge } from './badges/CustomBadge';
