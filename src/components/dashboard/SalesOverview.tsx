@@ -2,13 +2,12 @@
 import React from 'react';
 import { Select, MenuItem, Tabs, Tab, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import dynamic from 'next/dynamic';
 import { DashboardCard } from '.';
 import { toCurrency } from '@/utils/format';
 import { IDataCharts } from '@/configs/interface';
 import Chart from './Charts/Chart';
-// const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
-
+import { useQuery } from '@tanstack/react-query';
+import { salesOverview } from '@/apis/dashboard';
 interface ISalesOverviewProps {
     dataOusite: {
         revenue: IDataCharts;
@@ -20,12 +19,16 @@ const SalesOverview = ({ dataOusite }: ISalesOverviewProps) => {
     // select
     const [month, setMonth] = React.useState('2023');
 
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['sales-overview', month],
+        queryFn: () => salesOverview(month),
+    });
+
+    const dataCharts = data?.data.salesOverview;
+
     const handleChange = (event: any) => {
         setMonth(event.target.value);
     };
-
-    // chart color
-    const theme = useTheme();
 
     const [value, setValue] = React.useState(0);
 
@@ -60,7 +63,9 @@ const SalesOverview = ({ dataOusite }: ISalesOverviewProps) => {
             }
             middlecontent={
                 <>
-                    <Typography sx={{ fontSize: '20px', mt: '10px' }}>Total: {toCurrency(dataOusite.productRevenueByType.total)}</Typography>
+                    <Typography sx={{ fontSize: '20px', mt: '10px' }}>
+                        Total: {toCurrency((value === 1 ? dataCharts?.productRevenueByType.total : dataCharts?.revenue.total) || 0)}
+                    </Typography>
                 </>
             }
         >
@@ -70,11 +75,11 @@ const SalesOverview = ({ dataOusite }: ISalesOverviewProps) => {
                     <Tab label="Product Revenue By Type" />
                 </Tabs>
                 <CustomTabPanel value={value} index={0}>
-                    <Chart data={dataOusite.revenue} type="area" />
+                    <Chart data={dataCharts?.revenue || dataOusite.revenue} type="area" />
                 </CustomTabPanel>
 
                 <CustomTabPanel value={value} index={1}>
-                    <Chart data={dataOusite.productRevenueByType} type="bar" />
+                    <Chart data={dataCharts?.productRevenueByType || dataOusite.productRevenueByType} type="bar" />
                 </CustomTabPanel>
             </>
         </DashboardCard>

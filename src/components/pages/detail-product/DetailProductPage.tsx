@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { ContainerContent } from '../../common';
-import { Box, Grid, Rating, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Grid, Tab, Tabs, Typography } from '@mui/material';
 import { LoadingPrimary, MainButton, PreviewImageProduct, ProductRecents } from '../..';
 // import { dataDetailProductPage } from '@/datas/detail-product';
 import { Nunito_Sans, Roboto_Flex } from 'next/font/google';
@@ -17,6 +17,9 @@ import { pushNoty } from '@/redux/slice/appSlice';
 import { useQuery } from '@tanstack/react-query';
 import { detailProduct } from '@/apis/product';
 import { notFound } from 'next/navigation';
+import { dataDetailProductPages } from '@/datas/detail-product';
+import dynamic from 'next/dynamic';
+const Rating = dynamic(() => import('@mui/material/Rating'), { ssr: false });
 
 const nunitoSans = Nunito_Sans({ subsets: ['latin'], style: ['normal', 'italic'], weight: ['300', '400', '500', '600', '700', '800'] });
 const robotoFlex = Roboto_Flex({ subsets: ['latin'], style: ['normal'], weight: ['300', '400', '500', '600', '700', '800'] });
@@ -130,7 +133,7 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
                                         },
                                     }}
                                     name="read-only"
-                                    value={dataDetailProductPage?.rating || 5}
+                                    value={dataDetailProductPage?.rating || 0}
                                     readOnly
                                 />
                                 <p className=" md:ml-3">1234 reviews</p>

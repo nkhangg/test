@@ -70,8 +70,9 @@ function PreviewImageProduct({ images }: IPreviewImageProps) {
     return (
         <div className={classNames('w-full flex flex-col  items-center gap-[30px] select-none')}>
             <AnimatePresence initial={false} custom={direction}>
-                <div className="w-full h-full rounded-xl overflow-hidden relative max-h-[386px]">
+                <div className="w-full  rounded-xl overflow-hidden relative h-[386px]">
                     <motion.img
+                        loading="lazy"
                         variants={variants}
                         animate="animate"
                         initial="initial"

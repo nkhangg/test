@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { DashboardCard } from '.';
 import { Box, Card, CardContent, Stack, SvgIconTypeMap, Typography } from '@mui/material';
-import { capitalize, toCurrency } from '@/utils/format';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import classNames from 'classnames';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
@@ -30,7 +28,7 @@ export default function LabelCard({ title, data, underlineColor = '#505DE8', sho
 
                         {showPersnet && (
                             <Typography variant="subtitle2" fontWeight="600" sx={{ color: '#ccc' }}>
-                                {data.percentYesterday}% yesterday
+                                {data.percentYesterday || 0}% yesterday
                             </Typography>
                         )}
                     </div>
