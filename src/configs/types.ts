@@ -1,5 +1,9 @@
 import { store } from '@/redux/store';
+<<<<<<< Updated upstream
 import { ApiBestSeller, ApiTakeAction, IBaseResponse, ISignDataResponse, IUser } from './interface';
+=======
+import { ApiBestSeller, ApiTakeAction, IBaseResponse, IDetailProduct, IProfile, ISignDataResponse, IUser } from './interface';
+>>>>>>> Stashed changes
 
 export type ValidTags = keyof JSX.IntrinsicElements;
 
@@ -10,6 +14,8 @@ export type ApiLogin = (data: UserFormType) => Promise<ISignDataResponse>;
 export type ApiRegister = (data: RegisterFormData) => Promise<ISignDataResponse>;
 
 export type ApiTakeActionType = () => Promise<IBaseResponse<ApiTakeAction>>;
+
+export type ApiDetailProductType = (idProduct: string) => Promise<IBaseResponse<IDetailProduct>>;
 
 export type ApiBestSellerType = (page: number | undefined) => Promise<IBaseResponse<ApiBestSeller>>;
 

@@ -63,7 +63,7 @@ export default function DesAndReview({ description, review }: IDesAndReviewProps
                 </AntTabs>
             </Box>
             <CustomTabPanel className="text-1xl text-[#374151]" value={value} index={0}>
-                {description}
+                <div dangerouslySetInnerHTML={{ __html: description }}></div>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
                 {review}
