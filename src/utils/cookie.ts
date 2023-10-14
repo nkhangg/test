@@ -9,3 +9,7 @@ export const getTokenFromCookie = () => {
 
     return token;
 };
+
+export const clearToken = () => {
+    Cookies.remove('token', { path: '' });
+};

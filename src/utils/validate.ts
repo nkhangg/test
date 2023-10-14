@@ -25,6 +25,18 @@ const Validate = {
         return num.test(value);
     },
 
+    isPhone(value: string): boolean {
+        const regexPhoneNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+
+        return regexPhoneNumber.test(value);
+    },
+
+    isValidBirthday(value: string, maxAge = 14): boolean {
+        const age = new Date().getFullYear() - new Date(value).getFullYear() < maxAge;
+
+        return age;
+    },
+
     description(value: string): ValidateType {
         if (this.isBlank(value)) return { message: `Description is invalid `, error: true };
         return { message: '', error: false };
@@ -115,6 +127,29 @@ const Validate = {
                 error: true,
             };
 
+        return { message: '', error: false };
+    },
+    address(value: string): ValidateType {
+        if (this.isBlank(value)) return { message: "Address can't be blank ", error: true };
+
+        return { message: '', error: false };
+    },
+
+    birthday(value: string): ValidateType {
+        if (this.isBlank(value)) return { message: "Birthday can't be blank ", error: true };
+        if (this.isValidBirthday(value)) return { message: 'You are not old enough to use the service ', error: true };
+
+        return { message: '', error: false };
+    },
+
+    phone(value: string): ValidateType {
+        if (this.isBlank(value)) return { message: "Phone number can't be blank ", error: true };
+
+        if (!this.isPhone(value)) return { message: 'Phone number invalid ', error: true };
+        return { message: '', error: false };
+    },
+
+    avatar(value: string): ValidateType {
         return { message: '', error: false };
     },
 

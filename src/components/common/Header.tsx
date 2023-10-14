@@ -26,7 +26,6 @@ export default function Header({ dynamic = true }: IHeaderProps) {
     });
 
     useEffect(() => {
-        // console.log('reloaded', token);
         (async () => {
             const actionResult = dispatch(fetchUserByToken());
             const curUser = unwrapResult(await actionResult);
@@ -76,7 +75,6 @@ export default function Header({ dynamic = true }: IHeaderProps) {
                             <MenuUser />
                         )}
                     </div>
-
                     {/* responcesive */}
                     <div className=" m-auto h-full text-white flex items-center justify-between select-none lg:hidden">
                         <MenuBars isScroll={isChangeBg} />
@@ -96,7 +94,7 @@ export default function Header({ dynamic = true }: IHeaderProps) {
                         <Navbar isScroll={true} />
 
                         {!user ? (
-                            <div className="flex items-center justify-center gap-1 font-medium">
+                            <div className={classNames('flex items-center justify-center gap-1 font-medium', {})}>
                                 <Link className="hover:underline text-1xl" href={'/login'}>
                                     Login
                                 </Link>

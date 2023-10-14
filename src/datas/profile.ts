@@ -1,4 +1,4 @@
-import { faUserPen } from '@fortawesome/free-solid-svg-icons';
+import { faClockRotateLeft, faPersonRunning, faUserPen } from '@fortawesome/free-solid-svg-icons';
 
 export const profileUiData = {
     listMethod: [
@@ -9,13 +9,13 @@ export const profileUiData = {
         },
         {
             title: 'ORDER HISTORY',
-            icon: faUserPen,
+            icon: faClockRotateLeft,
             link: '/other-history',
         },
         {
             title: 'LOG OUT',
-            icon: faUserPen,
-            link: '/profile/logout',
+            icon: faPersonRunning,
+            link: '/logout',
         },
     ],
 };

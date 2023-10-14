@@ -16,22 +16,66 @@ export default function ContentTag({ state }: IContentTagProps) {
                 return (
                     <form onSubmit={handleSubmit} className="px-14 py-[60px] w-full h-full bg-[#f2f2f2] rounded">
                         <div className="flex flex-col justify-between gap-[22px]">
-                            <DivTextfield name="fullname" label="Full name" />
+                            <DivTextfield
+                                propsInput={{
+                                    name: 'fullname',
+                                }}
+                                label="Full name"
+                            />
 
                             <div className="flex items-center gap-[22px] lg:gap-12 flex-col md:flex-row">
                                 <div className="flex items-center flex-col w-full gap-[22px]">
-                                    <DivTextfield name="email" label="Email" type="email" />
-                                    <DivTextfield name="genther" label="Gender" />
+                                    <DivTextfield
+                                        propsInput={{
+                                            name: 'email',
+                                            type: 'email',
+                                        }}
+                                        label="Email"
+                                    />
+                                    <DivTextfield
+                                        propsInput={{
+                                            name: 'genther',
+                                        }}
+                                        label="Gender"
+                                    />
                                 </div>
                                 <div className="flex items-center flex-col w-full gap-[22px]">
-                                    <DivTextfield name="phoneNumber" label="Phone number" />
-                                    <DivTextfield name="birthday" label="Birthday" type="date" />
+                                    <DivTextfield
+                                        propsInput={{
+                                            name: 'phoneNumber',
+                                        }}
+                                        label="Phone number"
+                                    />
+                                    <DivTextfield
+                                        propsInput={{
+                                            name: 'birthday',
+                                            type: 'date',
+                                        }}
+                                        label="Birthday"
+                                    />
                                 </div>
                             </div>
 
-                            <DivTextfield name="address" label="Address" />
-                            <DivTextfield name="password" label="Current Password (Skip if you don’t want to change the password)" type="password" />
-                            <DivTextfield name="confirm-password" label="Confirm new password" type="password" />
+                            <DivTextfield
+                                propsInput={{
+                                    name: 'address',
+                                }}
+                                label="Address"
+                            />
+                            <DivTextfield
+                                propsInput={{
+                                    name: 'password',
+                                    type: 'password',
+                                }}
+                                label="Current Password (Skip if you don’t want to change the password)"
+                            />
+                            <DivTextfield
+                                propsInput={{
+                                    name: 'confir-password',
+                                    type: 'password',
+                                }}
+                                label="Confirm new password"
+                            />
                         </div>
 
                         <div className="flex items-center justify-center w-full">

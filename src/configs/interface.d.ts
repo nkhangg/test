@@ -21,15 +21,20 @@ export interface IProfile {
     id: string;
     username: string;
     fullname: string;
-    email: string;
+    birthday: string; // Cứ trả về Date trong java bình thường
+    gender: boolean;
     phone: string;
-    genther: boolean;
-    birthday: number; // Cứ trả về Date trong java bình thường
+    address: string;
+    email: string;
+    avatar: string;
+    role: string;
+    createAt: string;
 }
 
 export interface IInitAppStoreState {
     numberCart: number;
     user: IUser | null;
+    notifycation: INotifycationProps;
 }
 
 export interface IPet {

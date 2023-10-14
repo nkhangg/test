@@ -1,29 +1,80 @@
-import { getTokenFromCookie } from '@/utils/cookie';
+import { curUser, updateUser } from '@/apis/user';
+import { IProfile } from '@/configs/interface';
+import { clearToken, getTokenFromCookie } from '@/utils/cookie';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { pushNoty } from './appSlice';
+import { DataRequestUpdateUser } from '@/configs/types';
 
-export const fetchUserByToken = createAsyncThunk('user/fetchUserByToken', async () => {
+export const fetchUserByToken = createAsyncThunk('user/fetchUserByToken', async (_, thunkApi) => {
     const token = getTokenFromCookie();
 
     if (!token || token === '' || token === 'null') return null;
-    const res: { id: string; username: string; avatar: string; role: boolean } = await new Promise((resovle, reject) => {
-        setTimeout(() => {
-            const curUser: { id: string; username: string; avatar: string; role: boolean } = {
-                id: 'user001',
-                username: 'khangpn',
-                avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuEvKHSodSNlROQYDU-lUWHH1MI8RmCbFl2xpisFnQ&s',
-                role: false,
-            };
+    try {
+        const res = await curUser();
 
-            resovle(curUser);
-        }, 500);
-    });
+        console.log('in user slide ' + res);
 
-    return res;
+        if (res.errors) {
+            return null;
+        }
+
+        return res.data;
+    } catch (error) {
+        clearToken();
+        thunkApi.dispatch(
+            pushNoty({
+                title: 'Some thing went wrong, please relogin to use',
+                open: true,
+                type: 'error',
+                plament: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+            }),
+        );
+
+        return null;
+    }
+});
+
+export const logout = createAsyncThunk('user/logout', async () => {
+    clearToken();
+    return null;
+});
+
+export const update = createAsyncThunk('user/update', async (data: DataRequestUpdateUser, thunkApi) => {
+    const token = getTokenFromCookie();
+
+    if (!token || token === '' || token === 'null') return null;
+    try {
+        const res = await updateUser(data);
+
+        if (res.errors) {
+            return null;
+        }
+
+        return res.data;
+    } catch (error) {
+        clearToken();
+        thunkApi.dispatch(
+            pushNoty({
+                title: 'Some thing went wrong, please relogin to use',
+                open: true,
+                type: 'error',
+                plament: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+            }),
+        );
+
+        return null;
+    }
 });
 
 // init a store for app
 interface IInitUserStoreState {
-    user: null | { id: string; username: string; avatar: string; role: boolean };
+    user: null | IProfile;
     token: string;
     loading: boolean;
 }
@@ -51,6 +102,26 @@ export const user = createSlice({
                 state.user = action.payload;
             }),
             builder.addCase(fetchUserByToken.rejected, (state, action) => {
+                state.loading = false;
+                state.user = null;
+            }),
+            //log out
+            builder.addCase(logout.pending, (state, action) => {
+                state.loading = true;
+            }),
+            builder.addCase(logout.fulfilled, (state, action) => {
+                state.loading = false;
+                state.user = null;
+            }),
+            // update
+            builder.addCase(update.pending, (state, action) => {
+                state.loading = true;
+            }),
+            builder.addCase(update.fulfilled, (state, action) => {
+                state.loading = false;
+                state.user = action.payload;
+            }),
+            builder.addCase(update.rejected, (state, action) => {
                 state.loading = false;
                 state.user = null;
             });

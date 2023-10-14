@@ -1,3 +1,4 @@
+import { INotifycationProps } from '@/components/notifycations/Notifycation';
 import { IInitAppStoreState, IUser } from '@/configs/interface';
 import { getTokenFromCookie } from '@/utils/cookie';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -9,6 +10,7 @@ export const loginRedux = createAsyncThunk('app/login', async () => {});
 const initState: IInitAppStoreState = {
     numberCart: 0,
     user: null,
+    notifycation: { open: false, title: '' },
 };
 
 export const app = createSlice({
@@ -30,8 +32,28 @@ export const app = createSlice({
                 },
             };
         },
+
+        closeNoty: (state) => {
+            return {
+                ...state,
+                notifycation: {
+                    ...state.notifycation,
+                    open: false,
+                },
+            };
+        },
+
+        pushNoty: (state, action: PayloadAction<INotifycationProps>) => {
+            return {
+                ...state,
+                notifycation: {
+                    ...state.notifycation,
+                    ...action.payload,
+                },
+            };
+        },
     },
 });
 
-export const { increment, descrement, addUser } = app.actions;
+export const { increment, descrement, addUser, closeNoty, pushNoty } = app.actions;
 export default app.reducer;
