@@ -1,6 +1,6 @@
 import { IDetailProduct, IProduct } from '@/configs/interface';
 
-export const dataDetailProductPage = {
+export const dataDetailProductPages = {
     id: '1',
     brand: 'Royal Canin',
     discount: 10,

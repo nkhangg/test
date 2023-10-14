@@ -11,7 +11,7 @@ const LinkStyled = styled(Link)(() => ({
 
 const Logo = () => {
     return (
-        <LinkStyled href="/" sx={{ pt: '10px' }}>
+        <LinkStyled href="/admin/dashboard" sx={{ pt: '10px' }}>
             <Image src="/images/logo-large-dark.svg" alt="logo" height={60} width={174} priority />
         </LinkStyled>
     );

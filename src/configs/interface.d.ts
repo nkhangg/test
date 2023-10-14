@@ -173,6 +173,28 @@ export interface IDashboard {
     };
 }
 
+export interface IReports {
+    reports: {
+        dailyOrders: IReport;
+        dailyRevenue: IReport;
+        users: IReport;
+    };
+}
+
+export interface ISalesOverviews {
+    salesOverview: {
+        revenue: IDataCharts;
+        productRevenueByType: IDataCharts;
+    };
+}
+
+export interface IProductRevenue {
+    productRevenueByDate: {
+        data: IProductRevenueTableItem[];
+        total: number;
+    };
+}
+
 export interface IProductRevenueTableItem {
     id: string | number;
     name: string;

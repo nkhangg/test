@@ -1,12 +1,14 @@
 'use client';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { Typography, Box, Table, TableBody, TableCell, TableHead, TableRow, Chip, Stack, Button, Dialog, DialogTitle, DialogContent, DialogActions, Slide } from '@mui/material';
 import { DashboardCard } from '.';
 import { TextField } from '..';
 import { toCurrency, toGam } from '@/utils/format';
 import { TransitionProps } from '@mui/material/transitions';
 import { IProductRevenueTableItem } from '@/configs/interface';
-
+import { useQuery } from '@tanstack/react-query';
+import { productRevenue } from '@/apis/dashboard';
+import { redirect } from 'next/navigation';
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
         children: React.ReactElement<any, any>;
@@ -25,7 +27,26 @@ interface IProductPerformanceProps {
 
 const ProductPerformance = ({ dataOutsite }: IProductPerformanceProps) => {
     const [openDialog, setOpenDialog] = useState(false);
-    const [data, setData] = useState(dataOutsite);
+    // const [data, setData] = useState(dataOutsite);
+    const [dates, setDates] = useState({ start: undefined, end: undefined });
+
+    const handleChangeDate = (e: ChangeEvent<HTMLInputElement>) => {
+        setDates({
+            ...dates,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['product-revenue', dates],
+        queryFn: () => productRevenue(dates),
+    });
+
+    if (error) {
+        redirect('/');
+    }
+
+    const dataTable = data?.data.productRevenueByDate;
 
     const handleClose = () => {
         setOpenDialog(!openDialog);
@@ -40,7 +61,7 @@ const ProductPerformance = ({ dataOutsite }: IProductPerformanceProps) => {
             }
             middlecontent={
                 <>
-                    <Typography sx={{ fontSize: '20px', mt: '20px' }}>Total: {toCurrency(data.total)}</Typography>
+                    <Typography sx={{ fontSize: '20px', mt: '20px' }}>Total: {toCurrency(dataTable?.total || 0)}</Typography>
                 </>
             }
             footer={
@@ -51,26 +72,19 @@ const ProductPerformance = ({ dataOutsite }: IProductPerformanceProps) => {
                             <Stack spacing={'10px'} mb={'20px'}>
                                 <div>Start Date</div>
                                 <div className="flex-1">
-                                    <TextField
-                                        type="date"
-                                        onChange={(e) => {
-                                            console.log(e.target.value);
-                                        }}
-                                        fullWidth
-                                        size="small"
-                                    />
+                                    <TextField type="date" onChange={handleChangeDate} fullWidth name="start" size="small" />
                                 </div>
                             </Stack>
                             <Stack spacing={'10px'}>
                                 <div>Start Date</div>
                                 <div className="flex-1">
-                                    <TextField type="date" fullWidth size="small" />
+                                    <TextField type="date" name="end" onChange={handleChangeDate} fullWidth size="small" />
                                 </div>
                             </Stack>
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={handleClose}>Close</Button>
-                            <Button>Oke</Button>
+                            <Button onClick={handleClose}>Oke</Button>
                         </DialogActions>
                     </Dialog>
                 </>
@@ -114,7 +128,7 @@ const ProductPerformance = ({ dataOutsite }: IProductPerformanceProps) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.data.map((product, index) => (
+                        {dataTable?.data.map((product, index) => (
                             <TableRow hover key={`${product.id + (product.size + '')}`}>
                                 <TableCell>
                                     <Typography
@@ -154,7 +168,8 @@ const ProductPerformance = ({ dataOutsite }: IProductPerformanceProps) => {
                                     </Typography>
                                 </TableCell>
                                 <TableCell align="center">
-                                    <Typography variant="subtitle2">{toGam(product.size)}</Typography>
+                                    <Typography variant="subtitle2">{toGam(product.size || 1000)}</Typography>
+                                    {/* <Typography variant="subtitle2">{product.size}</Typography> */}
                                 </TableCell>
                                 <TableCell align="right">
                                     <Typography variant="subtitle2">{toCurrency(product.revenue)}</Typography>

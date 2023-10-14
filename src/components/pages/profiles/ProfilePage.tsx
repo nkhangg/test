@@ -157,6 +157,8 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
             address: user?.address || '',
         });
 
+        setAvartar(user.avatar);
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
