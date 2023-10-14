@@ -48,10 +48,6 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
     }
     const dataDetailProductPage = data?.data;
 
-    const { user } = useAppSelector((state: RootState) => state.userReducer);
-
-    const dispatch = useAppDispatch();
-
     const handleAddToCart = () => {
         if (!user) {
             console.log('in cart');
@@ -95,7 +91,6 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
             return;
         }
     };
-
 
     return (
         <>
