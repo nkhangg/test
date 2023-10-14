@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 import { ContainerContent } from '../common';
 import { LocationTileType } from '@/configs/types';
+import Link from 'next/link';
 
 export interface IBoxTitleProps {
     children: ReactNode;
@@ -14,6 +15,7 @@ export interface IBoxTitleProps {
     fontWeigth?: string;
     mbUnderline?: string;
     mt?: string;
+    actions?: ReactNode;
 }
 
 export default function BoxTitle({
@@ -27,6 +29,7 @@ export default function BoxTitle({
     fontWeigth = 'font-medium',
     mbUnderline = 'mb-[34px]',
     mt = 'mt-24',
+    actions,
 }: IBoxTitleProps) {
     return (
         <ContainerContent
@@ -35,19 +38,26 @@ export default function BoxTitle({
                 [background]: true,
             })}
         >
-            <h2
-                className={classNames('text-black-main  ', {
-                    ['text-' + locationTitle]: true,
+            <div
+                className={classNames('flex items-end justify-between text-black-main', {
                     ['pb-[14px] border-b border-gray-primary']: underlineTitle,
-                    [mbUnderline]: true,
                     ['pb-[48px]']: !underlineTitle,
-                    [fontSizeTitle]: true,
-                    [fontWeigth]: true,
+                    [mbUnderline]: true,
                     [mt]: true,
                 })}
             >
-                {title.toUpperCase()}
-            </h2>
+                <h2
+                    className={classNames('  ', {
+                        ['text-' + locationTitle]: true,
+                        [fontSizeTitle]: true,
+                        [fontWeigth]: true,
+                    })}
+                >
+                    {title.toUpperCase()}
+                </h2>
+
+                {actions}
+            </div>
 
             {children}
         </ContainerContent>

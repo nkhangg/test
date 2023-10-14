@@ -62,6 +62,26 @@ export interface IProduct {
     discount: number;
 }
 
+export interface IDetailProduct {
+    id: string;
+    brand: string;
+    discount: number;
+    image: string;
+    name: string;
+    rating: number;
+    images: string[];
+    desciption: string;
+    sizeAndPrice: SizeAndPrice[];
+    suggestions: IProduct[];
+}
+
+export interface ISizeAndPrice {
+    size: number;
+    price: number;
+    oldPrice: number;
+    repo: number;
+}
+
 export interface IPost {
     id: number | string;
     title: string;

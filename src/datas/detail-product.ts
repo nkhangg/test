@@ -1,7 +1,7 @@
-import { IProduct } from '@/configs/interface';
+import { IDetailProduct, IProduct } from '@/configs/interface';
 
 export const dataDetailProductPage = {
-    id: 1,
+    id: '1',
     brand: 'Royal Canin',
     discount: 10,
     image: 'https://bizweb.dktcdn.net/100/362/345/products/xsmalladult-a81506df-ac29-4e87-8bd8-153192be5792.jpg?v=1571057515367',
@@ -165,5 +165,5 @@ export const dataDetailProductPage = {
             price: 27000,
             rating: 5,
         },
-    ] as IProduct[],
-};
+    ],
+} as IDetailProduct;
