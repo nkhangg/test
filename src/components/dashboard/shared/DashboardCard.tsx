@@ -28,7 +28,13 @@ const DashboardCard = ({ title, subtitle, children, action, footer, cardheading,
                     {title ? (
                         <Stack direction="row" spacing={2} justifyContent="space-between" alignItems={'center'} mb={3}>
                             <Box>
-                                {title ? <Typography variant="h5">{title}</Typography> : ''}
+                                {title ? (
+                                    <Typography variant="h4" sx={{ fontWeight: '600', fontSize: '26px' }}>
+                                        {title}
+                                    </Typography>
+                                ) : (
+                                    ''
+                                )}
 
                                 {subtitle ? (
                                     <Typography variant="subtitle2" color="textSecondary">

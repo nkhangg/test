@@ -4,7 +4,7 @@ export const dataOrtherHistory = {
     data: [
         {
             id: 1235,
-            datePlace: new Date().toDateString(),
+            datePlace: new Date().toDateString(), // string dang Sun Oct 15 2023 or '12/2/2023'
             state: 'buy',
             stateMessage: 'Delivery on October 2, 2023',
             total: 100000,

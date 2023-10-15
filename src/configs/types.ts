@@ -1,6 +1,19 @@
 import { store } from '@/redux/store';
 
-import { ApiBestSeller, ApiTakeAction, IBaseResponse, IDetailProduct, IProductRevenue, IProfile, IReports, ISalesOverviews, ISignDataResponse, IUser } from './interface';
+import {
+    IApiBestSeller,
+    IApiTakeAction,
+    IBaseResponse,
+    IDataFormPayment,
+    IDetailProduct,
+    IOrderItem,
+    IProductRevenue,
+    IProfile,
+    IReports,
+    ISalesOverviews,
+    ISignDataResponse,
+    IUser,
+} from './interface';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
 export type ApiGetUsers = () => Promise<IUser[]>;
@@ -9,21 +22,25 @@ export type ApiLogin = (data: UserFormType) => Promise<ISignDataResponse>;
 
 export type ApiRegister = (data: RegisterFormData) => Promise<ISignDataResponse>;
 
-export type ApiTakeActionType = () => Promise<IBaseResponse<ApiTakeAction>>;
+export type ApiTakeActionType = () => Promise<IBaseResponse<IApiTakeAction>>;
 
 export type ApiDetailProductType = (idProduct: string) => Promise<IBaseResponse<IDetailProduct>>;
 
 export type ApiReportType = () => Promise<IBaseResponse<IReports>>;
 
-export type ApiSlaesOverviewType = (year: string) => Promise<IBaseResponse<ISalesOverviews>>;
+export type ApiSalesOverviewType = (year: string) => Promise<IBaseResponse<ISalesOverviews>>;
 
 export type ApiRevenueDateType = (dates: { start?: string; end?: string }) => Promise<IBaseResponse<IProductRevenue>>;
 
-export type ApiBestSellerType = (page: number | undefined) => Promise<IBaseResponse<ApiBestSeller>>;
+export type ApiPayment = (data: IDataFormPayment) => Promise<IBaseResponse<IOrderItem[]>>;
+
+export type ApiBestSellerType = (page: number | undefined) => Promise<IBaseResponse<IApiBestSeller>>;
 
 export type ApiGetCurUser = () => Promise<IBaseResponse<IProfile>>;
 
 export type ApiUpdateCurUser = (data: DataRequestUpdateUser) => Promise<IBaseResponse<IProfile>>;
+
+export type ApiHistories = () => Promise<IBaseResponse<IProfile>>;
 
 export type RootState = ReturnType<typeof store.getState>;
 

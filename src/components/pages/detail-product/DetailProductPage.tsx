@@ -11,12 +11,12 @@ import Sizes from './Sizes';
 import Quantity from './Quantity';
 import DesAndReview from './DesAndReview';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { addCart } from '@/redux/slice/cartsSlide';
+import { addCart, addPayment } from '@/redux/slice/cartsSlide';
 import { ApiDetailProductType, RootState } from '@/configs/types';
 import { pushNoty } from '@/redux/slice/appSlice';
 import { useQuery } from '@tanstack/react-query';
 import { detailProduct } from '@/apis/product';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { dataDetailProductPages } from '@/datas/detail-product';
 import dynamic from 'next/dynamic';
 const Rating = dynamic(() => import('@mui/material/Rating'), { ssr: false });
@@ -33,6 +33,7 @@ export interface IDetailProductPageProps {
 export default function DetailProductPage({ params }: IDetailProductPageProps) {
     const [indexSizeAndPrice, setIndexSizeAndPrice] = useState(0);
     const [quantity, setQuantity] = useState(1);
+    const router = useRouter();
 
     const { user } = useAppSelector((state: RootState) => state.userReducer);
 
@@ -93,6 +94,24 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
             );
             return;
         }
+
+        (async () => {
+            dispatch(
+                addPayment({
+                    id: params.id,
+                    branch: dataDetailProductPage?.brand || '',
+                    image: dataDetailProductPage?.image || '',
+                    name: dataDetailProductPage?.name || '',
+                    price: dataDetailProductPage?.sizeAndPrice[indexSizeAndPrice].price,
+                    quantity: quantity,
+                    repo: dataDetailProductPage?.sizeAndPrice[indexSizeAndPrice].repo,
+                    size: dataDetailProductPage?.sizeAndPrice[indexSizeAndPrice].size,
+                    checked: true,
+                }),
+            );
+
+            router.push('/payment');
+        })();
     };
 
     return (
