@@ -31,6 +31,8 @@ const initdata = {
     gender: 'Male',
     birthday: '',
     address: '',
+    password: '',
+    newPassword: '',
 };
 const initdataErrors = {
     fullname: '',
@@ -39,6 +41,8 @@ const initdataErrors = {
     gender: '',
     birthday: '',
     address: '',
+    password: '',
+    newPassword: '',
 };
 
 export default function ProfilePage({ pages }: IProfilePageProps) {
@@ -58,6 +62,8 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
         e.preventDefault();
 
         if (validate()) return;
+
+        console.log(form);
 
         try {
             setLoading(true);
@@ -107,6 +113,36 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
         const dynamicKey = e.target.name as keyof ProfileType;
 
+        if (dynamicKey === 'newPassword' || dynamicKey === 'password') {
+            const checkBlank = Validate.isBlank(e.target.value);
+
+            if (dynamicKey === 'newPassword' && Validate.isNotBlank(form.password)) {
+                const { message } = Validate[dynamicKey](e.target.value);
+                setErrors({
+                    ...errors,
+                    [dynamicKey]: message,
+                });
+
+                return;
+            } else if (dynamicKey === 'password' && Validate.isNotBlank(form.newPassword)) {
+                const { message } = Validate[dynamicKey](e.target.value);
+                setErrors({
+                    ...errors,
+                    [dynamicKey]: message,
+                });
+
+                return;
+            }
+
+            if (checkBlank) {
+                setErrors({
+                    ...errors,
+                    [dynamicKey]: '',
+                });
+                return;
+            }
+        }
+
         const { message } = Validate[dynamicKey](e.target.value);
         setErrors({
             ...errors,
@@ -123,9 +159,23 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
         keys.forEach((key) => {
             const dynamic = key as keyof ProfileType;
 
-            const { message, error } = Validate[dynamic](form[dynamic]);
-            validateErrors[dynamic] = message;
-            flag = error;
+            if (dynamic == 'password' || dynamic === 'newPassword') {
+                if (Validate.isNotBlank(form.password) || Validate.isNotBlank(form.newPassword)) {
+                    if (dynamic === 'newPassword') {
+                        const { message, error } = Validate.newPassword(form.newPassword);
+                        validateErrors[dynamic] = message;
+                        flag = error;
+                    } else {
+                        const { message, error } = Validate[dynamic](form[dynamic]);
+                        validateErrors[dynamic] = message;
+                        flag = error;
+                    }
+                }
+            } else {
+                const { message, error } = Validate[dynamic](form[dynamic]);
+                validateErrors[dynamic] = message;
+                flag = error;
+            }
         });
 
         setErrors(validateErrors);
@@ -155,6 +205,8 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
             gender: user?.gender ? 'Male' : 'Female',
             birthday: user?.birthday ? moment(user?.birthday).format('yyyy-MM-D') : '',
             address: user?.address || '',
+            password: '',
+            newPassword: '',
         });
 
         setAvartar(user.avatar);
@@ -307,13 +359,23 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                             />
                             <DivTextfield
                                 propsInput={{
-                                    size: 'small',
+                                    name: 'password',
+                                    type: 'password',
+                                    onChange: handleChange,
+                                    onBlur: handleBlur,
+                                    value: form.password,
+                                    message: errors.password,
                                 }}
                                 label="Current Password (Skip if you don’t want to change the password)"
                             />
                             <DivTextfield
                                 propsInput={{
-                                    size: 'small',
+                                    name: 'newPassword',
+                                    type: 'password',
+                                    onChange: handleChange,
+                                    onBlur: handleBlur,
+                                    value: form.newPassword,
+                                    message: errors.newPassword,
                                 }}
                                 label="Confirm new password"
                             />

@@ -52,7 +52,6 @@ export const updateUser: ApiUpdateCurUser = async (data: DataRequestUpdateUser) 
             ...data,
             gender: data.gender === 'Male',
             avartar: data.avatar ? dataURLtoFile(data.avatar) : null,
-            birthday: moment(data.birthday).format('D/MM/yyyy'),
         },
     });
 

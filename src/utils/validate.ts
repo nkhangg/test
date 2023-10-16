@@ -153,6 +153,20 @@ const Validate = {
         return { message: '', error: false };
     },
 
+    newPassword(value: string, min = 6): ValidateType {
+        const valueTrim = value.trim();
+
+        if (valueTrim.length <= 0) return { message: "Password can't be blank ", error: true };
+
+        if (valueTrim.length < min)
+            return {
+                message: `Password must be longer than ${min} characters`,
+                error: true,
+            };
+
+        return { message: '', error: false };
+    },
+
     confirmPassword(value: string, password?: string): ValidateType {
         if (this.isBlank(value)) return { message: "Password Confirm can't be blank ", error: true };
 

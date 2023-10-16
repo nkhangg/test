@@ -67,6 +67,8 @@ export type ProfileType = {
     gender: string;
     birthday: string;
     address: string;
+    password: string;
+    newPassword: string;
 };
 
 export type DataRequestUpdateUser = {
@@ -77,6 +79,8 @@ export type DataRequestUpdateUser = {
     birthday: string;
     address: string;
     avatar?: string;
+    password: string;
+    newPassword: string;
 };
 
 export type SortType = string | null;
