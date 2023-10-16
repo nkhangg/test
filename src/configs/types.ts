@@ -14,6 +14,9 @@ import {
     ISalesOverviews,
     ISignDataResponse,
     IUser,
+    TypesAndBrands,
+    IDataFilterPage,
+    IDataRequestFilter,
 } from './interface';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
@@ -39,9 +42,13 @@ export type ApiBestSellerType = (page: number | undefined) => Promise<IBaseRespo
 
 export type ApiHistory = (page: number | undefined) => Promise<IBaseResponse<IOtherHistories>>;
 
+export type ApiTypesAndBrands = () => Promise<IBaseResponse<TypesAndBrands>>;
+
 export type ApiResetPassword = (email: string) => Promise<IBaseResponse<any>>;
 
 export type ApiGetCurUser = () => Promise<IBaseResponse<IProfile>>;
+
+export type ApiFilterPage = (data: IDataRequestFilter) => Promise<IBaseResponse<IDataFilterPage>>;
 
 export type ApiUpdateCurUser = (data: DataRequestUpdateUser) => Promise<IBaseResponse<IProfile>>;
 

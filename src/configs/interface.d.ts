@@ -247,3 +247,29 @@ export interface IOrderItem {
     quantity: number;
     total: number;
 }
+
+export interface IFilter {
+    id: string | number[];
+    name: string;
+}
+
+export interface TypesAndBrands {
+    types: IFilter[];
+    brands: IFilter[];
+}
+
+export interface IDataFilterPage {
+    filterProducts: FilterProduct[];
+    pages: number;
+}
+
+export interface IDataRequestFilter {
+    brand?: string;
+    stock?: boolean;
+    minPrice?: string;
+    maxPrice?: string;
+    typeName?: string;
+    page?: string;
+    sort?: string;
+    productName?: string;
+}

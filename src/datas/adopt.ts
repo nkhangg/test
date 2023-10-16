@@ -1,24 +1,20 @@
-import { IPet } from '@/configs/interface';
+import { IFilter, IPet } from '@/configs/interface';
 
 export const dataTakeAction = {
     categories: [
         {
-            value: '',
-            title: 'all',
+            id: 'dogs',
+            name: 'dogs',
         },
         {
-            value: 'dogs',
-            title: 'dogs',
+            id: 'cats',
+            name: 'cats',
         },
         {
-            value: 'cats',
-            title: 'cats',
+            id: 'others',
+            name: 'others',
         },
-        {
-            value: 'others',
-            title: 'others',
-        },
-    ],
+    ] as IFilter[],
     sorts: [
         {
             value: '',
