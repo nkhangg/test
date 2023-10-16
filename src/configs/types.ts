@@ -1,7 +1,6 @@
 import { store } from '@/redux/store';
 
 import {
-    IBaseResponse,
     IOtherHistories,
     IApiBestSeller,
     IApiTakeAction,

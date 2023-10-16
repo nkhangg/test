@@ -2,7 +2,7 @@
 import { WrapperAnimation } from '@/components';
 import { IOtherHistory } from '@/configs/interface';
 import { links } from '@/datas/links';
-import { stringToUrl, toCurrency } from '@/utils/format';
+import { stringToUrl, toCurrency, toGam } from '@/utils/format';
 import { faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
@@ -49,7 +49,7 @@ export default function OtherHistoryItem({ data }: IOtherHistoryItemProps) {
                                     <div className="flex items-center text-sm ">
                                         <span className="">{item.brand}</span>
                                         <span className="h-5 bg-[#666666] w-[1px] mx-3"></span>
-                                        <span>{item.size}</span>
+                                        <span>{toGam(item.size as number)}</span>
                                     </div>
                                     <p>{toCurrency(item.price * item.quantity)}</p>
                                 </div>

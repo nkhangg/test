@@ -30,7 +30,7 @@ export default function OrderItem({ data, onDeleteItem }: IOrderItemProps) {
                         <FontAwesomeIcon onClick={onDeleteItem} className="text-[#999999] cursor-pointer hover:text-red-primary transition-all ease-linear" icon={faTrash} />
                     </div>
                     <div className="flex items-center gap-4 mt-2 text-xs md:text-sm">
-                        <span>{data.branch}</span>
+                        <span>{data.brand}</span>
                         <span className="h-[18px] w-[1px] bg-[#999999]"></span>
                         <span>{toGam(data.size as number)}</span>
                     </div>

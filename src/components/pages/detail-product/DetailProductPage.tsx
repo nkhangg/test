@@ -99,7 +99,7 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
             dispatch(
                 addPayment({
                     id: params.id,
-                    branch: dataDetailProductPage?.brand || '',
+                    brand: dataDetailProductPage?.brand || '',
                     image: dataDetailProductPage?.image || '',
                     name: dataDetailProductPage?.name || '',
                     price: dataDetailProductPage?.sizeAndPrice[indexSizeAndPrice].price,

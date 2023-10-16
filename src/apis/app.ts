@@ -1,4 +1,4 @@
-import { ApiBestSellerType, ApiGetUsers, ApiHistory, ApiLogin, ApiTakeActionType } from '@/configs/types';
+import { ApiBestSellerType, ApiGetUsers, ApiHistory, ApiLogin, ApiPayment, ApiTakeActionType } from '@/configs/types';
 
 import axios from '../configs/axios';
 import { setTokenToCookie } from '@/utils/cookie';
@@ -53,7 +53,6 @@ export const otherHistory: ApiHistory = async (page: number | undefined) => {
 
     return res?.data;
 };
-
 
 export const paymentsApi: ApiPayment = async (data: IDataFormPayment) => {
     const res = await axios({
