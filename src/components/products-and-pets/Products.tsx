@@ -31,7 +31,7 @@ export default function Products({ data, title, pagination, totalPage, loading, 
                             [styles['products-hover']]: true,
                         })}
                     >
-                        <Link className="text-lg hover:underline" href={links.products}>
+                        <Link className="text-lg hover:underline" href={links.products + 'products'}>
                             See all
                         </Link>
 

@@ -1,5 +1,5 @@
 export const links = {
     pet: '/pet/',
     produt: '/product/',
-    products: '',
+    products: '/take-action/',
 };

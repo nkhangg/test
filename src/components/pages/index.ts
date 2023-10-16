@@ -22,3 +22,4 @@ export { default as ProductManagePage } from './admin/products/ProductManagePage
 export { default as PaymentPage } from './payments/PaymentPage';
 export { default as PaymentItem } from './payments/PaymentItem';
 export { default as PaymentCard } from './payments/PaymentCard';
+export { default as ProductFilterPage } from './product-filter/ProductFilterPage';

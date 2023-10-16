@@ -1,8 +1,8 @@
-import { ApiBestSellerType, ApiGetUsers, ApiHistory, ApiLogin, ApiPayment, ApiTakeActionType } from '@/configs/types';
+import { ApiBestSellerType, ApiFilterPage, ApiGetUsers, ApiHistory, ApiLogin, ApiPayment, ApiTakeActionType, ApiTypesAndBrands } from '@/configs/types';
 
 import axios from '../configs/axios';
 import { setTokenToCookie } from '@/utils/cookie';
-import { IDataFormPayment } from '@/configs/interface';
+import { IDataFormPayment, IDataRequestFilter } from '@/configs/interface';
 
 export const getUsers: ApiGetUsers = async () => {
     const res = await axios({
@@ -61,6 +61,29 @@ export const paymentsApi: ApiPayment = async (data: IDataFormPayment) => {
         data: {
             ...data,
         },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const typesAndBrands: ApiTypesAndBrands = async () => {
+    const res = await axios({
+        method: 'GET',
+        url: 'product/types-brands',
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const filterPage: ApiFilterPage = async (data: IDataRequestFilter) => {
+    const res = await axios({
+        method: 'GET',
+        url: 'filter-product/',
+        params: data,
     });
 
     if (!res) return null;
