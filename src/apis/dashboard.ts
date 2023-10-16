@@ -1,5 +1,5 @@
 import axios from '@/configs/axios';
-import { ApiReportType, ApiRevenueDateType, ApiSlaesOverviewType } from '@/configs/types';
+import { ApiReportType, ApiRevenueDateType, ApiSalesOverviewType } from '@/configs/types';
 
 export const dailyReport: ApiReportType = async () => {
     const res = await axios({
@@ -12,7 +12,7 @@ export const dailyReport: ApiReportType = async () => {
     return res?.data;
 };
 
-export const salesOverview: ApiSlaesOverviewType = async (year: string) => {
+export const salesOverview: ApiSalesOverviewType = async (year: string) => {
     const res = await axios({
         method: 'GET',
         url: 'admin/report/sales-overview',

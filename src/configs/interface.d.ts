@@ -133,11 +133,11 @@ export interface IBaseResponse<T> {
     data: T;
 }
 
-export interface ApiTakeAction {
+export interface IApiTakeAction {
     newArrivals: IProduct[];
 }
 
-export interface ApiBestSeller {
+export interface IApiBestSeller {
     data: IProduct[];
     pages: number;
 }
@@ -225,4 +225,25 @@ export interface IRepository {
     quantity: number;
     inPrice: number;
     outPrice: number;
+}
+
+export interface IDataFormPayment {
+    fullname: string;
+    address: string;
+    phone: string;
+    shippingFee: number;
+    orderProducts: OrderProduct[];
+}
+
+export interface OrderProduct {
+    productId: string;
+    size: number;
+    quantity: number;
+}
+
+export interface IOrderItem {
+    id: number;
+    size: number;
+    quantity: number;
+    total: number;
 }

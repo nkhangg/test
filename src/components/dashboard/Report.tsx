@@ -19,11 +19,11 @@ export default function Report(props: IReportProps) {
 
     return (
         <DashboardCard title="Report">
-            <Grid container spacing={2}>
+            <Grid container spacing={5}>
                 <Grid item xs={12} md={12} lg={4}>
                     <LabelCard
                         Icon={ShoppingCart}
-                        data={{ ...dataDashboard?.reports.dailyOrders, value: toCurrency(dataDashboard?.reports.dailyOrders.value || 0) }}
+                        data={{ ...dataDashboard?.reports.dailyOrders, value: dataDashboard?.reports.dailyOrders.value + ' orders' }}
                         title="Daily Orders"
                     />
                 </Grid>
@@ -42,7 +42,7 @@ export default function Report(props: IReportProps) {
                         underlineColor="#FF7A00"
                         showPersnet={false}
                         data={{
-                            value: dataDashboard?.reports.users.value || 0,
+                            value: (dataDashboard?.reports.users.value || 0) + ' users',
                         }}
                         title="Users"
                     />
