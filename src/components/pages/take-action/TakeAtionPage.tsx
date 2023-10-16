@@ -5,7 +5,7 @@ import { BoxTitle, Product, ProductRecent, ProductRecents, Products } from '@/co
 import { takeActionPageData } from '@/datas/take-action';
 import { notFound } from 'next/navigation';
 import { takeAction } from '@/apis/app';
-import { ApiTakeAction, IBaseResponse } from '@/configs/interface';
+import { IApiTakeAction, IBaseResponse } from '@/configs/interface';
 import LogicalTakeAction from './LogicalTakeAction';
 
 async function getData() {
@@ -23,7 +23,7 @@ async function getData() {
             errors: false,
             message: 'Use default data',
             status: 200,
-        } as IBaseResponse<ApiTakeAction>;
+        } as IBaseResponse<IApiTakeAction>;
 
         // notFound();
     }
