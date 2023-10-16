@@ -25,7 +25,7 @@ export default function Product({ data }: IProductProps) {
                     <span>{capitalize(data.brand)}</span>
                     <p>{toGam(data.size[0] as number)}</p>
                 </div>
-                <Link href={links.produt + `${data.id}/${stringToUrl(data.name)}`} className="text-1xl line-clamp-2 hover:underline cursor-pointer mt-2 mb-1">
+                <Link href={links.produt + `${data.id}/${stringToUrl(data.name)}`} className="text-1xl line-clamp-1 hover:underline cursor-pointer mt-2 mb-1">
                     {data.name}
                 </Link>
                 <Rating

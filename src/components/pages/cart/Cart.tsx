@@ -50,7 +50,7 @@ function Cart({ data, index }: ICartProps) {
             <div className="flex-1 ml-8 flex flex-col gap-5">
                 <h2 className="text-sm md:text-lg line-clamp-1">{data.name}</h2>
                 <div className="flex items-center text-xs md:text-sm">
-                    <span className="">{data.branch}</span>
+                    <span className="">{data.brand}</span>
                     <span className="h-5 bg-[#666666] w-[1px] mx-3"></span>
                     <span>{toGam(data.size as number)}</span>
                 </div>

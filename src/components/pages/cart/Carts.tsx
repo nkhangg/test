@@ -78,7 +78,7 @@ export default function Carts({ data, onTotal }: ICartsProps) {
                 </div>
             </div>
             {cartUser.map((cart, index) => {
-                return <Cart index={index} key={cart.id + cart.size.toString() + cart.branch} data={cart} />;
+                return <Cart index={index} key={cart.id + cart.size.toString() + cart.brand} data={cart} />;
             })}
         </>
     );

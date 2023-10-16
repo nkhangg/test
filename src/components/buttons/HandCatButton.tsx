@@ -1,21 +1,23 @@
 import styles from './styles/hand-cat-button.module.css';
 import React, { MouseEventHandler, ReactNode } from 'react';
 import classNames from 'classnames';
+import { CustomButton } from '..';
 
 export interface IHandCatButtonProps {
     size?: string;
     title: ReactNode;
     disable?: boolean;
     active?: boolean;
-    onClick?: MouseEventHandler<HTMLButtonElement>;
+    onClick?: React.MouseEventHandler<HTMLButtonElement> & React.MouseEventHandler<HTMLAnchorElement>;
+    href?: string;
 }
 
-export default function HandCatButton({ size, title, disable, active, onClick }: IHandCatButtonProps) {
+export default function HandCatButton({ size, title, disable, active, href, onClick }: IHandCatButtonProps) {
     return (
-        <button
-            disabled={disable}
+        <CustomButton
             onClick={disable ? undefined : onClick}
-            style={size ? ({ '--height': size } as React.CSSProperties) : undefined}
+            disable={disable}
+            style={size ? ({ '--height': size, display: 'block' } as React.CSSProperties) : undefined}
             className={classNames('', {
                 [styles['hand-cat-btn']]: true,
                 [styles['active']]: active,
@@ -29,6 +31,6 @@ export default function HandCatButton({ size, title, disable, active, onClick }:
             >
                 {title}
             </span>
-        </button>
+        </CustomButton>
     );
 }

@@ -1,4 +1,4 @@
-import { ApiGetCurUser, ApiLogin, ApiRegister, ApiUpdateCurUser, DataRequestUpdateUser } from '@/configs/types';
+import { ApiGetCurUser, ApiLogin, ApiRegister, ApiResetPassword, ApiUpdateCurUser, DataRequestUpdateUser } from '@/configs/types';
 import axios from '../configs/axios';
 import { setTokenToCookie } from '@/utils/cookie';
 import { IProfile } from '@/configs/interface';
@@ -53,6 +53,20 @@ export const updateUser: ApiUpdateCurUser = async (data: DataRequestUpdateUser) 
             gender: data.gender === 'Male',
             avartar: data.avatar ? dataURLtoFile(data.avatar) : null,
             birthday: moment(data.birthday).format('D/MM/yyyy'),
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const resetPassword: ApiResetPassword = async (email: string) => {
+    const res = await axios({
+        method: 'POST',
+        url: 'forgot-password',
+        data: {
+            email,
         },
     });
 

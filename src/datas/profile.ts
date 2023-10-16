@@ -15,7 +15,7 @@ export const profileUiData = {
         {
             title: 'LOG OUT',
             icon: faPersonRunning,
-            link: '/logout',
+            link: '/log-out',
         },
     ],
 };

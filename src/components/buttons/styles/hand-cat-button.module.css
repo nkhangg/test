@@ -2,7 +2,7 @@
     --height: 40px;
     border: none;
     outline: none;
-    display: block;
+    display: 'block';
     padding-top: calc(var(--height) * (40 / 100));
     background: url('https://cuutrodongvatdanang.com/theme/images/paw.png') no-repeat center;
     background-size: 0%;

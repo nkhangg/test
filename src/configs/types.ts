@@ -1,6 +1,18 @@
 import { store } from '@/redux/store';
 
-import { ApiBestSeller, ApiTakeAction, IBaseResponse, IDetailProduct, IProductRevenue, IProfile, IReports, ISalesOverviews, ISignDataResponse, IUser } from './interface';
+import {
+    ApiBestSeller,
+    ApiTakeAction,
+    IBaseResponse,
+    IDetailProduct,
+    IOtherHistories,
+    IProductRevenue,
+    IProfile,
+    IReports,
+    ISalesOverviews,
+    ISignDataResponse,
+    IUser,
+} from './interface';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
 export type ApiGetUsers = () => Promise<IUser[]>;
@@ -20,6 +32,10 @@ export type ApiSlaesOverviewType = (year: string) => Promise<IBaseResponse<ISale
 export type ApiRevenueDateType = (dates: { start?: string; end?: string }) => Promise<IBaseResponse<IProductRevenue>>;
 
 export type ApiBestSellerType = (page: number | undefined) => Promise<IBaseResponse<ApiBestSeller>>;
+
+export type ApiHistory = (page: number | undefined) => Promise<IBaseResponse<IOtherHistories>>;
+
+export type ApiResetPassword = (email: string) => Promise<IBaseResponse<any>>;
 
 export type ApiGetCurUser = () => Promise<IBaseResponse<IProfile>>;
 

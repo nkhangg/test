@@ -38,16 +38,16 @@ export default function OtherHistoryItem({ data }: IOtherHistoryItemProps) {
             <div className="pt-10 flex flex-col gap-3  px-5 border border-gray-primary rounded-b-lg border-t-0">
                 {data.products.map((item) => {
                     return (
-                        <div key={item.id} className="flex items-center justify-between border-gray-primary pb-3 border-b ">
+                        <div key={item.id + (item.size + '')} className="flex items-center justify-between border-gray-primary pb-3 border-b ">
                             <div className=" w-full flex gap-8">
                                 <div className=" w-[100px] h-[100px] md:w-[10%]">
-                                    <img className="w-full h-full object-contain" loading="lazy" src={item.image} alt={item.image} />
+                                    <img className="w-full h-full object-cover" loading="lazy" src={item.image} alt={item.image} />
                                 </div>
                                 <div className="flex flex-col gap-[10px]">
                                     <h2 className="text-sm md:text-1xl">{item.name}</h2>
 
                                     <div className="flex items-center text-sm ">
-                                        <span className="">{item.branch}</span>
+                                        <span className="">{item.brand}</span>
                                         <span className="h-5 bg-[#666666] w-[1px] mx-3"></span>
                                         <span>{item.size}</span>
                                     </div>
@@ -72,9 +72,9 @@ export default function OtherHistoryItem({ data }: IOtherHistoryItemProps) {
                 })}
 
                 <div className=" py-4 flex items-center text-sm gap-[10px] rounded-lg">
-                    {data.state === 'buy' && <FontAwesomeIcon color="#65A30D" icon={faCheckCircle} />}
-                    {data.state === 'cancel' && <FontAwesomeIcon color="#EF4444" icon={faCircleXmark} />}
-                    <p>{data.stateMessage}</p>
+                    {data.state && (data.state === 'buy' || (data.state.toLocaleLowerCase() === 'delivered' && <FontAwesomeIcon color="#65A30D" icon={faCheckCircle} />))}
+                    {(!data.state || data.state === 'cancel') && <FontAwesomeIcon color="#EF4444" icon={faCircleXmark} />}
+                    <p>{data.stateMessage || 'Delivery on October 2, 2023'}</p>
                 </div>
             </div>
         </div>

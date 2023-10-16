@@ -58,6 +58,7 @@ export { default as Pagination } from './pagination/Pagination';
 
 // loadings
 export { default as LoadingPrimary } from './common/loadings/LoadingPrimary';
+export { default as LoadingSecondary } from './common/loadings/LoadingSecondary';
 
 // notifycation
 export { default as Notifycation } from './notifycations/Notifycation';
