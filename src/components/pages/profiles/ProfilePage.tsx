@@ -166,7 +166,7 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
         <BoxTitle locationTitle="left" title="MY ACCOUNT">
             <Grid container spacing={'10px'} className="min-h-[518px]">
                 <Grid item xs={12} md={4} lg={3}>
-                    <div className="py-[25px] px-9 w-full h-full bg-[#f2f2f2] rounded">
+                    <div className="py-[25px] px-9 w-full h-full bg-[#f1f1f1] rounded">
                         <div className="flex items-center gap-2 mb-[38px]">
                             <div
                                 className={classNames('relative rounded-full overflow-hidden', {
@@ -222,8 +222,8 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                     </div>
                 </Grid>
                 <Grid item xs={12} md={8} lg={9}>
-                    <form onSubmit={handleSubmit} className="px-14 py-[60px] w-full h-full bg-[#f2f2f2] rounded flex flex-col justify-between">
-                        <div className="flex flex-col justify-between gap-[22px]">
+                    <form onSubmit={handleSubmit} className="px-14 py-[60px] w-full h-full bg-[#f1f1f1] rounded flex flex-col justify-between">
+                        <div className="flex flex-col justify-between gap-[40px]">
                             <DivTextfield
                                 propsInput={{
                                     name: 'fullname',
@@ -236,7 +236,7 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                             />
 
                             <div className="flex items-center gap-[22px] lg:gap-12 flex-col md:flex-row">
-                                <div className="flex items-center flex-col w-full gap-[22px]">
+                                <div className="flex items-center flex-col w-full gap-[40px]">
                                     <DivTextfield
                                         propsInput={{
                                             disabled: true,
@@ -270,7 +270,7 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                                         label="Gender"
                                     />
                                 </div>
-                                <div className="flex items-center flex-col w-full gap-[22px]">
+                                <div className="flex items-center flex-col w-full gap-[40px]">
                                     <DivTextfield
                                         propsInput={{
                                             name: 'phone',
@@ -305,8 +305,18 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                                 }}
                                 label="Address"
                             />
-                            {/* <DivTextfield name="password" label="Current Password (Skip if you don’t want to change the password)" type="password" />
-                            <DivTextfield name="confirm-password" label="Confirm new password" type="password" /> */}
+                            <DivTextfield
+                                propsInput={{
+                                    size: 'small',
+                                }}
+                                label="Current Password (Skip if you don’t want to change the password)"
+                            />
+                            <DivTextfield
+                                propsInput={{
+                                    size: 'small',
+                                }}
+                                label="Confirm new password"
+                            />
                         </div>
 
                         <div className="flex items-center justify-center w-full">

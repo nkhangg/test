@@ -1,6 +1,8 @@
 import { store } from '@/redux/store';
 
 import {
+    IBaseResponse,
+    IOtherHistories,
     IApiBestSeller,
     IApiTakeAction,
     IBaseResponse,
@@ -35,6 +37,10 @@ export type ApiRevenueDateType = (dates: { start?: string; end?: string }) => Pr
 export type ApiPayment = (data: IDataFormPayment) => Promise<IBaseResponse<IOrderItem[]>>;
 
 export type ApiBestSellerType = (page: number | undefined) => Promise<IBaseResponse<IApiBestSeller>>;
+
+export type ApiHistory = (page: number | undefined) => Promise<IBaseResponse<IOtherHistories>>;
+
+export type ApiResetPassword = (email: string) => Promise<IBaseResponse<any>>;
 
 export type ApiGetCurUser = () => Promise<IBaseResponse<IProfile>>;
 

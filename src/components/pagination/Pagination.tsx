@@ -4,6 +4,8 @@ import { HandCatButton } from '..';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 export interface IPaginationProps {
     pages: number;
@@ -12,13 +14,18 @@ export interface IPaginationProps {
     minPageLimit?: number;
     onPage?: (page: number) => void;
     py?: string;
+    baseHref?: string;
 }
 
-function Pagination({ pages, pageLimit = 4, maxPageLimit = 4, minPageLimit = 0, py = 'py-[70px]', onPage }: IPaginationProps) {
+function Pagination({ pages, pageLimit = 4, maxPageLimit = 4, minPageLimit = 0, py = 'py-[70px]', baseHref, onPage }: IPaginationProps) {
     const _height = '48px';
 
+    const param = useSearchParams();
+
+    const page = param.get('page');
+
     const [currentPage, setcurrentPage] = useState(1);
-    const [itemsPerPage, setitemsPerPage] = useState(4);
+    const router = useRouter();
 
     const [pageNumberLimit, setpageNumberLimit] = useState(pageLimit);
     const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(maxPageLimit);
@@ -40,6 +47,11 @@ function Pagination({ pages, pageLimit = 4, maxPageLimit = 4, minPageLimit = 0, 
     const handleNextbtn = () => {
         setcurrentPage(currentPage + 1);
 
+        if (baseHref) {
+            console.log('index herer');
+            router.push(baseHref + (currentPage + 1));
+        }
+
         if (currentPage + 1 > maxPageNumberLimit) {
             setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
             setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
@@ -48,6 +60,11 @@ function Pagination({ pages, pageLimit = 4, maxPageLimit = 4, minPageLimit = 0, 
 
     const handlePrevbtn = () => {
         setcurrentPage(currentPage - 1);
+
+        if (baseHref) {
+            console.log('index herer');
+            router.push(baseHref + (currentPage - 1));
+        }
 
         if ((currentPage - 1) % pageNumberLimit == 0) {
             setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
@@ -65,9 +82,23 @@ function Pagination({ pages, pageLimit = 4, maxPageLimit = 4, minPageLimit = 0, 
         pageDecrementBtn = <HandCatButton size={_height} onClick={handlePrevbtn} title={'...'} />;
     }
 
+    const getActive = (num: number) => {
+        if (baseHref) {
+            if (!page && num === 1) return true;
+
+            return page ? parseInt(page as string) === num : false;
+        }
+
+        return currentPage === num;
+    };
+
     const renderPageNumbers = pagesArr.map((number) => {
         if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
-            return <HandCatButton key={number} size={_height} onClick={(e) => handleClick(e, number)} active={currentPage === number} title={number} />;
+            return (
+                <Link href={baseHref ? baseHref + number : ''} key={number}>
+                    <HandCatButton size={_height} onClick={(e) => handleClick(e, number)} active={getActive(number)} title={number} />
+                </Link>
+            );
         } else {
             return null;
         }

@@ -100,7 +100,7 @@ export interface ICart {
     id: string | number;
     image: string;
     name: string;
-    branch: string;
+    brand: string;
     size: string | number;
     price: number;
     quantity: number;
@@ -129,7 +129,7 @@ export interface IStatisDashboard {
 export interface IBaseResponse<T> {
     message: string;
     status: number;
-    errors: boolean;
+    errors: boolean | {};
     data: T;
 }
 
@@ -147,14 +147,14 @@ export interface IOtherHistory {
     id: string | number;
     datePlace: string | number;
     total: number;
-    state: 'buy' | 'cancel'; // vd buy | cancel
+    state: 'buy' | 'cancel' | 'Delivered'; // vd buy | cancel
     stateMessage: string; //vd: Delivery on October 1, 2023
     products: ICart[];
 }
 
 export interface IOtherHistories {
     data: IOtherHistory[];
-    paginationTotal: 10; // số lượng trang ( vd: phân được 10 trang )
+    pages: number; // số lượng trang ( vd: phân được 10 trang )
 }
 
 export interface IDashboard {
