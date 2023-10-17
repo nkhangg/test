@@ -273,3 +273,27 @@ export interface IDataRequestFilter {
     sort?: string;
     productName?: string;
 }
+
+export interface IProductManageList {
+    id: string | number;
+    image: string;
+    name: string;
+    brand: string;
+    type: string;
+    repo: IRepository[];
+}
+
+export interface PagiantionResponse<T> {
+    data: T[];
+    pages: number;
+}
+
+export type DataProductType = {
+    id: string;
+    name: string;
+    type: string;
+    brand: string;
+    images: File[] | { id: string; image: string }[];
+    repo: RepoType[];
+    description: string;
+};

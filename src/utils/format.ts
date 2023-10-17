@@ -68,6 +68,19 @@ export const fileToUrl = (file: File, callback?: (url: string) => void) => {
     return urlObj;
 };
 
+export const toDataURL = (url: string) =>
+    fetch(url)
+        .then((response) => response.blob())
+        .then(
+            (blob) =>
+                new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(blob);
+                }),
+        );
+
 export function dataURLtoFile(dataurl: string) {
     let arr = dataurl.split(',');
     let afterMine = arr[0].match(/:(.*?);/);

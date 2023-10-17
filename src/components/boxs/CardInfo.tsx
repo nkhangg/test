@@ -1,16 +1,20 @@
-import { Box, Card, CardContent, Typography } from '@mui/material';
+import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 import React, { ReactNode } from 'react';
 
 export interface CardInfoProps {
     children?: ReactNode;
     title?: string;
+    action?: ReactNode;
 }
 
-export default function CardInfo({ children, title }: CardInfoProps) {
+export default function CardInfo({ children, title, action }: CardInfoProps) {
     return (
         <Card elevation={0} variant={undefined}>
             <CardContent>
-                {title && <Typography>{title}</Typography>}
+                <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+                    {title && <Typography>{title}</Typography>}
+                    {action}
+                </Stack>
                 <Box mt={3}>{children}</Box>
             </CardContent>
         </Card>

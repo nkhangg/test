@@ -11,7 +11,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { pushNoty } from '@/redux/slice/appSlice';
 import { IDataRequestFilter } from '@/configs/interface';
-import { useDebounce } from '@/hooks';
 
 export interface IProductFilterPageProps {}
 
@@ -28,7 +27,7 @@ export default function ProductFilterPage(props: IProductFilterPageProps) {
     const router = useRouter();
 
     const typesAndBrandsData = useQuery({
-        queryKey: ['productFilterPage/typeandbrand'],
+        queryKey: ['typeandbrand'],
         queryFn: () => typesAndBrands(),
     });
 

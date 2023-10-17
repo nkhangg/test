@@ -6,15 +6,15 @@ import React, { useEffect, useState } from 'react';
 export interface IComfirmProps {
     open: boolean;
     title: string;
-    setOpen: (value: boolean) => void;
-    onComfirm?: (value: 'ok' | 'cancel') => void;
+    setOpen: (value: { open: boolean; comfirm: 'ok' | 'cancel' }) => void;
+    onComfirm?: (value: { open: boolean; comfirm: 'ok' | 'cancel' }) => void;
 }
 
 export default function Comfirm({ title, open, setOpen, onComfirm }: IComfirmProps) {
-    const [confirm, setConfirm] = useState<'ok' | 'cancel'>('cancel');
+    const [confirm, setConfirm] = useState<{ open: boolean; comfirm: 'ok' | 'cancel' }>({ open: false, comfirm: 'cancel' });
 
     const handleClose = () => {
-        setOpen(false);
+        setOpen({ ...confirm, open: false });
     };
 
     useEffect(() => {
@@ -33,7 +33,7 @@ export default function Comfirm({ title, open, setOpen, onComfirm }: IComfirmPro
                 <DialogActions>
                     <Button
                         onClick={() => {
-                            setConfirm('cancel');
+                            setConfirm({ ...confirm, comfirm: 'cancel' });
                             handleClose();
                         }}
                     >
@@ -41,7 +41,7 @@ export default function Comfirm({ title, open, setOpen, onComfirm }: IComfirmPro
                     </Button>
                     <Button
                         onClick={() => {
-                            setConfirm('ok');
+                            setConfirm({ ...confirm, comfirm: 'ok' });
                             handleClose();
                         }}
                     >

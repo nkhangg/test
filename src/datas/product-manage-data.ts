@@ -1,26 +1,26 @@
-import { IRepository } from '@/configs/interface';
+import { IProductManageList, IRepository } from '@/configs/interface';
 import { toGam } from '@/utils/format';
 
 export const productManageData = {
     types: [
         {
-            id: 'BF001',
+            id: 'BF',
             name: 'Bird food',
         },
         {
-            id: 'CF001',
+            id: 'CF',
             name: 'Cat food',
         },
         {
-            id: 'DF001',
+            id: 'DF',
             name: 'Dog food',
         },
         {
-            id: 'MF001',
+            id: 'MF',
             name: 'Mouse food',
         },
         {
-            id: 'PA001',
+            id: 'PA',
             name: 'Pet accessories',
         },
     ],
@@ -30,36 +30,27 @@ export const productManageData = {
     ],
     sizes: [
         {
-            id: 100,
+            id: '100',
             name: toGam(100),
         },
         {
-            id: 200,
+            id: '200',
             name: toGam(200),
         },
         {
-            id: 300,
+            id: '300',
             name: toGam(300),
         },
         {
-            id: 400,
+            id: '400',
             name: toGam(400),
         },
         {
-            id: 1000,
+            id: '1000',
             name: toGam(1000),
         },
     ],
 };
-
-interface IProductManageList {
-    id: string | number;
-    image: string;
-    name: string;
-    brand: string;
-    type: string;
-    repo: IRepository[];
-}
 
 export const productManageListData = [
     {

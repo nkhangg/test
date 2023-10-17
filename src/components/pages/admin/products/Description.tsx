@@ -17,11 +17,16 @@ const ReactQuill = dynamic(
     { ssr: false },
 );
 export interface IDescriptionProps {
+    inidata?: string;
     onValues?: (value: string) => void;
 }
 
-function Description({ onValues }: IDescriptionProps) {
-    const [value, setValue] = useState('');
+function Description({ inidata, onValues }: IDescriptionProps) {
+    const [value, setValue] = useState(inidata || '');
+
+    useEffect(() => {
+        setValue(inidata || '');
+    }, [inidata]);
 
     useEffect(() => {
         if (!onValues) return;

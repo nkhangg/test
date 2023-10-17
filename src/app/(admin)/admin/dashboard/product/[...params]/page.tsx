@@ -1,4 +1,4 @@
-import { CreateOrUpdateProductPage } from '@/components/pages';
+import { UpdateProductPage } from '@/components/pages';
 import { ModeType } from '@/configs/types';
 import * as React from 'react';
 
@@ -11,5 +11,5 @@ export interface ICreateOrUpdateProductProps {
 export default function CreateOrUpdateProduct({ params }: ICreateOrUpdateProductProps) {
     console.log(params.params);
 
-    return <CreateOrUpdateProductPage mode={params.params[0] as ModeType} />;
+    return <UpdateProductPage idProduct={params.params[0] as ModeType} />;
 }

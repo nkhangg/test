@@ -2,6 +2,7 @@
 import { Box, Button, MenuItem, Stack, TextFieldProps, Typography } from '@mui/material';
 import React, { ChangeEvent, useRef, useState } from 'react';
 import { TextField } from '..';
+import { IFilter } from '@/configs/interface';
 
 export interface IDynamicInputProps {
     title: string;
@@ -9,7 +10,7 @@ export interface IDynamicInputProps {
     propsInput?: TextFieldProps & {
         message?: string;
     };
-    dataSelect: { id: string | number; name: string }[];
+    dataSelect: IFilter[];
 }
 
 export default function DynamicInput({ title, type, propsInput, dataSelect }: IDynamicInputProps) {
@@ -42,7 +43,7 @@ export default function DynamicInput({ title, type, propsInput, dataSelect }: ID
                     <TextField select {...propsInput} fullWidth size="small">
                         {dataSelect.map((item, index) => {
                             return (
-                                <MenuItem key={item.id} value={item.id}>
+                                <MenuItem key={item.name} value={typeof item.id === 'object' ? item.id.join() : item.id}>
                                     {item.name}
                                 </MenuItem>
                             );
