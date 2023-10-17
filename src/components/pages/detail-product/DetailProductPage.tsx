@@ -161,7 +161,11 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
                                 Manufacturer: <b>{dataDetailProductPage?.brand}</b>
                             </span>
 
-                            <p className="line-clamp-6 mt-5 mb-7 text-1xl leading-8 text-[#374151] text-justify">{dataDetailProductPage?.desciption}</p>
+                            {/* <p className="line-clamp-6 mt-5 mb-7 text-1xl leading-8 text-[#374151] text-justify"  >{dataDetailProductPage?.desciption}</p> */}
+                            <p
+                                dangerouslySetInnerHTML={{ __html: dataDetailProductPage?.desciption || '' }}
+                                className="line-clamp-6 mt-5 mb-7 text-1xl leading-8 text-[#374151] text-justify"
+                            ></p>
 
                             <Sizes
                                 onSize={(value: number | string, index?: number) => {

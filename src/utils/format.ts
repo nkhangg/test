@@ -43,13 +43,17 @@ export function toAbbrevNumber(n: number) {
 }
 
 export function capitalize(value: string) {
-    const words = value.split(' ');
+    if (value.length < 1) return value;
 
-    return words
-        .map((word) => {
-            return word[0].toUpperCase() + word.substring(1);
-        })
-        .join(' ');
+    return value;
+
+    // const words = value.split(' ');
+
+    // return words
+    //     .map((word) => {
+    //         return word[0].toUpperCase() + word.substring(1);
+    //     })
+    //     .join(' ');
 }
 
 export const toGam = (value: number) => {
@@ -67,6 +71,19 @@ export const fileToUrl = (file: File, callback?: (url: string) => void) => {
     }
     return urlObj;
 };
+
+export const toDataURL = (url: string) =>
+    fetch(url)
+        .then((response) => response.blob())
+        .then(
+            (blob) =>
+                new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(blob);
+                }),
+        );
 
 export function dataURLtoFile(dataurl: string) {
     let arr = dataurl.split(',');

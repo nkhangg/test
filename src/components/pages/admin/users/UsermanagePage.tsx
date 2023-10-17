@@ -1,89 +1,64 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
-import React, { useState } from 'react';
-import {
-    Avatar,
-    Box,
-    Button,
-    Dialog,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Grid,
-    Skeleton,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    Typography,
-} from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
-import Tippy from '@tippyjs/react/headless';
-import TotipRepository from './TotipRepository';
-import { productManageListData } from '@/datas/product-manage-data';
-import { Comfirm, LoadingPrimary, Pagination, SekeletonTableItems } from '@/components';
-import Link from 'next/link';
+import { deleteUser, usersManage } from '@/apis/admin/user';
+import { Comfirm, Pagination, SekeletonTableItems } from '@/components';
 import { DashboardCard } from '@/components/dashboard';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
-import { deleteProduct, productManage } from '@/apis/admin/product';
+import { links } from '@/datas/links';
+import { productManageListData } from '@/datas/product-manage-data';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { pushNoty } from '@/redux/slice/appSlice';
-import { IRepository } from '@/configs/interface';
-import { links } from '@/datas/links';
-export interface IProductManagePageProps {}
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Avatar, Box, Button, Grid, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useState } from 'react';
 
-const dataHead = ['No', 'Id', 'Image', 'Name', 'Brand', 'Type', 'Total Repository'];
+const listHead = ['No', 'Avartar', 'Username', 'Fullname', 'Email', 'Gender', 'Phone', 'Role'];
 
-export default function ProductManagePage(props: IProductManagePageProps) {
-    const router = useRouter();
+export interface IUserManagePageProps {}
+
+export default function UserManagePage(props: IUserManagePageProps) {
+    const searchParam = useSearchParams();
+    const prevPage = searchParam.get('page');
+    const page = prevPage ? parseInt(prevPage) - 1 : 0;
+    const baseUrl = links.admin + 'users?page=';
 
     const [openComfirm, setOpenComfirm] = useState({ open: false, comfirm: 'cancel' });
     const [loading, setLoading] = useState(false);
 
     const [idDelete, setIdDelete] = useState('');
-
-    const searchParams = useSearchParams();
-    const dispath = useAppDispatch();
-
-    const page = searchParams.get('page');
+    const router = useRouter();
+    const dispatch = useAppDispatch();
 
     const { data, isLoading, error, refetch } = useQuery({
-        queryKey: ['products-manage', page],
-        queryFn: () => productManage(page ? parseInt(page) - 1 : 0),
+        queryKey: ['userManagePage/users', page],
+        queryFn: () => usersManage(page),
     });
 
     if (error) {
-        dispath(
+        dispatch(
             pushNoty({
-                title: "Something went wrong !, Can't get data",
+                title: `Something went wrong. Can't get data !`,
                 open: true,
                 type: 'error',
             }),
         );
+
         return;
     }
 
-    const getTotalQuantiyRepo = (arr: IRepository[]): number => {
-        return arr.reduce((acumentlator, curentValue) => {
-            return (acumentlator += curentValue.quantity);
-        }, 0);
-    };
-
-    const handleDeleteProduct = (id: string) => {
+    const handleDeleteUser = (id: string) => {
         setOpenComfirm({ ...openComfirm, open: true });
         setIdDelete(id);
     };
-
     return (
         <DashboardCard
-            title="List product"
+            title="List users"
             action={
                 <>
                     <Button>
-                        <Link href={'/admin/dashboard/product/create'}>Create</Link>
+                        <Link href={'/admin/dashboard/users/create'}>Create</Link>
                     </Button>
                 </>
             }
@@ -100,7 +75,7 @@ export default function ProductManagePage(props: IProductManagePageProps) {
                         >
                             <TableHead>
                                 <TableRow>
-                                    {dataHead.map((item) => {
+                                    {listHead.map((item) => {
                                         return (
                                             <TableCell key={item}>
                                                 <Typography variant="subtitle2" fontWeight={600}>
@@ -112,13 +87,13 @@ export default function ProductManagePage(props: IProductManagePageProps) {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {data &&
-                                    data.data.data &&
+                                {data?.data.data &&
                                     !isLoading &&
-                                    data.data.data.map((item, index) => {
+                                    data?.data.data.map((item, index) => {
                                         return (
                                             <TableRow key={item.id} hover>
                                                 <TableCell>
+                                                    {/* no */}
                                                     <Typography
                                                         sx={{
                                                             fontSize: '15px',
@@ -128,56 +103,47 @@ export default function ProductManagePage(props: IProductManagePageProps) {
                                                         {index + 1}
                                                     </Typography>
                                                 </TableCell>
+                                                {/* avatart */}
                                                 <TableCell align="left">
-                                                    <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
-                                                        {item.id}
-                                                    </Typography>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Avatar src={item.image} variant="rounded" />
+                                                    <Avatar src={item.avatar} variant="rounded" />
                                                 </TableCell>
 
-                                                <TableCell align="left">
+                                                {/* username */}
+                                                <TableCell>
                                                     <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
-                                                        {item.name}
+                                                        {item.username}
                                                     </Typography>
                                                 </TableCell>
+
+                                                {/* fullname */}
                                                 <TableCell align="left">
                                                     <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
-                                                        {item.brand}
+                                                        {item.fullname}
                                                     </Typography>
                                                 </TableCell>
+                                                {/* email */}
                                                 <TableCell align="left">
                                                     <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
-                                                        {item.type}
+                                                        {item.email}
                                                     </Typography>
                                                 </TableCell>
+                                                {/* gender */}
+                                                <TableCell align="left">
+                                                    <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
+                                                        {item.gender ? 'Male' : 'Female'}
+                                                    </Typography>
+                                                </TableCell>
+                                                {/* phone */}
+                                                <TableCell align="center">{item.phone || 'Not yet'}</TableCell>
+                                                {/* role */}
+                                                <TableCell align="center">{item.role === '0' ? 'ROLE_USER' : item.role}</TableCell>
+
                                                 <TableCell align="center">
-                                                    <Tippy
-                                                        interactive
-                                                        placement="left-end"
-                                                        delay={200}
-                                                        render={() => {
-                                                            return <TotipRepository data={item.repo} />;
-                                                        }}
-                                                    >
-                                                        <Typography
-                                                            color="textSecondary"
-                                                            variant="subtitle2"
-                                                            maxWidth={'200px'}
-                                                            fontWeight={400}
-                                                            className="truncate cursor-default"
-                                                        >
-                                                            {getTotalQuantiyRepo(item.repo)}
-                                                        </Typography>
-                                                    </Tippy>
-                                                </TableCell>
-                                                <TableCell align="center">
-                                                    <Button onClick={() => handleDeleteProduct(item.id as string)}>
+                                                    <Button onClick={() => handleDeleteUser(item.id as string)}>
                                                         <FontAwesomeIcon className="text-red-400" icon={faTrash} />
                                                     </Button>
                                                     <Button>
-                                                        <Link href={'/admin/dashboard/product/' + item.id}>
+                                                        <Link href={'/admin/dashboard/product/edit/' + item.id}>
                                                             <FontAwesomeIcon icon={faEdit} />
                                                         </Link>
                                                     </Button>
@@ -193,26 +159,22 @@ export default function ProductManagePage(props: IProductManagePageProps) {
 
                         <Box pb={'4%'}>
                             {/* loading */}
-                            {((data && data.data.data && !isLoading) || (data?.data.pages && data?.data.pages > 1)) && (
-                                <Pagination baseHref="/admin/dashboard/product?page=" pages={data?.data.pages} />
-                            )}
+                            {data?.data && data.data.pages > 1 && <Pagination baseHref={baseUrl} pages={data.data.pages} />}
 
                             {isLoading && <Skeleton variant="text" sx={{ fontSize: '1rem' }} />}
-                            {loading && <LoadingPrimary />}
                         </Box>
                         <Comfirm
-                            title={'Comfirm delete product'}
+                            title={'Comfirm delete user'}
                             open={openComfirm.open}
                             setOpen={setOpenComfirm}
                             onComfirm={async (value) => {
                                 if (value.comfirm === 'ok' && idDelete !== '') {
                                     try {
                                         setLoading(true);
-                                        const response = await deleteProduct(idDelete);
+                                        const response = await deleteUser(idDelete);
                                         setLoading(false);
-
                                         if (response.errors) {
-                                            dispath(
+                                            dispatch(
                                                 pushNoty({
                                                     title: `Can't delete this product. try again`,
                                                     open: true,
@@ -221,13 +183,11 @@ export default function ProductManagePage(props: IProductManagePageProps) {
                                             );
                                             return;
                                         }
-
                                         refetch();
-
-                                        if (page && data?.data.pages && parseInt(page) > data?.data.pages - 1) {
+                                        if (page && data?.data.pages && page > data?.data.pages - 1) {
                                             router.push(links.admin + 'product');
                                         }
-                                        dispath(
+                                        dispatch(
                                             pushNoty({
                                                 title: `${idDelete} deleted`,
                                                 open: true,
@@ -237,7 +197,7 @@ export default function ProductManagePage(props: IProductManagePageProps) {
                                         return;
                                     } catch (error) {
                                         setLoading(false);
-                                        dispath(
+                                        dispatch(
                                             pushNoty({
                                                 title: `Can't delete this product. try again`,
                                                 open: true,

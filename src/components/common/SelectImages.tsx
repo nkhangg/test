@@ -5,15 +5,17 @@ import { CardInfo, Notifycation } from '..';
 import { Avatar, Box, Button, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { fileToUrl } from '@/utils/format';
+import { fileToUrl, toDataURL } from '@/utils/format';
 import { INotifycationProps } from '../notifycations/Notifycation';
 
 export interface ISelectImagesProps {
+    dataOutsite?: { id: string; image: string }[];
     onImages?: (files: File[]) => void;
 }
 
-function SelectImages({ onImages }: ISelectImagesProps) {
+function SelectImages({ dataOutsite, onImages }: ISelectImagesProps) {
     const [data, setData] = useState<File[]>([]);
+    const [dataImagesProduct, setdataImagesProduct] = useState<{ id: string; image: string }[]>(dataOutsite || []);
 
     const [notifycation, setNotifycation] = useState<INotifycationProps>({ open: false, title: '', type: 'error' });
 
@@ -26,27 +28,29 @@ function SelectImages({ onImages }: ISelectImagesProps) {
 
             arrFile.reverse();
 
-            if (arrFile.length > 4 || data.length > 4) {
-                setData([...arrFile.splice(0, 4)]);
+            const condition = 4 - dataImagesProduct.length;
+
+            if (arrFile.length > condition || data.length > condition) {
+                setData([...arrFile.splice(0, condition)]);
                 setNotifycation({ ...notifycation, title: 'Limit images is 4 !', open: true });
                 return;
             }
 
-            if (data.length >= 4) {
-                if (data.length > 4) {
+            if (data.length >= condition) {
+                if (data.length > condition) {
                     setNotifycation({ ...notifycation, title: 'Limit images is 4 !', open: true });
                 }
 
-                setData([...data.reverse().splice(0, 4)]);
+                setData([...data.reverse().splice(0, condition)]);
 
                 return;
             }
 
-            if (data.length + arrFile.length >= 4) {
-                if (data.length + arrFile.length > 4) {
+            if (data.length + arrFile.length >= condition) {
+                if (data.length + arrFile.length > condition) {
                     setNotifycation({ ...notifycation, title: 'Limit images is 4 !', open: true });
                 }
-                const subArray = [...arrFile, ...data].splice(0, 4);
+                const subArray = [...arrFile, ...data].splice(0, condition);
                 setData([...subArray]);
                 return;
             }
@@ -60,6 +64,10 @@ function SelectImages({ onImages }: ISelectImagesProps) {
 
         onImages(data);
     }, [data]);
+
+    useEffect(() => {
+        setdataImagesProduct(dataOutsite || []);
+    }, [dataOutsite]);
 
     useEffect(() => {
         return () => {
@@ -87,7 +95,7 @@ function SelectImages({ onImages }: ISelectImagesProps) {
                 </Grid>
 
                 <Grid item xs={12} md={8} lg={8}>
-                    {data.length > 0 && (
+                    {(data.length > 0 || dataImagesProduct.length > 0) && (
                         <Box sx={{ overflow: 'auto', width: { xs: '280px', sm: 'auto' } }}>
                             <Table
                                 aria-label="simple table"
@@ -116,6 +124,44 @@ function SelectImages({ onImages }: ISelectImagesProps) {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
+                                    {dataImagesProduct &&
+                                        dataImagesProduct.map((item, index) => {
+                                            console.log(dataImagesProduct.length);
+                                            return (
+                                                <TableRow hover key={index}>
+                                                    <TableCell>
+                                                        <Typography
+                                                            sx={{
+                                                                fontSize: '15px',
+                                                                fontWeight: '500',
+                                                            }}
+                                                        >
+                                                            {index + 1}
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Avatar
+                                                            src={
+                                                                item.image ||
+                                                                'https://petshopsaigon.vn/wp-content/uploads/2019/09/hat-cho-cho-truong-thanh-royal-canin-poodle-adult-1-1.jpg'
+                                                            }
+                                                            variant="rounded"
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell align="left">
+                                                        <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
+                                                            {'image 1' + index}
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell align="center">
+                                                        <Button>
+                                                            <FontAwesomeIcon icon={faTrash} />
+                                                        </Button>
+                                                    </TableCell>
+                                                </TableRow>
+                                            );
+                                        })}
+
                                     {data.map((img, index) => (
                                         <TableRow hover key={index}>
                                             <TableCell>
@@ -160,11 +206,11 @@ function SelectImages({ onImages }: ISelectImagesProps) {
                         </Box>
                     )}
 
-                    {data.length <= 0 && (
+                    {/* {data.length <= 0 && dataImagesProduct && dataImagesProduct.length && (
                         <Stack alignItems={'center'} justifyContent={'center'} height={'100%'}>
                             <Typography color={'red'}>No image selected</Typography>
                         </Stack>
-                    )}
+                    )} */}
                 </Grid>
             </Grid>
             <Notifycation

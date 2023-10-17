@@ -6,7 +6,7 @@ import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 export interface ILabelCardProps {
     title: string;
-    data: { value: string | number; percentYesterday?: number };
+    data: { value: string | number; percentYesterday?: string };
     underlineColor?: string;
     showPersnet?: boolean;
     Icon?: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
@@ -36,7 +36,7 @@ export default function LabelCard({ title, data, underlineColor = '#505DE8', sho
 
                         {showPersnet && (
                             <Typography variant="subtitle2" fontWeight="600" sx={{ color: '#ccc', mt: '10px' }}>
-                                {data.percentYesterday || 0}% yesterday
+                                {data.percentYesterday || 0} yesterday
                             </Typography>
                         )}
                     </div>

@@ -41,12 +41,13 @@ export default function OttherHistoryPage(props: IOttherHistoryProps) {
                 </div>
             </ContainerContent>
             <BoxTitle mt="mt-[46px]" title="MY ORDERS" fontWeigth="font-semibold" underlineTitle locationTitle="left" fontSizeTitle="text-[32px]">
-                {data?.data && !isLoading && (
+                {data?.data && data.data.data && !isLoading && (
                     <>
                         <div className="flex flex-col items-center gap-8">
-                            {data?.data?.data.map((item) => {
-                                return <OtherHistoryItem key={item.id} data={item} />;
-                            })}
+                            {data.data.data &&
+                                data?.data?.data.map((item) => {
+                                    return <OtherHistoryItem key={item.id} data={item} />;
+                                })}
                         </div>
                         <Pagination
                             baseHref="/other-history?page="

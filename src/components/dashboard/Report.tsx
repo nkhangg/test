@@ -23,7 +23,11 @@ export default function Report(props: IReportProps) {
                 <Grid item xs={12} md={12} lg={4}>
                     <LabelCard
                         Icon={ShoppingCart}
-                        data={{ ...dataDashboard?.reports.dailyOrders, value: dataDashboard?.reports.dailyOrders.value + ' orders' }}
+                        data={{
+                            ...dataDashboard?.reports.dailyOrders,
+                            value: (dataDashboard?.reports.dailyOrders.value || 0) + ' orders',
+                            percentYesterday: (dataDashboard?.reports.dailyOrders.percentYesterday || 0) + ' orders',
+                        }}
                         title="Daily Orders"
                     />
                 </Grid>
@@ -31,7 +35,11 @@ export default function Report(props: IReportProps) {
                     <LabelCard
                         Icon={MonetizationOn}
                         underlineColor="#0D9488"
-                        data={{ ...dataDashboard?.reports.dailyRevenue, value: toCurrency(dataDashboard?.reports.dailyRevenue.value || 0) }}
+                        data={{
+                            ...dataDashboard?.reports.dailyRevenue,
+                            value: toCurrency(dataDashboard?.reports.dailyRevenue.value || 0),
+                            percentYesterday: toCurrency(dataDashboard?.reports.dailyRevenue.percentYesterday || 0),
+                        }}
                         title="Daily Revenue"
                     />
                 </Grid>

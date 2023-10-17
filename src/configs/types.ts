@@ -17,6 +17,9 @@ import {
     TypesAndBrands,
     IDataFilterPage,
     IDataRequestFilter,
+    PagiantionResponse,
+    IProductManageList,
+    DataProductType,
 } from './interface';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
@@ -49,6 +52,18 @@ export type ApiResetPassword = (email: string) => Promise<IBaseResponse<any>>;
 export type ApiGetCurUser = () => Promise<IBaseResponse<IProfile>>;
 
 export type ApiFilterPage = (data: IDataRequestFilter) => Promise<IBaseResponse<IDataFilterPage>>;
+
+export type ApiDetailProductManaege = (id: string) => Promise<IBaseResponse<DataProductType>>;
+
+export type ApiDelete = (id: string) => Promise<IBaseResponse<any>>;
+
+export type ApiUpdateProduct = (data: DataProductType) => Promise<IBaseResponse<any>>;
+
+export type ApiCreateProduct = (data: DataProductType) => Promise<IBaseResponse<any>>;
+
+export type ApiProductsManage = (page: number | undefined) => Promise<IBaseResponse<PagiantionResponse<IProductManageList>>>;
+
+export type ApiAllUser = (page: number | undefined) => Promise<IBaseResponse<PagiantionResponse<IProfile>>>;
 
 export type ApiUpdateCurUser = (data: DataRequestUpdateUser) => Promise<IBaseResponse<IProfile>>;
 

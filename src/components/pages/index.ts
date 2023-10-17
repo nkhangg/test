@@ -17,9 +17,12 @@ export { default as OtherHistoryPage } from './orther-histories/OtherHistoryPage
 export { default as AskConditionPage } from './AskConditionPage';
 export { default as ResetPasswordPage } from './ResetPasswordPage';
 export { default as DashboardPage } from './admin/DashboardPage';
-export { default as CreateOrUpdateProductPage } from './admin/products/CreateOrUpdateProductPage';
+export { default as CreateProductPage } from './admin/products/CreateProductPage';
+export { default as UpdateProductPage } from './admin/products/UpdateProductPage';
 export { default as ProductManagePage } from './admin/products/ProductManagePage';
 export { default as PaymentPage } from './payments/PaymentPage';
 export { default as PaymentItem } from './payments/PaymentItem';
 export { default as PaymentCard } from './payments/PaymentCard';
 export { default as ProductFilterPage } from './product-filter/ProductFilterPage';
+export { default as UsermanagePage } from './admin/users/UsermanagePage';
+export { default as CreateOrUpdateUserPage } from './admin/users/CreateOrUpdateUserPage';

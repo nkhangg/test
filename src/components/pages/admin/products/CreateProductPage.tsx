@@ -1,18 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import { CardInfo, DynamicInput, TextField, Notifycation } from '@/components';
+import { CardInfo, DynamicInput, TextField, Notifycation, LoadingPrimary } from '@/components';
 import { SelectImages } from '@/components/common';
 import { DashboardCard } from '@/components/dashboard';
 import { Button, CircularProgress, Grid, MenuItem, Stack, capitalize } from '@mui/material';
 import Link from 'next/link';
 import React, { ChangeEvent, FocusEvent, useState } from 'react';
 import Repository from './Repository';
+import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 import { productManageData } from '@/datas/product-manage-data';
 import Validate from '@/utils/validate';
 import { ModeType, RepoType } from '@/configs/types';
 import { INotifycationProps } from '@/components/notifycations/Notifycation';
 import ComInput from './ComInput';
+import { typesAndBrands } from '@/apis/app';
+import { createProduct } from '@/apis/admin/product';
+import { useDispatch } from 'react-redux';
+import { pushNoty } from '@/redux/slice/appSlice';
+import { links } from '@/datas/links';
 const Description = dynamic(() => import('./Description'), {
     loading: () => (
         <Stack justifyContent={'center'} alignItems={'center'}>
@@ -57,13 +64,20 @@ const initDataErrors: DataProductErrorsType = {
 };
 
 export interface ICreateOrUpdateProductProps {
-    mode: ModeType;
     dataOusite?: DataProductType;
 }
 
-export default function CreateOrUpdateProduct({ mode, dataOusite }: ICreateOrUpdateProductProps) {
-    const [data, setData] = useState<DataProductType>(dataOusite ? (mode === 'update' ? dataOusite : initData) : initData);
+export default function CreateOrUpdateProduct({ dataOusite }: ICreateOrUpdateProductProps) {
+    const typesAndBrandsData = useQuery({
+        queryKey: ['typeandbrand'],
+        queryFn: () => typesAndBrands(),
+    });
+
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const [data, setData] = useState<DataProductType>(initData);
     const [errors, setErrors] = useState<DataProductErrorsType>(initDataErrors);
+    const [loading, setLoading] = useState(false);
 
     const [notify, setNotify] = useState<INotifycationProps>({ title: '', type: 'error', open: false });
 
@@ -106,7 +120,10 @@ export default function CreateOrUpdateProduct({ mode, dataOusite }: ICreateOrUpd
                 validateErrors[dynamic] = message;
                 flag = error;
             } else {
-                if (data.repo.length <= 0 || data.images.length <= 0) {
+                // if (data.repo.length <= 0 || data.images.length <= 0) {
+                //     flag = true;
+                // }
+                if (data.repo.length <= 0) {
                     flag = true;
                 }
             }
@@ -117,13 +134,61 @@ export default function CreateOrUpdateProduct({ mode, dataOusite }: ICreateOrUpd
         return flag;
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (validate()) {
             setNotify({
                 ...notify,
                 open: true,
                 title: `Incomplete data`,
             });
+            return;
+        }
+
+        try {
+            setLoading(true);
+            const response = await createProduct({
+                description: data.description,
+                id: '',
+                brand: data.brand,
+                name: data.name,
+                repo: data.repo,
+                images: data.images,
+                type: data.type,
+            });
+            setLoading(false);
+
+            if (!response.data || response.errors) {
+                dispatch(
+                    pushNoty({
+                        title: `Can't Create Product, Pls try again !`,
+                        open: true,
+                        type: 'error',
+                    }),
+                );
+
+                return;
+            }
+
+            router.push(links.admin + 'product');
+
+            dispatch(
+                pushNoty({
+                    title: `Create Succcessfuly !`,
+                    open: true,
+                    type: 'success',
+                }),
+            );
+        } catch (error) {
+            setLoading(false);
+            dispatch(
+                pushNoty({
+                    title: `Can't Create Product, Pls try again !`,
+                    open: true,
+                    type: 'error',
+                }),
+            );
+
+            return;
         }
         console.log(data);
     };
@@ -157,9 +222,9 @@ export default function CreateOrUpdateProduct({ mode, dataOusite }: ICreateOrUpd
                         <Grid item lg={6} md={12} xs={12}>
                             <ComInput title="Type">
                                 <TextField select id="type" name="type" value={data.type} size="small" onChange={handleChange} onBlur={handleBlur}>
-                                    {productManageData.types.map((type, index) => {
+                                    {typesAndBrandsData.data?.data.types.map((type, index) => {
                                         return (
-                                            <MenuItem key={type.id} value={type.id}>
+                                            <MenuItem key={type.name} value={typeof type.id === 'object' ? type.id.join() : type.id}>
                                                 {type.name}
                                             </MenuItem>
                                         );
@@ -176,21 +241,21 @@ export default function CreateOrUpdateProduct({ mode, dataOusite }: ICreateOrUpd
                                     onChange: handleChange,
                                     onBlur: handleBlur,
                                 }}
-                                dataSelect={productManageData.branhs}
+                                dataSelect={typesAndBrandsData.data?.data.brands || []}
                                 title="Brand"
                             />
                         </Grid>
                     </Grid>
                 </CardInfo>
 
-                <SelectImages
+                {/* <SelectImages
                     onImages={(images) => {
                         setData({
                             ...data,
                             images,
                         });
                     }}
-                />
+                /> */}
 
                 <Repository
                     onRepos={(repo) => {
@@ -213,11 +278,13 @@ export default function CreateOrUpdateProduct({ mode, dataOusite }: ICreateOrUpd
                 <CardInfo>
                     <Stack direction={'row'} justifyContent={'flex-end'}>
                         <Button onClick={handleSubmit} variant="outlined">
-                            {capitalize(mode)}
+                            {'Create'}
                         </Button>
                     </Stack>
                 </CardInfo>
                 <Notifycation onClose={() => setNotify({ ...notify, open: false })} {...notify} />
+
+                {loading && <LoadingPrimary />}
             </>
         </DashboardCard>
     );

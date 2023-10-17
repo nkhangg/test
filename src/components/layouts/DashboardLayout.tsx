@@ -3,6 +3,10 @@ import { Box, Container, styled } from '@mui/material';
 import React, { ReactNode, useState } from 'react';
 import Header from '../common/common-headers/admin/header/Header';
 import Sidebar from '../common/common-headers/admin/sidebar/Sidebar';
+import { Notifycation } from '..';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import { RootState } from '@/configs/types';
+import { closeNoty } from '@/redux/slice/appSlice';
 
 export interface IDashboardLayoutProps {
     children: ReactNode;
@@ -24,6 +28,10 @@ const PageWrapper = styled('div')(() => ({
 export default function DashboardLayout({ children }: IDashboardLayoutProps) {
     const [isSidebarOpen, setSidebarOpen] = useState(true);
     const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
+    const { notifycation } = useAppSelector((state: RootState) => state.appReducer);
+
+    const dispath = useAppDispatch();
     return (
         <MainWrapper className="mainwrapper">
             <Sidebar isSidebarOpen={isSidebarOpen} isMobileSidebarOpen={isMobileSidebarOpen} onSidebarClose={() => setMobileSidebarOpen(false)} />
@@ -44,6 +52,13 @@ export default function DashboardLayout({ children }: IDashboardLayoutProps) {
                     <Box sx={{ minHeight: 'calc(100vh - 170px)' }}>{children}</Box>
                 </Box>
             </PageWrapper>
+
+            <Notifycation
+                onClose={() => {
+                    dispath(closeNoty());
+                }}
+                {...notifycation}
+            />
         </MainWrapper>
     );
 }
