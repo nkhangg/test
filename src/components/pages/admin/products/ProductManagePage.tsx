@@ -63,6 +63,7 @@ export default function ProductManagePage(props: IProductManagePageProps) {
                 type: 'error',
             }),
         );
+        return;
     }
 
     const getTotalQuantiyRepo = (arr: IRepository[]): number => {

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import { CardInfo, DynamicInput, TextField, Notifycation } from '@/components';
+import { CardInfo, DynamicInput, TextField, Notifycation, LoadingPrimary } from '@/components';
 import { SelectImages } from '@/components/common';
 import { DashboardCard } from '@/components/dashboard';
 import { Button, CircularProgress, Grid, MenuItem, Stack, capitalize } from '@mui/material';
@@ -10,8 +10,6 @@ import Repository from './Repository';
 import dynamic from 'next/dynamic';
 import { productManageData } from '@/datas/product-manage-data';
 import Validate from '@/utils/validate';
-import { ModeType, RepoType } from '@/configs/types';
-import { INotifycationProps } from '@/components/notifycations/Notifycation';
 import ComInput from './ComInput';
 import { useQuery } from '@tanstack/react-query';
 import { typesAndBrands } from '@/apis/app';
@@ -20,7 +18,7 @@ import { pushNoty } from '@/redux/slice/appSlice';
 import { useRouter } from 'next/navigation';
 import { links } from '@/datas/links';
 import { DataProductType } from '@/configs/interface';
-import { detailProductManage } from '@/apis/admin/product';
+import { detailProductManage, updateProduct } from '@/apis/admin/product';
 const Description = dynamic(() => import('./Description'), {
     loading: () => (
         <Stack justifyContent={'center'} alignItems={'center'}>
@@ -67,6 +65,7 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
     // redux
     const dispatch = useAppDispatch();
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
 
     const typesAndBrandsData = useQuery({
         queryKey: ['typeandbrand'],
@@ -93,8 +92,6 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
     const [data, setData] = useState<DataProductType>(initData);
     const [errors, setErrors] = useState<DataProductErrorsType>(initDataErrors);
 
-    const [notify, setNotify] = useState<INotifycationProps>({ title: '', type: 'error', open: false });
-
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setData({
             ...data,
@@ -119,8 +116,42 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataProduct.data?.data]);
 
-    const handleSubmit = () => {
-        console.log(data);
+    const handleSubmit = async () => {
+        try {
+            setLoading(true);
+            const response = await updateProduct(data);
+            setLoading(false);
+            if (!response.data || response.errors) {
+                dispatch(
+                    pushNoty({
+                        title: 'Update Falure !',
+                        open: true,
+                        type: 'error',
+                    }),
+                );
+
+                return;
+            }
+
+            router.push(links.admin + 'product');
+            dispatch(
+                pushNoty({
+                    title: 'Update Successfuly !',
+                    open: true,
+                    type: 'success',
+                }),
+            );
+        } catch (error) {
+            console.log('error in update product ' + error);
+            setLoading(false);
+            dispatch(
+                pushNoty({
+                    title: 'Update Falure !',
+                    open: true,
+                    type: 'error',
+                }),
+            );
+        }
     };
 
     return (
@@ -177,7 +208,7 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
                     </Grid>
                 </CardInfo>
 
-                <SelectImages
+                {/* <SelectImages
                     dataOutsite={(dataProduct.data?.data.images as { id: string; image: string }[]) || []}
                     onImages={(images) => {
                         setData({
@@ -185,7 +216,7 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
                             images,
                         });
                     }}
-                />
+                /> */}
 
                 <Repository
                     dataOusite={dataProduct.data?.data.repo}
@@ -214,7 +245,8 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
                         </Button>
                     </Stack>
                 </CardInfo>
-                <Notifycation onClose={() => setNotify({ ...notify, open: false })} {...notify} />
+
+                {loading && <LoadingPrimary />}
             </>
         </DashboardCard>
     );

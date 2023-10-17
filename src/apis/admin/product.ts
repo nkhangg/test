@@ -1,5 +1,7 @@
 import axios from '@/configs/axios';
-import { ApiDeleteProduct, ApiDetailProductManaege, ApiProductsManage } from '@/configs/types';
+import axioss from 'axios';
+import { DataProductType } from '@/configs/interface';
+import { ApiCreateProduct, ApiDelete, ApiDetailProductManaege, ApiProductsManage, ApiUpdateProduct } from '@/configs/types';
 
 export const productManage: ApiProductsManage = async (page: number | undefined) => {
     const res = await axios({
@@ -26,10 +28,51 @@ export const detailProductManage: ApiDetailProductManaege = async (id: string) =
     return res?.data;
 };
 
-export const deleteProduct: ApiDeleteProduct = async (id: string) => {
+export const deleteProduct: ApiDelete = async (id: string) => {
     const res = await axios({
         method: 'DELETE',
         url: 'admin/product/' + id,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const updateProduct: ApiUpdateProduct = async (data: DataProductType) => {
+    const res = await axios({
+        method: 'POST',
+        url: 'admin/product/' + data.id,
+        data: {
+            name: data.name,
+            desc: data.description,
+            productType: data.type,
+            brand: data.brand,
+            productsRepo: data.repo,
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const createProduct: ApiCreateProduct = async (data: DataProductType) => {
+    const res = await axios({
+        method: 'POST',
+        url: 'admin/product/',
+        data: {
+            name: data.name,
+            desc: data.description,
+            productType: data.type,
+            brand: data.brand,
+            productsRepo: data.repo.map((item) => {
+                return {
+                    ...item,
+                    inStock: true,
+                };
+            }),
+        },
     });
 
     if (!res) return null;

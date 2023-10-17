@@ -43,13 +43,17 @@ export function toAbbrevNumber(n: number) {
 }
 
 export function capitalize(value: string) {
-    const words = value.split(' ');
+    if (value.length < 1) return value;
 
-    return words
-        .map((word) => {
-            return word[0].toUpperCase() + word.substring(1);
-        })
-        .join(' ');
+    return value;
+
+    // const words = value.split(' ');
+
+    // return words
+    //     .map((word) => {
+    //         return word[0].toUpperCase() + word.substring(1);
+    //     })
+    //     .join(' ');
 }
 
 export const toGam = (value: number) => {

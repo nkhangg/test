@@ -55,7 +55,11 @@ export type ApiFilterPage = (data: IDataRequestFilter) => Promise<IBaseResponse<
 
 export type ApiDetailProductManaege = (id: string) => Promise<IBaseResponse<DataProductType>>;
 
-export type ApiDeleteProduct = (id: string) => Promise<IBaseResponse<any>>;
+export type ApiDelete = (id: string) => Promise<IBaseResponse<any>>;
+
+export type ApiUpdateProduct = (data: DataProductType) => Promise<IBaseResponse<any>>;
+
+export type ApiCreateProduct = (data: DataProductType) => Promise<IBaseResponse<any>>;
 
 export type ApiProductsManage = (page: number | undefined) => Promise<IBaseResponse<PagiantionResponse<IProductManageList>>>;
 
