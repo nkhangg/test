@@ -1,14 +1,12 @@
 'use client';
 import { PageContainer } from '@/components/common';
-import { DashboardCard, LabelCard, MonthlyEarnings, ProductPerformance, Report, SalesOverview, YearlyBreakup } from '@/components/dashboard';
+import { ProductPerformance, Report, SalesOverview } from '@/components/dashboard';
 import { dataDashboard } from '@/datas/dashboard';
-import { toCurrency } from '@/utils/format';
-import { ShoppingCart, MonetizationOn, SupervisedUserCircle } from '@mui/icons-material';
 import { Box, Grid } from '@mui/material';
 import * as React from 'react';
 export interface IDashboarddPageProps {}
 
-export default function DashboarddPage(props: IDashboarddPageProps) {
+function DashboardPage(props: IDashboarddPageProps) {
     return (
         <PageContainer title="Dashboard" description="this is Dashboard">
             <Box>
@@ -26,3 +24,5 @@ export default function DashboarddPage(props: IDashboarddPageProps) {
         </PageContainer>
     );
 }
+
+export default DashboardPage;

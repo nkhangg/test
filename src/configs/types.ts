@@ -73,6 +73,8 @@ export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
 
+export type RoleType = 'ROLE_ADMIN' | 'ROLE_USER';
+
 export type RegisterFormData = {
     username: string;
     gender: string | boolean;

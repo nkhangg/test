@@ -81,7 +81,7 @@ const Profile = () => {
                     </ListItemText>
                 </MenuItem>
                 <Box mt={1} py={1} px={2}>
-                    <Button href="/login" variant="outlined" color="primary" component={Link} fullWidth>
+                    <Button href="/log-out" variant="outlined" color="primary" component={Link} fullWidth>
                         Logout
                     </Button>
                 </Box>
