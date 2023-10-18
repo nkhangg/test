@@ -1,9 +1,9 @@
 import { curUser, updateUser } from '@/apis/user';
 import { IProfile } from '@/configs/interface';
-import { clearToken, getTokenFromCookie } from '@/utils/cookie';
+import { clearToken, getTokenFromCookie, setRoleToCookie } from '@/utils/cookie';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { pushNoty } from './appSlice';
-import { DataRequestUpdateUser } from '@/configs/types';
+import { DataRequestUpdateUser, RoleType } from '@/configs/types';
 
 export const fetchUserByToken = createAsyncThunk('user/fetchUserByToken', async (_, thunkApi) => {
     const token = getTokenFromCookie();
@@ -12,12 +12,11 @@ export const fetchUserByToken = createAsyncThunk('user/fetchUserByToken', async 
     try {
         const res = await curUser();
 
-        console.log('in user slide ' + res);
-
         if (res.errors) {
             return null;
         }
 
+        setRoleToCookie(res.data.role as RoleType);
         return res.data;
     } catch (error) {
         clearToken();
