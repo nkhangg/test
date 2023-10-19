@@ -1,6 +1,6 @@
 'use client';
-import React, { useState } from 'react';
-import { LoadingSecondary, MenuDropDownRadio, Pagination, Product } from '@/components';
+import React, { useCallback, useState } from 'react';
+import { LoadingSecondary, MenuDropDownRadio, Pagination, Product, WrapperAnimation } from '@/components';
 import { ContainerContent, Sort } from '@/components/common';
 import { SortType } from '@/configs/types';
 import { dataTakeAction } from '@/datas/adopt';
@@ -11,6 +11,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { pushNoty } from '@/redux/slice/appSlice';
 import { IDataRequestFilter } from '@/configs/interface';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBroom } from '@fortawesome/free-solid-svg-icons';
+import { Tooltip } from '@mui/material';
+import { motion } from 'framer-motion';
 
 export interface IProductFilterPageProps {}
 
@@ -35,6 +39,27 @@ export default function ProductFilterPage(props: IProductFilterPageProps) {
         queryKey: ['productFilterPage/filter-date', filter, page],
         queryFn: () => filterPage({ ...filter, page: typeof page === 'string' ? parseInt(page) - 1 + '' : '0' }),
     });
+
+    const conditionShowClearFiller = useCallback(() => {
+        if (!filter) return false;
+
+        if (filter.maxPrice || filter.minPrice || filter.stock || filter.brand) {
+            return true;
+        }
+    }, [filter]);
+
+    const handleClearAllFilter = () => {
+        if (page) {
+            router.push(baseUrl);
+        }
+        setFilter({
+            ...filter,
+            minPrice: undefined,
+            maxPrice: undefined,
+            stock: undefined,
+            brand: undefined,
+        });
+    };
 
     if (typesAndBrandsData.error || error) {
         router.push('/');
@@ -79,10 +104,29 @@ export default function ProductFilterPage(props: IProductFilterPageProps) {
 
             <div className="flex md:flex-row flex-col justify-between min-h-[1000px] mt-9 gap-[38px]">
                 <div className="w-full md:w-[24%] lg:w-[20%] h-full text-black-main select-none">
-                    <div className="py-5 w-full border-b border-gray-primary">
+                    <div className="py-5 w-full border-b border-gray-primary flex items-center justify-between">
                         <h6 className="font-medium text-xl">Filter</h6>
+
+                        {conditionShowClearFiller() && (
+                            <Tooltip title="Clear all filters" placement="top">
+                                <motion.div
+                                    onClick={handleClearAllFilter}
+                                    whileTap={{
+                                        scale: 0.9,
+                                    }}
+                                >
+                                    <FontAwesomeIcon className="cursor-pointer" icon={faBroom} />
+                                </motion.div>
+                            </Tooltip>
+                        )}
                     </div>
                     <MenuDropDownRadio
+                        clearValue={{
+                            value: !conditionShowClearFiller(),
+                            option: {
+                                closeOnClear: true,
+                            },
+                        }}
                         onValues={(price) => {
                             if (price) {
                                 if (page) {
@@ -97,12 +141,17 @@ export default function ProductFilterPage(props: IProductFilterPageProps) {
                                     maxPrice: max,
                                 });
                             }
-                            console.log('price');
                         }}
                         title={'Price'}
                         data={dataProductFilter.fillters.prices}
                     />
                     <MenuDropDownRadio
+                        clearValue={{
+                            value: !conditionShowClearFiller(),
+                            option: {
+                                closeOnClear: true,
+                            },
+                        }}
                         onValues={(stock) => {
                             if (stock.length > 1) {
                                 if (page) {
@@ -118,8 +167,13 @@ export default function ProductFilterPage(props: IProductFilterPageProps) {
                         data={dataProductFilter.fillters.stock}
                     />
                     <MenuDropDownRadio
+                        clearValue={{
+                            value: !conditionShowClearFiller(),
+                            option: {
+                                closeOnClear: true,
+                            },
+                        }}
                         onValues={(brand) => {
-                            console.log('brand', brand);
                             if (brand && typeof brand === 'string') {
                                 if (page) {
                                     router.push(baseUrl);

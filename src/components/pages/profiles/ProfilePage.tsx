@@ -220,7 +220,7 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                 <Grid item xs={12} md={4} lg={3}>
                     <div className="py-[25px] px-9 w-full h-full bg-[#f1f1f1] rounded">
                         <div className="flex items-center gap-2 mb-[38px]">
-                            <div
+                            {/* <div
                                 className={classNames('relative rounded-full overflow-hidden', {
                                     [style['avatar']]: true,
                                 })}
@@ -245,7 +245,15 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                                 >
                                     <FontAwesomeIcon icon={faEdit} />
                                 </div>
-                            </div>
+                            </div> */}
+                            <Avatar
+                                sx={{
+                                    width: 60,
+                                    height: 60,
+                                }}
+                                alt="avatar"
+                                src={avartar || contants.avartarDefault}
+                            />
                             <span className="font-medium text-lg">{user?.username}</span>
                         </div>
 
@@ -276,6 +284,34 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                 <Grid item xs={12} md={8} lg={9}>
                     <form onSubmit={handleSubmit} className="px-14 py-[60px] w-full h-full bg-[#f1f1f1] rounded flex flex-col justify-between">
                         <div className="flex flex-col justify-between gap-[40px]">
+                            <div className="flex items-center flex-col w-full">
+                                <div
+                                    className={classNames('relative rounded-full overflow-hidden', {
+                                        [style['avatar']]: true,
+                                    })}
+                                >
+                                    <Avatar
+                                        sx={{
+                                            width: 140,
+                                            height: 140,
+                                        }}
+                                        alt="avatar"
+                                        src={avartar || contants.avartarDefault}
+                                    />
+
+                                    <div
+                                        onClick={() => setOpenEditor(true)}
+                                        className={classNames(
+                                            'absolute bg-[rgba(0,0,0,.4)] inset-0 flex items-center justify-center text-white transition-all ease-linear cursor-pointer',
+                                            {
+                                                [style['avatar-backdrop']]: true,
+                                            },
+                                        )}
+                                    >
+                                        <FontAwesomeIcon icon={faEdit} />
+                                    </div>
+                                </div>
+                            </div>
                             <DivTextfield
                                 propsInput={{
                                     name: 'fullname',

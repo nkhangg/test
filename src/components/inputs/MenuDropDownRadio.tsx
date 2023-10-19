@@ -11,10 +11,16 @@ export interface IMenuDropDownRadioProps {
     title: string;
     data: IFilter[];
     defaultValue?: boolean;
+    clearValue?: {
+        value: boolean;
+        option?: {
+            closeOnClear?: boolean;
+        };
+    };
     onValues?: (values: string | number[]) => void;
 }
 
-export default function MenuDropDownRadio({ title, data, defaultValue, onValues }: IMenuDropDownRadioProps) {
+export default function MenuDropDownRadio({ title, data, defaultValue, clearValue, onValues }: IMenuDropDownRadioProps) {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(defaultValue ? (typeof data[0].id === 'object' ? data[0].id.join(',') : data[0].id) : '');
     const handleClick = () => {
@@ -30,6 +36,16 @@ export default function MenuDropDownRadio({ title, data, defaultValue, onValues 
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
+
+    useEffect(() => {
+        if (clearValue && clearValue?.value) {
+            setValue('');
+            if (clearValue.option && clearValue.option.closeOnClear) {
+                setOpen(false);
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [clearValue]);
 
     return (
         <div className="py-2 w-full border-b border-gray-primary">

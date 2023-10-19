@@ -3,4 +3,5 @@ export const links = {
     produt: '/product/',
     products: '/take-action/',
     admin: '/admin/dashboard/',
+    adminMidleware: '/admin/dashboard',
 };
