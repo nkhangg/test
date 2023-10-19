@@ -8,4 +8,10 @@ export const contants = {
         'If you get a pet, do you intend to keep it on a leash or let it roam around?',
         'Adopting a pet from us requires a commitment to CARE - STERILIZATION - VACCINE. If you violate our commitment, we will unfortunately come and take the baby back & publicize your case on the page.',
     ],
+
+    messages: {
+        errors: {
+            server: 'Something went wrong !',
+        },
+    },
 };

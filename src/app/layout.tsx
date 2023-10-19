@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import Favicon from '/public/favicon.ico';
 import '../styles/globals.css';
 import { Providers } from '@/redux/provider';
-import Footer from '@/components/common/common-footer/Footer';
+import { ToastProvider } from '@/providers';
 
 export const metadata: Metadata = {
     title: 'Home page | Petfoster',
@@ -17,7 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en">
             <Providers>
                 <ThemeRegistry>
-                    <body>{children}</body>
+                    <body>
+                        <ToastProvider>{children}</ToastProvider>
+                    </body>
                 </ThemeRegistry>
             </Providers>
         </html>

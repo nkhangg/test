@@ -189,7 +189,7 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
                             />
 
                             <div className="mt-[50px] flex items-center gap-5">
-                                <MainButton title="add to card" onClick={handleAddToCart} />
+                                <MainButton title="add to cart" onClick={handleAddToCart} />
                                 <MainButton onClick={handleBuyNow} background="bg-orange-primary" title="buy now" />
                             </div>
                         </div>

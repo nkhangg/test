@@ -12,7 +12,9 @@ import Validate from '@/utils/validate';
 import { RegisterFormData } from '@/configs/types';
 import { register } from '@/apis/user';
 import { useRouter } from 'next/navigation';
-
+import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import { contants } from '@/utils/contants';
 const initData = {
     username: '',
     gender: '',
@@ -28,7 +30,6 @@ export default function RegisterPage(props: IRegisterPageProps) {
     const [form, setForm] = useState<RegisterFormData>(initData);
     const [errors, setErrors] = useState<RegisterFormData>(initData);
     const [loading, setLoading] = useState(false);
-    const [notifycation, setnotifycation] = useState<{ title: string; type: AlertColor; open: boolean }>({ type: 'success', title: '', open: false });
 
     const router = useRouter();
 
@@ -102,20 +103,11 @@ export default function RegisterPage(props: IRegisterPageProps) {
                 return;
             }
 
-            setnotifycation({
-                open: true,
-                title: 'Register successfuly, please login to use website !',
-                type: 'success',
-            });
-
+            toast.success('Register successfuly, please check your email to verify your account ❤️');
             router.push('/login');
         } catch (error) {
             console.log('error in register page: ' + error);
-            setnotifycation({
-                open: true,
-                title: 'Something went wrong !',
-                type: 'error',
-            });
+            toast.error(contants.messages.errors.server);
         }
     };
 
@@ -227,12 +219,6 @@ export default function RegisterPage(props: IRegisterPageProps) {
             </Grid>
 
             {loading && <LoadingPrimary />}
-            <Notifycation
-                onClose={(e) => {
-                    setnotifycation({ ...notifycation, open: false });
-                }}
-                {...notifycation}
-            />
         </ContainerContent>
     );
 }
