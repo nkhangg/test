@@ -65,6 +65,10 @@ export type ApiProductsManage = (page: number | undefined) => Promise<IBaseRespo
 
 export type ApiAllUser = (page: number | undefined) => Promise<IBaseResponse<PagiantionResponse<IProfile>>>;
 
+export type ApiVerifyCode = (code: string) => Promise<IBaseResponse<any>>;
+
+export type ApiRefreshVerifyCode = (code: string) => Promise<IBaseResponse<any>>;
+
 export type ApiUpdateCurUser = (data: DataRequestUpdateUser) => Promise<IBaseResponse<IProfile>>;
 
 export type ApiHistories = () => Promise<IBaseResponse<IProfile>>;

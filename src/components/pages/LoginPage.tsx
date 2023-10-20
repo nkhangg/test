@@ -8,12 +8,13 @@ import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { login } from '@/apis/user';
 import { setToken } from '@/redux/slice/userSlice';
+import { toast } from 'react-toastify';
+import { contants } from '@/utils/contants';
 
 export interface ILoginPageProps {}
 
 export default function LoginPage(props: ILoginPageProps) {
     const [loading, setLoading] = useState(false);
-    const [notifycation, setnotifycation] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -77,6 +78,12 @@ export default function LoginPage(props: ILoginPageProps) {
             setLoading(true);
             const res = await login(form);
             setLoading(false);
+
+            if (res.errors && res.message === '401') {
+                toast.warning('Your account has not been verified. Please check your email');
+                return;
+            }
+
             if (res.errors && Object.keys(res.errors).length > 0) {
                 setErrors({
                     username: res.errors.username ? res.errors.username : '',
@@ -93,7 +100,7 @@ export default function LoginPage(props: ILoginPageProps) {
         } catch (error) {
             console.log('error in login page: ' + error);
             setLoading(false);
-            setnotifycation(true);
+            toast.error(contants.messages.errors.server);
         }
     };
 
@@ -125,14 +132,6 @@ export default function LoginPage(props: ILoginPageProps) {
             </Stack>
 
             {loading && <LoadingPrimary />}
-            <Notifycation
-                onClose={() => {
-                    setnotifycation(false);
-                }}
-                open={notifycation}
-                title="Something went wrong !"
-                type="error"
-            />
         </BoxSign>
     );
 }

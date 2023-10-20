@@ -1,4 +1,4 @@
-import { ApiGetCurUser, ApiLogin, ApiRegister, ApiResetPassword, ApiUpdateCurUser, DataRequestUpdateUser } from '@/configs/types';
+import { ApiGetCurUser, ApiLogin, ApiRefreshVerifyCode, ApiRegister, ApiResetPassword, ApiUpdateCurUser, ApiVerifyCode, DataRequestUpdateUser } from '@/configs/types';
 import axios from '../configs/axios';
 import { setTokenToCookie } from '@/utils/cookie';
 import { IProfile } from '@/configs/interface';
@@ -66,6 +66,34 @@ export const resetPassword: ApiResetPassword = async (email: string) => {
         url: 'forgot-password',
         data: {
             email,
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const verifyCode: ApiVerifyCode = async (code: string) => {
+    const res = await axios({
+        method: 'GET',
+        url: '/verify',
+        params: {
+            code,
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const refreshVerifyCode: ApiRefreshVerifyCode = async (code: string) => {
+    const res = await axios({
+        method: 'GET',
+        url: 'refresh-code',
+        params: {
+            code,
         },
     });
 

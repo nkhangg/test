@@ -106,6 +106,7 @@ export default function RegisterPage(props: IRegisterPageProps) {
             toast.success('Register successfuly, please check your email to verify your account ❤️');
             router.push('/login');
         } catch (error) {
+            setLoading(false);
             console.log('error in register page: ' + error);
             toast.error(contants.messages.errors.server);
         }

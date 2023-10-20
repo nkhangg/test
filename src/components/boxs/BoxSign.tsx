@@ -1,5 +1,5 @@
 'use client';
-import React, { ChangeEvent, FocusEvent, FormEvent, FormEventHandler, InputHTMLAttributes, ReactNode, useState } from 'react';
+import React, { ChangeEvent, FocusEvent, FormEvent, FormEventHandler, InputHTMLAttributes, MouseEventHandler, ReactNode, useState } from 'react';
 import { RoudedButton, SocialButton, TextField, WrapperAnimation } from '@/components';
 import { ContainerContent } from '@/components/common';
 import { faSquareFacebook, faSquareGooglePlus } from '@fortawesome/free-brands-svg-icons';
@@ -13,6 +13,9 @@ export interface IBoxSignProps {
     titleBtn?: string;
     link?: { link: string; content: string; contentLink: string };
     showForgot?: boolean;
+    showReverify?: {
+        onClick?: MouseEventHandler<HTMLSpanElement>;
+    };
 }
 
 export default function BoxSign({
@@ -22,6 +25,7 @@ export default function BoxSign({
     titleBtn = 'send',
     link = { link: '/register', contentLink: 'Sign up', content: 'Need an account?' },
     showForgot = true,
+    showReverify,
 }: IBoxSignProps) {
     return (
         <ContainerContent className="pt-24 text-black-main">
@@ -58,6 +62,13 @@ export default function BoxSign({
                                 <Link href={'/profile/reset-password'} className="text-blue-primary hover:underline ml-1">
                                     Forgot password ?
                                 </Link>
+                            </Typography>
+                        )}
+                        {showReverify && (
+                            <Typography variant="subtitle2" sx={{ mt: '20px', fontSize: { xs: '12px', md: '13px', lg: '14px' } }}>
+                                <span onClick={showReverify?.onClick} className="text-blue-primary hover:underline ml-1">
+                                    Send new code to email ?
+                                </span>
                             </Typography>
                         )}
                     </Stack>
