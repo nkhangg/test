@@ -37,8 +37,22 @@ const Validate = {
         return age;
     },
 
+    isValidString(value: string, prefix: string): ValidateType {
+        if (this.isBlank(value)) return { message: prefix + " can't be blank ", error: true };
+
+        if (this.isNumber(value)) return { message: prefix + ' is not numberic ', error: true };
+
+        if (this.isSpecialChars(value))
+            return {
+                message: prefix + ' is not include special characters ',
+                error: true,
+            };
+
+        return { message: '', error: false };
+    },
+
     description(value: string): ValidateType {
-        if (this.isBlank(value)) return { message: `Description is invalid `, error: true };
+        if (this.isBlank(value)) return { message: `Description can't be blank `, error: true };
         return { message: '', error: false };
     },
 
@@ -84,6 +98,18 @@ const Validate = {
             };
 
         return { message: '', error: false };
+    },
+
+    name(value: string): ValidateType {
+        return this.isValidString(value, 'Name');
+    },
+
+    brand(value: string): ValidateType {
+        return this.isValidString(value, 'Brand');
+    },
+
+    type(value: string): ValidateType {
+        return this.isValidString(value, 'Type');
     },
 
     password(value: string, min = 6): ValidateType {

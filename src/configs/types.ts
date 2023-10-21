@@ -20,6 +20,8 @@ import {
     PagiantionResponse,
     IProductManageList,
     DataProductType,
+    ProductInfo,
+    IImage,
 } from './interface';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
@@ -69,7 +71,25 @@ export type ApiVerifyCode = (code: string) => Promise<IBaseResponse<any>>;
 
 export type ApiRefreshVerifyCode = (code: string) => Promise<IBaseResponse<any>>;
 
+export type ApiUpdateProductWithInfo = (id: string, data: ProductInfo) => Promise<IBaseResponse<ProductInfo>>;
+
+export type ApiGetProductInfo = (id: string) => Promise<IBaseResponse<ProductInfo>>;
+
 export type ApiUpdateCurUser = (data: DataRequestUpdateUser) => Promise<IBaseResponse<IProfile>>;
+
+export type ApiGetRepositories = (id: string) => Promise<IBaseResponse<RepoType[]>>;
+
+export type ApiAddARepository = (id: string, data: RepoType) => Promise<IBaseResponse<RepoType>>;
+
+export type ApiUpdateARepository = (data: RepoType) => Promise<IBaseResponse<RepoType>>;
+
+export type ApiDeleteARepository = (id: number) => Promise<IBaseResponse<RepoType>>;
+
+export type ApiGetImagesByProduct = (id: string) => Promise<IBaseResponse<IImage[]>>;
+
+export type ApiCreateImagesByProduct = (id: string, files: File[]) => Promise<IBaseResponse<any>>;
+
+export type ApiDeleteImagesByProduct = (data: { id: string; idImage: number }) => Promise<IBaseResponse<any>>;
 
 export type ApiHistories = () => Promise<IBaseResponse<IProfile>>;
 
@@ -122,6 +142,7 @@ export type ValidateType = { message: string; error: boolean };
 export type UserFormType = { username: string; password: string };
 
 export type RepoType = {
+    id?: number;
     size: number;
     quantity: number;
     inPrice: number;

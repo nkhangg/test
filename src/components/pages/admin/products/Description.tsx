@@ -18,10 +18,11 @@ const ReactQuill = dynamic(
 );
 export interface IDescriptionProps {
     inidata?: string;
+    message?: string;
     onValues?: (value: string) => void;
 }
 
-function Description({ inidata, onValues }: IDescriptionProps) {
+function Description({ inidata, message, onValues }: IDescriptionProps) {
     const [value, setValue] = useState(inidata || '');
 
     useEffect(() => {
@@ -36,9 +37,10 @@ function Description({ inidata, onValues }: IDescriptionProps) {
     }, [value]);
     return (
         <CardInfo title="Description">
-            <div className="overflow-auto h-[600px] pb-[4%] w-full">
+            <div className="overflow-auto h-[600px] pb-[4%] w-full ">
                 <ReactQuill placeholder="Enter description" className="w-full h-full" modules={{ toolbar: true }} theme="snow" value={value} onChange={setValue} />
             </div>
+            {message && <span className="text-sm text-[#FA896B] text-[.75rem] mt-[4px] ml-[14px]">{message}</span>}
         </CardInfo>
     );
 }

@@ -12,7 +12,7 @@ export default function CardInfo({ children, title, action }: CardInfoProps) {
         <Card elevation={0} variant={undefined}>
             <CardContent>
                 <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
-                    {title && <Typography>{title}</Typography>}
+                    {title && <Typography sx={{ fontWeight: '500', fontSize: '14px' }}>{title}</Typography>}
                     {action}
                 </Stack>
                 <Box mt={3}>{children}</Box>

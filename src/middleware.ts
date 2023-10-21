@@ -8,12 +8,6 @@ export default async function middlewares(request: NextRequest) {
 
     const roles: undefined | { name: string; value: string } = request.cookies.get('role');
 
-    // if (request.nextUrl.pathname.includes('/log-out')) {
-    //     console.log('in log out');
-    //     request.cookies.clear();
-    //     return NextResponse.redirect(new URL('/', request.url));
-    // }
-
     if (!token || (token && token.value.length < 100)) {
         if (request.nextUrl.pathname.includes(links.adminMidleware)) {
             return NextResponse.redirect(new URL('/', request.url));
