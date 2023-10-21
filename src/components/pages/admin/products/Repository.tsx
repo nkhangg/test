@@ -5,7 +5,7 @@ import React, { ChangeEvent, FocusEvent, useEffect, useState } from 'react';
 import ComInput from './ComInput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { toGam } from '@/utils/format';
+import { toCurrency, toGam } from '@/utils/format';
 import Validate from '@/utils/validate';
 import { productManageData } from '@/datas/product-manage-data';
 import { RepoType, RepoTypeErrors } from '@/configs/types';
@@ -80,9 +80,11 @@ export default function Repository({ dataOusite, onRepos }: IRepositoryProps) {
         keys.forEach((key) => {
             const dynamic = key as keyof RepoType;
 
-            const { message, error } = Validate.number(items[dynamic], key);
-            validateErrors[dynamic] = message;
-            flag = error;
+            if (dynamic !== 'id') {
+                const { message, error } = Validate.number(items[dynamic], key);
+                validateErrors[dynamic] = message;
+                flag = error;
+            }
         });
 
         setErrors(validateErrors);
@@ -256,12 +258,12 @@ export default function Repository({ dataOusite, onRepos }: IRepositoryProps) {
                                                         </TableCell>
                                                         <TableCell align="left">
                                                             <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
-                                                                {item.inPrice}
+                                                                {toCurrency(item.inPrice)}
                                                             </Typography>
                                                         </TableCell>
                                                         <TableCell align="left">
                                                             <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
-                                                                {item.outPrice}
+                                                                {toCurrency(item.outPrice)}
                                                             </Typography>
                                                         </TableCell>
                                                         <TableCell align="center">
@@ -293,12 +295,12 @@ export default function Repository({ dataOusite, onRepos }: IRepositoryProps) {
                                                 </TableCell>
                                                 <TableCell align="left">
                                                     <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
-                                                        {repo.inPrice}
+                                                        {toCurrency(repo.inPrice)}
                                                     </Typography>
                                                 </TableCell>
                                                 <TableCell align="left">
                                                     <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
-                                                        {repo.outPrice}
+                                                        {toCurrency(repo.outPrice)}
                                                     </Typography>
                                                 </TableCell>
                                                 <TableCell align="center">

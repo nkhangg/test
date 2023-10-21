@@ -24,7 +24,7 @@ function Pagination({ pages, pageLimit = 4, maxPageLimit = 4, minPageLimit = 0, 
 
     const page = param.get('page');
 
-    const [currentPage, setcurrentPage] = useState(1);
+    const [currentPage, setcurrentPage] = useState<number>(parseInt(page || '1') || 1);
     const router = useRouter();
 
     const [pageNumberLimit, setpageNumberLimit] = useState(pageLimit);

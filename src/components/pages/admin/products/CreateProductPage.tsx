@@ -20,6 +20,8 @@ import { createProduct } from '@/apis/admin/product';
 import { useDispatch } from 'react-redux';
 import { pushNoty } from '@/redux/slice/appSlice';
 import { links } from '@/datas/links';
+import { toast } from 'react-toastify';
+import { contants } from '@/utils/contants';
 const Description = dynamic(() => import('./Description'), {
     loading: () => (
         <Stack justifyContent={'center'} alignItems={'center'}>
@@ -120,10 +122,7 @@ export default function CreateOrUpdateProduct({ dataOusite }: ICreateOrUpdatePro
                 validateErrors[dynamic] = message;
                 flag = error;
             } else {
-                // if (data.repo.length <= 0 || data.images.length <= 0) {
-                //     flag = true;
-                // }
-                if (data.repo.length <= 0) {
+                if (data.repo.length <= 0 || data.images.length <= 0) {
                     flag = true;
                 }
             }
@@ -144,6 +143,8 @@ export default function CreateOrUpdateProduct({ dataOusite }: ICreateOrUpdatePro
             return;
         }
 
+        console.log(data);
+
         try {
             setLoading(true);
             const response = await createProduct({
@@ -158,39 +159,16 @@ export default function CreateOrUpdateProduct({ dataOusite }: ICreateOrUpdatePro
             setLoading(false);
 
             if (!response.data || response.errors) {
-                dispatch(
-                    pushNoty({
-                        title: `Can't Create Product, Pls try again !`,
-                        open: true,
-                        type: 'error',
-                    }),
-                );
-
+                toast.error("Can't Create Product, Pls try again !");
                 return;
             }
 
+            toast.success('Create Succcessfuly !');
             router.push(links.admin + 'product');
-
-            dispatch(
-                pushNoty({
-                    title: `Create Succcessfuly !`,
-                    open: true,
-                    type: 'success',
-                }),
-            );
         } catch (error) {
             setLoading(false);
-            dispatch(
-                pushNoty({
-                    title: `Can't Create Product, Pls try again !`,
-                    open: true,
-                    type: 'error',
-                }),
-            );
-
-            return;
+            toast.error(contants.messages.errors.server);
         }
-        console.log(data);
     };
 
     return (
@@ -248,14 +226,14 @@ export default function CreateOrUpdateProduct({ dataOusite }: ICreateOrUpdatePro
                     </Grid>
                 </CardInfo>
 
-                {/* <SelectImages
+                <SelectImages
                     onImages={(images) => {
                         setData({
                             ...data,
                             images,
                         });
                     }}
-                /> */}
+                />
 
                 <Repository
                     onRepos={(repo) => {

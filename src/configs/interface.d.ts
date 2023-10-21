@@ -297,3 +297,17 @@ export type DataProductType = {
     repo: RepoType[];
     description: string;
 };
+
+export interface ProductInfo {
+    id?: string;
+    name: string;
+    brand: string;
+    type: string;
+    description: string;
+}
+
+export interface IImage {
+    id: number;
+    name: string;
+    image: string;
+}
