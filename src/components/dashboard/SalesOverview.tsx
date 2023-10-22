@@ -63,7 +63,7 @@ const SalesOverview = ({ dataOusite }: ISalesOverviewProps) => {
             }
             middlecontent={
                 <>
-                    <Typography sx={{ fontSize: '20px', mt: '10px' }}>
+                    <Typography sx={{ fontSize: '20px', mt: '10px', fontWeight: '700' }}>
                         Total: {toCurrency((value === 1 ? dataCharts?.productRevenueByType.total : dataCharts?.revenue.total) || 0)}
                     </Typography>
                 </>

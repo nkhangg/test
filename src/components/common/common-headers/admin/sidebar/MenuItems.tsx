@@ -13,7 +13,7 @@ const Menuitems = [
     },
     {
         navlabel: true,
-        subheader: 'manage',
+        subheader: 'management',
     },
     {
         id: 2,

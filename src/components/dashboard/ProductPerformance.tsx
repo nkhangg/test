@@ -61,7 +61,7 @@ const ProductPerformance = ({ dataOutsite }: IProductPerformanceProps) => {
             }
             middlecontent={
                 <>
-                    <Typography sx={{ fontSize: '20px', mt: '20px' }}>Total: {toCurrency(dataTable?.total || 0)}</Typography>
+                    <Typography sx={{ fontSize: '20px', mt: '20px', fontWeight: '700' }}>Total: {toCurrency(dataTable?.total || 0)}</Typography>
                 </>
             }
             footer={
