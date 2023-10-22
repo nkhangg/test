@@ -53,7 +53,7 @@ function Sort({ categories, sorts, onCategories, onSorts, onSearch }: ISortProps
                     name="pet"
                     fullWidth
                     size="small"
-                    placeholder="Search for pet..."
+                    placeholder="Search for product..."
                 />
             </div>
             <div className="flex-1">

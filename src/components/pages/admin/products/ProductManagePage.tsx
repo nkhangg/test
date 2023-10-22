@@ -176,11 +176,11 @@ export default function ProductManagePage(props: IProductManagePageProps) {
                                                     <Button onClick={() => handleDeleteProduct(item.id as string)}>
                                                         <FontAwesomeIcon className="text-red-400" icon={faTrash} />
                                                     </Button>
-                                                    <Button>
-                                                        <Link href={'/admin/dashboard/product/' + item.id}>
+                                                    <Link href={'/admin/dashboard/product/' + item.id}>
+                                                        <Button>
                                                             <FontAwesomeIcon icon={faEdit} />
-                                                        </Link>
-                                                    </Button>
+                                                        </Button>
+                                                    </Link>
                                                 </TableCell>
                                             </TableRow>
                                         );

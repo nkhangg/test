@@ -26,7 +26,7 @@ const Validate = {
     },
 
     isPhone(value: string): boolean {
-        const regexPhoneNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+        const regexPhoneNumber = /(84|0[3|5|7|8|9|1])+([0-9]{8})\b/g;
 
         return regexPhoneNumber.test(value);
     },

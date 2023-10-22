@@ -22,6 +22,7 @@ import {
     DataProductType,
     ProductInfo,
     IImage,
+    IUserManage,
 } from './interface';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
@@ -90,6 +91,12 @@ export type ApiGetImagesByProduct = (id: string) => Promise<IBaseResponse<IImage
 export type ApiCreateImagesByProduct = (id: string, files: File[]) => Promise<IBaseResponse<any>>;
 
 export type ApiDeleteImagesByProduct = (data: { id: string; idImage: number }) => Promise<IBaseResponse<any>>;
+
+export type ApiGetUserManage = (id: string) => Promise<IBaseResponse<IUserManage>>;
+
+export type ApiUpdateUserManage = (data: IUserManage) => Promise<IBaseResponse<any>>;
+
+export type ApiCreateUserManage = (data: IUserManage) => Promise<IBaseResponse<any>>;
 
 export type ApiHistories = () => Promise<IBaseResponse<IProfile>>;
 

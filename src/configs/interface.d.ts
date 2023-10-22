@@ -311,3 +311,19 @@ export interface IImage {
     name: string;
     image: string;
 }
+
+export interface IUserManage {
+    id: string;
+    username: string;
+    fullname: string;
+    birthday: string;
+    gender: boolean;
+    phone: string;
+    address: string;
+    avatar: string;
+    email: string;
+    role: string;
+    createAt: string;
+    password: string;
+    active: boolean;
+}
