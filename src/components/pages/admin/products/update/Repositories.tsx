@@ -124,7 +124,7 @@ export default function Repositories({ id }: IRepositoriesProps) {
                 return;
             }
 
-            toast.success(`Add sucessfuly !`);
+            toast.success(`Add Successfully !`);
             repositoriesData.refetch();
             setItems({ ...initData });
         } catch (error) {
@@ -172,7 +172,7 @@ export default function Repositories({ id }: IRepositoriesProps) {
                 return;
             }
 
-            toast.success(`Update sucessfuly !`);
+            toast.success(`Update Successfully !`);
             repositoriesData.refetch();
             setItems({ ...initData });
             setEditMode(false);
@@ -196,7 +196,7 @@ export default function Repositories({ id }: IRepositoriesProps) {
                 return;
             }
 
-            toast.success(`Delete sucessfuly !`);
+            toast.success(`Delete Successfully !`);
             repositoriesData.refetch();
             setItems({ ...initData });
             setEditMode(false);
@@ -234,7 +234,7 @@ export default function Repositories({ id }: IRepositoriesProps) {
                                 <DynamicInput
                                     dataSelect={productManageData.sizes}
                                     type="number"
-                                    title="Size (g)"
+                                    title="Size"
                                     propsInput={{
                                         type: 'number',
                                         placeholder: 'Size',

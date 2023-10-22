@@ -58,6 +58,7 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
     const dispatch = useAppDispatch();
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const [value, setValue] = useState(0);
 
     const typesAndBrandsData = useQuery({
         queryKey: ['typeandbrand'],
@@ -82,14 +83,6 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
     }
 
     const [data, setData] = useState<DataProductType>(initData);
-    const [errors, setErrors] = useState<DataProductErrorsType>(initDataErrors);
-
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setData({
-            ...data,
-            [e.target.name]: e.target.value,
-        });
-    };
 
     useEffect(() => {
         const type = typesAndBrandsData.data?.data.types.find((item) => item.name === dataProduct.data?.data.type)?.id;
@@ -146,8 +139,6 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
         }
     };
 
-    const [value, setValue] = React.useState(0);
-
     const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
@@ -166,7 +157,7 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs value={value} onChange={handleChangeTab} aria-label="basic tabs example">
-                        <Tab label="Infomation" />
+                        <Tab label="Information" />
                         <Tab label="Repositories" />
                         <Tab label="Images" />
                     </Tabs>
@@ -186,89 +177,4 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
 }
 
 {
-    /* <>
-<CardInfo title="Infomation">
-    <Grid container spacing={4}>
-        <Grid lg={12} md={12} xs={12} item>
-            <ComInput
-                title="Name"
-                propsInput={{
-                    placeholder: 'ME-O Tuna In Jelly',
-                    name: 'name',
-                    value: data.name,
-                    message: errors.name,
-                    onChange: handleChange,
-                }}
-            />
-        </Grid>
-        <Grid item lg={6} md={12} xs={12}>
-            <ComInput title="Type">
-                <TextField select id="type" name="type" value={data.type} size="small" onChange={handleChange}>
-                    {typesAndBrandsData.data?.data.types.map((type, index) => {
-                        return (
-                            <MenuItem key={type.name} value={typeof type.id === 'object' ? type.id.join() : type.id}>
-                                {type.name}
-                            </MenuItem>
-                        );
-                    })}
-                </TextField>
-            </ComInput>
-        </Grid>
-        <Grid item lg={6} md={12} xs={12}>
-            <DynamicInput
-                propsInput={{
-                    name: 'brand',
-                    value: data.brand,
-                    message: errors.brand,
-                    onChange: handleChange,
-                }}
-                dataSelect={typesAndBrandsData.data?.data.brands || []}
-                title="Brand"
-            />
-        </Grid>
-    </Grid>
-</CardInfo>
-
-{/* <SelectImages
-    dataOutsite={(dataProduct.data?.data.images as { id: string; image: string }[]) || []}
-    onImages={(images) => {
-        setData({
-            ...data,
-            images,
-        });
-    }}
-/> */
-}
-
-{
-    /* <Repository
-    dataOusite={dataProduct.data?.data.repo}
-    onRepos={(repo) => {
-        setData({
-            ...data,
-            repo,
-        });
-    }}
-/>
-
-<Description
-    inidata={dataProduct.data?.data.description}
-    onValues={(description) => {
-        setData({
-            ...data,
-            description,
-        });
-    }}
-/>
-
-<CardInfo>
-    <Stack direction={'row'} justifyContent={'flex-end'}>
-        <Button onClick={handleSubmit} variant="outlined">
-            {'Update'}
-        </Button>
-    </Stack>
-</CardInfo>
-
-{loading && <LoadingPrimary />}
-</> */
 }

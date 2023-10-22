@@ -10,12 +10,13 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, Box, Button, Grid, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
+import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-const listHead = ['No', 'Avartar', 'Username', 'Fullname', 'Email', 'Gender', 'Phone', 'Role'];
+const listHead = ['No', 'Avatar', 'Username', 'Fullname', 'Email', 'Gender', 'Phone', 'Role'];
 
 export interface IUserManagePageProps {}
 
@@ -140,8 +141,14 @@ export default function UserManagePage(props: IUserManagePageProps) {
                                                 <TableCell align="center">{item.role === '0' ? 'ROLE_USER' : item.role}</TableCell>
 
                                                 <TableCell align="center">
-                                                    <Button onClick={() => handleDeleteUser(item.id as string)}>
-                                                        <FontAwesomeIcon className="text-red-400" icon={faTrash} />
+                                                    <Button disabled={item.role === 'ROLE_ADMIN'} onClick={() => handleDeleteUser(item.id as string)}>
+                                                        <FontAwesomeIcon
+                                                            className={classNames('', {
+                                                                'text-red-400': item.role !== 'ROLE_ADMIN',
+                                                                'text-gray-400': item.role === 'ROLE_ADMIN',
+                                                            })}
+                                                            icon={faTrash}
+                                                        />
                                                     </Button>
                                                     <Link href={'/admin/dashboard/users/' + item.id}>
                                                         <Button>

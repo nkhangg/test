@@ -8,7 +8,7 @@ export default function LogicalTakeAction() {
     const [pageValue, setPageValue] = useState(1);
 
     const { data, isLoading, error } = useQuery({
-        queryKey: ['product', pageValue],
+        queryKey: ['product/logicalTakeAction', pageValue],
         queryFn: () => bestSellers(pageValue),
     });
 
