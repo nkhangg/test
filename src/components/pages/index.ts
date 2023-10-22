@@ -25,4 +25,5 @@ export { default as PaymentItem } from './payments/PaymentItem';
 export { default as PaymentCard } from './payments/PaymentCard';
 export { default as ProductFilterPage } from './product-filter/ProductFilterPage';
 export { default as UsermanagePage } from './admin/users/UsermanagePage';
-export { default as CreateOrUpdateUserPage } from './admin/users/CreateOrUpdateUserPage';
+export { default as UpdateUserPage } from './admin/users/UpdateUserPage';
+export { default as CreateUserPage } from './admin/users/CreateUserPage';

@@ -220,32 +220,6 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                 <Grid item xs={12} md={4} lg={3}>
                     <div className="py-[25px] px-9 w-full h-full bg-[#f1f1f1] rounded">
                         <div className="flex items-center gap-2 mb-[38px]">
-                            {/* <div
-                                className={classNames('relative rounded-full overflow-hidden', {
-                                    [style['avatar']]: true,
-                                })}
-                            >
-                                <Avatar
-                                    sx={{
-                                        width: 60,
-                                        height: 60,
-                                    }}
-                                    alt="avatar"
-                                    src={avartar || contants.avartarDefault}
-                                />
-
-                                <div
-                                    onClick={() => setOpenEditor(true)}
-                                    className={classNames(
-                                        'absolute bg-[rgba(0,0,0,.4)] inset-0 flex items-center justify-center text-white transition-all ease-linear cursor-pointer',
-                                        {
-                                            [style['avatar-backdrop']]: true,
-                                        },
-                                    )}
-                                >
-                                    <FontAwesomeIcon icon={faEdit} />
-                                </div>
-                            </div> */}
                             <Avatar
                                 sx={{
                                     width: 60,
@@ -413,7 +387,7 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                                     value: form.newPassword,
                                     message: errors.newPassword,
                                 }}
-                                label="Confirm new password"
+                                label="New password"
                             />
                         </div>
 

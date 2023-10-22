@@ -13,6 +13,7 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const listHead = ['No', 'Avartar', 'Username', 'Fullname', 'Email', 'Gender', 'Phone', 'Role'];
 
@@ -142,11 +143,11 @@ export default function UserManagePage(props: IUserManagePageProps) {
                                                     <Button onClick={() => handleDeleteUser(item.id as string)}>
                                                         <FontAwesomeIcon className="text-red-400" icon={faTrash} />
                                                     </Button>
-                                                    <Button>
-                                                        <Link href={'/admin/dashboard/product/edit/' + item.id}>
+                                                    <Link href={'/admin/dashboard/users/' + item.id}>
+                                                        <Button>
                                                             <FontAwesomeIcon icon={faEdit} />
-                                                        </Link>
-                                                    </Button>
+                                                        </Button>
+                                                    </Link>
                                                 </TableCell>
                                             </TableRow>
                                         );
@@ -174,36 +175,20 @@ export default function UserManagePage(props: IUserManagePageProps) {
                                         const response = await deleteUser(idDelete);
                                         setLoading(false);
                                         if (response.errors) {
-                                            dispatch(
-                                                pushNoty({
-                                                    title: `Can't delete this product. try again`,
-                                                    open: true,
-                                                    type: 'error',
-                                                }),
-                                            );
+                                            toast.error("Can't delete this product. try again");
                                             return;
                                         }
                                         refetch();
                                         if (page && data?.data.pages && page > data?.data.pages - 1) {
                                             router.push(links.admin + 'product');
                                         }
-                                        dispatch(
-                                            pushNoty({
-                                                title: `${idDelete} deleted`,
-                                                open: true,
-                                                type: 'success',
-                                            }),
-                                        );
+
+                                        toast.success(`${idDelete} deleted`);
                                         return;
                                     } catch (error) {
                                         setLoading(false);
-                                        dispatch(
-                                            pushNoty({
-                                                title: `Can't delete this product. try again`,
-                                                open: true,
-                                                type: 'error',
-                                            }),
-                                        );
+
+                                        toast.success(`Can't delete this product. try again`);
                                     }
                                 }
                             }}
