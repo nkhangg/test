@@ -64,7 +64,7 @@ export default function AvatarEdit({ open, setOpen, onComfirm, onAvartar }: IAva
                 <div className="flex items-center justify-end">
                     <Stack direction={'row'} width={'80%'} gap={'10px'} justifyContent={'flex-end'}>
                         <SocialButton onClick={handleClose} title="Cancel" background="#EF4444" />
-                        <SocialButton onClick={handleSubmit} title="Oke" background="#65A30D" />
+                        <SocialButton onClick={handleSubmit} title="OK" background="#65A30D" />
                     </Stack>
                 </div>
             </DialogContent>

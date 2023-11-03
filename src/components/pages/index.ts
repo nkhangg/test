@@ -27,3 +27,4 @@ export { default as ProductFilterPage } from './product-filter/ProductFilterPage
 export { default as UsermanagePage } from './admin/users/UsermanagePage';
 export { default as UpdateUserPage } from './admin/users/UpdateUserPage';
 export { default as CreateUserPage } from './admin/users/CreateUserPage';
+export { default as InitState } from './InitState';

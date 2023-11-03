@@ -1,6 +1,6 @@
 import { ICart, IInitAppStoreState, IUser } from '@/configs/interface';
 import { RootState } from '@/configs/types';
-import { addCartTolocal, addPaymetnTolocal, getCartFromLocal, getPaymentFromLocal } from '@/utils/localStorege';
+import { addCartTolocal, addPaymetnTolocal, getPaymentFromLocal, getStoreFromLocal } from '@/utils/localStorege';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { pushNoty } from './appSlice';
 
@@ -12,11 +12,48 @@ export const getPayment = createAsyncThunk('cart/getPayment', (_, thunkApi) => {
 
     const store = getPaymentFromLocal(username);
 
-    console.log('store', store);
-
     if (!store) return [];
 
     return store.payment as ICart[];
+});
+
+export const getCart = createAsyncThunk('cart/getCartUser', async (_, thunkApi) => {
+    const { userReducer } = thunkApi.getState() as RootState;
+
+    const username = userReducer.user?.username;
+    if (!username || username === '')
+        return {
+            data: [],
+            username,
+        };
+
+    const store = getStoreFromLocal(username);
+
+    if (!store)
+        return {
+            data: [],
+            username,
+        };
+
+    return {
+        data: store.cart as ICart[],
+        username,
+    };
+});
+export const getCheckedAllCart = createAsyncThunk('cart/getCheckedAllCart', async (_, thunkApi) => {
+    const { userReducer } = thunkApi.getState() as RootState;
+
+    const username = userReducer.user?.username;
+
+    if (!username || username === '') return false;
+
+    const store = getStoreFromLocal(username);
+
+    const arrCart = (store.cart as ICart[]) || [];
+    const checkAll = arrCart.every((item) => {
+        return item.checked;
+    });
+    return checkAll;
 });
 
 export const addPaymentFromCard = createAsyncThunk('cart/addPaymentFromCard', (_, thunkApi) => {
@@ -81,16 +118,65 @@ export const deletePayment = createAsyncThunk('cart/deletePayment', (index: numb
     };
 });
 
+export const addCart = createAsyncThunk('cart/addCartUser', (data: ICart, thunkApi) => {
+    const { userReducer } = thunkApi.getState() as RootState;
+    const username = userReducer.user?.username;
+    if (!username || username === '') return undefined;
+
+    return {
+        data,
+        username,
+    };
+});
+
+export const removeCart = createAsyncThunk('cart/removeCartUser', (data: { data: ICart; index: number }, thunkApi) => {
+    const { userReducer } = thunkApi.getState() as RootState;
+    const username = userReducer.user?.username;
+    if (!username || username === '') return undefined;
+
+    return {
+        data,
+        username,
+    };
+});
+
+export const modifyQuantity = createAsyncThunk('cart/modifyQuantity', (data: ICart, thunkApi) => {
+    const { userReducer } = thunkApi.getState() as RootState;
+    const username = userReducer.user?.username;
+    if (!username || username === '') return undefined;
+
+    return {
+        data,
+        username,
+    };
+});
+
+export const modifyChecked = createAsyncThunk('cart/modifyChecked', (data: { data: ICart; checked: boolean }, thunkApi) => {
+    const { userReducer } = thunkApi.getState() as RootState;
+    const username = userReducer.user?.username;
+    if (!username || username === '') return undefined;
+
+    return {
+        data,
+        username,
+    };
+});
+
+export const checkedAll = createAsyncThunk('cart/checkedAll', (data: boolean, thunkApi) => {
+    const { userReducer } = thunkApi.getState() as RootState;
+    const username = userReducer.user?.username;
+    if (!username || username === '') return undefined;
+
+    return {
+        data,
+        username,
+    };
+});
+
 // init a store for app
 const initState: { cartUser: ICart[]; checkAll: boolean; payment: ICart[] } = {
-    cartUser: (getCartFromLocal() as ICart[]) || [],
-    checkAll: ((): boolean => {
-        const arrCart = (getCartFromLocal() as ICart[]) || [];
-        const checkAll = arrCart.every((item) => {
-            return item.checked;
-        });
-        return checkAll;
-    })(),
+    cartUser: [],
+    checkAll: false,
     payment: [],
 };
 
@@ -98,77 +184,8 @@ export const cart = createSlice({
     name: 'cart',
     initialState: initState,
     reducers: {
-        addCart: (state, action: PayloadAction<ICart>) => {
-            const item = state.cartUser.find((i) => i.id === action.payload.id && i.size === action.payload.size);
-
-            if (item) {
-                item.quantity = action.payload.quantity + item.quantity;
-                addCartTolocal(state.cartUser);
-
-                return;
-            }
-
-            const newObj = {
-                ...state,
-                cartUser: [...state.cartUser, action.payload],
-            };
-            addCartTolocal(newObj.cartUser);
-
-            console.log(newObj.cartUser);
-
-            return {
-                ...newObj,
-            };
-        },
-
-        modifyQuantity: (state, action: PayloadAction<ICart>) => {
-            const item = state.cartUser.find((i) => i.id === action.payload.id && i.size === action.payload.size);
-
-            if (item) {
-                item.quantity = action.payload.quantity;
-                addCartTolocal(state.cartUser);
-                return;
-            }
-        },
-
-        modifyChecked: (state, action: PayloadAction<{ data: ICart; checked: boolean }>) => {
-            const item = state.cartUser.find((i) => i.id === action.payload.data.id && i.size === action.payload.data.size);
-
-            if (item) {
-                item.checked = action.payload.checked;
-                addCartTolocal(state.cartUser);
-
-                const checkAll = state.cartUser.every((item) => {
-                    return item.checked;
-                });
-
-                state.checkAll = checkAll;
-                return;
-            }
-        },
-
-        checkedAll: (state, action: PayloadAction<{ checked: boolean }>) => {
-            const newCartUser = state.cartUser.map((item) => {
-                return {
-                    ...item,
-                    checked: action.payload.checked,
-                };
-            });
-
-            addCartTolocal(newCartUser);
-            return {
-                ...state,
-                cartUser: [...newCartUser],
-            };
-        },
-
         setCheckedAllCartItem: (state, action: PayloadAction<boolean>) => {
             state.checkAll = action.payload;
-        },
-
-        removeCart: (state, action: PayloadAction<{ data: ICart; index: number }>) => {
-            state.cartUser.splice(action.payload.index, 1);
-            addCartTolocal(state.cartUser);
         },
 
         updateDataCartWhenMount: (state, action: PayloadAction<ICart[]>) => {
@@ -181,7 +198,7 @@ export const cart = createSlice({
                     repo: action.payload[index].repo,
                 };
             });
-            addCartTolocal(newCartUser);
+            // addCartTolocal(newCartUser);
             return {
                 ...state,
                 cartUser: [...newCartUser],
@@ -204,7 +221,7 @@ export const cart = createSlice({
                     payment: action.payload.paymentItems,
                 };
 
-                addCartTolocal(data.cart);
+                // addCartTolocal(data.cart);
                 addPaymetnTolocal({ ...data }, action.payload.username);
 
                 return {
@@ -251,9 +268,90 @@ export const cart = createSlice({
                     ...state,
                     payment: [],
                 };
+            }),
+            //cart
+            builder.addCase(getCart.fulfilled, (state, action) => {
+                return {
+                    ...state,
+                    cartUser: action.payload.data,
+                };
+            }),
+            builder.addCase(modifyQuantity.fulfilled, (state, action) => {
+                if (!action.payload) return;
+
+                const item = state.cartUser.find((i) => i.id === action.payload?.data.id && i.size === action.payload.data.size);
+
+                if (item) {
+                    item.quantity = action.payload?.data.quantity;
+                    addCartTolocal({ payment: state.payment, cart: state.cartUser }, action.payload.username);
+                    return;
+                }
+            }),
+            builder.addCase(removeCart.fulfilled, (state, action) => {
+                if (!action.payload) return;
+
+                state.cartUser.splice(action.payload?.data.index, 1);
+                addCartTolocal({ payment: state.payment, cart: state.cartUser }, action.payload.username);
+            }),
+            builder.addCase(checkedAll.fulfilled, (state, action) => {
+                if (!action.payload) return;
+
+                const newCartUser = state.cartUser.map((item) => {
+                    return {
+                        ...item,
+                        checked: action.payload?.data,
+                    };
+                });
+
+                addCartTolocal({ payment: state.payment, cart: newCartUser }, action.payload.username);
+                return {
+                    ...state,
+                    cartUser: [...newCartUser],
+                };
+            }),
+            builder.addCase(modifyChecked.fulfilled, (state, action) => {
+                if (!action.payload) return;
+
+                const item = state.cartUser.find((i) => i.id === action.payload?.data.data.id && i.size === action.payload.data.data.size);
+
+                if (item) {
+                    item.checked = action.payload.data.checked;
+                    addCartTolocal({ payment: state.payment, cart: state.cartUser }, action.payload.username);
+
+                    const checkAll = state.cartUser.every((item) => {
+                        return item.checked;
+                    });
+
+                    state.checkAll = checkAll;
+                    return;
+                }
+            }),
+            builder.addCase(getCheckedAllCart.fulfilled, (state, action) => {
+                return {
+                    ...state,
+                    checkAll: action.payload,
+                };
+            }),
+            builder.addCase(addCart.fulfilled, (state, action) => {
+                console.log('action.payload add cart', action.payload);
+
+                if (!action.payload) return;
+
+                const item = state.cartUser.find((i) => i.id === action.payload?.data.id && i.size === action.payload.data.size);
+
+                if (item) {
+                    item.quantity = action.payload?.data.quantity + item.quantity;
+                    addCartTolocal({ payment: state.payment, cart: state.cartUser }, action.payload.username);
+
+                    return;
+                }
+
+                addCartTolocal({ payment: state.payment, cart: [...state.cartUser, action.payload.data] }, action.payload.username);
+
+                state.cartUser = [...state.cartUser, action.payload.data];
             });
     },
 });
 
-export const { addCart, removeCart, modifyQuantity, modifyChecked, checkedAll, setCheckedAllCartItem, updateDataCartWhenMount } = cart.actions;
+export const { setCheckedAllCartItem, updateDataCartWhenMount } = cart.actions;
 export default cart.reducer;

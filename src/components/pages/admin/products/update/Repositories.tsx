@@ -3,7 +3,7 @@ import { CardInfo, Comfirm, DynamicInput, LoadingPrimary, TextField } from '@/co
 import { Box, Button, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography, capitalize } from '@mui/material';
 import React, { ChangeEvent, FocusEvent, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBroomBall, faEdit, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBroomBall, faEdit, faPlus, faRotate, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { toCurrency, toGam } from '@/utils/format';
 import { useQuery } from '@tanstack/react-query';
 import Validate from '@/utils/validate';
@@ -17,7 +17,7 @@ import { toast } from 'react-toastify';
 import { contants } from '@/utils/contants';
 import classNames from 'classnames';
 
-const dataHead = ['No', 'Size', 'Quantity', 'In Price', 'Out Price'];
+const dataHead = ['No', 'Id', 'Size', 'Quantity', 'In Price', 'Out Price'];
 
 const initDataErrors = {
     size: '',
@@ -292,7 +292,9 @@ export default function Repositories({ id }: IRepositoriesProps) {
                             <Grid item xs={12} md={6} lg={12}>
                                 <Stack direction={'row'} justifyContent={'flex-end'} spacing={'20px'}>
                                     <Button onClick={handleClear}>
-                                        <FontAwesomeIcon className="text-1xl" icon={faBroomBall} />
+                                        <Tooltip title="Refresh form">
+                                            <FontAwesomeIcon className="text-1xl" icon={faRotate} />
+                                        </Tooltip>
                                     </Button>
                                     <Button
                                         variant="contained"
@@ -347,6 +349,7 @@ export default function Repositories({ id }: IRepositoriesProps) {
                                                         {index + 1}
                                                     </Typography>
                                                 </TableCell>
+                                                <TableCell>{'#' + repo.id}</TableCell>
                                                 <TableCell>{toGam(repo.size)}</TableCell>
                                                 <TableCell align="left">
                                                     <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
@@ -389,14 +392,32 @@ export default function Repositories({ id }: IRepositoriesProps) {
 
                     <Comfirm
                         title={`Comfirm Update`}
-                        subtitle={`You want to update ${toGam(items.size)} of ${id}`}
+                        subtitle={
+                            <>
+                                <p>
+                                    {`You want to update `}
+                                    <b>
+                                        {toGam(items.size)} of {id}
+                                    </b>
+                                </p>
+                            </>
+                        }
                         open={openComfirmUpdate.open}
                         setOpen={setOpenComfirmUpdate}
                         onComfirm={handleUpdate}
                     />
                     <Comfirm
                         title={`Comfirm Delete`}
-                        subtitle={`You want to delete id reposiroty ${idDelRepo} of ${id}`}
+                        subtitle={
+                            <>
+                                <p>
+                                    {`You want to delete id `}
+                                    <b>
+                                        #{idDelRepo} of {id}
+                                    </b>
+                                </p>
+                            </>
+                        }
                         open={openComfirmDel.open}
                         setOpen={setOpenComfirmDel}
                         onComfirm={handleDelete}

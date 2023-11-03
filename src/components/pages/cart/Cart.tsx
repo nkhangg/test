@@ -6,7 +6,8 @@ import { toCurrency, toGam } from '@/utils/format';
 import Quantity from './Quantity';
 import { Checkbox } from '@mui/material';
 import { addCart, modifyChecked, modifyQuantity, removeCart } from '@/redux/slice/cartsSlide';
-import { useDispatch } from 'react-redux';
+import { Comfirm } from '@/components';
+import { useAppDispatch } from '@/hooks/reduxHooks';
 
 export interface ICartProps {
     data: ICart;
@@ -16,8 +17,9 @@ export interface ICartProps {
 function Cart({ data, index }: ICartProps) {
     const [quantity, setQuantity] = useState(data.quantity);
     const [checked, setChecked] = useState(data.checked);
+    const [openComfirm, setOpenComfirm] = useState({ open: false, comfirm: 'cancel' });
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setChecked(event.target.checked);
@@ -26,6 +28,12 @@ function Cart({ data, index }: ICartProps) {
     };
 
     const handleRemove = () => {
+        setOpenComfirm({ ...openComfirm, open: true });
+    };
+
+    const handleComfirm = (v: { open: boolean; comfirm: 'cancel' | 'ok' }) => {
+        if (v.comfirm === 'cancel') return;
+
         dispatch(removeCart({ data, index }));
     };
 
@@ -72,6 +80,20 @@ function Cart({ data, index }: ICartProps) {
             <div className="ml-2 md:w-[20%]  flex items-center justify-center md:text-xl md:ml-0">
                 <span className="text-sm md:text-lg">{toCurrency(data.price * quantity <= 0 ? data.price : data.price * quantity)}</span>
             </div>
+
+            <Comfirm
+                title={'Comfirm update user'}
+                subtitle={
+                    <>
+                        <p>
+                            {'Are you sure delete '} <b>{data.name}</b>
+                        </p>
+                    </>
+                }
+                open={openComfirm.open}
+                setOpen={setOpenComfirm}
+                onComfirm={handleComfirm}
+            />
         </div>
     );
 }

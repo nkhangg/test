@@ -2,8 +2,8 @@ import { ICart } from '@/configs/interface';
 
 const keyCart: string = 'cart-user';
 
-export const addCartTolocal = (data: ICart[]) => {
-    localStorage.setItem(keyCart, JSON.stringify(data));
+export const addCartTolocal = (data: { cart: ICart[]; payment: ICart[] }, username: string) => {
+    localStorage.setItem(username, JSON.stringify({ ...data, cart: data.cart }));
 };
 
 export const addPaymetnTolocal = (data: { cart: ICart[]; payment: ICart[] }, username: string) => {
@@ -11,6 +11,19 @@ export const addPaymetnTolocal = (data: { cart: ICart[]; payment: ICart[] }, use
 };
 
 export const getPaymentFromLocal = (username: string) => {
+    if (typeof window === 'undefined') {
+        return undefined;
+    }
+    const store = localStorage?.getItem(username);
+
+    if (!store) {
+        return undefined;
+    }
+
+    return JSON.parse(store);
+};
+
+export const getStoreFromLocal = (username: string) => {
     if (typeof window === 'undefined') {
         return undefined;
     }
