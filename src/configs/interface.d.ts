@@ -1,3 +1,4 @@
+import exp from 'constants';
 import { UserFormType } from './types';
 
 export interface Action<T, P> {
@@ -336,4 +337,18 @@ export interface Review {
     size: number;
     comment: string;
     createdAt: string;
+}
+export interface IDetailOrder {
+    id: number;
+    dataPlaced: string;
+    state: string;
+    name: string;
+    phone: string;
+    address: string;
+    paymentMethod: string;
+    deliveryMethod: string;
+    products: ICart[];
+    subtotal: number;
+    shippingFee: number;
+    total: number;
 }

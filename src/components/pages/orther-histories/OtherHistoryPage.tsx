@@ -9,6 +9,7 @@ import OtherHistoryItem from './OtherHistoryItem';
 import { dataOrtherHistory } from '@/datas/other-data';
 import { otherHistory } from '@/apis/app';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { BaseBreadcrumbs } from '../common';
 export interface IOttherHistoryProps {}
 export default function OttherHistoryPage(props: IOttherHistoryProps) {
     const searchParams = useSearchParams();
@@ -28,19 +29,14 @@ export default function OttherHistoryPage(props: IOttherHistoryProps) {
 
     return (
         <>
-            <ContainerContent className="pt-12">
-                <div role="presentation">
-                    <Breadcrumbs aria-label="breadcrumb">
-                        <Link className="hover:underline" href="/">
-                            Home
-                        </Link>
-                        <Link className="text-black-main hover:underline " href="/other-history">
-                            Other History
-                        </Link>
-                    </Breadcrumbs>
-                </div>
-            </ContainerContent>
-            <BoxTitle mt="mt-[46px]" title="MY ORDERS" fontWeigth="font-semibold" underlineTitle locationTitle="left" fontSizeTitle="text-[32px]">
+            <BaseBreadcrumbs
+                title="MY ORDERS"
+                isLoading={isLoading}
+                breadcrumb={{
+                    title: 'Order History',
+                    href: '/other-history',
+                }}
+            >
                 {data?.data && data.data.data && !isLoading && (
                     <>
                         <div className="flex flex-col items-center gap-8">
@@ -49,18 +45,10 @@ export default function OttherHistoryPage(props: IOttherHistoryProps) {
                                     return <OtherHistoryItem key={item.id} data={item} />;
                                 })}
                         </div>
-                        <Pagination
-                            baseHref="/other-history?page="
-                            onPage={(page) => {
-                                // router.push('other-history?page=' + page - 1);
-                            }}
-                            pages={data.data.pages}
-                        />
+                        <Pagination baseHref="/other-history?page=" pages={data.data.pages} />
                     </>
                 )}
-
-                {isLoading && <LoadingSecondary />}
-            </BoxTitle>
+            </BaseBreadcrumbs>
         </>
     );
 }

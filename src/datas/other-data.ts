@@ -1,4 +1,4 @@
-import { IOtherHistories, IOtherHistory } from '@/configs/interface';
+import { IDetailOrder, IOtherHistories, IOtherHistory } from '@/configs/interface';
 
 export const dataOrtherHistory = {
     data: [
@@ -53,3 +53,39 @@ export const dataOrtherHistory = {
     ],
     pages: 10,
 } as IOtherHistories;
+
+export const orderDetail: IDetailOrder = {
+    id: 123,
+    address: '132 3/2 Street, Hung Loi Ward, Ninh Kieu District, Can Tho City',
+    dataPlaced: new Date().toDateString(),
+    deliveryMethod: 'Express in 4 hours',
+    name: 'Ha Lam',
+    paymentMethod: 'Credit Card',
+    phone: '0964 909 321',
+    products: [
+        {
+            id: 1,
+            brand: 'Royal Canin',
+            size: 200,
+            image: 'https://bizweb.dktcdn.net/100/362/345/products/xsmalladult-a81506df-ac29-4e87-8bd8-153192be5792.jpg?v=1571057515367',
+            name: 'Hạt Royal Canin X-Small Adult Cho Chó Trưởng Thành Giống Siêu Nhỏ',
+            price: 27000,
+            quantity: 1,
+            repo: 10,
+        },
+        {
+            id: 2,
+            brand: 'Zenith',
+            size: 200,
+            image: 'https://bizweb.dktcdn.net/100/438/021/products/56f71624-5d8b-4bcb-87ad-c23832bd1c46.jpg?v=1640251015190',
+            name: 'Hạt Mềm Cho Chó Trưởng Thành Zenith Adult',
+            price: 27000,
+            quantity: 1,
+            repo: 10,
+        },
+    ],
+    shippingFee: 20000,
+    subtotal: 59000,
+    total: 79000,
+    state: 'Delivered',
+};
