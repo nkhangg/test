@@ -5,6 +5,7 @@ import Favicon from '/public/favicon.ico';
 import '../styles/globals.css';
 import { Providers } from '@/redux/provider';
 import { ToastProvider } from '@/providers';
+import { InitState } from '@/components/pages';
 
 export const metadata: Metadata = {
     title: 'Home page | Petfoster',
@@ -18,7 +19,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Providers>
                 <ThemeRegistry>
                     <body>
-                        <ToastProvider>{children}</ToastProvider>
+                        <ToastProvider>
+                            <InitState>{children}</InitState>
+                        </ToastProvider>
                     </body>
                 </ThemeRegistry>
             </Providers>

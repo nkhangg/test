@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 import * as React from 'react';
-import { Fab, Grid } from '@mui/material';
+import { Fab, Grid, Tooltip } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faEnvelope, faPhone, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faEnvelope, faPhone, faAngleRight, faUserTie } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
 import { ContainerContent } from '..';
 import Link from 'next/link';
@@ -12,11 +12,13 @@ import { Notifycation } from '@/components';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
 import { closeNoty } from '@/redux/slice/appSlice';
+import { links } from '@/datas/links';
 
 export interface IFooterProps {}
 
 export default function Footer(props: IFooterProps) {
     const { notifycation } = useAppSelector((state: RootState) => state.appReducer);
+    const { user } = useAppSelector((state: RootState) => state.userReducer);
 
     const dispath = useAppDispatch();
     return (
@@ -68,7 +70,14 @@ export default function Footer(props: IFooterProps) {
 
                 <div className="bg-white h-[1px] w-full mt-16"></div>
 
-                <div className="fixed bottom-[2%] right-[2%]">
+                <div className="fixed bottom-[2%] right-[2%] flex flex-col gap-4">
+                    {user?.role === 'ROLE_ADMIN' && (
+                        <Tooltip placement="top" title="Go to dashboard">
+                            <Link href={links.admin} className="w-14 h-14 rounded-full bg-green-main-dark flex items-center justify-center text-2xl">
+                                <FontAwesomeIcon icon={faUserTie} />
+                            </Link>
+                        </Tooltip>
+                    )}
                     <Fab color="primary" aria-label="add">
                         <img src="/logo-footer.svg" alt="logo-footer.svg" />
                     </Fab>

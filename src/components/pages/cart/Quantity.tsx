@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { Roboto_Flex } from 'next/font/google';
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React, { FocusEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
+import Validate from '@/utils/validate';
 const robotoFlex = Roboto_Flex({ subsets: ['latin'], style: ['normal'], weight: ['300', '400', '500', '600', '700', '800'] });
 export interface IQuantityProps {
     maxValue: number;
@@ -14,6 +15,51 @@ export interface IQuantityProps {
 
 export default function Quantity({ maxValue, initValue, onQuantity }: IQuantityProps) {
     const [value, setValue] = useState(initValue || 1);
+
+    const ref = useRef<HTMLLIElement>(null);
+    const closeEdit = () => {
+        if (!ref.current) return;
+        ref.current?.setAttribute('contentEditable', 'false');
+    };
+
+    const handleEdit = () => {
+        if (!ref.current) return;
+        closeEdit();
+        const refValue = ref.current?.innerHTML;
+
+        if (!Validate.isNumber(refValue)) {
+            resetSetValue(1);
+            return;
+        }
+        const curValue = parseInt(refValue);
+
+        if (curValue > maxValue) {
+            resetSetValue(maxValue);
+            return;
+        }
+        setValue(curValue);
+    };
+
+    const resetSetValue = (nun: number) => {
+        if (!ref.current) return;
+        setValue(nun);
+        ref.current.innerText = nun + '';
+    };
+
+    const handleClick = () => {
+        if (!ref.current) return;
+
+        ref.current?.setAttribute('contentEditable', 'true');
+    };
+
+    const handleBlur = (e: FocusEvent<HTMLLIElement>) => {
+        handleEdit();
+    };
+
+    const handleKeyEnter = (e: KeyboardEvent<HTMLLIElement>) => {
+        if (e.key !== 'Enter') return;
+        handleEdit();
+    };
 
     const handlePlus = () => {
         if (maxValue <= 0) return 0;
@@ -61,7 +107,9 @@ export default function Quantity({ maxValue, initValue, onQuantity }: IQuantityP
                 >
                     <FontAwesomeIcon icon={faMinus} />
                 </motion.li>
-                <li className=" px-3 border-l border-r border-gray-primary">{value}</li>
+                <li onKeyDown={handleKeyEnter} tabIndex={-1} ref={ref} onBlur={handleBlur} onClick={handleClick} className=" px-3 border-l border-r border-gray-primary">
+                    {value}
+                </li>
                 <motion.li
                     onClick={handlePlus}
                     whileTap={{

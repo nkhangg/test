@@ -3,7 +3,7 @@ import { faChevronDown, faChevronUp, faEdit, faEye } from '@fortawesome/free-sol
 import style from './styles/createorupdate.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Avatar, Button, Grid, Stack } from '@mui/material';
+import { Avatar, Button, Grid, Stack, Typography } from '@mui/material';
 import classNames from 'classnames';
 import { useQuery } from '@tanstack/react-query';
 import React, { ChangeEvent, FocusEvent, FormEvent, useEffect, useState } from 'react';
@@ -355,6 +355,13 @@ export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
                         <Button type="submit" variant="contained">
                             {param !== 'create' ? 'Update' : 'Create'}
                         </Button>
+                    </Stack>
+                </Grid>
+
+                {/* History payment */}
+                <Grid item xs={12} md={12} lg={12}>
+                    <Stack direction={'row'} justifyContent={'flex-end'}>
+                        <Typography>Shopping History</Typography>
                     </Stack>
                 </Grid>
             </Grid>

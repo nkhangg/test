@@ -109,6 +109,14 @@ function Pagination({ pages, pageLimit = 4, maxPageLimit = 4, minPageLimit = 0, 
         onPage(currentPage);
     }, [currentPage, onPage]);
 
+    useEffect(() => {
+        if (currentPage > maxPageNumberLimit) {
+            setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+            setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+            return;
+        }
+    }, [page]);
+
     return (
         <div
             className={classNames(' flex items-center justify-center gap-1 md:gap-4 lg:gap-8 w-full select-none', {

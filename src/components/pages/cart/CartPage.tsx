@@ -11,9 +11,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
-import { useAppDispatch } from '@/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { addPaymentFromCard } from '@/redux/slice/cartsSlide';
 import { useRouter } from 'next/navigation';
+import { RootState } from '@/configs/types';
 
 const Carts = dynamic(() => import('./Carts'), { ssr: false });
 
@@ -24,6 +25,8 @@ export default function CartPage(props: ICartPageProps) {
     const router = useRouter();
     const [total, setTotal] = useState(0);
     const dispatch = useAppDispatch();
+
+    const { cartUser } = useAppSelector((state: RootState) => state.cartReducer);
 
     const handleCheckout = () => {
         dispatch(addPaymentFromCard());
@@ -64,20 +67,27 @@ export default function CartPage(props: ICartPageProps) {
                     locationTitle="left"
                     fontSizeTitle="text-[32px]"
                 >
-                    {/* <Carts onTotal={(t) => setTotal(t)} data={dataCart} /> */}
-                    <Carts onTotal={(t) => setTotal(t)} data={dataCart} />
-
-                    <div className="flex items-center justify-between mt-10 text-lg md:text-xl text-black-main">
-                        <div className="flex items-center justify-start w-[10%]">
-                            <span className="">Total</span>
+                    {cartUser.length <= 0 ? (
+                        <div className="flex items-center justify-center py-20">
+                            <span>Make a purchase to fill your cart ❤️</span>
                         </div>
+                    ) : (
+                        <Carts onTotal={(t) => setTotal(t)} data={dataCart} />
+                    )}
 
-                        <div className="flex items-center justify-center w-[20%] ">
-                            <p className="">{toCurrency(total)}</p>
+                    {cartUser.length > 0 && (
+                        <div className="flex items-center justify-between mt-10 text-lg md:text-xl text-black-main">
+                            <div className="flex items-center justify-start w-[10%]">
+                                <span className="">Total</span>
+                            </div>
+
+                            <div className="flex items-center justify-center w-[20%] ">
+                                <p className="">{toCurrency(total)}</p>
+                            </div>
                         </div>
-                    </div>
+                    )}
                     <div className="flex flex-col items-center justify-center mt-20 mb-[60px] lg:mb-[-100px] gap-6">
-                        <MainButton onClick={handleCheckout} title="Checkout" background="bg-violet-primary" />
+                        {cartUser.length > 0 && <MainButton onClick={handleCheckout} title="Checkout" background="bg-violet-primary" />}
                         <Link
                             href={'/take-action'}
                             className={classNames(' hover:underline text-violet-primary flex items-center gap-[10px] text-1xl', {

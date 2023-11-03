@@ -44,8 +44,6 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
         queryFn: () => detailProduct(params.id),
     });
 
-    console.log(data?.data);
-
     //  redirect when error
     if (error) {
         notFound();
@@ -54,8 +52,6 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
 
     const handleAddToCart = () => {
         if (!user) {
-            console.log('in cart');
-
             dispatch(
                 pushNoty({
                     title: 'Please login to use !',
@@ -68,7 +64,6 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
         dispatch(
             addCart({
                 id: params.id,
-
                 brand: dataDetailProductPage?.brand || '',
                 image: dataDetailProductPage?.image || '',
                 name: dataDetailProductPage?.name || '',
@@ -83,8 +78,6 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
 
     const handleBuyNow = () => {
         if (!user) {
-            console.log('in cart');
-
             dispatch(
                 pushNoty({
                     title: 'Please login to use !',

@@ -6,7 +6,7 @@ import { ICart } from '@/configs/interface';
 import { Checkbox } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
-import { checkedAll, setCheckedAllCartItem, updateDataCartWhenMount } from '@/redux/slice/cartsSlide';
+import { checkedAll, getCheckedAllCart, setCheckedAllCartItem, updateDataCartWhenMount } from '@/redux/slice/cartsSlide';
 
 export interface ICartsProps {
     data: ICart[];
@@ -39,7 +39,7 @@ export default function Carts({ data, onTotal }: ICartsProps) {
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setChecked(event.target.checked);
 
-        dispatch(checkedAll({ checked: event.target.checked }));
+        dispatch(checkedAll(event.target.checked));
         dispatch(setCheckedAllCartItem(event.target.checked));
     };
 
@@ -54,9 +54,7 @@ export default function Carts({ data, onTotal }: ICartsProps) {
     }, [total, onTotal]);
 
     useEffect(() => {
-        if (!data || data.length <= 0) return;
-
-        dispatch(updateDataCartWhenMount(data));
+        dispatch(getCheckedAllCart());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

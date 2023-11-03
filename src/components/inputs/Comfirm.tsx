@@ -46,7 +46,7 @@ export default function Comfirm({ title, open, subtitle = 'You want to delete th
                             handleClose();
                         }}
                     >
-                        Oke
+                        Ok
                     </Button>
                 </DialogActions>
             </Dialog>

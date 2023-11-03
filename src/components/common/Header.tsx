@@ -9,15 +9,17 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
 import { fetchUserByToken } from '@/redux/slice/userSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
+import { getCart } from '@/redux/slice/cartsSlide';
 export interface IHeaderProps {
     dynamic?: boolean;
 }
 
 export default function Header({ dynamic = true }: IHeaderProps) {
     const { scrollY } = useScroll();
-
-    const [isChangeBg, setIsChangeBg] = useState(false);
     const { token } = useAppSelector((state: RootState) => state.userReducer);
+    const [isChangeBg, setIsChangeBg] = useState(false);
+
+    // const { token } = useAppSelector((state: RootState) => state.userReducer);
     const { user } = useAppSelector((state: RootState) => state.userReducer);
     const dispatch = useAppDispatch();
 
@@ -30,9 +32,17 @@ export default function Header({ dynamic = true }: IHeaderProps) {
             const actionResult = dispatch(fetchUserByToken());
             const curUser = unwrapResult(await actionResult);
             // console.log(curUser);
+            const action = dispatch(getCart());
+            const data = unwrapResult(await action);
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token]);
+
+    // useEffect(() => {
+    //     (async () => {
+
+    //     })();
+    // }, [dispatch]);
 
     return (
         <>
