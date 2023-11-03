@@ -39,6 +39,7 @@ const config: Config = {
                 'violet-primary': '#505DE8',
                 'violet-secondary': '#6366F1',
                 'blue-primary': '#0EA5E9',
+                'grey-secondary': '#666',
             },
             borderColor: {
                 'green-main': '#A3E635',
