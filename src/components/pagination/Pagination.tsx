@@ -115,6 +115,7 @@ function Pagination({ pages, pageLimit = 4, maxPageLimit = 4, minPageLimit = 0, 
             setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
             return;
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page]);
 
     return (

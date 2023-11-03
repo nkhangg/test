@@ -1,10 +1,14 @@
+import { LoadingSecondary, Review } from '@/components';
+import { Review as RV } from '@/configs/interface';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, Tab, Tabs, Typography, styled } from '@mui/material';
 import classNames from 'classnames';
 import React, { SyntheticEvent, useState } from 'react';
 
 export interface IDesAndReviewProps {
     description: string;
-    review: string;
+    reviews: RV[];
 }
 
 interface TabPanelProps {
@@ -49,24 +53,51 @@ function CustomTabPanel(props: TabPanelProps) {
     );
 }
 
-export default function DesAndReview({ description, review }: IDesAndReviewProps) {
+export default function DesAndReview({ description, reviews }: IDesAndReviewProps) {
     const [value, setValue] = useState(0);
+    const [limit, setLimit] = useState(reviews.length > 3 ? 3 : reviews.length);
+    const [setshowLoadMore, setShowLoadMore] = useState(reviews.length > 3);
+    const [loading, setLoading] = useState(false);
+
     const handleChange = (event: SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+
+    const handleLoadMore = () => {
+        setLimit(reviews.length);
+        setShowLoadMore(false);
+    };
     return (
-        <Box sx={{ width: '100%', mt: '74px' }}>
+        <Box sx={{ width: '100%', mt: '74px', position: 'relative' }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <AntTabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="Description" {...a11yProps(0)} />
-                    <Tab label="Review" {...a11yProps(1)} />
+                    <Tab label="Review ( 1k+ )" {...a11yProps(1)} />
                 </AntTabs>
             </Box>
             <CustomTabPanel className="text-1xl text-[#374151]" value={value} index={0}>
                 <div dangerouslySetInnerHTML={{ __html: description }}></div>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                {review}
+                <div className="flex flex-col gap-6">
+                    {reviews.slice(0, limit).map((review) => {
+                        return <Review data={review} key={review.id} />;
+                    })}
+                </div>
+
+                {setshowLoadMore && (
+                    <div className="text-center mt-11">
+                        <span onClick={handleLoadMore} className="text-[#727272] text-1xl hover:underline cursor-pointer">
+                            Load more <FontAwesomeIcon icon={faChevronDown} />
+                        </span>
+                    </div>
+                )}
+
+                {loading && (
+                    <div className="absolute flex items-center justify-center inset-0 bg-[rgba(0,0,0,.1)]">
+                        <LoadingSecondary />
+                    </div>
+                )}
             </CustomTabPanel>
         </Box>
     );

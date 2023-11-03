@@ -63,3 +63,6 @@ export { default as LoadingSecondary } from './common/loadings/LoadingSecondary'
 
 // notifycation
 export { default as Notifycation } from './notifycations/Notifycation';
+
+// comments
+export { default as Review } from './comments/Review';

@@ -327,3 +327,13 @@ export interface IUserManage {
     password: string;
     active: boolean;
 }
+
+export interface Review {
+    id: number;
+    avatar: string;
+    name: string;
+    rating: number;
+    size: number;
+    comment: string;
+    createdAt: string;
+}
