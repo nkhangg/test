@@ -329,7 +329,7 @@ export interface IUserManage {
     active: boolean;
 }
 
-export interface Review {
+export interface IReview {
     id: number;
     avatar: string;
     name: string;

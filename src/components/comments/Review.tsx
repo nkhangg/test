@@ -1,11 +1,11 @@
-import { Review } from '@/configs/interface';
+import { IReview } from '@/configs/interface';
 import { toGam } from '@/utils/format';
 import { Avatar, Grid, Rating, Typography } from '@mui/material';
 import moment from 'moment';
 import * as React from 'react';
 
 export interface IReviewProps {
-    data: Review;
+    data: IReview;
 }
 
 export default function Review({ data }: IReviewProps) {

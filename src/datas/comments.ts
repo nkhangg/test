@@ -1,4 +1,4 @@
-import { Review } from '@/configs/interface';
+import { IReview } from '@/configs/interface';
 
 export const reviews = [
     {
@@ -73,4 +73,4 @@ export const reviews = [
         avatar: 'https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2023/04/ahn-yujin1.jpeg?fit=640%2C20000&quality=95&ssl=1',
         createdAt: new Date().toDateString(),
     },
-] as Review[];
+] as IReview[];

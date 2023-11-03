@@ -1,5 +1,5 @@
 import { LoadingSecondary, Review } from '@/components';
-import { Review as RV } from '@/configs/interface';
+import { IReview as RV } from '@/configs/interface';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, Tab, Tabs, Typography, styled } from '@mui/material';
