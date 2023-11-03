@@ -329,6 +329,15 @@ export interface IUserManage {
     active: boolean;
 }
 
+export interface Review {
+    id: number;
+    avatar: string;
+    name: string;
+    rating: number;
+    size: number;
+    comment: string;
+    createdAt: string;
+}
 export interface IDetailOrder {
     id: number;
     dataPlaced: string;

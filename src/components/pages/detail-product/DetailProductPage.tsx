@@ -19,6 +19,7 @@ import { detailProduct } from '@/apis/product';
 import { notFound, useRouter } from 'next/navigation';
 import { dataDetailProductPages } from '@/datas/detail-product';
 import dynamic from 'next/dynamic';
+import { reviews } from '@/datas/comments';
 const Rating = dynamic(() => import('@mui/material/Rating'), { ssr: false });
 
 const nunitoSans = Nunito_Sans({ subsets: ['latin'], style: ['normal', 'italic'], weight: ['300', '400', '500', '600', '700', '800'] });
@@ -188,7 +189,7 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
                         </div>
                     </Grid>
                 </Grid>
-                <DesAndReview description={dataDetailProductPage?.desciption || ''} review="this is review" />
+                <DesAndReview description={dataDetailProductPage?.desciption || ''} reviews={reviews} />
             </ContainerContent>
             <ProductRecents title="Suggestions just for you" fontSizeTitle="text-[24px]" data={dataDetailProductPage?.suggestions || []} />
 
