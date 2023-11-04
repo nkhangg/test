@@ -5,16 +5,17 @@ import PropTypes from 'prop-types';
 // components
 import Profile from './Profile';
 import { IconBellRinging, IconMenu } from '@tabler/icons-react';
-import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { WrapperAnimation } from '@/components';
+import { useRouter } from 'next/navigation';
 
 interface ItemType {
     toggleMobileSidebar: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 const Header = ({ toggleMobileSidebar }: ItemType) => {
-    // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
-    // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
-
+    const router = useRouter();
     const AppBarStyled = styled(AppBar)(({ theme }) => ({
         boxShadow: 'none',
         background: theme.palette.background.paper,
@@ -46,7 +47,32 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
                     <IconMenu width="20" height="20" />
                 </IconButton>
 
-                <Box flexGrow={1} />
+                <Box flexGrow={1}>
+                    <div className="flex items-center gap-2 select-none">
+                        <WrapperAnimation
+                            onClick={() => {
+                                router.back();
+                            }}
+                            className="cursor-pointer p-2"
+                            hover={{
+                                x: -4,
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowLeft} />
+                        </WrapperAnimation>
+                        <WrapperAnimation
+                            onClick={() => {
+                                router.forward();
+                            }}
+                            className="cursor-pointer p-2"
+                            hover={{
+                                x: 4,
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faArrowRight} />
+                        </WrapperAnimation>
+                    </div>
+                </Box>
                 <Stack direction={'row'}>
                     <IconButton size="large" aria-label="show 11 new notifications" color="inherit" aria-controls="msgs-menu" aria-haspopup="true">
                         <Badge variant="dot" color="primary">
