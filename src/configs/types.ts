@@ -23,6 +23,7 @@ import {
     ProductInfo,
     IImage,
     IUserManage,
+    IProvinces,
 } from './interface';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
@@ -99,6 +100,8 @@ export type ApiUpdateUserManage = (data: IUserManage) => Promise<IBaseResponse<a
 export type ApiCreateUserManage = (data: IUserManage) => Promise<IBaseResponse<any>>;
 
 export type ApiHistories = () => Promise<IBaseResponse<IProfile>>;
+
+export type ApiProvinces<T> = (id?: string | number) => Promise<T>;
 
 export type RootState = ReturnType<typeof store.getState>;
 

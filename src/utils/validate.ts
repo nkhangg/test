@@ -155,8 +155,8 @@ const Validate = {
 
         return { message: '', error: false };
     },
-    address(value: string): ValidateType {
-        if (this.isBlank(value)) return { message: "Address can't be blank ", error: true };
+    address(value: string, prefix: string = 'Address'): ValidateType {
+        if (this.isBlank(value)) return { message: `${prefix} can't be blank `, error: true };
 
         return { message: '', error: false };
     },

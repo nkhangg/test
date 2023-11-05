@@ -1,3 +1,5 @@
+const baseApiProvince = 'https://provinces.open-api.vn/api/';
+
 export const contants = {
     avartarDefault: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
     askConditions: [
@@ -12,6 +14,16 @@ export const contants = {
     messages: {
         errors: {
             server: 'Something went wrong !',
+        },
+    },
+
+    apis: {
+        provinces: baseApiProvince + 'p/',
+        districts: (province: number | string) => {
+            return baseApiProvince + `p/${province}?depth=2`;
+        },
+        wards: (district: number | string) => {
+            return baseApiProvince + `d/${district}?depth=2`;
         },
     },
 };

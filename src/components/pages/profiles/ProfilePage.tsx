@@ -1,6 +1,6 @@
 'use client';
 import style from './styles/product.module.css';
-import { AvartarEdit, BoxTitle, DivTextfield, LoadingPrimary, MainButton } from '@/components';
+import { Address, AvartarEdit, BoxTitle, DivTextfield, LoadingPrimary, MainButton } from '@/components';
 import { profileUiData } from '@/datas/profile';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, Grid } from '@mui/material';
@@ -46,6 +46,9 @@ const initdataErrors = {
 };
 
 export default function ProfilePage({ pages }: IProfilePageProps) {
+    // variables
+    let adddresValite: () => boolean;
+
     const { user } = useAppSelector((state: RootState) => state.userReducer);
     const dispatch = useAppDispatch();
     const [form, setForm] = useState<ProfileType>(initdata);
@@ -64,6 +67,8 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
         if (validate()) return;
 
         console.log(form);
+
+        return;
 
         try {
             setLoading(true);
@@ -177,6 +182,8 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                 flag = error;
             }
         });
+
+        flag = adddresValite();
 
         setErrors(validateErrors);
 
@@ -357,7 +364,26 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                                 </div>
                             </div>
 
-                            <DivTextfield
+                            {/* address */}
+                            <Address
+                                initData={{
+                                    province: '',
+                                    district: '',
+                                    ward: '',
+                                    address: form.address,
+                                }}
+                                onValidate={(validate) => {
+                                    adddresValite = validate;
+                                }}
+                                onAddress={(address) => {
+                                    setForm({
+                                        ...form,
+                                        address: address.address || '',
+                                    });
+                                }}
+                            />
+
+                            {/* <DivTextfield
                                 propsInput={{
                                     name: 'address',
                                     onChange: handleChange,
@@ -366,7 +392,8 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                                     message: errors.address,
                                 }}
                                 label="Address"
-                            />
+                            /> */}
+
                             <DivTextfield
                                 propsInput={{
                                     name: 'password',
