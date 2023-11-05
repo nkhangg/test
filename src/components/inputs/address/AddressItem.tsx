@@ -1,6 +1,6 @@
 import { useDebounce } from '@/hooks';
 import Tippy from '@tippyjs/react/headless';
-import React, { ChangeEvent, forwardRef, useCallback, useEffect, useRef, useState, Ref, FocusEvent } from 'react';
+import React, { ChangeEvent, forwardRef, useCallback, useEffect, useRef, useState, Ref, FocusEvent, memo } from 'react';
 import TextField from '../TextField';
 import { IDistrict, IProvinces, IWard } from '@/configs/interface';
 import classNames from 'classnames';
@@ -18,7 +18,7 @@ export interface IAddressItemProps {
     onValidate?: (validateFuc: () => boolean) => void;
 }
 
-export default function AddressItem({ data, placeholder, title, messageUndefined, initData, name, onValue, onValidate }: IAddressItemProps) {
+function AddressItem({ data, placeholder, title, messageUndefined, initData, name, onValue, onValidate }: IAddressItemProps) {
     const ref = useRef<HTMLDivElement>(null);
     const [showPopup, setShowPopup] = useState(false);
     const [value, setValue] = useState(initData || '');
@@ -148,3 +148,5 @@ export default function AddressItem({ data, placeholder, title, messageUndefined
         </div>
     );
 }
+
+export default memo(AddressItem);

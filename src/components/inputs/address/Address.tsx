@@ -98,7 +98,7 @@ function Address({
     // use effects
 
     useEffect(() => {
-        setForm(initData);
+        // setForm({ ...initData });
     }, [initData]);
 
     useEffect(() => {

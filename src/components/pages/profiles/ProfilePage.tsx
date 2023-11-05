@@ -68,8 +68,6 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
 
         console.log(form);
 
-        return;
-
         try {
             setLoading(true);
             const response = await updateUser({ ...form, avatar: avartar });
@@ -204,7 +202,6 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
             return;
         }
 
-        console.log(user);
         setForm({
             fullname: user?.fullname || '',
             email: user?.email || '',
@@ -370,7 +367,7 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                                     province: '',
                                     district: '',
                                     ward: '',
-                                    address: form.address,
+                                    address: user?.address || '',
                                 }}
                                 onValidate={(validate) => {
                                     adddresValite = validate;
