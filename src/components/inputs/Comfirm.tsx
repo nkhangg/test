@@ -1,7 +1,9 @@
 'use client';
 import { ImportExport } from '@mui/icons-material';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useLayoutEffect, useState } from 'react';
+import WraperDialog from '../dialogs/WraperDialog';
+import WraperDialogComfirm from '../dialogs/WraperDialogComfirm';
 
 export interface IComfirmProps {
     open: boolean;
@@ -26,7 +28,7 @@ export default function Comfirm({ title, open, subtitle = 'You want to delete th
 
     return (
         <div>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+            <WraperDialogComfirm open={open} setOpen={setOpen} handleClose={handleClose}>
                 <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">{subtitle}</DialogContentText>
@@ -49,7 +51,7 @@ export default function Comfirm({ title, open, subtitle = 'You want to delete th
                         Ok
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </WraperDialogComfirm>
         </div>
     );
 }

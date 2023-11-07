@@ -66,3 +66,6 @@ export { default as Notifycation } from './notifycations/Notifycation';
 
 // comments
 export { default as Review } from './comments/Review';
+
+// dialog
+export { default as RatingDialog } from './dialogs/RatingDialog';
