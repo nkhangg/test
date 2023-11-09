@@ -5,7 +5,7 @@ import { FormControl, MenuItem, Select as Sl, SelectChangeEvent, capitalize } fr
 import { SortType } from '@/configs/types';
 import { IFilter, ISearchItem } from '@/configs/interface';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronUp, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useDebounce } from '@/hooks';
 import { searchHistory } from '@/datas/others';
 import { SearchItem } from '..';
@@ -72,19 +72,27 @@ function Sort({ categories, sorts, onCategories, onSorts, onSearch }: ISortProps
                         </>
                     }
                 >
-                    <TextField
-                        onClick={handleToggleHistory}
-                        value={search}
-                        onChange={(e) => {
-                            setSearch(e.target.value);
-                        }}
-                        id="search-pet-1"
-                        name="pet"
-                        fullWidth
-                        size="small"
-                        placeholder="Search for product..."
-                        autoComplete="off"
-                    />
+                    <div className="w-full relative">
+                        <TextField
+                            onClick={handleToggleHistory}
+                            value={search}
+                            onChange={(e) => {
+                                setSearch(e.target.value);
+                            }}
+                            id="search-pet-1"
+                            name="pet"
+                            fullWidth
+                            size="small"
+                            placeholder="Search for product..."
+                            autoComplete="off"
+                        />
+
+                        {search.length > 0 && (
+                            <span onClick={() => setSearch('')} className="absolute top-[50%] translate-y-[-50%] right-3 cursor-pointer">
+                                <FontAwesomeIcon icon={faXmark} />
+                            </span>
+                        )}
+                    </div>
                 </WraperTippy>
             </div>
             <div className="flex-1">
