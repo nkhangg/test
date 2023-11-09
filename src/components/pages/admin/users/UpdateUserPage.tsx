@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Avatar, Button, Grid, Stack, Typography } from '@mui/material';
 import classNames from 'classnames';
 import { useQuery } from '@tanstack/react-query';
-import React, { ChangeEvent, FocusEvent, FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FocusEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { contants } from '@/utils/contants';
 import { AvartarEdit, Comfirm, DivTextfield, LoadingPrimary } from '@/components';
 import moment from 'moment';
@@ -26,7 +26,6 @@ const initdata: IUserManage = {
     birthday: '',
     gender: true,
     phone: '',
-    address: '',
     avatar: '',
     email: '',
     role: 'ROLE_USER',
@@ -41,7 +40,6 @@ interface IErrors {
     birthday: string;
     gender: string;
     phone: string;
-    address: string;
     avatar: string;
     email: string;
 }
@@ -52,12 +50,13 @@ const initdataErrors: IErrors = {
     birthday: '',
     gender: '',
     phone: '',
-    address: '',
     avatar: '',
     email: '',
 };
 
 export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
+    let prevData = useRef<{ data: IUserManage; avatar: string } | undefined>();
+
     const dataUser = useQuery({
         queryKey: ['updateUser', param],
         queryFn: () => getUserManage(param || ''),
@@ -69,6 +68,7 @@ export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
     const [errors, setErrors] = useState({ ...initdataErrors });
     const [openComfirm, setOpenComfirm] = useState({ open: false, comfirm: 'cancel' });
     const [data, setData] = useState(initdata);
+    const [showButtonUpdate, setShowButtonUpdate] = useState(false);
 
     const [loading, setLoading] = useState(false);
 
@@ -132,13 +132,27 @@ export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
 
     useEffect(() => {
         if (dataUser.data && dataUser.data.data) {
-            setData({
+            const objData = {
                 ...dataUser.data.data,
                 birthday: dataUser.data.data.birthday ? moment(dataUser.data.data?.birthday).format('yyyy-MM-D') : '',
-            });
+            };
+            setData(objData);
             setAvartar(dataUser.data.data.avatar || contants.avartarDefault);
+
+            // set prev data after update to compare and show btn
+            prevData.current = { data: { ...objData }, avatar: dataUser.data.data.avatar || contants.avartarDefault };
         }
     }, [dataUser.data]);
+
+    useEffect(() => {
+        if (!prevData.current) return;
+
+        if (JSON.stringify(prevData.current.data) != JSON.stringify(data) || prevData.current.avatar != avartar) {
+            setShowButtonUpdate(true);
+        } else {
+            setShowButtonUpdate(false);
+        }
+    }, [data, avartar]);
 
     return (
         <div>
@@ -328,33 +342,13 @@ export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
                     </AnimatePresence>
                 </Grid>
 
-                <Grid
-                    item
-                    xs={12}
-                    md={12}
-                    lg={12}
-                    sx={{
-                        pt: '0px !important',
-                    }}
-                >
-                    <DivTextfield
-                        propsInput={{
-                            name: 'address',
-                            placeholder: 'phường An Bình, quận Ninh Kiều, thành phố Cần Thơ',
-                            value: data.address || '',
-                            onBlur: handleBlur,
-                            onChange: handleChange,
-                            message: errors.address,
-                        }}
-                        label="Address ( update on version 2.0 )"
-                    />
-                </Grid>
-
                 <Grid item xs={12} md={12} lg={12}>
                     <Stack direction={'row'} justifyContent={'flex-end'}>
-                        <Button type="submit" variant="contained">
-                            {param !== 'create' ? 'Update' : 'Create'}
-                        </Button>
+                        {showButtonUpdate && (
+                            <Button type="submit" variant="contained">
+                                {param !== 'create' ? 'Update' : 'Create'}
+                            </Button>
+                        )}
                     </Stack>
                 </Grid>
 

@@ -14,4 +14,8 @@ export const contants = {
             server: 'Something went wrong !',
         },
     },
+    roles: {
+        manageRoles: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'],
+        userRoles: ['ROLE_STAFF', 'ROLE_USER'],
+    },
 };

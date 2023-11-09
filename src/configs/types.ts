@@ -104,8 +104,6 @@ export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
 
-export type RoleType = 'ROLE_ADMIN' | 'ROLE_USER';
-
 export type RegisterFormData = {
     username: string;
     gender: string | boolean;
@@ -163,3 +161,5 @@ export type RepoTypeErrors = {
 };
 
 export type ModeType = 'create' | 'update';
+
+export type RoleType = 'ROLE_USER' | 'ROLE_STAFF' | 'ROLE_ADMIN' | 'ROLE_SUPER_ADMIN';

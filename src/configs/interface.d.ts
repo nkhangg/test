@@ -320,7 +320,6 @@ export interface IUserManage {
     birthday: string;
     gender: boolean;
     phone: string;
-    address: string;
     avatar: string;
     email: string;
     role: string;
