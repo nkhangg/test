@@ -53,6 +53,7 @@ export { default as KnowldegeAboutFosterItem } from './common/common-components/
 export { default as BoxTitle } from './boxs/BoxTitle';
 export { default as BoxSign } from './boxs/BoxSign';
 export { default as CardInfo } from './boxs/CardInfo';
+export { default as WraperTippy } from './boxs/WraperTippy';
 
 // paginations
 export { default as Pagination } from './pagination/Pagination';

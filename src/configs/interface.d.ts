@@ -351,3 +351,8 @@ export interface IDetailOrder {
     shippingFee: number;
     total: number;
 }
+
+export interface ISearchItem {
+    id: number | string;
+    title: string;
+}
