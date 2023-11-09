@@ -1,6 +1,6 @@
 'use client';
 import React, { useCallback, useState } from 'react';
-import { LoadingSecondary, MenuDropDownRadio, Pagination, Product, WrapperAnimation } from '@/components';
+import { LoadingSecondary, MenuDropDownRadio, Pagination, Product } from '@/components';
 import { ContainerContent, Sort } from '@/components/common';
 import { SortType } from '@/configs/types';
 import { dataTakeAction } from '@/datas/adopt';
@@ -12,7 +12,7 @@ import { useAppDispatch } from '@/hooks/reduxHooks';
 import { pushNoty } from '@/redux/slice/appSlice';
 import { IDataRequestFilter } from '@/configs/interface';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBroom } from '@fortawesome/free-solid-svg-icons';
+import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { Tooltip } from '@mui/material';
 import { motion } from 'framer-motion';
 
@@ -115,7 +115,7 @@ export default function ProductFilterPage(props: IProductFilterPageProps) {
                                         scale: 0.9,
                                     }}
                                 >
-                                    <FontAwesomeIcon className="cursor-pointer" icon={faBroom} />
+                                    <FontAwesomeIcon className="cursor-pointer" icon={faRotateLeft} />
                                 </motion.div>
                             </Tooltip>
                         )}
