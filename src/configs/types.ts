@@ -100,6 +100,8 @@ export type ApiCreateUserManage = (data: IUserManage) => Promise<IBaseResponse<a
 
 export type ApiHistories = () => Promise<IBaseResponse<IProfile>>;
 
+export type ApiGetOrders = () => Promise<any>;
+
 export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
