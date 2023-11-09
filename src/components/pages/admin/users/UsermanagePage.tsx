@@ -6,9 +6,10 @@ import { links } from '@/datas/links';
 import { productManageListData } from '@/datas/product-manage-data';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { pushNoty } from '@/redux/slice/appSlice';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { contants } from '@/utils/contants';
+import { faChevronRight, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Avatar, Box, Button, Grid, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Avatar, Box, Button, Grid, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import classNames from 'classnames';
 import Link from 'next/link';
@@ -141,19 +142,28 @@ export default function UserManagePage(props: IUserManagePageProps) {
                                                 <TableCell align="center">{item.role === '0' ? 'ROLE_USER' : item.role}</TableCell>
 
                                                 <TableCell align="center">
-                                                    <Button disabled={item.role === 'ROLE_ADMIN'} onClick={() => handleDeleteUser(item.id as string)}>
-                                                        <FontAwesomeIcon
-                                                            className={classNames('', {
-                                                                'text-red-400': item.role !== 'ROLE_ADMIN',
-                                                                'text-gray-400': item.role === 'ROLE_ADMIN',
-                                                            })}
-                                                            icon={faTrash}
-                                                        />
-                                                    </Button>
+                                                    {(() => {
+                                                        const conditionShowBtn = contants.roles.manageRoles.includes(item.role);
+                                                        return (
+                                                            <Tooltip title={`Delete ${item.username}`}>
+                                                                <Button disabled={conditionShowBtn} onClick={() => handleDeleteUser(item.id as string)}>
+                                                                    <FontAwesomeIcon
+                                                                        className={classNames('', {
+                                                                            'text-red-400': !conditionShowBtn,
+                                                                            'text-gray-400': conditionShowBtn,
+                                                                        })}
+                                                                        icon={faTrash}
+                                                                    />
+                                                                </Button>
+                                                            </Tooltip>
+                                                        );
+                                                    })()}
                                                     <Link href={'/admin/dashboard/users/' + item.id}>
-                                                        <Button>
-                                                            <FontAwesomeIcon icon={faEdit} />
-                                                        </Button>
+                                                        <Tooltip title={'profile ' + item.username}>
+                                                            <Button>
+                                                                <FontAwesomeIcon icon={faChevronRight} />
+                                                            </Button>
+                                                        </Tooltip>
                                                     </Link>
                                                 </TableCell>
                                             </TableRow>
@@ -182,7 +192,7 @@ export default function UserManagePage(props: IUserManagePageProps) {
                                         const response = await deleteUser(idDelete);
                                         setLoading(false);
                                         if (response.errors) {
-                                            toast.error("Can't delete this product. try again");
+                                            toast.error("Can't delete this user. try again");
                                             return;
                                         }
                                         refetch();
@@ -195,7 +205,7 @@ export default function UserManagePage(props: IUserManagePageProps) {
                                     } catch (error) {
                                         setLoading(false);
 
-                                        toast.success(`Can't delete this product. try again`);
+                                        toast.success(`Can't delete this user. try again`);
                                     }
                                 }
                             }}
