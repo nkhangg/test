@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { takeActionPageData } from '@/datas/take-action';
 export default function LogicalTakeAction() {
-    const [pageValue, setPageValue] = useState(1);
+    const [pageValue, setPageValue] = useState(0);
 
     const { data, isLoading, error } = useQuery({
         queryKey: ['product/logicalTakeAction', pageValue],
@@ -16,8 +16,8 @@ export default function LogicalTakeAction() {
         <>
             <Products
                 loading={isLoading}
-                data={error ? takeActionPageData.bestSellers.data : data?.data.data || []}
-                totalPage={error ? takeActionPageData.bestSellers.pages : data?.data.pages}
+                data={error ? takeActionPageData.bestSellers.data : data?.data?.data || []}
+                totalPage={error ? takeActionPageData.bestSellers.pages : data?.data?.pages}
                 title="BEST SELLERS"
                 pagination
                 onPage={(page) => {

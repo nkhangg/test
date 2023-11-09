@@ -1,5 +1,5 @@
 'use client';
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { Select, TextField } from '..';
 import { FormControl, Input, InputLabel, MenuItem, Select as Sl, SelectChangeEvent, capitalize } from '@mui/material';
 import { SortType } from '@/configs/types';
@@ -16,6 +16,8 @@ export interface ISortProps {
 }
 
 function Sort({ categories, sorts, onCategories, onSorts, onSearch }: ISortProps) {
+    const ref = useRef<HTMLDivElement>(null);
+
     const [category, setCategory] = useState('');
     const [sort, setSort] = useState<'high' | 'low'>('low');
     const [search, setSearch] = useState('');
@@ -60,7 +62,7 @@ function Sort({ categories, sorts, onCategories, onSorts, onSearch }: ISortProps
                 <div className="flex md:items-center flex-row w-full gap-3 justify-between">
                     <div className="flex items-center gap-[10px] flex-1">
                         <h4 className="text-lg">Categories:</h4>
-                        <div className="w-full md:max-w-[210px]">
+                        <div ref={ref} className="w-full md:max-w-[210px]">
                             <FormControl fullWidth size="small">
                                 <Select displayEmpty id="category" value={category} onChange={handleChangeCategory}>
                                     <MenuItem value={''}>{capitalize('all')}</MenuItem>

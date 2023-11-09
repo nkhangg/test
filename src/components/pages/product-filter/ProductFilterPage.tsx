@@ -173,19 +173,19 @@ export default function ProductFilterPage(props: IProductFilterPageProps) {
                                 closeOnClear: true,
                             },
                         }}
-                        onValues={(brand) => {
+                        onValues={(brand, name) => {
                             if (brand && typeof brand === 'string') {
                                 if (page) {
                                     router.push(baseUrl);
                                 }
                                 setFilter({
                                     ...filter,
-                                    brand: brand,
+                                    brand: name,
                                 });
                             }
                         }}
                         title={'Brand'}
-                        data={dataProductFilter.fillters.brands}
+                        data={typesAndBrandsData.data?.data.brands || []}
                     />
                 </div>
                 <div className="flex-1 flex flex-col items-center">

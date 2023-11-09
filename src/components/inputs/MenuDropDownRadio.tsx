@@ -17,7 +17,7 @@ export interface IMenuDropDownRadioProps {
             closeOnClear?: boolean;
         };
     };
-    onValues?: (values: string | number[]) => void;
+    onValues?: (values: string | number[], name?: string) => void;
 }
 
 export default function MenuDropDownRadio({ title, data, defaultValue, clearValue, onValues }: IMenuDropDownRadioProps) {
@@ -32,7 +32,11 @@ export default function MenuDropDownRadio({ title, data, defaultValue, clearValu
 
     useEffect(() => {
         if (onValues) {
-            onValues(value);
+            const item = data.find((i) => {
+                return i.id === value;
+            });
+
+            onValues(value, item?.name);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);

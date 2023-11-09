@@ -121,7 +121,7 @@ export type ProfileType = {
     phone: string;
     gender: string;
     birthday: string;
-    address: string;
+    // address: string;
     password: string;
     newPassword: string;
 };
@@ -132,7 +132,7 @@ export type DataRequestUpdateUser = {
     phone: string;
     gender: string;
     birthday: string;
-    address: string;
+    // address: string;
     avatar?: string;
     password: string;
     newPassword: string;

@@ -16,7 +16,6 @@ export default function ProductRencent({ data, title, fontSizeTitle }: IProductR
         <BoxTitle title={title} locationTitle="left" underlineTitle fontSizeTitle={fontSizeTitle}>
             <div
                 style={{
-                    // gridAutoColumns: '21%',
                     overscrollBehaviorInline: 'contain',
                 }}
                 onMouseEnter={() => setIsHideScroll(false)}

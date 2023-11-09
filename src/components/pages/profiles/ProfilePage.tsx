@@ -30,7 +30,7 @@ const initdata = {
     phone: '',
     gender: 'Male',
     birthday: '',
-    address: '',
+    // address: '',
     password: '',
     newPassword: '',
 };
@@ -40,7 +40,7 @@ const initdataErrors = {
     phone: '',
     gender: '',
     birthday: '',
-    address: '',
+    // address: '',
     password: '',
     newPassword: '',
 };
@@ -204,7 +204,7 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
             phone: user?.phone || '',
             gender: user?.gender ? 'Male' : 'Female',
             birthday: user?.birthday ? moment(user?.birthday).format('yyyy-MM-D') : '',
-            address: user?.address || '',
+            // address: user?.address || '',
             password: '',
             newPassword: '',
         });
@@ -357,7 +357,7 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                                 </div>
                             </div>
 
-                            <DivTextfield
+                            {/* <DivTextfield
                                 propsInput={{
                                     name: 'address',
                                     onChange: handleChange,
@@ -366,7 +366,7 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                                     message: errors.address,
                                 }}
                                 label="Address"
-                            />
+                            /> */}
                             <DivTextfield
                                 propsInput={{
                                     name: 'password',
