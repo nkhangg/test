@@ -1,12 +1,14 @@
 'use client';
-import React, { memo, useEffect, useRef, useState } from 'react';
-import { Select, TextField } from '..';
-import { FormControl, Input, InputLabel, MenuItem, Select as Sl, SelectChangeEvent, capitalize } from '@mui/material';
+import React, { MouseEvent, memo, useEffect, useRef, useState } from 'react';
+import { Select, TextField, WraperTippy } from '../..';
+import { FormControl, MenuItem, Select as Sl, SelectChangeEvent, capitalize } from '@mui/material';
 import { SortType } from '@/configs/types';
-import { IFilter } from '@/configs/interface';
+import { IFilter, ISearchItem } from '@/configs/interface';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { useDebounce } from '@/hooks';
+import { searchHistory } from '@/datas/others';
+import { SearchItem } from '..';
 export interface ISortProps {
     categories: IFilter[];
     sorts: { title: string; value: string }[];
@@ -21,14 +23,24 @@ function Sort({ categories, sorts, onCategories, onSorts, onSearch }: ISortProps
     const [category, setCategory] = useState('');
     const [sort, setSort] = useState<'high' | 'low'>('low');
     const [search, setSearch] = useState('');
+    const [toggleHisroy, setToggleHisroy] = useState(false);
 
-    const searchDebounce = useDebounce(search, 800);
+    const searchDebounce = useDebounce(search, 400);
 
     const handleChangeCategory = (event: SelectChangeEvent<any>) => {
         setCategory(event.target.value as string);
         if (onCategories) {
             onCategories((event.target.value as string) === '' ? null : (event.target.value as string));
         }
+    };
+
+    const handleToggleHistory = () => {
+        setToggleHisroy((prev) => !prev);
+    };
+
+    const handlePushSearchHistory = (e: MouseEvent<HTMLDivElement>, data: ISearchItem) => {
+        setSearch(data.title);
+        setToggleHisroy(false);
     };
 
     useEffect(() => {
@@ -46,17 +58,34 @@ function Sort({ categories, sorts, onCategories, onSorts, onSearch }: ISortProps
     return (
         <div className="flex md:flex-row flex-col justify-between gap-[38px] border-b border-[#DBDBDB] mt-24 pb-[22px]">
             <div className="w-full md:w-[24%] lg:w-[20%] h-full text-black-main select-none">
-                <TextField
-                    value={search}
-                    onChange={(e) => {
-                        setSearch(e.target.value);
-                    }}
-                    id="search-pet-1"
-                    name="pet"
-                    fullWidth
-                    size="small"
-                    placeholder="Search for product..."
-                />
+                <WraperTippy
+                    interactive
+                    visible={toggleHisroy}
+                    onClickOutside={() => setToggleHisroy(false)}
+                    renderEl={
+                        <>
+                            <div className="scroll w-full min-h-[100px] max-h-[200px] overflow-y-auto bg-[#F2F2F2] rounded py-2 flex flex-col">
+                                {searchHistory.map((item) => {
+                                    return <SearchItem onClickItem={handlePushSearchHistory} key={item.id} data={item} />;
+                                })}
+                            </div>
+                        </>
+                    }
+                >
+                    <TextField
+                        onClick={handleToggleHistory}
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value);
+                        }}
+                        id="search-pet-1"
+                        name="pet"
+                        fullWidth
+                        size="small"
+                        placeholder="Search for product..."
+                        autoComplete="off"
+                    />
+                </WraperTippy>
             </div>
             <div className="flex-1">
                 <div className="flex md:items-center flex-row w-full gap-3 justify-between">
