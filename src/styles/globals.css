@@ -7,6 +7,10 @@ body {
     overflow: overlay;
 }
 
+html {
+    overflow: overlay;
+}
+
 .hide-scroll::-webkit-scrollbar-track,
 .hide-scroll::-webkit-scrollbar-thumb {
     background-color: transparent !important;
