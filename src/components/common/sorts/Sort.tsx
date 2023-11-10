@@ -10,6 +10,7 @@ import { useDebounce } from '@/hooks';
 import { searchHistory } from '@/datas/others';
 import { SearchItem } from '..';
 export interface ISortProps {
+    initDataCategory?: string;
     categories: IFilter[];
     sorts: { title: string; value: string }[];
     onCategories?: (value: SortType) => void;
@@ -17,10 +18,10 @@ export interface ISortProps {
     onSearch?: (value: string) => void;
 }
 
-function Sort({ categories, sorts, onCategories, onSorts, onSearch }: ISortProps) {
+function Sort({ categories, sorts, initDataCategory, onCategories, onSorts, onSearch }: ISortProps) {
     const ref = useRef<HTMLDivElement>(null);
 
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState(initDataCategory || '');
     const [sort, setSort] = useState<'high' | 'low'>('low');
     const [search, setSearch] = useState('');
     const [toggleHisroy, setToggleHisroy] = useState(false);

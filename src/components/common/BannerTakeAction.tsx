@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { ContainerContent } from '.';
 import Image from 'next/image';
 import { takeActionData } from '@/datas/take-action';
+import Link from 'next/link';
 
 export interface IBannerTakeActionProps {}
 
@@ -13,7 +14,8 @@ export default function BannerTakeAction(props: IBannerTakeActionProps) {
             <nav className="grid grid-cols-2 lg:grid-cols-4 gap-[10px] mt-[73px] mb-[88px]">
                 {takeActionData.banners.map((item) => {
                     return (
-                        <div
+                        <Link
+                            href={item.link}
                             content={item.content}
                             key={item.image}
                             className={classNames(
@@ -27,7 +29,7 @@ export default function BannerTakeAction(props: IBannerTakeActionProps) {
                             )}
                         >
                             <Image className="w-full h-full object-cover" fill src={item.image} alt={item.image} />
-                        </div>
+                        </Link>
                     );
                 })}
             </nav>
