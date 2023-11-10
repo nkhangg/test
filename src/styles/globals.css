@@ -9,6 +9,7 @@ body {
 
 html {
     overflow: overlay;
+    scroll-behavior: smooth;
 }
 
 .hide-scroll::-webkit-scrollbar-track,

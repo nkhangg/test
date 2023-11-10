@@ -15,6 +15,7 @@ export default function LogicalTakeAction() {
     return (
         <>
             <Products
+                id="best-sellers"
                 loading={isLoading}
                 data={error ? takeActionPageData.bestSellers.data : data?.data?.data || []}
                 totalPage={error ? takeActionPageData.bestSellers.pages : data?.data?.pages}

@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { LoadingSecondary, MenuDropDownRadio, Pagination, Product } from '@/components';
 import { ContainerContent, Sort } from '@/components/common';
 import { SortType } from '@/configs/types';
@@ -23,6 +23,7 @@ export default function ProductFilterPage(props: IProductFilterPageProps) {
     const searchParams = useSearchParams();
 
     const page = searchParams.get('page');
+    const type = searchParams.get('type');
 
     const [filter, setFilter] = useState<IDataRequestFilter>({});
 
@@ -72,9 +73,20 @@ export default function ProductFilterPage(props: IProductFilterPageProps) {
         );
     }
 
+    useEffect(() => {
+        if (!type) return;
+
+        setFilter({
+            ...filter,
+            typeName: type,
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [type]);
+
     return (
         <ContainerContent className="">
             <Sort
+                initDataCategory={type || ''}
                 categories={typesAndBrandsData.data?.data.types || []}
                 sorts={dataTakeAction.sorts}
                 onCategories={(value) => {

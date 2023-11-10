@@ -10,6 +10,7 @@ import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 
 export interface IProductsProps {
+    id?: string;
     data: IProduct[];
     title: string;
     pagination?: boolean;
@@ -18,9 +19,10 @@ export interface IProductsProps {
     loading?: boolean;
 }
 
-export default function Products({ data, title, pagination, totalPage, loading, onPage }: IProductsProps) {
+export default function Products({ data, title, pagination, totalPage, loading, id, onPage }: IProductsProps) {
     return (
         <BoxTitle
+            id={id}
             underlineTitle
             title={title}
             locationTitle="left"
