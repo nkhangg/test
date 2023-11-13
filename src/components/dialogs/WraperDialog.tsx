@@ -1,7 +1,7 @@
 'use client';
 import React, { ReactNode, useEffect, useLayoutEffect, useState } from 'react';
 import { TransitionProps } from '@mui/material/transitions';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogProps, DialogTitle, Slide } from '@mui/material';
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -16,9 +16,10 @@ export interface IWraperDialogProps {
     open: boolean;
     setOpen: (open: boolean) => void;
     children: ReactNode;
+    className?: string;
 }
 
-export default function WraperDialog({ open, children, setOpen }: IWraperDialogProps) {
+export default function WraperDialog({ open, children, className, setOpen, ...props }: IWraperDialogProps & DialogProps) {
     const handleClose = () => {
         setOpen(false);
     };
@@ -33,7 +34,18 @@ export default function WraperDialog({ open, children, setOpen }: IWraperDialogP
     }, [open]);
     return (
         <>
-            <Dialog sx={{ color: '#333333' }} open={open} TransitionComponent={Transition} keepMounted onClose={handleClose} aria-describedby="alert-dialog-slide-description">
+            <Dialog
+                className={className}
+                sx={{
+                    color: '#333333',
+                }}
+                {...props}
+                open={open}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleClose}
+                aria-describedby="alert-dialog-slide-description"
+            >
                 {children}
             </Dialog>
         </>

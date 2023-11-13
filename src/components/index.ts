@@ -22,6 +22,12 @@ export { default as MenuDropDownRadio } from './inputs/MenuDropDownRadio';
 export { default as DynamicInput } from './inputs/DynamicInput';
 export { default as Comfirm } from './inputs/Comfirm';
 export { default as AvartarEdit } from './inputs/AvartarEdit';
+export { default as AddressInfoPayment } from './inputs/address/AddressInfoPayment';
+export { default as AddressDialog } from './inputs/address/AddressDialog';
+export { default as AddressItem } from './inputs/address/AddressItem';
+export { default as ListAddress } from './inputs/address/ListAddress';
+export { default as AddressTippy } from './inputs/address/AddressTippy';
+export { default as AddressForm } from './inputs/address/AddressForm';
 
 // bages
 export { default as CustomBadge } from './badges/CustomBadge';

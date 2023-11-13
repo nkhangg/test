@@ -23,6 +23,7 @@ import {
     ProductInfo,
     IImage,
     IUserManage,
+    IInfoAddress,
 } from './interface';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
@@ -100,6 +101,14 @@ export type ApiCreateUserManage = (data: IUserManage) => Promise<IBaseResponse<a
 
 export type ApiHistories = () => Promise<IBaseResponse<IProfile>>;
 
+export type ApiGetDefaultAddress = () => Promise<IBaseResponse<IInfoAddress>>;
+
+export type ApiGetAddresses = () => Promise<IBaseResponse<IInfoAddress[]>>;
+
+export type ApiGetAddressesById = (id: number) => Promise<IBaseResponse<IInfoAddress>>;
+
+export type ApiHandleAddresses = (data: IInfoAddress) => Promise<IBaseResponse<IInfoAddress>>;
+
 export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
@@ -163,3 +172,5 @@ export type RepoTypeErrors = {
 export type ModeType = 'create' | 'update';
 
 export type RoleType = 'ROLE_USER' | 'ROLE_STAFF' | 'ROLE_ADMIN' | 'ROLE_SUPER_ADMIN';
+
+export type ApiProvinces<T> = (id?: string | number) => Promise<T>;

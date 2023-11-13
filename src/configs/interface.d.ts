@@ -356,3 +356,46 @@ export interface ISearchItem {
     id: number | string;
     title: string;
 }
+
+// outsite
+
+export interface IProvinces {
+    name: string;
+    code: number;
+    division_type: string;
+    codename: string;
+    phone_code: number;
+    districts: IDistrict[];
+}
+
+export interface IDistrict {
+    name: string;
+    code: number;
+    division_type: string;
+    codename: string;
+    province_code: number;
+    wards: Ward[];
+}
+
+export interface IWard {
+    name: string;
+    code: number;
+    division_type: string;
+    codename: string;
+    district_code: number;
+}
+
+export interface IAddress {
+    province: string;
+    district: string;
+    ward: string;
+    address: string;
+}
+
+export interface IInfoAddress {
+    id: number;
+    name: string;
+    phone: string;
+    address: IAddress;
+    isDefault?: boolean;
+}
