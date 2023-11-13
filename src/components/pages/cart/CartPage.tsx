@@ -26,7 +26,7 @@ export default function CartPage(props: ICartPageProps) {
     const [total, setTotal] = useState(0);
     const dispatch = useAppDispatch();
 
-    const { cartUser } = useAppSelector((state: RootState) => state.cartReducer);
+    const { cartUser, payment } = useAppSelector((state: RootState) => state.cartReducer);
 
     const handleCheckout = () => {
         dispatch(addPaymentFromCard());
@@ -51,12 +51,14 @@ export default function CartPage(props: ICartPageProps) {
                 <BoxTitle
                     actions={
                         <>
-                            <div className="flex gap-1 items-center hover:text-violet-primary">
-                                <Link className="hover:underline  transition-all ease-linear" href={'/payment'}>
-                                    Go to pay page
-                                </Link>
-                                <FontAwesomeIcon icon={faChevronRight} />
-                            </div>
+                            {payment.length > 0 && (
+                                <div className="flex gap-1 items-center hover:text-violet-primary">
+                                    <Link className="hover:underline  transition-all ease-linear" href={'/payment'}>
+                                        Go to pay page
+                                    </Link>
+                                    <FontAwesomeIcon icon={faChevronRight} />
+                                </div>
+                            )}
                         </>
                     }
                     mt="mt-[46px]"

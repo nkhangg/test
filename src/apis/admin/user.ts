@@ -52,7 +52,6 @@ export const updateUserManage: ApiUpdateUserManage = async (data: IUserManage) =
             birthday: data.birthday,
             gender: data.gender,
             phone: data.phone,
-            address: data.address,
             avatar: data.avatar ? dataURLtoFile(data.avatar) : null,
         },
     });
@@ -76,7 +75,6 @@ export const createUserManage: ApiCreateUserManage = async (data: IUserManage) =
             gender: data.gender,
             phone: data.phone,
             email: data.email,
-            address: data.address,
             role: data.role,
             password: data.password,
             avatar: data.avatar ? dataURLtoFile(data.avatar) : null,

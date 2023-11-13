@@ -1,3 +1,4 @@
+import { IAddress } from '@/configs/interface';
 import moment from 'moment';
 
 const floor = Math.floor,
@@ -98,3 +99,7 @@ export function dataURLtoFile(dataurl: string) {
     }
     return new File([u8arr], 'avartar.png', { type: mine });
 }
+
+export const addressToString = (value: IAddress) => {
+    return `${value.address}, ${value.ward}, ${value.district}, ${value.province}`;
+};

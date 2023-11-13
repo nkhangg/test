@@ -1,7 +1,20 @@
-import { ApiGetCurUser, ApiLogin, ApiRefreshVerifyCode, ApiRegister, ApiResetPassword, ApiUpdateCurUser, ApiVerifyCode, DataRequestUpdateUser } from '@/configs/types';
+import {
+    ApiGetAddresses,
+    ApiGetAddressesById,
+    ApiGetCurUser,
+    ApiGetDefaultAddress,
+    ApiHandleAddresses,
+    ApiLogin,
+    ApiRefreshVerifyCode,
+    ApiRegister,
+    ApiResetPassword,
+    ApiUpdateCurUser,
+    ApiVerifyCode,
+    DataRequestUpdateUser,
+} from '@/configs/types';
 import axios from '../configs/axios';
 import { setTokenToCookie } from '@/utils/cookie';
-import { IProfile } from '@/configs/interface';
+import { IInfoAddress, IProfile } from '@/configs/interface';
 import { dataURLtoFile } from '@/utils/format';
 import moment from 'moment';
 
@@ -94,6 +107,80 @@ export const refreshVerifyCode: ApiRefreshVerifyCode = async (code: string) => {
         url: 'refresh-code',
         params: {
             code,
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const getDefaultAddress: ApiGetDefaultAddress = async () => {
+    const res = await axios({
+        method: 'GET',
+        url: 'user/addresses/default',
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const getAddressesById: ApiGetAddressesById = async (id: number) => {
+    const res = await axios({
+        method: 'GET',
+        url: 'user/addresses/' + id,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const getAddresses: ApiGetAddresses = async () => {
+    const res = await axios({
+        method: 'GET',
+        url: 'user/addresses',
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const addAddress: ApiHandleAddresses = async (data: IInfoAddress) => {
+    const res = await axios({
+        method: 'POST',
+        url: 'user/addresses',
+        data: {
+            ...data,
+            setDefault: data.isDefault,
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const deleteAddress: ApiHandleAddresses = async (data: IInfoAddress) => {
+    const res = await axios({
+        method: 'DELETE',
+        url: 'user/addresses/' + data.id,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const updateAddress: ApiHandleAddresses = async (data: IInfoAddress) => {
+    const res = await axios({
+        method: 'PUT',
+        url: 'user/addresses/' + data.id,
+        data: {
+            ...data,
+            setDefault: data.isDefault,
         },
     });
 
