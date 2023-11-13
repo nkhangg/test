@@ -1,4 +1,4 @@
-import { faClockRotateLeft, faPersonRunning, faUserPen } from '@fortawesome/free-solid-svg-icons';
+import { faClockRotateLeft, faLocation, faLocationDot, faLocationPin, faLock, faPersonRunning, faUserPen } from '@fortawesome/free-solid-svg-icons';
 
 export const profileUiData = {
     listMethod: [
@@ -6,6 +6,16 @@ export const profileUiData = {
             title: 'my profile',
             icon: faUserPen,
             link: '/profile',
+        },
+        {
+            title: 'CHANGE PASSWORD',
+            icon: faLock,
+            link: '/profile/change-password',
+        },
+        {
+            title: 'ADDRESS',
+            icon: faLocationDot,
+            link: '/profile/addresses',
         },
         {
             title: 'ORDER HISTORY',

@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
 import { fetchUserByToken } from '@/redux/slice/userSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { getCart } from '@/redux/slice/cartsSlide';
+import { getCart, getPayment } from '@/redux/slice/cartsSlide';
 export interface IHeaderProps {
     dynamic?: boolean;
 }
@@ -34,6 +34,8 @@ export default function Header({ dynamic = true }: IHeaderProps) {
             // console.log(curUser);
             const action = dispatch(getCart());
             const data = unwrapResult(await action);
+
+            const actionPayment = dispatch(getPayment());
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token]);

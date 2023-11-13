@@ -21,9 +21,11 @@ import { AddressInfoPaymentContext } from './AddressInfoPayment';
 export interface IAddressFormProps {
     initData?: IInfoAddress;
     updateMode?: boolean;
+    onBeforeAdd?: () => void;
+    onBeforeUpdate?: () => void;
 }
 
-export default function AddressForm({ initData, updateMode = false }: IAddressFormProps) {
+export default function AddressForm({ initData, updateMode = false, onBeforeAdd, onBeforeUpdate }: IAddressFormProps) {
     // context
     const context = useContext(AddressDialogContext);
 
@@ -130,7 +132,11 @@ export default function AddressForm({ initData, updateMode = false }: IAddressFo
                 return;
             }
 
-            context.back();
+            if (!onBeforeAdd) {
+                context.back();
+            } else {
+                onBeforeAdd();
+            }
         } catch (error) {
             toast.error(contants.messages.errors.server);
         }
@@ -145,13 +151,16 @@ export default function AddressForm({ initData, updateMode = false }: IAddressFo
                 return;
             }
 
-            requestIdleCallback(() => {
-                if (parentContext.addressActive?.id === data.id && !data.isDefault) {
-                    parentContext.setDefaultValue(response.data);
-                }
-            });
-
-            context.back();
+            if (!onBeforeUpdate) {
+                requestIdleCallback(() => {
+                    if (parentContext.addressActive?.id === data.id && !data.isDefault) {
+                        parentContext.setDefaultValue(response.data);
+                    }
+                });
+                context.back();
+            } else {
+                onBeforeUpdate();
+            }
         } catch (error) {
             toast.error(contants.messages.errors.server);
         }
