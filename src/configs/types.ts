@@ -24,6 +24,7 @@ import {
     IImage,
     IUserManage,
     IInfoAddress,
+    FormChangePassword,
 } from './interface';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
@@ -52,6 +53,8 @@ export type ApiHistory = (page: number | undefined) => Promise<IBaseResponse<IOt
 export type ApiTypesAndBrands = () => Promise<IBaseResponse<TypesAndBrands>>;
 
 export type ApiResetPassword = (email: string) => Promise<IBaseResponse<any>>;
+
+export type ApiChangePassword = (data: FormChangePassword) => Promise<IBaseResponse<any>>;
 
 export type ApiGetCurUser = () => Promise<IBaseResponse<IProfile>>;
 
@@ -128,9 +131,6 @@ export type ProfileType = {
     phone: string;
     gender: string;
     birthday: string;
-    // address: string;
-    password: string;
-    newPassword: string;
 };
 
 export type DataRequestUpdateUser = {
@@ -139,10 +139,7 @@ export type DataRequestUpdateUser = {
     phone: string;
     gender: string;
     birthday: string;
-    // address: string;
     avatar?: string;
-    password: string;
-    newPassword: string;
 };
 
 export type SortType = string | null;

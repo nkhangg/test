@@ -59,7 +59,7 @@ export default function BoxSign({
                         </Typography>
                         {showForgot && (
                             <Typography variant="subtitle2" sx={{ mt: '20px', fontSize: { xs: '12px', md: '13px', lg: '14px' } }}>
-                                <Link href={'/profile/reset-password'} className="text-blue-primary hover:underline ml-1">
+                                <Link href={'/reset-password'} className="text-blue-primary hover:underline ml-1">
                                     Forgot password ?
                                 </Link>
                             </Typography>

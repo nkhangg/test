@@ -1,5 +1,5 @@
 'use client';
-import React, { ChangeEvent, FocusEvent, memo, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, FocusEvent, createContext, memo, useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getDistrichts, getProvinces, getWards } from '@/apis/outside';
 import AddressItem from './AddressItem';
@@ -87,6 +87,15 @@ function Address({ initData, onValidate, onAddress }: IAddressProps) {
         });
 
         return validError.some((item) => item);
+    };
+
+    const handleClearForm = () => {
+        setForm({
+            province: '',
+            district: '',
+            ward: '',
+            address: '',
+        });
     };
 
     // use effects

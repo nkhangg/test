@@ -75,12 +75,6 @@ export default function PaymentPage(props: IPaymentPageProps) {
 
     useEffect(() => {
         setIsClient(true);
-        (async () => {
-            const action = dispatch(getPayment());
-
-            const data = unwrapResult(await action);
-        })();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

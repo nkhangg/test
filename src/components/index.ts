@@ -76,3 +76,4 @@ export { default as Review } from './comments/Review';
 
 // dialog
 export { default as RatingDialog } from './dialogs/RatingDialog';
+export { default as BaseAddressDialog } from './inputs/address/BaseAddressDialog';

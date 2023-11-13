@@ -399,3 +399,9 @@ export interface IInfoAddress {
     address: IAddress;
     isDefault?: boolean;
 }
+
+export interface FormChangePassword {
+    password: string;
+    newPassword: string;
+    confirmPassword: string;
+}
