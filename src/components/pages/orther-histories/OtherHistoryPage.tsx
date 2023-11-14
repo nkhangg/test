@@ -32,10 +32,12 @@ export default function OttherHistoryPage(props: IOttherHistoryProps) {
             <BaseBreadcrumbs
                 title="MY ORDERS"
                 isLoading={isLoading}
-                breadcrumb={{
-                    title: 'Order History',
-                    href: '/other-history',
-                }}
+                breadcrumb={[
+                    {
+                        title: 'Order History',
+                        href: '/other-history',
+                    },
+                ]}
             >
                 {data?.data && data.data.data && data.data.data.length > 0 && !isLoading && (
                     <>

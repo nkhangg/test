@@ -32,7 +32,7 @@ export default function Notifycation({ icon }: INotifycationProps) {
                         >
                             <div className="flex items-center justify-between px-8 py-6">
                                 <span className="text-lg font-medium tracking-wide">Notifications</span>
-                                <p className="text-fill-heart text-sm hover:underline">Mark all as read</p>
+                                <p className="text-fill-heart text-sm hover:underline cursor-pointer">Mark all as read</p>
                             </div>
 
                             <div className="flex flex-col items-start flex-1 scroll  overflow-y-auto">

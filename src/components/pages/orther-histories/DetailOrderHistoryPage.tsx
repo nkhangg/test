@@ -14,10 +14,12 @@ export default function DetailOrderHistory(props: IDetailOrderHistoryProps) {
     return (
         <BaseBreadcrumbs
             title="ORDER DETAIL"
-            breadcrumb={{
-                title: 'Order Details',
-                href: '/other-history',
-            }}
+            breadcrumb={[
+                {
+                    title: 'Order Details',
+                    href: '/other-history',
+                },
+            ]}
         >
             <div className="rounded-lg border-2 border-[#DBDBDB] flex flex-col overflow-hidden">
                 <Grid

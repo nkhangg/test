@@ -5,6 +5,7 @@ import { MainButton, SocialButton } from '..';
 import dynamic from 'next/dynamic';
 import { contants } from '@/utils/contants';
 import { dataURLtoFile } from '@/utils/format';
+import WraperDialog from '../dialogs/WraperDialog';
 
 const AvatarEditor = dynamic(() => import('react-avatar-edit'), { ssr: false });
 
@@ -50,7 +51,7 @@ export default function AvatarEdit({ open, setOpen, onComfirm, onAvartar }: IAva
 
     useEffect(() => {}, [preview]);
     return (
-        <Dialog open={open} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+        <WraperDialog open={open} setOpen={setOpen}>
             <DialogTitle id="alert-dialog-title">{'Select Your Avatar'}</DialogTitle>
             <DialogContent>
                 <AvatarEditor
@@ -58,7 +59,7 @@ export default function AvatarEdit({ open, setOpen, onComfirm, onAvartar }: IAva
                     height={295}
                     onCrop={handleCrop}
                     onClose={handleCloseEditor}
-                    //   onBeforeFileLoad={this.onBeforeFileLoad}
+                    // onBeforeFileLoad={onBeforeFileLoad}
                 />
 
                 <div className="flex items-center justify-end">
@@ -68,6 +69,6 @@ export default function AvatarEdit({ open, setOpen, onComfirm, onAvartar }: IAva
                     </Stack>
                 </div>
             </DialogContent>
-        </Dialog>
+        </WraperDialog>
     );
 }

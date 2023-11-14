@@ -173,13 +173,13 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
             birthday: user?.birthday ? moment(user?.birthday).format('yyyy-MM-D') : '',
         };
 
-        if (JSON.stringify(initOjb) != JSON.stringify(form)) {
+        if (JSON.stringify(initOjb) != JSON.stringify(form) || user.avatar != avartar) {
             setshowBtn(true);
         } else {
             setshowBtn(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [form]);
+    }, [form, avartar]);
 
     return (
         <>

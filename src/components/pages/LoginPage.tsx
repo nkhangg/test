@@ -1,15 +1,17 @@
 'use client';
-import React, { ChangeEvent, FocusEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FocusEvent, FormEvent, useEffect, useState } from 'react';
 import { BoxSign, LoadingPrimary, TextField, Notifycation } from '..';
 import { Stack } from '@mui/material';
 import Validate from '@/utils/validate';
 import { UserFormType } from '@/configs/types';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { login } from '@/apis/user';
 import { setToken } from '@/redux/slice/userSlice';
 import { toast } from 'react-toastify';
 import { contants } from '@/utils/contants';
+import { getPreviousUrl } from '@/utils/session';
+import { links } from '@/datas/links';
 
 export interface ILoginPageProps {}
 
@@ -18,6 +20,8 @@ export default function LoginPage(props: ILoginPageProps) {
 
     const dispatch = useDispatch();
 
+    // navigate
+    const pathname = usePathname();
     const router = useRouter();
     const initalDataForm = {
         username: '',
@@ -69,6 +73,15 @@ export default function LoginPage(props: ILoginPageProps) {
         });
     };
 
+    const handleForward = () => {
+        const prevUrl = getPreviousUrl();
+        if (prevUrl) {
+            router.push(prevUrl);
+        } else {
+            router.push(links.home);
+        }
+    };
+
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -94,8 +107,8 @@ export default function LoginPage(props: ILoginPageProps) {
             }
 
             // all good
+            handleForward();
 
-            router.push('/');
             dispatch(setToken(res.token));
         } catch (error) {
             console.log('error in login page: ' + error);

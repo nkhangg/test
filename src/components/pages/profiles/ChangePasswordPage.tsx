@@ -40,6 +40,10 @@ export default function ChangePasswordPage(props: IChangePasswordPageProps) {
             setIsLoading(false);
 
             if (response && response.errors) {
+                if (response.status === 404) {
+                    toast.warn(response.message);
+                }
+
                 setErrors({
                     ...errors,
                     ...(response.errors as unknown as FormChangePassword),
@@ -51,7 +55,9 @@ export default function ChangePasswordPage(props: IChangePasswordPageProps) {
             toast.success(response.message);
 
             setForm({
-                ...initData,
+                password: '',
+                newPassword: '',
+                confirmPassword: '',
             });
         } catch (error) {
             setIsLoading(false);

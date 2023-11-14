@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { IProduct } from '@/configs/interface';
 import { links } from '@/datas/links';
-import { stringToUrl } from '@/utils/format';
+import { stringToUrl, toCurrency } from '@/utils/format';
 import { Rating } from '@mui/material';
 import Link from 'next/link';
 import * as React from 'react';
@@ -31,8 +31,8 @@ export default function ProductRecent({ data }: IProductRecentProps) {
                     <h4 className="line-clamp-1 text-[#374151] text-sm">{data.name}</h4>
 
                     <div className="">
-                        <span className="text-[#EF4444] text-lg">{data.price}</span>
-                        <del className="text-black-main text-sm ml-[10px]">{data.oldPrice}</del>
+                        <span className="text-[#EF4444] text-lg">{toCurrency(data.price)}</span>
+                        <del className="text-black-main text-sm ml-[10px]">{toCurrency(data.oldPrice)}</del>
                     </div>
                 </div>
             </div>

@@ -45,7 +45,7 @@ export const takeActionData = {
         },
         {
             id: 4,
-            link: links.products + 'products?type=Rabbit+food',
+            link: links.products + 'products?type=Rabbit+Food',
             thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDq2UzWA47t2_0oYZGJGOQXuzXIoTsNW7IDihGN_7g6ciaiyIxtcs8eaAcwMz_aDSmFy8&usqp=CAU',
         },
         {

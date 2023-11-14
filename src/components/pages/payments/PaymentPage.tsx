@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation';
 import { BaseBreadcrumbs } from '../common';
 import LineProPress from './LinePropress';
 import { useGetDefaultAddress } from '@/hooks';
+import { links } from '@/datas/links';
 const OrderSummary = dynamic(() => import('./OrderSummary'), {
     ssr: false,
 });
@@ -94,7 +95,10 @@ export default function PaymentPage(props: IPaymentPageProps) {
                     <Link className="hover:underline" href="/">
                         Home
                     </Link>
-                    <Link className="text-black-main hover:underline " href="/payment">
+                    <Link className="hover:underline" href={links.users.cart}>
+                        Cart
+                    </Link>
+                    <Link className="text-black-main hover:underline " href={links.users.payment}>
                         Payment
                     </Link>
                 </Breadcrumbs>

@@ -110,7 +110,7 @@ export default function Header({ dynamic = true }: IHeaderProps) {
                                 </Link>
                             </div>
                         ) : (
-                            <MenuUser />
+                            <MenuUser isChangeBg={true} />
                         )}
                     </div>
 

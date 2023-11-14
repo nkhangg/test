@@ -48,4 +48,8 @@ export const contants = {
             },
         },
     },
+
+    notify: {
+        nonLogin: 'Please login to use !',
+    },
 };

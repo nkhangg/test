@@ -35,7 +35,7 @@ export default function OtherHistoryItem({ data }: IOtherHistoryItemProps) {
                 <ul className="flex items-center gap-4 md:gap-24">
                     <_Li title="Order ID" value={'#' + data.id} />
                     <_Li title="Date Place" value={data.datePlace} />
-                    <_Li title="Quantity" value={data.products.length} styleContent="text-center" />
+                    <_Li title="Quantity" value={'x' + data.products.length} styleContent="text-center" />
                     <_Li title="Total Amount" value={toCurrency(data.total)} />
                 </ul>
                 <Link href={'/other-history/' + data.id} className="text-violet-primary hover:underline">

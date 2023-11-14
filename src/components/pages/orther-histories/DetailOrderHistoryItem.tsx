@@ -43,18 +43,10 @@ export default function DetailOrderhistoryItem(props: IDetailOrderhistoryItemPro
                                     <span className="h-5 bg-[#666666] w-[1px] mx-3"></span>
                                     <span>{toGam(500)}</span>
                                 </div>
-                                <motion.button
-                                    onClick={handleTogleDialog}
-                                    whileTap={{
-                                        scale: 0.9,
-                                    }}
-                                    whileHover={{
-                                        y: -4,
-                                    }}
-                                    className="bg-[#F87171] py-[8px] max-w-[138px] px-[34px] text-white font-medium rounded-lg mt-5"
-                                >
-                                    Rating
-                                </motion.button>
+
+                                <span onClick={handleTogleDialog} className="text-fill-heart hover:underline cursor-pointer">
+                                    Rate
+                                </span>
                             </div>
                         </Grid>
                     </Grid>
