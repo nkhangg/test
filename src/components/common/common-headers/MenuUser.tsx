@@ -1,9 +1,10 @@
 'use client';
-import { CustomBadge, WrapperAnimation } from '@/components';
+import { CustomBadge, WrapperAnimation, NotifycationCom } from '@/components';
 import { RootState } from '@/configs/types';
 import { listProfile } from '@/datas/header';
 import { useAppSelector } from '@/hooks/reduxHooks';
 import { contants } from '@/utils/contants';
+import { faBell } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar } from '@mui/material';
 import Tippy from '@tippyjs/react/headless';
@@ -11,9 +12,11 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
-export interface IMenuYserProps {}
+export interface IMenuUserProps {
+    isChangeBg?: boolean;
+}
 
-export default function MenuUser({}: IMenuYserProps) {
+export default function MenuUser({ isChangeBg }: IMenuUserProps) {
     const [openMenu, setOpenMenu] = useState(false);
 
     const [isClient, setisClient] = useState(false);
@@ -55,11 +58,25 @@ export default function MenuUser({}: IMenuYserProps) {
                         );
                     }}
                 >
-                    <CustomBadge badgeContent={cartUser.length} onClick={() => setOpenMenu((prev) => !prev)} invisible={openMenu || cartUser.length <= 0}>
-                        <WrapperAnimation hover={{}}>
-                            <Avatar alt="avartar" className="cursor-pointer border-2" src={user?.avatar || contants.avartarDefault} />
-                        </WrapperAnimation>
-                    </CustomBadge>
+                    <div className="flex items-center justify-between gap-4 cursor-pointer select-none">
+                        <NotifycationCom
+                            icon={
+                                <span
+                                    className={classNames('text-xl ', {
+                                        ['text-white']: !isChangeBg,
+                                        ['text-black']: isChangeBg,
+                                    })}
+                                >
+                                    <FontAwesomeIcon icon={faBell} />
+                                </span>
+                            }
+                        />
+                        <CustomBadge badgeContent={cartUser.length} onClick={() => setOpenMenu((prev) => !prev)} invisible={openMenu || cartUser.length <= 0}>
+                            <WrapperAnimation hover={{}}>
+                                <Avatar alt="avartar" className="cursor-pointer border-2" src={user?.avatar || contants.avartarDefault} />
+                            </WrapperAnimation>
+                        </CustomBadge>
+                    </div>
                 </Tippy>
             ) : (
                 ''

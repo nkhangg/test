@@ -54,6 +54,7 @@ export { default as MissionVisonItem } from './common/common-components/mission-
 export { default as KnowldegeAboutFoster } from './common/common-components/knowldeges/KnowldegeAboutFoster';
 export { default as KnowldegeAboutFosterPreview } from './common/common-components/knowldeges/KnowldegeAboutFosterPreview';
 export { default as KnowldegeAboutFosterItem } from './common/common-components/knowldeges/KnowldegeAboutFosterItem';
+export { default as NotifycationCom } from './common/common-components/notycation/Notifycation';
 
 // boxs
 export { default as BoxTitle } from './boxs/BoxTitle';

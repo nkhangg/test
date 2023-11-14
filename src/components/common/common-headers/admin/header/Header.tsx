@@ -7,7 +7,7 @@ import Profile from './Profile';
 import { IconBellRinging, IconMenu } from '@tabler/icons-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { WrapperAnimation } from '@/components';
+import { WrapperAnimation, NotifycationCom } from '@/components';
 import { useRouter } from 'next/navigation';
 
 interface ItemType {
@@ -73,12 +73,14 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
                         </WrapperAnimation>
                     </div>
                 </Box>
-                <Stack direction={'row'}>
-                    <IconButton size="large" aria-label="show 11 new notifications" color="inherit" aria-controls="msgs-menu" aria-haspopup="true">
-                        <Badge variant="dot" color="primary">
-                            <IconBellRinging size="21" stroke="1.5" />
-                        </Badge>
-                    </IconButton>
+                <Stack direction={'row'} alignItems={'center'}>
+                    <NotifycationCom
+                        icon={
+                            <div className="w-full h-full flex items-center justify-center">
+                                <IconBellRinging size="21" stroke="1.5" />
+                            </div>
+                        }
+                    />
 
                     <Stack spacing={1} direction="row" alignItems="center">
                         <Profile />
