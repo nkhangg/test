@@ -51,6 +51,18 @@ const Validate = {
         return { message: '', error: false };
     },
 
+    isValidAcceptNunString(value: string, prefix: string): ValidateType {
+        if (this.isBlank(value)) return { message: prefix + " can't be blank ", error: true };
+
+        if (this.isSpecialChars(value))
+            return {
+                message: prefix + ' is not include special characters ',
+                error: true,
+            };
+
+        return { message: '', error: false };
+    },
+
     description(value: string): ValidateType {
         if (this.isBlank(value)) return { message: `Description can't be blank `, error: true };
         return { message: '', error: false };
@@ -71,8 +83,6 @@ const Validate = {
             if (value.length <= 0) return { message: `${callName} can't be blank `, error: true };
         } else {
             if (this.isBlank(value)) return { message: `${callName} can't be blank `, error: true };
-
-            if (this.isNumber(value.toString())) return { message: `${callName} is not numberic `, error: true };
 
             if (this.isSpecialChars(value)) return { message: `${callName}  is not include special characters `, error: true };
         }
@@ -105,7 +115,7 @@ const Validate = {
     },
 
     brand(value: string): ValidateType {
-        return this.isValidString(value, 'Brand');
+        return this.isValidAcceptNunString(value, 'Brand');
     },
 
     type(value: string): ValidateType {

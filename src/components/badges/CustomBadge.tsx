@@ -6,12 +6,13 @@ export interface ICustomBadgeProps {
     invisible?: boolean;
     children: ReactNode;
     badgeContent: string | number;
+    dot?: boolean;
     onClick?: MouseEventHandler<HTMLSpanElement>;
 }
 
 export type Ref = HTMLDivElement;
 
-const CustomBadge = forwardRef<Ref, ICustomBadgeProps>(({ invisible = true, badgeContent, children, onClick }, ref) => {
+const CustomBadge = forwardRef<Ref, ICustomBadgeProps>(({ invisible = true, badgeContent, children, dot, onClick }, ref) => {
     return (
         <div ref={ref}>
             <Badge
@@ -24,6 +25,7 @@ const CustomBadge = forwardRef<Ref, ICustomBadgeProps>(({ invisible = true, badg
                 invisible={invisible}
                 badgeContent={badgeContent}
                 color="primary"
+                variant={dot ? 'dot' : undefined}
                 onClick={onClick}
             >
                 {children}

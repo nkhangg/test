@@ -30,21 +30,15 @@ export default function Header({ dynamic = true }: IHeaderProps) {
     useEffect(() => {
         (async () => {
             const actionResult = dispatch(fetchUserByToken());
-            const curUser = unwrapResult(await actionResult);
-            // console.log(curUser);
-            const action = dispatch(getCart());
-            const data = unwrapResult(await action);
+            unwrapResult(await actionResult);
 
-            const actionPayment = dispatch(getPayment());
+            const action = dispatch(getCart());
+            unwrapResult(await action);
+
+            dispatch(getPayment());
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token]);
-
-    // useEffect(() => {
-    //     (async () => {
-
-    //     })();
-    // }, [dispatch]);
 
     return (
         <>
@@ -84,7 +78,7 @@ export default function Header({ dynamic = true }: IHeaderProps) {
                                 </Link>
                             </div>
                         ) : (
-                            <MenuUser />
+                            <MenuUser isChangeBg={isChangeBg} />
                         )}
                     </div>
                     {/* responcesive */}
