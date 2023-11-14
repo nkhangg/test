@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
 import { fetchUserByToken } from '@/redux/slice/userSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { getCart } from '@/redux/slice/cartsSlide';
+import { getCart, getPayment } from '@/redux/slice/cartsSlide';
 export interface IHeaderProps {
     dynamic?: boolean;
 }
@@ -30,19 +30,15 @@ export default function Header({ dynamic = true }: IHeaderProps) {
     useEffect(() => {
         (async () => {
             const actionResult = dispatch(fetchUserByToken());
-            const curUser = unwrapResult(await actionResult);
-            // console.log(curUser);
+            unwrapResult(await actionResult);
+
             const action = dispatch(getCart());
-            const data = unwrapResult(await action);
+            unwrapResult(await action);
+
+            dispatch(getPayment());
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token]);
-
-    // useEffect(() => {
-    //     (async () => {
-
-    //     })();
-    // }, [dispatch]);
 
     return (
         <>
@@ -82,7 +78,7 @@ export default function Header({ dynamic = true }: IHeaderProps) {
                                 </Link>
                             </div>
                         ) : (
-                            <MenuUser />
+                            <MenuUser isChangeBg={isChangeBg} />
                         )}
                     </div>
                     {/* responcesive */}
@@ -114,7 +110,7 @@ export default function Header({ dynamic = true }: IHeaderProps) {
                                 </Link>
                             </div>
                         ) : (
-                            <MenuUser />
+                            <MenuUser isChangeBg={true} />
                         )}
                     </div>
 

@@ -320,7 +320,6 @@ export interface IUserManage {
     birthday: string;
     gender: boolean;
     phone: string;
-    address: string;
     avatar: string;
     email: string;
     role: string;
@@ -351,4 +350,58 @@ export interface IDetailOrder {
     subtotal: number;
     shippingFee: number;
     total: number;
+}
+
+export interface ISearchItem {
+    id: number | string;
+    title: string;
+}
+
+// outsite
+
+export interface IProvinces {
+    name: string;
+    code: number;
+    division_type: string;
+    codename: string;
+    phone_code: number;
+    districts: IDistrict[];
+}
+
+export interface IDistrict {
+    name: string;
+    code: number;
+    division_type: string;
+    codename: string;
+    province_code: number;
+    wards: Ward[];
+}
+
+export interface IWard {
+    name: string;
+    code: number;
+    division_type: string;
+    codename: string;
+    district_code: number;
+}
+
+export interface IAddress {
+    province: string;
+    district: string;
+    ward: string;
+    address: string;
+}
+
+export interface IInfoAddress {
+    id: number;
+    name: string;
+    phone: string;
+    address: IAddress;
+    isDefault?: boolean;
+}
+
+export interface FormChangePassword {
+    password: string;
+    newPassword: string;
+    confirmPassword: string;
 }

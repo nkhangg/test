@@ -5,11 +5,13 @@ export interface IContainerContentProps {
     children: ReactNode;
     className?: string;
     classNameContainer?: string;
+    id?: string;
 }
 
-export default function ContainerContent({ children, className, classNameContainer }: IContainerContentProps) {
+export default function ContainerContent({ children, className, classNameContainer, id }: IContainerContentProps) {
     return (
         <div
+            id={id}
             className={classNames('w-full h-full', {
                 [classNameContainer ?? '']: !!classNameContainer,
             })}

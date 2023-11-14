@@ -1,3 +1,5 @@
+const baseApiProvince = 'https://provinces.open-api.vn/api/';
+
 export const contants = {
     avartarDefault: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
     askConditions: [
@@ -13,5 +15,41 @@ export const contants = {
         errors: {
             server: 'Something went wrong !',
         },
+    },
+    roles: {
+        manageRoles: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'],
+        userRoles: ['ROLE_STAFF', 'ROLE_USER'],
+    },
+    apis: {
+        provinces: baseApiProvince + 'p/',
+        districts: (province: number | string) => {
+            return baseApiProvince + `p/${province}?depth=2`;
+        },
+        wards: (district: number | string) => {
+            return baseApiProvince + `d/${district}?depth=2`;
+        },
+    },
+
+    animations: {
+        addressForm: {
+            custom: 1,
+
+            initial: {
+                x: 100,
+                opacity: 0,
+            },
+            animate: {
+                x: 0,
+                opacity: 1,
+            },
+            exit: {
+                x: -100,
+                opacity: 0,
+            },
+        },
+    },
+
+    notify: {
+        nonLogin: 'Please login to use !',
     },
 };

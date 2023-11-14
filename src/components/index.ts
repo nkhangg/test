@@ -22,6 +22,12 @@ export { default as MenuDropDownRadio } from './inputs/MenuDropDownRadio';
 export { default as DynamicInput } from './inputs/DynamicInput';
 export { default as Comfirm } from './inputs/Comfirm';
 export { default as AvartarEdit } from './inputs/AvartarEdit';
+export { default as AddressInfoPayment } from './inputs/address/AddressInfoPayment';
+export { default as AddressDialog } from './inputs/address/AddressDialog';
+export { default as AddressItem } from './inputs/address/AddressItem';
+export { default as ListAddress } from './inputs/address/ListAddress';
+export { default as AddressTippy } from './inputs/address/AddressTippy';
+export { default as AddressForm } from './inputs/address/AddressForm';
 
 // bages
 export { default as CustomBadge } from './badges/CustomBadge';
@@ -48,11 +54,13 @@ export { default as MissionVisonItem } from './common/common-components/mission-
 export { default as KnowldegeAboutFoster } from './common/common-components/knowldeges/KnowldegeAboutFoster';
 export { default as KnowldegeAboutFosterPreview } from './common/common-components/knowldeges/KnowldegeAboutFosterPreview';
 export { default as KnowldegeAboutFosterItem } from './common/common-components/knowldeges/KnowldegeAboutFosterItem';
+export { default as NotifycationCom } from './common/common-components/notycation/Notifycation';
 
 // boxs
 export { default as BoxTitle } from './boxs/BoxTitle';
 export { default as BoxSign } from './boxs/BoxSign';
 export { default as CardInfo } from './boxs/CardInfo';
+export { default as WraperTippy } from './boxs/WraperTippy';
 
 // paginations
 export { default as Pagination } from './pagination/Pagination';
@@ -66,3 +74,7 @@ export { default as Notifycation } from './notifycations/Notifycation';
 
 // comments
 export { default as Review } from './comments/Review';
+
+// dialog
+export { default as RatingDialog } from './dialogs/RatingDialog';
+export { default as BaseAddressDialog } from './inputs/address/BaseAddressDialog';

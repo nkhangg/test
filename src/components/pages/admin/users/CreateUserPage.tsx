@@ -16,6 +16,8 @@ import { createUserManage } from '@/apis/admin/user';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { links } from '@/datas/links';
+import { useAppSelector } from '@/hooks/reduxHooks';
+import { RoleType, RootState } from '@/configs/types';
 
 export interface ICreateOrUpdateUserProps {
     param: string | 'create';
@@ -26,7 +28,6 @@ interface IErrors {
     fullname: string;
     birthday: string;
     phone: string;
-    address: string;
     avatar: string;
     email: string;
     password: string;
@@ -40,7 +41,6 @@ const initdata: IUserManage & { confirmPassword: string } = {
     birthday: '',
     gender: true,
     phone: '',
-    address: '',
     avatar: '',
     email: '',
     role: 'ROLE_USER',
@@ -55,7 +55,6 @@ const initdataErrors: IErrors = {
     fullname: '',
     birthday: '',
     phone: '',
-    address: '',
     avatar: '',
     email: '',
     password: '',
@@ -63,6 +62,10 @@ const initdataErrors: IErrors = {
 };
 export default function CreateUser({ param }: ICreateOrUpdateUserProps) {
     const router = useRouter();
+
+    // redux
+
+    const { user } = useAppSelector((state: RootState) => state.userReducer);
 
     const [avartar, setAvartar] = useState(contants.avartarDefault);
     const [openEditor, setOpenEditor] = useState(false);
@@ -300,6 +303,7 @@ export default function CreateUser({ param }: ICreateOrUpdateUserProps) {
                                 name: 'role',
                                 onChange: handleChange,
                                 value: data.role,
+                                disabled: (user?.role as RoleType) !== 'ROLE_SUPER_ADMIN',
                             }}
                             label="Role"
                         />
@@ -365,19 +369,7 @@ export default function CreateUser({ param }: ICreateOrUpdateUserProps) {
                     sx={{
                         pt: '0px !important',
                     }}
-                >
-                    <DivTextfield
-                        propsInput={{
-                            name: 'address',
-                            placeholder: 'phường An Bình, quận Ninh Kiều, thành phố Cần Thơ',
-                            onChange: handleChange,
-                            onBlur: handleBlur,
-                            value: data.address,
-                            message: errors.address,
-                        }}
-                        label="Address ( update on version 2.0 )"
-                    />
-                </Grid>
+                ></Grid>
 
                 <Grid item xs={12} md={12} lg={12}>
                     <Stack direction={'row'} justifyContent={'flex-end'}>

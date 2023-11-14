@@ -23,6 +23,8 @@ import {
     ProductInfo,
     IImage,
     IUserManage,
+    IInfoAddress,
+    FormChangePassword,
 } from './interface';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
@@ -51,6 +53,8 @@ export type ApiHistory = (page: number | undefined) => Promise<IBaseResponse<IOt
 export type ApiTypesAndBrands = () => Promise<IBaseResponse<TypesAndBrands>>;
 
 export type ApiResetPassword = (email: string) => Promise<IBaseResponse<any>>;
+
+export type ApiChangePassword = (data: FormChangePassword) => Promise<IBaseResponse<any>>;
 
 export type ApiGetCurUser = () => Promise<IBaseResponse<IProfile>>;
 
@@ -102,11 +106,17 @@ export type ApiHistories = () => Promise<IBaseResponse<IProfile>>;
 
 export type ApiGetOrders = () => Promise<any>;
 
+export type ApiGetDefaultAddress = () => Promise<IBaseResponse<IInfoAddress>>;
+
+export type ApiGetAddresses = () => Promise<IBaseResponse<IInfoAddress[]>>;
+
+export type ApiGetAddressesById = (id: number) => Promise<IBaseResponse<IInfoAddress>>;
+
+export type ApiHandleAddresses = (data: IInfoAddress) => Promise<IBaseResponse<IInfoAddress>>;
+
 export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
-
-export type RoleType = 'ROLE_ADMIN' | 'ROLE_USER';
 
 export type RegisterFormData = {
     username: string;
@@ -123,9 +133,6 @@ export type ProfileType = {
     phone: string;
     gender: string;
     birthday: string;
-    address: string;
-    password: string;
-    newPassword: string;
 };
 
 export type DataRequestUpdateUser = {
@@ -134,10 +141,7 @@ export type DataRequestUpdateUser = {
     phone: string;
     gender: string;
     birthday: string;
-    address: string;
     avatar?: string;
-    password: string;
-    newPassword: string;
 };
 
 export type SortType = string | null;
@@ -165,3 +169,7 @@ export type RepoTypeErrors = {
 };
 
 export type ModeType = 'create' | 'update';
+
+export type RoleType = 'ROLE_USER' | 'ROLE_STAFF' | 'ROLE_ADMIN' | 'ROLE_SUPER_ADMIN';
+
+export type ApiProvinces<T> = (id?: string | number) => Promise<T>;

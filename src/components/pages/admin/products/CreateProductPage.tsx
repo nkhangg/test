@@ -22,6 +22,7 @@ import { pushNoty } from '@/redux/slice/appSlice';
 import { links } from '@/datas/links';
 import { toast } from 'react-toastify';
 import { contants } from '@/utils/contants';
+import { useTypeAndBrand } from '@/hooks';
 const Description = dynamic(() => import('./Description'), {
     loading: () => (
         <Stack justifyContent={'center'} alignItems={'center'}>
@@ -50,8 +51,8 @@ type DataProductErrorsType = {
 
 const initData: DataProductType = {
     name: '',
-    brand: productManageData.branhs[0].id,
-    type: productManageData.types[0].id,
+    brand: '1',
+    type: 'CF',
     images: [],
     description: '',
     repo: [],
@@ -70,10 +71,7 @@ export interface ICreateOrUpdateProductProps {
 }
 
 export default function CreateOrUpdateProduct({ dataOusite }: ICreateOrUpdateProductProps) {
-    const typesAndBrandsData = useQuery({
-        queryKey: ['typeandbrand'],
-        queryFn: () => typesAndBrands(),
-    });
+    const { typesAndBrandsData } = useTypeAndBrand();
 
     const router = useRouter();
     const dispatch = useDispatch();
@@ -96,6 +94,7 @@ export default function CreateOrUpdateProduct({ dataOusite }: ICreateOrUpdatePro
         const { message } = Validate.infomation(e.target.value, () => {
             return capitalize(dynamicKey);
         });
+
         setErrors({
             ...errors,
             [dynamicKey]: message,
@@ -135,11 +134,7 @@ export default function CreateOrUpdateProduct({ dataOusite }: ICreateOrUpdatePro
 
     const handleSubmit = async () => {
         if (validate()) {
-            setNotify({
-                ...notify,
-                open: true,
-                title: `Incomplete data`,
-            });
+            toast.warn('Incomplete data');
             return;
         }
 
@@ -200,7 +195,7 @@ export default function CreateOrUpdateProduct({ dataOusite }: ICreateOrUpdatePro
                         <Grid item lg={6} md={12} xs={12}>
                             <ComInput title="Type">
                                 <TextField select id="type" name="type" value={data.type} size="small" onChange={handleChange} onBlur={handleBlur}>
-                                    {typesAndBrandsData.data?.data.types.map((type, index) => {
+                                    {typesAndBrandsData.types.map((type, index) => {
                                         return (
                                             <MenuItem key={type.name} value={typeof type.id === 'object' ? type.id.join() : type.id}>
                                                 {type.name}
@@ -214,12 +209,12 @@ export default function CreateOrUpdateProduct({ dataOusite }: ICreateOrUpdatePro
                             <DynamicInput
                                 propsInput={{
                                     name: 'brand',
-                                    value: data.brand,
+                                    value: data.brand + '',
                                     message: errors.brand,
                                     onChange: handleChange,
                                     onBlur: handleBlur,
                                 }}
-                                dataSelect={typesAndBrandsData.data?.data.brands || []}
+                                dataSelect={typesAndBrandsData.brands || []}
                                 title="Brand"
                             />
                         </Grid>

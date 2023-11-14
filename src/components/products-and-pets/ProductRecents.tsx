@@ -16,12 +16,11 @@ export default function ProductRencent({ data, title, fontSizeTitle }: IProductR
         <BoxTitle title={title} locationTitle="left" underlineTitle fontSizeTitle={fontSizeTitle}>
             <div
                 style={{
-                    // gridAutoColumns: '21%',
                     overscrollBehaviorInline: 'contain',
                 }}
                 onMouseEnter={() => setIsHideScroll(false)}
                 onMouseLeave={() => setIsHideScroll(true)}
-                className={classNames('scroll grid grid-flow-col auto-cols-[60%] md:auto-cols-[30%] lg:auto-cols-5item gap-[10px] pb-4 select-none transition-all ease-linear', {
+                className={classNames('scroll grid grid-flow-col auto-cols-[60%] md:auto-cols-[40%] lg:auto-cols-[30%] gap-[10px] pb-4 select-none transition-all ease-linear', {
                     'hide-scroll ': isHideScroll,
                 })}
             >

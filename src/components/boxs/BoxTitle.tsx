@@ -5,6 +5,7 @@ import { LocationTileType } from '@/configs/types';
 import Link from 'next/link';
 
 export interface IBoxTitleProps {
+    id?: string;
     children: ReactNode;
     title: string;
     locationTitle?: LocationTileType;
@@ -19,6 +20,7 @@ export interface IBoxTitleProps {
 }
 
 export default function BoxTitle({
+    id,
     children,
     title,
     locationTitle = 'center',
@@ -33,6 +35,7 @@ export default function BoxTitle({
 }: IBoxTitleProps) {
     return (
         <ContainerContent
+            id={id}
             className={className}
             classNameContainer={classNames('', {
                 [background]: true,

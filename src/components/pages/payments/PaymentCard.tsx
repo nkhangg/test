@@ -30,7 +30,7 @@ export default function PaymentCard({ data, checked, onClick }: IPaymentCardProp
             )}
         >
             <div className="flex items-center justify-between">
-                <h4 className="text-black-main text-xl">{data.title}</h4>
+                <h4 className="text-black-main text-lg">{data.title}</h4>
 
                 {checked && (
                     <div className="w-5 h-5 bg-violet-secondary rounded-full flex items-center justify-center">

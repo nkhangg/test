@@ -11,12 +11,12 @@ import { resetPassword } from '@/apis/user';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { pushNoty } from '@/redux/slice/appSlice';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import { links } from '@/datas/links';
+import { contants } from '@/utils/contants';
 export interface IResetPasswordProps {}
 
 export default function ResetPassword(props: IResetPasswordProps) {
-    //redux
-    const dispatch = useAppDispatch();
-
     // router
 
     const router = useRouter();
@@ -63,24 +63,13 @@ export default function ResetPassword(props: IResetPasswordProps) {
                 return;
             }
 
-            dispatch(
-                pushNoty({
-                    title: `New password has been sent to email ${email}. Please check your email ❤️❤️❤️`,
-                    type: 'success',
-                    open: true,
-                    autohide: 4000,
-                }),
-            );
-            router.push('/login');
+            toast.success(`New password has been sent to email ${email}. Please check your email ❤️❤️❤️`);
+
+            router.push(links.auth.login);
         } catch (error) {
             setloading(false);
-            dispatch(
-                pushNoty({
-                    title: 'Internal Server Errors !',
-                    type: 'error',
-                    open: true,
-                }),
-            );
+
+            toast.error(contants.messages.errors.server);
         }
     };
 

@@ -10,6 +10,7 @@ import { ProductInfo } from '@/configs/interface';
 import { getInfoProduct, updateInfoProduct } from '@/apis/admin/product';
 import { toast } from 'react-toastify';
 import { contants } from '@/utils/contants';
+import { useTypeAndBrand } from '@/hooks';
 const Description = dynamic(() => import('../Description'), {
     loading: () => (
         <Stack justifyContent={'center'} mt={'40px'} alignItems={'center'}>
@@ -39,11 +40,7 @@ export interface InfomationProps {
 
 function Infomation({ id }: InfomationProps) {
     // get types and brands on server
-    const typesAndBrandsData = useQuery({
-        queryKey: ['typeandbrand'],
-        queryFn: () => typesAndBrands(),
-    });
-
+    const { typesAndBrandsData } = useTypeAndBrand();
     // get init data on server
     const productInfoData = useQuery({
         queryKey: ['productInfoData', id],
@@ -153,7 +150,7 @@ function Infomation({ id }: InfomationProps) {
                 <Grid item lg={6} md={12} xs={12}>
                     <ComInput title="Type">
                         <TextField select id="type" name="type" value={data.type} onChange={handleChange} size="small">
-                            {typesAndBrandsData.data?.data.types.map((type, index) => {
+                            {typesAndBrandsData.types.map((type, index) => {
                                 return (
                                     <MenuItem key={type.name} value={typeof type.id === 'object' ? type.id.join() : type.id}>
                                         {type.name}
@@ -167,12 +164,12 @@ function Infomation({ id }: InfomationProps) {
                     <DynamicInput
                         propsInput={{
                             name: 'brand',
-                            value: data.brand,
+                            value: data.brand + '',
                             message: errors.brand,
                             onBlur: handleBlur,
                             onChange: handleChange,
                         }}
-                        dataSelect={typesAndBrandsData.data?.data.brands || []}
+                        dataSelect={typesAndBrandsData.brands || []}
                         title="Brand"
                     />
                 </Grid>

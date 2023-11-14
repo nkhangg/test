@@ -5,13 +5,15 @@ import { Breadcrumbs } from '@mui/material';
 import Link from 'next/link';
 import React, { ReactNode, memo, useEffect, useLayoutEffect, useState } from 'react';
 
+type DataBreadcrumbs = {
+    title: string;
+    href: string;
+};
+
 export interface IBaseBreadcrumbsProps {
     isLoading?: boolean;
     title: string;
-    breadcrumb: {
-        title: string;
-        href: string;
-    };
+    breadcrumb: DataBreadcrumbs[];
     children: ReactNode;
 }
 
@@ -29,9 +31,13 @@ function BaseBreadcrumbs({ isLoading = false, breadcrumb, children, title }: IBa
                         <Link className="hover:underline" href="/">
                             Home
                         </Link>
-                        <Link className="text-black-main hover:underline " href={breadcrumb.href}>
-                            {breadcrumb.title}
-                        </Link>
+                        {breadcrumb.map((item) => {
+                            return (
+                                <Link key={item.href} className="text-black-main hover:underline " href={item.href}>
+                                    {item.title}
+                                </Link>
+                            );
+                        })}
                     </Breadcrumbs>
                 </div>
             </ContainerContent>

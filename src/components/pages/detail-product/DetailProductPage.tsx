@@ -1,25 +1,27 @@
 'use client';
 import React, { useState } from 'react';
 import { ContainerContent } from '../../common';
-import { Box, Grid, Tab, Tabs, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { LoadingPrimary, MainButton, PreviewImageProduct, ProductRecents } from '../..';
 // import { dataDetailProductPage } from '@/datas/detail-product';
 import { Nunito_Sans, Roboto_Flex } from 'next/font/google';
 import classNames from 'classnames';
-import { toCurrency, urlToString } from '@/utils/format';
+import { toCurrency } from '@/utils/format';
 import Sizes from './Sizes';
 import Quantity from './Quantity';
 import DesAndReview from './DesAndReview';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { addCart, addPayment } from '@/redux/slice/cartsSlide';
-import { ApiDetailProductType, RootState } from '@/configs/types';
-import { pushNoty } from '@/redux/slice/appSlice';
+import { RootState } from '@/configs/types';
 import { useQuery } from '@tanstack/react-query';
 import { detailProduct } from '@/apis/product';
-import { notFound, useRouter } from 'next/navigation';
-import { dataDetailProductPages } from '@/datas/detail-product';
+import { notFound, usePathname, useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { reviews } from '@/datas/comments';
+import { toast } from 'react-toastify';
+import { contants } from '@/utils/contants';
+import { links } from '@/datas/links';
+import { addPreviousUrl } from '@/utils/session';
 const Rating = dynamic(() => import('@mui/material/Rating'), { ssr: false });
 
 const nunitoSans = Nunito_Sans({ subsets: ['latin'], style: ['normal', 'italic'], weight: ['300', '400', '500', '600', '700', '800'] });
@@ -32,9 +34,13 @@ export interface IDetailProductPageProps {
 }
 
 export default function DetailProductPage({ params }: IDetailProductPageProps) {
+    // router
+    const router = useRouter();
+    // path name
+    const pathname = usePathname();
+
     const [indexSizeAndPrice, setIndexSizeAndPrice] = useState(0);
     const [quantity, setQuantity] = useState(1);
-    const router = useRouter();
 
     const { user } = useAppSelector((state: RootState) => state.userReducer);
 
@@ -51,15 +57,15 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
     }
     const dataDetailProductPage = data?.data;
 
+    const handleNonLogin = () => {
+        toast.warn(contants.notify.nonLogin);
+        addPreviousUrl(pathname);
+        router.push(links.auth.login);
+    };
+
     const handleAddToCart = () => {
         if (!user) {
-            dispatch(
-                pushNoty({
-                    title: 'Please login to use !',
-                    open: true,
-                    type: 'error',
-                }),
-            );
+            handleNonLogin();
             return;
         }
         dispatch(
@@ -79,13 +85,7 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
 
     const handleBuyNow = () => {
         if (!user) {
-            dispatch(
-                pushNoty({
-                    title: 'Please login to use !',
-                    open: true,
-                    type: 'error',
-                }),
-            );
+            handleNonLogin();
             return;
         }
 
@@ -110,7 +110,7 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
 
     return (
         <>
-            <ContainerContent className="pt-24 mb-96">
+            <ContainerContent className="pt-24">
                 <Grid container spacing={'65px'}>
                     <Grid item xs={12} md={5} lg={5}>
                         <div className=" w-full h-full rounded flex items-center justify-center">

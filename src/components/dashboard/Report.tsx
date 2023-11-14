@@ -28,7 +28,7 @@ export default function Report(props: IReportProps) {
                             value: (dataDashboard?.reports.dailyOrders.value || 0) + ' orders',
                             percentYesterday: (dataDashboard?.reports.dailyOrders.percentYesterday || 0) + ' orders',
                         }}
-                        title="Daily Orders"
+                        title="Today Orders"
                     />
                 </Grid>
                 <Grid item xs={12} md={12} lg={4}>
@@ -40,7 +40,7 @@ export default function Report(props: IReportProps) {
                             value: toCurrency(dataDashboard?.reports.dailyRevenue.value || 0),
                             percentYesterday: toCurrency(dataDashboard?.reports.dailyRevenue.percentYesterday || 0),
                         }}
-                        title="Daily Revenue"
+                        title="Today Revenue"
                     />
                 </Grid>
 
