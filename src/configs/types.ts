@@ -104,6 +104,8 @@ export type ApiCreateUserManage = (data: IUserManage) => Promise<IBaseResponse<a
 
 export type ApiHistories = () => Promise<IBaseResponse<IProfile>>;
 
+export type ApiGetOrders = () => Promise<any>;
+
 export type ApiGetDefaultAddress = () => Promise<IBaseResponse<IInfoAddress>>;
 
 export type ApiGetAddresses = () => Promise<IBaseResponse<IInfoAddress[]>>;

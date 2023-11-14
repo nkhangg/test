@@ -1,4 +1,4 @@
-import { IconCopy, IconLayoutDashboard, IconBox, IconDog, IconUser } from '@tabler/icons-react';
+import { IconCopy, IconLayoutDashboard, IconBox, IconDog, IconUser, IconBoxSeam } from '@tabler/icons-react';
 const Menuitems = [
     {
         navlabel: true,
@@ -32,6 +32,16 @@ const Menuitems = [
         title: 'Users',
         icon: IconUser,
         href: '/admin/dashboard/users',
+    },
+    {
+        navlabel: true,
+        subheader: 'payment',
+    },
+    {
+        id: 5,
+        title: 'Orders',
+        icon: IconBoxSeam,
+        href: '/admin/dashboard/orders',
     },
 ];
 
