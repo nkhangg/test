@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { ContainerContent } from '..';
 import Link from 'next/link';
 import { dataFooter } from '@/datas/footer';
-import { Notifycation } from '@/components';
+import { ChatBox, Notifycation } from '@/components';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
 import { closeNoty } from '@/redux/slice/appSlice';
@@ -78,9 +78,7 @@ export default function Footer(props: IFooterProps) {
                             </Link>
                         </Tooltip>
                     )}
-                    <Fab color="primary" aria-label="add">
-                        <img src="/logo-footer.svg" alt="logo-footer.svg" />
-                    </Fab>
+                    <ChatBox />
                 </div>
 
                 <div className="flex items-center justify-center py-14">

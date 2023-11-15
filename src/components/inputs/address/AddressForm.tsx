@@ -168,6 +168,7 @@ export default function AddressForm({ initData, updateMode = false, onBeforeAdd,
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        e.stopPropagation();
 
         setForm({
             ...form,

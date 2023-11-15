@@ -12,6 +12,7 @@ import {
     ApiUpdateCurUser,
     ApiVerifyCode,
     DataRequestUpdateUser,
+    TestOrders,
 } from '@/configs/types';
 import axios from '../configs/axios';
 import { setTokenToCookie } from '@/utils/cookie';
@@ -31,6 +32,7 @@ export const login: ApiLogin = async (data) => {
     setTokenToCookie(res?.data.token);
     return res?.data;
 };
+
 export const register: ApiRegister = async (data) => {
     const res = await axios({
         method: 'POST',
@@ -199,5 +201,17 @@ export const updateAddress: ApiHandleAddresses = async (data: IInfoAddress) => {
 
     if (!res) return null;
 
+    return res?.data;
+};
+
+export const testOrders: TestOrders = async () => {
+    const res = await axios({
+        method: 'POST',
+        url: '/test/payment',
+    });
+
+    if (!res) return null;
+
+    // setTokenToCookie(res?.data.token);
     return res?.data;
 };

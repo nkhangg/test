@@ -42,3 +42,7 @@ html {
 [contenteditable] {
     outline: 0px solid transparent;
 }
+
+.drop-scroll {
+    overflow: hidden;
+}

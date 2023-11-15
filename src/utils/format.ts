@@ -103,3 +103,7 @@ export function dataURLtoFile(dataurl: string) {
 export const addressToString = (value: IAddress) => {
     return `${value.address}, ${value.ward}, ${value.district}, ${value.province}`;
 };
+
+export const formatIndex = (page: number, index: number) => {
+    return page ? (index + 1) * page + 1 * 10 : index + 1;
+};

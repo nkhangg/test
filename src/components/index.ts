@@ -78,3 +78,10 @@ export { default as Review } from './comments/Review';
 // dialog
 export { default as RatingDialog } from './dialogs/RatingDialog';
 export { default as BaseAddressDialog } from './inputs/address/BaseAddressDialog';
+
+// chats
+
+export { default as ChatBox } from './chats/ChatBox';
+export { default as ChatItem } from './chats/ChatItem';
+export { default as ChatFooter } from './chats/ChatFooter';
+export { default as ChatBody } from './chats/ChatBody';
