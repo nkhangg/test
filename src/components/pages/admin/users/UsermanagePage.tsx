@@ -7,6 +7,7 @@ import { productManageListData } from '@/datas/product-manage-data';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { pushNoty } from '@/redux/slice/appSlice';
 import { contants } from '@/utils/contants';
+import { formatIndex } from '@/utils/format';
 import { faChevronRight, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, Box, Button, Grid, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
@@ -103,7 +104,7 @@ export default function UserManagePage(props: IUserManagePageProps) {
                                                             fontWeight: '500',
                                                         }}
                                                     >
-                                                        {index + 1}
+                                                        {formatIndex(page, index)}
                                                     </Typography>
                                                 </TableCell>
                                                 {/* avatart */}

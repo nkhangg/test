@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ContainerContent } from '@/components/common';
 import { Box, Breadcrumbs, CircularProgress, FormControl, FormControlLabel, Grid, Radio, RadioGroup, Stack } from '@mui/material';
 import { PaymentCard, PaymentItem } from '..';
-import { AddressDialog, AddressInfoPayment, LoadingPrimary, SocialButton, TextField } from '@/components';
+import { AddressDialog, AddressInfoPayment, LoadingPrimary, LoadingSecondary, SocialButton, TextField } from '@/components';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
 import Validate from '@/utils/validate';
@@ -19,6 +19,7 @@ import { BaseBreadcrumbs } from '../common';
 import LineProPress from './LinePropress';
 import { useGetDefaultAddress } from '@/hooks';
 import { links } from '@/datas/links';
+import { testOrders } from '@/apis/user';
 const OrderSummary = dynamic(() => import('./OrderSummary'), {
     ssr: false,
 });
@@ -72,6 +73,17 @@ export default function PaymentPage(props: IPaymentPageProps) {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        try {
+            const response = await testOrders();
+
+            if (!response) {
+                console.log(response);
+                return;
+            }
+
+            window.location.assign(response.token);
+        } catch (error) {}
     };
 
     useEffect(() => {
@@ -144,7 +156,7 @@ export default function PaymentPage(props: IPaymentPageProps) {
                 {!isClient && (
                     <Grid item xs={12} md={12} lg={12}>
                         <Stack alignItems={'center'} justifyContent={'center'} height={'100%'}>
-                            <CircularProgress />
+                            <LoadingSecondary />
                         </Stack>
                     </Grid>
                 )}

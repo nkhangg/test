@@ -32,6 +32,8 @@ export type ApiGetUsers = () => Promise<IUser[]>;
 
 export type ApiLogin = (data: UserFormType) => Promise<ISignDataResponse>;
 
+export type TestOrders = () => Promise<ISignDataResponse>;
+
 export type ApiRegister = (data: RegisterFormData) => Promise<ISignDataResponse>;
 
 export type ApiTakeActionType = () => Promise<IBaseResponse<IApiTakeAction>>;

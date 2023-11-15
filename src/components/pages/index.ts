@@ -40,5 +40,7 @@ export { default as CreateUserPage } from './admin/users/CreateUserPage';
 export { default as InitState } from './InitState';
 
 // orders
-
 export { default as OrdersAdminPage } from './admin/orders/OrdersAdminPage';
+
+// manage
+export { default as MessagePage } from './admin/message/MessagePage';

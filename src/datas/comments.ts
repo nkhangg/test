@@ -74,3 +74,17 @@ export const reviews = [
         createdAt: new Date().toDateString(),
     },
 ] as IReview[];
+
+interface IDataFormReview {
+    productId: string;
+    orderId: number;
+    comment: string;
+    rate: number; // 1 < rate <= 5
+}
+
+const formReview: IDataFormReview = {
+    productId: 'SP001',
+    orderId: 20,
+    comment: 'good product !!!',
+    rate: 5,
+};

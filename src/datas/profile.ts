@@ -1,4 +1,4 @@
-import { faClockRotateLeft, faLocation, faLocationDot, faLocationPin, faLock, faPersonRunning, faUserPen } from '@fortawesome/free-solid-svg-icons';
+import { faClockRotateLeft, faLocationDot, faLock, faRightFromBracket, faUserPen } from '@fortawesome/free-solid-svg-icons';
 
 export const profileUiData = {
     listMethod: [
@@ -24,7 +24,7 @@ export const profileUiData = {
         },
         {
             title: 'LOG OUT',
-            icon: faPersonRunning,
+            icon: faRightFromBracket,
             link: '/log-out',
         },
     ],

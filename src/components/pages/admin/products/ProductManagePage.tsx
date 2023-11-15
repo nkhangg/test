@@ -33,6 +33,7 @@ import { useAppDispatch } from '@/hooks/reduxHooks';
 import { pushNoty } from '@/redux/slice/appSlice';
 import { IRepository } from '@/configs/interface';
 import { links } from '@/datas/links';
+import { formatIndex } from '@/utils/format';
 export interface IProductManagePageProps {}
 
 const dataHead = ['No', 'Id', 'Image', 'Name', 'Brand', 'Type', 'Total Repository'];
@@ -125,7 +126,7 @@ export default function ProductManagePage(props: IProductManagePageProps) {
                                                             fontWeight: '500',
                                                         }}
                                                     >
-                                                        {index + 1}
+                                                        {formatIndex(parseInt(page || '0'), index)}
                                                     </Typography>
                                                 </TableCell>
                                                 <TableCell align="left">

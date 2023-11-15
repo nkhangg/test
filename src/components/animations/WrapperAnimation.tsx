@@ -43,7 +43,7 @@ const WrapperAnimation = forwardRef<Ref, IWrapperAnimationProps>(
                 <motion.div
                     ref={ref}
                     onClick={onClick}
-                    className={className}
+                    className={className + ' select-none'}
                     whileTap={tag || tags[styleTag]}
                     animate={styleAnimation?.animate}
                     exit={styleAnimation?.exits}
