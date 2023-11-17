@@ -1,4 +1,15 @@
-import { ApiBestSellerType, ApiFilterPage, ApiGetUsers, ApiHistory, ApiLogin, ApiPayment, ApiTakeActionType, ApiTypesAndBrands } from '@/configs/types';
+import {
+    ApiBestSellerType,
+    ApiDetailHistory,
+    ApiFilterPage,
+    ApiGetUsers,
+    ApiHistory,
+    ApiLogin,
+    ApiPayment,
+    ApiTakeActionType,
+    ApiTypesAndBrands,
+    StateType,
+} from '@/configs/types';
 
 import axios from '../configs/axios';
 import { setTokenToCookie } from '@/utils/cookie';
@@ -40,13 +51,25 @@ export const bestSellers: ApiBestSellerType = async (page: number | undefined) =
     return res?.data;
 };
 
-export const otherHistory: ApiHistory = async (page: number | undefined) => {
+export const otherHistory: ApiHistory = async (page: number | undefined, status: StateType | string) => {
     const res = await axios({
         method: 'GET',
         url: 'user/order/history',
         params: {
             page: page || 0,
+            status,
         },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const detailOtherHistory: ApiDetailHistory = async (id: string | number) => {
+    const res = await axios({
+        method: 'GET',
+        url: 'user/order/history/' + id,
     });
 
     if (!res) return null;

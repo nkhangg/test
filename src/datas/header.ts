@@ -1,4 +1,4 @@
-import { faHeart, faHome, faRightFromBracket, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faBox, faBoxesStacked, faCarSide, faCircleCheck, faCircleXmark, faHeart, faRightFromBracket, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
 
 export const navbar = [
     { title: 'Home', href: '/' },
@@ -30,5 +30,28 @@ export const listProfile = [
         title: 'Log out',
         href: '/log-out',
         icon: faRightFromBracket,
+    },
+];
+
+export const dataHeadHistory = [
+    {
+        title: 'All order',
+        icon: faBoxesStacked,
+    },
+    {
+        title: 'Placed',
+        icon: faBox,
+    },
+    {
+        title: 'Shipping',
+        icon: faCarSide,
+    },
+    {
+        title: 'Delivered',
+        icon: faCircleCheck,
+    },
+    {
+        title: 'Cancelled',
+        icon: faCircleXmark,
     },
 ];

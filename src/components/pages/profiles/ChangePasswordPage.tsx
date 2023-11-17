@@ -3,7 +3,7 @@ import { BoxTitle, Comfirm, DivTextfield, LoadingPrimary, MainButton } from '@/c
 import React, { ChangeEvent, FocusEvent, FormEvent, useEffect, useState } from 'react';
 import { BaseProfilePage } from '../common';
 import Validate from '@/utils/validate';
-import { FormChangePassword } from '@/configs/interface';
+import { IFormChangePassword } from '@/configs/interface';
 import { changePassword } from '@/apis/user';
 import { toast } from 'react-toastify';
 import { contants } from '@/utils/contants';
@@ -17,8 +17,8 @@ const initData = {
 export interface IChangePasswordPageProps {}
 
 export default function ChangePasswordPage(props: IChangePasswordPageProps) {
-    const [form, setForm] = useState<FormChangePassword>(initData);
-    const [errors, setErrors] = useState<FormChangePassword>({ ...initData });
+    const [form, setForm] = useState<IFormChangePassword>(initData);
+    const [errors, setErrors] = useState<IFormChangePassword>({ ...initData });
     const [openComfirm, setOpenComfirm] = useState({ open: false, comfirm: 'cancel' });
     const [isLoading, setIsLoading] = useState(false);
 
@@ -46,7 +46,7 @@ export default function ChangePasswordPage(props: IChangePasswordPageProps) {
 
                 setErrors({
                     ...errors,
-                    ...(response.errors as unknown as FormChangePassword),
+                    ...(response.errors as unknown as IFormChangePassword),
                 });
 
                 return;
@@ -68,12 +68,12 @@ export default function ChangePasswordPage(props: IChangePasswordPageProps) {
     const validate = () => {
         const flagList: boolean[] = [];
 
-        const validateErrors: FormChangePassword = { ...initData };
+        const validateErrors: IFormChangePassword = { ...initData };
 
         const keys: string[] = Object.keys(validateErrors);
 
         keys.forEach((key) => {
-            const dynamic = key as keyof FormChangePassword;
+            const dynamic = key as keyof IFormChangePassword;
 
             if (dynamic === 'confirmPassword') {
                 const { message, error } = Validate.confirmPassword(form[dynamic], form.newPassword);
@@ -102,7 +102,7 @@ export default function ChangePasswordPage(props: IChangePasswordPageProps) {
     };
 
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
-        const dynamicKey = e.target.name as keyof FormChangePassword;
+        const dynamicKey = e.target.name as keyof IFormChangePassword;
 
         if (dynamicKey === 'confirmPassword') {
             const { message } = Validate.confirmPassword(e.target.value, form.newPassword);

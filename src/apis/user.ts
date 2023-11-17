@@ -16,7 +16,7 @@ import {
 } from '@/configs/types';
 import axios from '../configs/axios';
 import { setTokenToCookie } from '@/utils/cookie';
-import { FormChangePassword, IInfoAddress, IProfile } from '@/configs/interface';
+import { IFormChangePassword, IInfoAddress, IProfile } from '@/configs/interface';
 import { dataURLtoFile } from '@/utils/format';
 import moment from 'moment';
 
@@ -90,7 +90,7 @@ export const resetPassword: ApiResetPassword = async (email: string) => {
     return res?.data;
 };
 
-export const changePassword: ApiChangePassword = async (data: FormChangePassword) => {
+export const changePassword: ApiChangePassword = async (data: IFormChangePassword) => {
     const res = await axios({
         method: 'POST',
         url: 'user/profile/change-password',

@@ -1,14 +1,17 @@
 'use client';
 /* eslint-disable @next/next/no-img-element */
-import { MainButton, RatingDialog, WrapperAnimation } from '@/components';
+import { RatingDialog } from '@/components';
+import { IProductDetailOrders } from '@/configs/interface';
 import { toCurrency, toGam } from '@/utils/format';
 import { Grid } from '@mui/material';
-import { motion } from 'framer-motion';
+
 import React, { useState } from 'react';
 
-export interface IDetailOrderhistoryItemProps {}
+export interface IDetailOrderhistoryItemProps {
+    data: IProductDetailOrders;
+}
 
-export default function DetailOrderhistoryItem(props: IDetailOrderhistoryItemProps) {
+export default function DetailOrderhistoryItem({ data }: IDetailOrderhistoryItemProps) {
     const [togleDialog, setTogleDialog] = useState(false);
 
     const handleTogleDialog = () => {
@@ -29,23 +32,19 @@ export default function DetailOrderhistoryItem(props: IDetailOrderhistoryItemPro
                 <Grid item lg={6}>
                     <Grid container spacing={1} key={5}>
                         <Grid item lg={2}>
-                            <img
-                                className="w-full h-full object-contain"
-                                src="https://bizweb.dktcdn.net/100/362/345/products/xsmalladult-a81506df-ac29-4e87-8bd8-153192be5792.jpg?v=1571057515367"
-                                alt="https://bizweb.dktcdn.net/100/362/345/products/xsmalladult-a81506df-ac29-4e87-8bd8-153192be5792.jpg?v=1571057515367"
-                            />
+                            <img className="w-full h-full object-contain" src={data.image} alt={data.image} />
                         </Grid>
                         <Grid item lg={10}>
                             <div className="flex flex-col justify-between h-full">
-                                <h3 className="font-medium mb-2">Hạt Mềm Cho Chó Trưởng Thành Zenith Adult</h3>
+                                <h3 className="font-medium mb-2">{data.name}</h3>
                                 <div className="flex items-center text-sm ">
                                     <span className="">{'Zenit'}</span>
                                     <span className="h-5 bg-[#666666] w-[1px] mx-3"></span>
-                                    <span>{toGam(500)}</span>
+                                    <span>{toGam(data.size as number)}</span>
                                 </div>
 
-                                <span onClick={handleTogleDialog} className="text-fill-heart hover:underline cursor-pointer">
-                                    Rate
+                                <span onClick={!data.isRate ? handleTogleDialog : undefined} className="text-fill-heart hover:underline cursor-pointer">
+                                    {!data.isRate && 'Rate'}
                                 </span>
                             </div>
                         </Grid>
@@ -53,17 +52,17 @@ export default function DetailOrderhistoryItem(props: IDetailOrderhistoryItemPro
                 </Grid>
                 <Grid item lg={2}>
                     <div className="flex items-center justify-center h-full">
-                        <span className="text-center text-[#303B4E]">{toCurrency(52000)}</span>
+                        <span className="text-center text-[#303B4E]">{toCurrency(data.price)}</span>
                     </div>
                 </Grid>
                 <Grid item lg={2}>
                     <div className="flex items-center justify-center h-full">
-                        <span className="text-center text-[#303B4E]">1</span>
+                        <span className="text-center text-[#303B4E]">{data.quantity}</span>
                     </div>
                 </Grid>
                 <Grid item lg={2}>
                     <div className="flex items-center justify-center h-full">
-                        <span className="text-[#303B4E]">{toCurrency(52000)}</span>
+                        <span className="text-[#303B4E]">{toCurrency(data.price * data.quantity)}</span>
                     </div>
                 </Grid>
             </Grid>

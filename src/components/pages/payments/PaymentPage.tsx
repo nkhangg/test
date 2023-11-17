@@ -1,5 +1,5 @@
 'use client';
-import React, { ChangeEvent, FocusEvent, FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FocusEvent, FormEvent, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ContainerContent } from '@/components/common';
 import { Box, Breadcrumbs, CircularProgress, FormControl, FormControlLabel, Grid, Radio, RadioGroup, Stack } from '@mui/material';
@@ -20,13 +20,16 @@ import LineProPress from './LinePropress';
 import { useGetDefaultAddress } from '@/hooks';
 import { links } from '@/datas/links';
 import { testOrders } from '@/apis/user';
+import { getShippingFee } from '@/apis/outside';
+import { toast } from 'react-toastify';
+import { contants } from '@/utils/contants';
 const OrderSummary = dynamic(() => import('./OrderSummary'), {
     ssr: false,
 });
 
 const dataCard = [
     { title: 'Express (in Can Tho)', business: '4 hours', price: 20000 },
-    { title: 'GHTK', business: '1 - 3 business days', price: 45000 },
+    { title: 'GHTK', business: '2 - 6 business days', price: 45000 },
 ];
 
 const dataPayments = ['Cash', 'Pre-Payment'];
@@ -57,6 +60,7 @@ export default function PaymentPage(props: IPaymentPageProps) {
     const [checked, setChecked] = useState(0);
     const [isClient, setIsClient] = useState(false);
     const [addresses, setAddresses] = useState<IInfoAddress | null>(null);
+    const [shippingItem, setShippingItem] = useState(dataCard[1]);
 
     const [loading, setLoading] = useState(false);
     const [form, setForm] = useState<PaymentFormData>({
@@ -86,19 +90,59 @@ export default function PaymentPage(props: IPaymentPageProps) {
         } catch (error) {}
     };
 
+    const totalAndWeight = useMemo(() => {
+        if (payment.length <= 0) return { value: 0, weight: 0 };
+
+        const value = payment.reduce((result, item) => {
+            return (result += item.price * item.quantity);
+        }, 0);
+
+        const weight = payment.reduce((result, item) => {
+            return (result += (item.size as number) * item.quantity);
+        }, 0);
+        return { value, weight };
+    }, [payment]);
+
     useEffect(() => {
         setIsClient(true);
     }, []);
 
     useEffect(() => {
+        if (!addresses) {
+            // set line
+            setLine(2);
+            return;
+        }
+
+        // set line
+        setLine(4);
+    }, [addresses]);
+
+    useEffect(() => {
         if (!addresses) return;
 
-        if (addresses) {
-            setLine(4);
-        } else {
-            setLine(2);
-        }
-    }, [addresses]);
+        (async () => {
+            const { value, weight } = totalAndWeight;
+            if (value === 0 || weight == 0) return;
+
+            try {
+                const response = await getShippingFee({
+                    info: addresses,
+                    value,
+                    weight,
+                });
+
+                if (!response || !response.success) {
+                    toast.warn("Can't get shippng info");
+                    return;
+                }
+
+                console.log('response.fee', response.fee);
+            } catch (error) {
+                toast.error(contants.messages.errors.server);
+            }
+        })();
+    }, [addresses, totalAndWeight]);
 
     return (
         <ContainerContent className="pt-12 select-none">
@@ -132,9 +176,8 @@ export default function PaymentPage(props: IPaymentPageProps) {
 
                             <PaymentItem title="Delivery method">
                                 <div className="flex flex-col md:flex-row items-center justify-between gap-5 mt-6">
-                                    {dataCard.map((item, index) => {
-                                        return <PaymentCard key={item.title} onClick={() => handleDelivery(item, index)} data={item} checked={checked === index} />;
-                                    })}
+                                    <PaymentCard onClick={() => handleDelivery(dataCard[0], 0)} data={dataCard[0]} checked={checked === 0} />
+                                    <PaymentCard onClick={() => handleDelivery(shippingItem, 1)} data={shippingItem} checked={checked === 1} />
                                 </div>
                             </PaymentItem>
                             <PaymentItem title="Payment">

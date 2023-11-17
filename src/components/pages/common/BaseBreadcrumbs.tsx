@@ -15,9 +15,24 @@ export interface IBaseBreadcrumbsProps {
     title: string;
     breadcrumb: DataBreadcrumbs[];
     children: ReactNode;
+    stytle?: {
+        mbUnderline: string | undefined;
+        border: boolean;
+    };
+    footer?: ReactNode;
 }
 
-function BaseBreadcrumbs({ isLoading = false, breadcrumb, children, title }: IBaseBreadcrumbsProps) {
+function BaseBreadcrumbs({
+    isLoading = false,
+    breadcrumb,
+    children,
+    title,
+    stytle = {
+        mbUnderline: undefined,
+        border: true,
+    },
+    footer,
+}: IBaseBreadcrumbsProps) {
     const [loading, setLoading] = useState(isLoading);
 
     useEffect(() => {
@@ -41,9 +56,20 @@ function BaseBreadcrumbs({ isLoading = false, breadcrumb, children, title }: IBa
                     </Breadcrumbs>
                 </div>
             </ContainerContent>
-            <BoxTitle mt="mt-[46px]" title={title} fontWeigth="font-semibold" underlineTitle locationTitle="left" fontSizeTitle="text-[32px]">
+            <BoxTitle
+                border={stytle.border}
+                mbUnderline={stytle.mbUnderline}
+                mt="mt-[46px]"
+                title={title}
+                fontWeigth="font-semibold"
+                underlineTitle
+                locationTitle="left"
+                fontSizeTitle="text-[32px]"
+            >
                 {children}
                 {loading && <LoadingSecondary />}
+
+                {footer}
             </BoxTitle>
         </>
     );

@@ -1,5 +1,12 @@
 import type { Config } from 'tailwindcss';
 
+export const statusColor = {
+    placed: '#D3D7FF',
+    shipping: '#FADCD9',
+    delivered: '#BBEAD9',
+    cancelled: '#DFDFDF',
+};
+
 const config: Config = {
     content: [
         './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -40,6 +47,10 @@ const config: Config = {
                 'violet-secondary': '#6366F1',
                 'blue-primary': '#0EA5E9',
                 'grey-secondary': '#666',
+                placed: '#D3D7FF',
+                shipping: '#FADCD9',
+                delivered: '#BBEAD9',
+                cancelled: '#DFDFDF',
             },
             borderColor: {
                 'green-main': '#A3E635',
@@ -49,12 +60,20 @@ const config: Config = {
                 'violet-primary': '#505DE8',
                 'violet-secondary': '#6366F1',
                 'red-primary': '#EF4444',
+                placed: '#D3D7FF',
+                shipping: '#FADCD9',
+                delivered: '#BBEAD9',
+                cancelled: '#DFDFDF',
             },
             backgroundColor: {
                 'green-65a30d': '#65A30D',
                 'orange-primary': '#FF7A00',
                 'violet-primary': '#505DE8',
                 'violet-secondary': '#6366F1',
+                placed: '#D3D7FF',
+                shipping: '#FADCD9',
+                delivered: '#BBEAD9',
+                cancelled: '#DFDFDF',
             },
             fontSize: {
                 '1xl': '16px',

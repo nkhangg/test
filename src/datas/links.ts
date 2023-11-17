@@ -15,4 +15,7 @@ export const links = {
         cart: '/cart',
         profile: '/profile',
     },
+    history: {
+        orderHistory: '/other-history',
+    },
 };

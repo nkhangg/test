@@ -1,5 +1,5 @@
 import exp from 'constants';
-import { UserFormType } from './types';
+import { StateType, UserFormType } from './types';
 
 export interface Action<T, P> {
     readonly type: T;
@@ -339,17 +339,29 @@ export interface IReview {
 }
 export interface IDetailOrder {
     id: number;
-    dataPlaced: string;
-    state: string;
+    placedDate: string;
+    state: String;
     name: string;
     phone: string;
     address: string;
     paymentMethod: string;
     deliveryMethod: string;
-    products: ICart[];
-    subtotal: number;
+    products: IProductDetailOrders[];
+    subTotal: number;
     shippingFee: number;
     total: number;
+}
+
+export interface IProductDetailOrders {
+    id: string | number;
+    image: string;
+    name: string;
+    brand: string;
+    size: string | number;
+    price: number;
+    quantity: number;
+    repo: number;
+    isRate?: boolean;
 }
 
 export interface ISearchItem {
@@ -400,8 +412,16 @@ export interface IInfoAddress {
     isDefault?: boolean;
 }
 
-export interface FormChangePassword {
+export interface IFormChangePassword {
     password: string;
     newPassword: string;
     confirmPassword: string;
+}
+
+export interface IRowStatusOrders {
+    id: number;
+    user: string;
+    price: number;
+    placedData: string;
+    status: StateType;
 }

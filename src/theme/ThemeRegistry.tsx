@@ -65,6 +65,7 @@ const themeOptions: ThemeOptions = {
             primary: '#2A3547',
             secondary: '#5A6A85',
         },
+
         action: {
             disabledBackground: 'rgba(73,82,88,0.12)',
             hoverOpacity: 0.02,
