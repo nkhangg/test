@@ -1,4 +1,7 @@
 const baseApiProvince = 'https://provinces.open-api.vn/api/';
+const baseApiGHTK = 'https://services.giaohangtietkiem.vn/';
+
+const TOKEN_GHTK = 'dea4f0a9332fcc5d6c34f07a0f157ec6fe51e82e';
 
 export const contants = {
     avartarDefault: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
@@ -27,6 +30,11 @@ export const contants = {
         },
         wards: (district: number | string) => {
             return baseApiProvince + `d/${district}?depth=2`;
+        },
+        ghtk: {
+            token: TOKEN_GHTK,
+
+            shippingFee: baseApiGHTK + 'services/shipment/fee',
         },
     },
 

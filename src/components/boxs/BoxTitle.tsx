@@ -16,6 +16,7 @@ export interface IBoxTitleProps {
     fontWeigth?: string;
     mbUnderline?: string;
     mt?: string;
+    border?: boolean;
     actions?: ReactNode;
 }
 
@@ -32,6 +33,7 @@ export default function BoxTitle({
     mbUnderline = 'mb-[34px]',
     mt = 'mt-24',
     actions,
+    border = true,
 }: IBoxTitleProps) {
     return (
         <ContainerContent
@@ -43,7 +45,8 @@ export default function BoxTitle({
         >
             <div
                 className={classNames('flex items-end justify-between text-black-main', {
-                    ['pb-[14px] border-b border-gray-primary']: underlineTitle,
+                    ['pb-[14px] ']: underlineTitle,
+                    ['border-b border-gray-primary']: border,
                     ['pb-[48px]']: !underlineTitle,
                     [mbUnderline]: true,
                     [mt]: true,

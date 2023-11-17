@@ -57,7 +57,7 @@ export const dataOrtherHistory = {
 export const orderDetail: IDetailOrder = {
     id: 123,
     address: '132 3/2 Street, Hung Loi Ward, Ninh Kieu District, Can Tho City',
-    dataPlaced: new Date().toDateString(),
+    placedDate: new Date().toDateString(),
     deliveryMethod: 'Express in 4 hours',
     name: 'Ha Lam',
     paymentMethod: 'Credit Card',
@@ -71,6 +71,7 @@ export const orderDetail: IDetailOrder = {
             name: 'Hạt Royal Canin X-Small Adult Cho Chó Trưởng Thành Giống Siêu Nhỏ',
             price: 27000,
             quantity: 1,
+            isRate: true,
             repo: 10,
         },
         {
@@ -81,11 +82,12 @@ export const orderDetail: IDetailOrder = {
             name: 'Hạt Mềm Cho Chó Trưởng Thành Zenith Adult',
             price: 27000,
             quantity: 1,
+            isRate: false,
             repo: 10,
         },
     ],
     shippingFee: 20000,
-    subtotal: 59000,
+    subTotal: 59000,
     total: 79000,
     state: 'Delivered',
 };
@@ -100,6 +102,7 @@ interface IOrder {
     address: number; // id address
     delivery: number; // id phuong thuc van chuyen
     method: number; // id phuong thuc thanh toan
+    ship: number; // phí ship
     data: IOrderItem[];
 }
 
@@ -107,6 +110,7 @@ export const orders: IOrder = {
     address: 20,
     delivery: 2,
     method: 2,
+    ship: 40000,
     data: [
         {
             id: 'SP001',

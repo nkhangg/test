@@ -24,7 +24,8 @@ import {
     IImage,
     IUserManage,
     IInfoAddress,
-    FormChangePassword,
+    IFormChangePassword,
+    IDetailOrder,
 } from './interface';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
@@ -50,13 +51,15 @@ export type ApiPayment = (data: IDataFormPayment) => Promise<IBaseResponse<IOrde
 
 export type ApiBestSellerType = (page: number | undefined) => Promise<IBaseResponse<IApiBestSeller>>;
 
-export type ApiHistory = (page: number | undefined) => Promise<IBaseResponse<IOtherHistories>>;
+export type ApiHistory = (page: number | undefined, status: StateType | string) => Promise<IBaseResponse<IOtherHistories>>;
+
+export type ApiDetailHistory = (id: string | number) => Promise<IBaseResponse<IDetailOrder>>;
 
 export type ApiTypesAndBrands = () => Promise<IBaseResponse<TypesAndBrands>>;
 
 export type ApiResetPassword = (email: string) => Promise<IBaseResponse<any>>;
 
-export type ApiChangePassword = (data: FormChangePassword) => Promise<IBaseResponse<any>>;
+export type ApiChangePassword = (data: IFormChangePassword) => Promise<IBaseResponse<any>>;
 
 export type ApiGetCurUser = () => Promise<IBaseResponse<IProfile>>;
 
@@ -173,5 +176,14 @@ export type RepoTypeErrors = {
 export type ModeType = 'create' | 'update';
 
 export type RoleType = 'ROLE_USER' | 'ROLE_STAFF' | 'ROLE_ADMIN' | 'ROLE_SUPER_ADMIN';
+
+export type StateType = 'placed' | 'shipping' | 'delivered' | 'cancelled';
+
+export type StatusColor = {
+    placed: string;
+    shipping: string;
+    delivered: string;
+    cancelled: string;
+};
 
 export type ApiProvinces<T> = (id?: string | number) => Promise<T>;

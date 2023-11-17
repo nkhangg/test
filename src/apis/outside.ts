@@ -1,7 +1,10 @@
 import { IDistrict, IProvinces } from '@/configs/interface';
+import { ApiGetShippingFee, DataFormShippingFee } from '@/configs/type-ousite';
 import { ApiProvinces } from '@/configs/types';
 import { contants } from '@/utils/contants';
 import axios from 'axios';
+
+// address
 
 export const getProvinces: ApiProvinces<IProvinces[]> = async (data?: string | number) => {
     const res = await axios({
@@ -38,6 +41,32 @@ export const getWards: ApiProvinces<IDistrict> = async (data?: string | number) 
         headers: {
             'Content-Type': 'application/json',
         },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+axios.defaults.headers.common.token = '92c871bb-84d1-11ee-b394-8ac29577e80e';
+
+// shiping
+export const getShippingFee: ApiGetShippingFee = async (data: DataFormShippingFee) => {
+    const res = await axios({
+        method: 'GET',
+        url: 'https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee',
+
+        // params: {
+        //     pick_province: data.info.address.province,
+        //     pick_district: data.info.address.district,
+        //     province: data.info.address.province,
+        //     district: data.info.address.district,
+        //     address: data.info.address.address,
+        //     weight: data.weight,
+        //     value: data.value,
+        //     transport: 'fly',
+        //     deliver_option: 'xteam',
+        // },
     });
 
     if (!res) return null;

@@ -9,6 +9,7 @@ export { default as MenuUser } from './common-headers/MenuUser';
 export { default as MenuBars } from './common-headers/MenuBars';
 export { default as AboutCom } from './common-components/AboutCom';
 export { default as ContainerContent } from './common-components/ContainerContent';
+export { default as HeadHistory } from './common-headers/history/HeadHistory';
 
 //admin
 
