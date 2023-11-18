@@ -24,7 +24,10 @@ import {
     IImage,
     IUserManage,
     IInfoAddress,
-    FormChangePassword,
+    IFormChangePassword,
+    IPayment,
+    IOrder,
+    IDetailOrder,
 } from './interface';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
@@ -46,7 +49,11 @@ export type ApiSalesOverviewType = (year: string) => Promise<IBaseResponse<ISale
 
 export type ApiRevenueDateType = (dates: { start?: string; end?: string }) => Promise<IBaseResponse<IProductRevenue>>;
 
-export type ApiPayment = (data: IDataFormPayment) => Promise<IBaseResponse<IOrderItem[]>>;
+export type ApiPayment = (data: IPayment) => Promise<IBaseResponse<any>>;
+
+export type ApiCreateOrder = (data: IOrder) => Promise<IBaseResponse<string>>;
+
+export type ApiDetailHistory = (id: string | number) => Promise<IBaseResponse<IDetailOrder>>;
 
 export type ApiBestSellerType = (page: number | undefined) => Promise<IBaseResponse<IApiBestSeller>>;
 
@@ -56,7 +63,7 @@ export type ApiTypesAndBrands = () => Promise<IBaseResponse<TypesAndBrands>>;
 
 export type ApiResetPassword = (email: string) => Promise<IBaseResponse<any>>;
 
-export type ApiChangePassword = (data: FormChangePassword) => Promise<IBaseResponse<any>>;
+export type ApiChangePassword = (data: IFormChangePassword) => Promise<IBaseResponse<any>>;
 
 export type ApiGetCurUser = () => Promise<IBaseResponse<IProfile>>;
 
@@ -173,5 +180,16 @@ export type RepoTypeErrors = {
 export type ModeType = 'create' | 'update';
 
 export type RoleType = 'ROLE_USER' | 'ROLE_STAFF' | 'ROLE_ADMIN' | 'ROLE_SUPER_ADMIN';
+
+export type StateType = 'placed' | 'shipping' | 'delivered' | 'cancelled';
+
+export type PaymentMethod = 'cash' | 'pre-payment';
+
+export type StatusColor = {
+    placed: string;
+    shipping: string;
+    delivered: string;
+    cancelled: string;
+};
 
 export type ApiProvinces<T> = (id?: string | number) => Promise<T>;

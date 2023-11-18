@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getProvinces } from '@/apis/outside';
+import { getProvinces } from '@/apis/ousite/addresses';
 
 export default function useProvinces() {
     //use Query

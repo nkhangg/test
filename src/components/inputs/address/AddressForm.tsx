@@ -7,7 +7,7 @@ import { FormControlLabel, Radio, Stack } from '@mui/material';
 import AddressTippy from './AddressTippy';
 import { AddressInfoPayment, Comfirm, SocialButton } from '@/components';
 import { useQuery } from '@tanstack/react-query';
-import { getDistrichts, getProvinces, getWards } from '@/apis/outside';
+import { getDistrichts, getProvinces, getWards } from '@/apis/ousite/addresses';
 import { IAddress, IDistrict, IInfoAddress, IWard } from '@/configs/interface';
 import { contants } from '@/utils/contants';
 import { useGetDefaultAddress, useProvinces } from '@/hooks';

@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { faArrowLeft, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { createContext, useEffect, useState } from 'react';
-import { getProvinces } from '@/apis/outside';
+import { getProvinces } from '@/apis/ousite/addresses';
 import { IListAddressProps } from './ListAddress';
 import { IAddressFormProps } from './AddressForm';
 import { IInfoAddress } from '@/configs/interface';

@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { WrapperAnimation } from '@/components';
 import { IOtherHistory } from '@/configs/interface';
+import { StateType } from '@/configs/types';
 import { links } from '@/datas/links';
-import { stringToUrl, toCurrency, toGam } from '@/utils/format';
-import { faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { getIconWithStatus, stringToUrl, toCurrency, toGam } from '@/utils/format';
+import { faBox, faCarSide, faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import Link from 'next/link';
@@ -29,13 +30,15 @@ const _Li = ({ title, value, styleContent }: { title: string; value: string | nu
 };
 
 export default function OtherHistoryItem({ data }: IOtherHistoryItemProps) {
+    const status = data.state.toLowerCase() as StateType;
+
     return (
         <div className="w-full rounded-lg max-w-full">
             <div className="py-3 px-4 md:px-10 bg-[#F2F2F2] text-sm md:text-1xl flex items-center justify-between rounded-t-lg">
                 <ul className="flex items-center gap-4 md:gap-24">
                     <_Li title="Order ID" value={'#' + data.id} />
                     <_Li title="Date Place" value={data.datePlace} />
-                    <_Li title="Quantity" value={'x' + data.products.length} styleContent="text-center" />
+                    <_Li title="Order Item" value={'x' + data.products.length} styleContent="text-center" />
                     <_Li title="Total Amount" value={toCurrency(data.total)} />
                 </ul>
                 <Link href={'/other-history/' + data.id} className="text-violet-primary hover:underline">
@@ -76,13 +79,13 @@ export default function OtherHistoryItem({ data }: IOtherHistoryItemProps) {
                 </div>
 
                 <div className=" py-4 flex items-center text-sm gap-[10px] rounded-lg">
-                    {data.state &&
-                        (data.state === 'buy' ||
-                            ((data.state.toLocaleLowerCase() === 'delivered' || data.state.toLocaleLowerCase() === 'placed') && (
-                                <FontAwesomeIcon color="#65A30D" icon={faCheckCircle} />
-                            )))}
-                    {(!data.state || data.state === 'cancel') && <FontAwesomeIcon color="#EF4444" icon={faCircleXmark} />}
-                    <p>{data.stateMessage || 'Delivery on October 2, 2023'}</p>
+                    {(() => {
+                        const { icon, color } = getIconWithStatus(status);
+
+                        return <FontAwesomeIcon color={color} icon={icon} />;
+                    })()}
+
+                    <p>{` ${data.stateMessage} ${data.datePlace}`}</p>
                 </div>
             </div>
         </div>

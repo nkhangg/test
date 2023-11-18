@@ -1,44 +1,42 @@
 'use client';
-import React, { ChangeEvent, FocusEvent, FormEvent, useEffect, useState } from 'react';
+
+import React, { ChangeEvent, FormEvent, MouseEvent, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ContainerContent } from '@/components/common';
-import { Box, Breadcrumbs, CircularProgress, FormControl, FormControlLabel, Grid, Radio, RadioGroup, Stack } from '@mui/material';
+import { Breadcrumbs, FormControlLabel, Grid, Radio, RadioGroup, Stack, capitalize } from '@mui/material';
 import { PaymentCard, PaymentItem } from '..';
-import { AddressDialog, AddressInfoPayment, LoadingPrimary, LoadingSecondary, SocialButton, TextField } from '@/components';
+import { AddressDialog, AddressInfoPayment, Comfirm, LoadingPrimary, LoadingSecondary, SocialButton, TextField } from '@/components';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { RootState } from '@/configs/types';
-import Validate from '@/utils/validate';
+import { PaymentMethod, RootState } from '@/configs/types';
 import dynamic from 'next/dynamic';
 import { clearAllPayment, getPayment } from '@/redux/slice/cartsSlide';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { paymentsApi } from '@/apis/app';
-import { IInfoAddress, OrderProduct } from '@/configs/interface';
+import { IInfoAddress, IOrder, IOrderItem, IPayment } from '@/configs/interface';
 import { pushNoty } from '@/redux/slice/appSlice';
-import { useRouter } from 'next/navigation';
-import { BaseBreadcrumbs } from '../common';
+import { useRouter, useSearchParams } from 'next/navigation';
 import LineProPress from './LinePropress';
-import { useGetDefaultAddress } from '@/hooks';
 import { links } from '@/datas/links';
-import { testOrders } from '@/apis/user';
+
+import { toast } from 'react-toastify';
+import { createOrder, createPayment } from '@/apis/user';
+import { contants } from '@/utils/contants';
+import { addressToString, toCurrency, toGam } from '@/utils/format';
 const OrderSummary = dynamic(() => import('./OrderSummary'), {
     ssr: false,
 });
 
 const dataCard = [
-    { title: 'Express (in Can Tho)', business: '4 hours', price: 20000 },
-    { title: 'GHTK', business: '1 - 3 business days', price: 45000 },
+    { id: 1, title: 'Express (in Can Tho)', business: '4 hours', price: 20000 },
+    { id: 2, title: 'GHTK', business: '2 - 6 business days', price: 45000 },
 ];
 
 const dataPayments = ['Cash', 'Pre-Payment'];
 
-type PaymentFormData = {
-    info: IInfoAddress | null;
-};
-
-const initErros = {
-    fullname: '',
-    address: '',
-    phone: '',
+const initData: IOrder = {
+    methodId: 1,
+    addressId: 0,
+    deliveryId: dataCard[0].id,
+    ship: dataCard[0].price,
+    orderItems: [],
 };
 
 export interface IPaymentPageProps {}
@@ -46,6 +44,9 @@ export interface IPaymentPageProps {}
 export default function PaymentPage(props: IPaymentPageProps) {
     // router
     const router = useRouter();
+
+    // params
+    const searchParams = useSearchParams();
 
     // redux
     const dispatch = useAppDispatch();
@@ -59,46 +60,193 @@ export default function PaymentPage(props: IPaymentPageProps) {
     const [addresses, setAddresses] = useState<IInfoAddress | null>(null);
 
     const [loading, setLoading] = useState(false);
-    const [form, setForm] = useState<PaymentFormData>({
-        info: null,
-    });
+    const [form, setForm] = useState<IOrder>(initData);
 
-    const handleDelivery = (item: { title: string; business: string; price: number }, index: number) => {
+    const [openComfirm, setOpenComfirm] = useState({ open: false, comfirm: 'cancel' });
+
+    const handleDelivery = (item: { id: number; title: string; business: string; price: number }, index: number) => {
         setChecked(index);
         setForm({
             ...form,
-            info: null,
+            ship: item.price,
+            deliveryId: item.id,
         });
     };
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const handleClearWhenSuccess = () => {
+        dispatch(clearAllPayment());
+        toast.success(contants.messages.success.payment);
+        router.push(links.products);
+    };
 
+    const handleOpenConfirm = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setOpenComfirm({ ...openComfirm, open: true });
+    };
+
+    const handleComfirm = async (v: { open: boolean; comfirm: 'cancel' | 'ok' }) => {
+        if (v.open || v.comfirm === 'cancel') return;
+
+        handlePaymentBeforeComfirm();
+    };
+
+    const handlePaymentBeforeComfirm = async () => {
         try {
-            const response = await testOrders();
+            setLoading(true);
+            const response = await createOrder(form);
+            setLoading(false);
 
             if (!response) {
-                console.log(response);
+                toast.warn(contants.messages.errors.handle);
                 return;
             }
 
-            window.location.assign(response.token);
-        } catch (error) {}
+            if (response.status !== 200) {
+                toast.error(capitalize(response.message));
+                return;
+            }
+
+            // handle cash method
+            if (form.methodId == 1) {
+                handleClearWhenSuccess();
+
+                // handle pre-payment method
+            } else if (form.methodId == 2) {
+                window.location.assign(response.data);
+            }
+        } catch (error) {
+            setLoading(false);
+            toast.error(contants.messages.errors.server);
+        }
     };
+
+    const handleChangePaymentMethod = (e: ChangeEvent<HTMLInputElement>) => {
+        const method = e.target.value.toLowerCase() as PaymentMethod;
+
+        // set payment method
+        setForm({
+            ...form,
+            methodId: method === 'cash' ? 1 : 2,
+        });
+    };
+
+    const totalAndWeight = useMemo(() => {
+        if (payment.length <= 0) return { value: 0, weight: 0, quantity: 0 };
+
+        const value = payment.reduce((result, item) => {
+            return (result += item.price * item.quantity);
+        }, 0);
+
+        const weight = payment.reduce((result, item) => {
+            return (result += (item.size as number) * item.quantity);
+        }, 0);
+
+        const quantity = payment.reduce((result, item) => {
+            return (result += item.quantity);
+        }, 0);
+        return { value, weight, quantity };
+    }, [payment]);
+
+    const conditonShowBtn = useMemo(() => {
+        if (!payment) return true;
+
+        if (payment.length <= 0 || addresses == null) {
+            return true;
+        }
+
+        return false;
+    }, [addresses, payment]);
 
     useEffect(() => {
         setIsClient(true);
     }, []);
 
     useEffect(() => {
-        if (!addresses) return;
-
-        if (addresses) {
-            setLine(4);
-        } else {
+        if (!addresses) {
+            // set line
             setLine(2);
+            return;
         }
+
+        // set address
+        setForm({
+            ...form,
+            addressId: addresses.id,
+        });
+
+        // set line
+        setLine(4);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [addresses]);
+
+    useEffect(() => {
+        if (!addresses) return;
+    }, [addresses, totalAndWeight]);
+
+    useEffect(() => {
+        if (!payment) return;
+        const orderItems = payment.map((item) => {
+            return {
+                productId: item.id,
+                quantity: item.quantity,
+                size: item.size,
+            } as IOrderItem;
+        });
+
+        setForm({
+            ...form,
+            orderItems,
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [payment]);
+
+    useEffect(() => {
+        const status = searchParams.get('vnp_TransactionStatus');
+
+        const validateArr = [
+            parseInt(searchParams.get('order_Id') || '0'),
+            parseInt(searchParams.get('vnp_Amount') || '0'),
+            parseInt(searchParams.get('vnp_TransactionNo') || '0'),
+        ];
+
+        const valid = validateArr.some((item) => item <= 0);
+
+        if (valid) return;
+
+        const form: IPayment = {
+            orderId: parseInt(searchParams.get('order_Id') || '0'),
+            amount: parseInt(searchParams.get('vnp_Amount') || '0'),
+            isPaid: status === '00' || false,
+            payAt: searchParams.get('vnp_PayDate') || '',
+            transactionNumber: parseInt(searchParams.get('vnp_TransactionNo') || '0'),
+            paymentMethod: {
+                id: 2,
+                method: searchParams.get('vnp_CardType') || 'ATM',
+            },
+        };
+
+        console.log('all good !!');
+        (async () => {
+            const response = await createPayment(form);
+
+            try {
+                if (!response) {
+                    toast.error(contants.messages.errors.handle);
+                    return;
+                }
+
+                if (response.status !== 200) {
+                    toast.error(response.message);
+                    return;
+                }
+
+                handleClearWhenSuccess();
+            } catch (error) {
+                toast.error(contants.messages.errors.server);
+            }
+        })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchParams]);
 
     return (
         <ContainerContent className="pt-12 select-none">
@@ -118,14 +266,13 @@ export default function PaymentPage(props: IPaymentPageProps) {
 
             <LineProPress progressNun={line} />
 
-            <Grid container spacing={'48px'} mt={'34px'} component={'form'} onSubmit={handleSubmit}>
+            <Grid container spacing={'48px'} mt={'34px'} component={'form'} onSubmit={handleOpenConfirm}>
                 <Grid item xs={12} md={12} lg={6}>
                     {isClient && (
                         <Stack spacing={'40px'}>
                             {/* default address */}
                             <AddressInfoPayment
                                 onData={(data) => {
-                                    if (!data) return;
                                     setAddresses(data);
                                 }}
                             />
@@ -140,12 +287,19 @@ export default function PaymentPage(props: IPaymentPageProps) {
                             <PaymentItem title="Payment">
                                 <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" defaultValue={dataPayments[0]} name="row-radio-buttons-group">
                                     {dataPayments.map((item) => {
-                                        return <FormControlLabel key={item} value={item} control={<Radio sx={{ color: '#505DE8', accentColor: '#505DE8' }} />} label={item} />;
+                                        return (
+                                            <FormControlLabel
+                                                key={item}
+                                                value={item}
+                                                control={<Radio onChange={handleChangePaymentMethod} sx={{ color: '#505DE8', accentColor: '#505DE8' }} />}
+                                                label={item}
+                                            />
+                                        );
                                     })}
                                 </RadioGroup>
                             </PaymentItem>
                             <div className="w-full ">
-                                <SocialButton disabled={payment.length <= 0} type="submit" maxWidth="max-w-full" background="#505DE8" title="Confirm order" />
+                                <SocialButton disabled={conditonShowBtn} type="submit" maxWidth="max-w-full" background="#505DE8" title="Confirm order" />
                             </div>
                         </Stack>
                     )}
@@ -163,6 +317,47 @@ export default function PaymentPage(props: IPaymentPageProps) {
 
                 {loading && <LoadingPrimary />}
             </Grid>
+
+            <Comfirm
+                title={'Confirmation notice'}
+                subtitle={
+                    <ul className="flex flex-col gap-2">
+                        <li>
+                            Fullname: <b>{addresses && addresses.name}</b>
+                        </li>
+                        <li>
+                            Phone: <b>{addresses && addresses.phone}</b>
+                        </li>
+                        <li>
+                            Address: <b>{addresses && addressToString(addresses?.address)}</b>
+                        </li>
+                        <li>
+                            Payment Method: <b>{form.methodId === 1 ? 'Cash' : 'Pre-Payment'}</b>
+                        </li>
+                        <li>
+                            Delivery Method: <b>{dataCard[form.deliveryId - 1].title}</b>
+                        </li>
+                        <li>
+                            Total weight: <b>{toGam(totalAndWeight.weight)}</b>
+                        </li>
+                        <li>
+                            Total order quantity: <b>{totalAndWeight.quantity}</b>
+                        </li>
+                        <li>
+                            Subtotal: <b>{toCurrency(totalAndWeight.value)}</b>
+                        </li>
+                        <li>
+                            Ship: <b>{toCurrency(form.ship)}</b>
+                        </li>
+                        <li>
+                            Total: <b>{toCurrency(form.ship + totalAndWeight.value)}</b>
+                        </li>
+                    </ul>
+                }
+                open={openComfirm.open}
+                setOpen={setOpenComfirm}
+                onComfirm={handleComfirm}
+            />
         </ContainerContent>
     );
 }

@@ -1,7 +1,7 @@
 'use client';
 import React, { ChangeEvent, FocusEvent, createContext, memo, useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getDistrichts, getProvinces, getWards } from '@/apis/outside';
+import { getDistrichts, getProvinces, getWards } from '@/apis/ousite/addresses';
 import AddressItem from './AddressItem';
 import { IAddress, IDistrict, IProvinces, IWard } from '@/configs/interface';
 import Validate from '@/utils/validate';

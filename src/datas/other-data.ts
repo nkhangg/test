@@ -1,4 +1,4 @@
-import { IDetailOrder, IInfoAddress, IOtherHistories, IOtherHistory } from '@/configs/interface';
+import { IDetailOrder, IInfoAddress, IOrderItem, IOtherHistories, IOtherHistory } from '@/configs/interface';
 
 export const dataOrtherHistory = {
     data: [
@@ -90,11 +90,29 @@ export const orderDetail: IDetailOrder = {
     state: 'Delivered',
 };
 
-interface IOrderItem {
-    id: string;
-    size: number;
-    quantity: number;
-}
+// export const orders: IOrder = {
+//     address: 20,
+//     delivery: 2,
+//     method: 2,
+//     ship: 40000,
+//     data: [
+//         {
+//             id: 'SP001',
+//             size: 200,
+//             quantity: 10,
+//         },
+//         {
+//             id: 'SP002',
+//             size: 400,
+//             quantity: 10,
+//         },
+//         {
+//             id: 'SP003',
+//             size: 500,
+//             quantity: 10,
+//         },
+//     ],
+// };
 
 interface IOrder {
     address: number; // id address
@@ -103,28 +121,28 @@ interface IOrder {
     data: IOrderItem[];
 }
 
-export const orders: IOrder = {
-    address: 20,
-    delivery: 2,
-    method: 2,
-    data: [
-        {
-            id: 'SP001',
-            size: 200,
-            quantity: 10,
-        },
-        {
-            id: 'SP002',
-            size: 400,
-            quantity: 10,
-        },
-        {
-            id: 'SP003',
-            size: 500,
-            quantity: 10,
-        },
-    ],
-};
+// export const orders: IOrder = {
+//     address: 20,
+//     delivery: 2,
+//     method: 2,
+//     data: [
+//         {
+//             id: 'SP001',
+//             size: 200,
+//             quantity: 10,
+//         },
+//         {
+//             id: 'SP002',
+//             size: 400,
+//             quantity: 10,
+//         },
+//         {
+//             id: 'SP003',
+//             size: 500,
+//             quantity: 10,
+//         },
+//     ],
+// };
 
 interface IPayment {
     orderId: number;
@@ -149,3 +167,14 @@ const payment: IPayment = {
         cardType: 'ATM',
     },
 };
+// const payment: IPayment = {
+//     orderId: 10,
+//     amount: 100000,
+//     isPaid: true,
+//     payAt: '20231115224608',
+//     transactionNumber: 14182407,
+//     paymentMethod: {
+//         id: 2,
+//         cardType: 'ATM',
+//     },
+// };
