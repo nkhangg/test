@@ -28,6 +28,8 @@ import {
     IDetailOrder,
     IPayment,
     IOrder,
+    IDataReview,
+    IRequestReview,
 } from './interface';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
@@ -122,6 +124,8 @@ export type ApiGetAddresses = () => Promise<IBaseResponse<IInfoAddress[]>>;
 export type ApiGetAddressesById = (id: number) => Promise<IBaseResponse<IInfoAddress>>;
 
 export type ApiHandleAddresses = (data: IInfoAddress) => Promise<IBaseResponse<IInfoAddress>>;
+
+export type ApiCreateReivew = (data: IRequestReview) => Promise<IBaseResponse<IRequestReview>>;
 
 export type RootState = ReturnType<typeof store.getState>;
 

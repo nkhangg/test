@@ -81,14 +81,6 @@ export default function OtherHistoryItem({ data }: IOtherHistoryItemProps) {
                 </div>
 
                 <div className=" py-4 flex items-center text-sm gap-[10px] rounded-lg">
-                    {/* {data.state &&
-                        (data.state === 'buy' ||
-                            ((data.state.toLocaleLowerCase() === 'delivered' || data.state.toLocaleLowerCase() === 'placed') && (
-                                <FontAwesomeIcon color="#65A30D" icon={faCheckCircle} />
-                            )))}
-                    {(!data.state || data.state === 'cancel') && <FontAwesomeIcon color="#EF4444" icon={faCircleXmark} />}
-                    <p>{data.stateMessage || 'Delivery on October 2, 2023'}</p> */}
-
                     {(() => {
                         const { icon, color } = getIconWithStatus(status);
 

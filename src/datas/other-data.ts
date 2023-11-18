@@ -142,14 +142,14 @@ interface IPayment {
     };
 }
 
-const payment: IPayment = {
-    orderId: 10,
-    amount: 100000,
-    isPaid: true,
-    payAt: '20231115224608',
-    transactionNumber: 14182407,
-    paymentMethod: {
-        id: 2,
-        cardType: 'ATM',
-    },
-};
+// const payment: IPayment = {
+//     orderId: 10,
+//     amount: 100000,
+//     isPaid: true,
+//     payAt: '20231115224608',
+//     transactionNumber: 14182407,
+//     paymentMethod: {
+//         id: 2,
+//         cardType: 'ATM',
+//     },
+// };

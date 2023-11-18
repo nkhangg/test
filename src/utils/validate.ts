@@ -1,4 +1,6 @@
 import { ValidateType } from '@/configs/types';
+import { IDataReview } from '@/configs/interface';
+import { contants } from './contants';
 
 const Validate = {
     isBlank(value: string): boolean {
@@ -215,6 +217,13 @@ const Validate = {
                 message: 'Password Confirm is not match with the password',
                 error: true,
             };
+
+        return { message: '', error: false };
+    },
+    review(value: IDataReview, option = { max: 100, min: 10 }): ValidateType {
+        if (this.isBlank(value.content) || value.star === 0) return { message: contants.messages.review.whenEmpty, error: true };
+
+        if (value.content.length < option.min || value.content.length > option.max) return { message: `Review min ${option.min} and max ${option.max}`, error: true };
 
         return { message: '', error: false };
     },

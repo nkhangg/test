@@ -1,6 +1,7 @@
 import {
     ApiChangePassword,
     ApiCreateOrder,
+    ApiCreateReivew,
     ApiGetAddresses,
     ApiGetAddressesById,
     ApiGetCurUser,
@@ -18,7 +19,7 @@ import {
 } from '@/configs/types';
 import axios from '../configs/axios';
 import { setTokenToCookie } from '@/utils/cookie';
-import { IFormChangePassword, IInfoAddress, IOrder, IPayment, IProfile } from '@/configs/interface';
+import { IFormChangePassword, IInfoAddress, IOrder, IPayment, IProfile, IRequestReview } from '@/configs/interface';
 import { dataURLtoFile } from '@/utils/format';
 import moment from 'moment';
 
@@ -223,6 +224,23 @@ export const updateAddress: ApiHandleAddresses = async (data: IInfoAddress) => {
         data: {
             ...data,
             setDefault: data.isDefault,
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const createReview: ApiCreateReivew = async (data: IRequestReview) => {
+    const res = await axios({
+        method: 'POST',
+        url: 'user/reviews',
+        data: {
+            orderId: data.orderId,
+            productId: data.productId,
+            comment: data.content,
+            rate: data.star,
         },
     });
 
