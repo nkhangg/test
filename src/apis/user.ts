@@ -230,15 +230,3 @@ export const updateAddress: ApiHandleAddresses = async (data: IInfoAddress) => {
 
     return res?.data;
 };
-
-export const testOrders: TestOrders = async () => {
-    const res = await axios({
-        method: 'POST',
-        url: '/test/payment',
-    });
-
-    if (!res) return null;
-
-    // setTokenToCookie(res?.data.token);
-    return res?.data;
-};
