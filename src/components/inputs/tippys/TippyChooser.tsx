@@ -88,7 +88,7 @@ export default function TippyChooser({ title, data, onValue }: ITippyChooserProp
                 <div
                     onClick={() => setOpen((prev) => !prev)}
                     ref={ref}
-                    className="flex items-center gap-2 border border-[#333333] rounded-xl py-2 px-4 whitespace-nowrap cursor-pointer w-full"
+                    className="flex items-center justify-between gap-2 border border-[#333333] rounded-xl py-2 px-4 whitespace-nowrap cursor-pointer w-full min-w-[140px]"
                 >
                     <span>{value.title}</span>
                     {value.id == '0' && <FontAwesomeIcon icon={!open ? faChevronDown : faChevronUp} />}

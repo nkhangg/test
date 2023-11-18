@@ -450,16 +450,32 @@ export interface IPayment {
     };
 }
 
-interface IOrderItem {
+export interface IOrderItem {
     productId: string;
     size: number;
     quantity: number;
 }
 
-interface IOrder {
+export interface IOrder {
     addressId: number; // id address
     deliveryId: number; // id phuong thuc van chuyen
     methodId: number; // id phuong thuc thanh toan
     ship: number; // phí ship
     orderItems: IOrderItem[];
+}
+
+export interface IOrderAdminItem {
+    orderId: number;
+    username: string;
+    total: number;
+    placedDate: string;
+    status: string;
+}
+
+export interface IOrderAdminFillterForm {
+    search: string;
+    sort: string;
+    dateStart: string;
+    dateEnd: string;
+    status: string;
 }

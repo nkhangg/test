@@ -37,7 +37,7 @@ export default function RowStatus({ data, index, handleCacel }: IRowStatusProps)
             </TableCell>
             <TableCell>
                 <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                    {moment(data.placedData).format('dd/MM/yyyy')}
+                    {data.placedData}
                 </Typography>
             </TableCell>
             <TableCell>
@@ -51,7 +51,7 @@ export default function RowStatus({ data, index, handleCacel }: IRowStatusProps)
                 />
             </TableCell>
             <TableCell onClick={handleCacel ? () => handleCacel(data) : undefined}>
-                {data.status === 'placed' && <span className="text-violet-primary hover:underline cursor-pointer select-none">Cancel</span>}
+                <span className="text-violet-primary hover:underline cursor-pointer select-none">Detail</span>
             </TableCell>
         </TableRow>
     );

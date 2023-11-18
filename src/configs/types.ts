@@ -30,6 +30,8 @@ import {
     IOrder,
     IDataReview,
     IRequestReview,
+    IOrderAdminItem,
+    IOrderAdminFillterForm,
 } from './interface';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
@@ -116,6 +118,8 @@ export type ApiCreateUserManage = (data: IUserManage) => Promise<IBaseResponse<a
 export type ApiHistories = () => Promise<IBaseResponse<IProfile>>;
 
 export type ApiGetOrders = () => Promise<any>;
+
+export type ApiGetFilterOrderAdmin = (data: IOrderAdminFillterForm) => Promise<IBaseResponse<IOrderAdminItem[]>>;
 
 export type ApiGetDefaultAddress = () => Promise<IBaseResponse<IInfoAddress>>;
 
