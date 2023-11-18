@@ -3,7 +3,7 @@ import { WrapperAnimation } from '@/components';
 import { IOtherHistory } from '@/configs/interface';
 import { StateType } from '@/configs/types';
 import { links } from '@/datas/links';
-import { stringToUrl, toCurrency, toGam } from '@/utils/format';
+import { getIconWithStatus, stringToUrl, toCurrency, toGam } from '@/utils/format';
 import { faBox, faCarSide, faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
@@ -40,7 +40,7 @@ export default function OtherHistoryItem({ data }: IOtherHistoryItemProps) {
                 <ul className="flex items-center gap-4 md:gap-24">
                     <_Li title="Order ID" value={'#' + data.id} />
                     <_Li title="Date Place" value={data.datePlace} />
-                    <_Li title="Quantity" value={'x' + data.products.length} styleContent="text-center" />
+                    <_Li title="Order Items" value={'x' + data.products.length} styleContent="text-center" />
                     <_Li title="Total Amount" value={toCurrency(data.total)} />
                 </ul>
                 <Link href={'/other-history/' + data.id} className="text-violet-primary hover:underline">
@@ -89,10 +89,11 @@ export default function OtherHistoryItem({ data }: IOtherHistoryItemProps) {
                     {(!data.state || data.state === 'cancel') && <FontAwesomeIcon color="#EF4444" icon={faCircleXmark} />}
                     <p>{data.stateMessage || 'Delivery on October 2, 2023'}</p> */}
 
-                    {status === 'placed' && <FontAwesomeIcon color="#505DE8" icon={faBox} />}
-                    {status === 'delivered' && <FontAwesomeIcon color="#65A30D" icon={faCheckCircle} />}
-                    {status === 'shipping' && <FontAwesomeIcon color="#EF4444" icon={faCarSide} />}
-                    {status === 'cancelled' && <FontAwesomeIcon color="#EF4444" icon={faCircleXmark} />}
+                    {(() => {
+                        const { icon, color } = getIconWithStatus(status);
+
+                        return <FontAwesomeIcon color={color} icon={icon} />;
+                    })()}
 
                     <p>{` ${data.stateMessage} ${data.datePlace}`}</p>
                 </div>

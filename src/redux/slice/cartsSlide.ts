@@ -81,18 +81,6 @@ export const clearAllPayment = createAsyncThunk('cart/clearAllPayment', (_, thun
     const username = userReducer.user?.username;
     if (!username || username === '') return { paymentItems: [], cartItems: [], username: '' };
 
-    thunkApi.dispatch(
-        pushNoty({
-            open: true,
-            title: 'Pay successfuly !, We will contact for you !. Thank you ❤️❤️❤️',
-            plament: {
-                horizontal: 'center',
-                vertical: 'top',
-            },
-            autohide: 3000,
-        }),
-    );
-
     addPaymetnTolocal({ cart: cartReducer.cartUser, payment: [] }, username);
 });
 

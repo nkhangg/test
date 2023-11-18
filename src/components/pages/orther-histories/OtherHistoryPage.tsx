@@ -65,7 +65,7 @@ export default function OttherHistoryPage(props: IOttherHistoryProps) {
                         <Pagination baseHref="/other-history?page=" pages={data.data.pages} />
                     </>
                 )}
-                {conditionCheck && data.data.data.length <= 0 && status === '' && (
+                {!conditionCheck && status === '' && (
                     <div className="flex items-center justify-center py-10">
                         <p className="flex items-center gap-1">
                             You have not purchased any products yet,{' '}

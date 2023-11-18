@@ -17,6 +17,10 @@ export const contants = {
     messages: {
         errors: {
             server: 'Something went wrong !',
+            handle: 'There was an error during processing, please try again or contact customer service. Thanks',
+        },
+        success: {
+            payment: 'You have placed your order successfully. Thank you for your trust ❤️❤️❤️',
         },
     },
     roles: {
