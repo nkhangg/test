@@ -1,40 +1,49 @@
 'use client';
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getOrdersAdmin } from '@/apis/admin/orders';
+import { getOrdersAdmin, getOrdersAdminWithFilter } from '@/apis/admin/orders';
 import { HeadHistory } from '@/components/common';
 import { faBoxesStacked, faChevronDown, faMagnifyingGlass, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { dataHeadHistory } from '@/datas/header';
-import { BoxTitle, Comfirm, DialogDateChooser, RowStatusOrders, Table, TableRow, TextField, TippyChooser, WrapperAnimation } from '@/components';
+import { BoxTitle, Comfirm, DialogDateChooser, LoadingPrimary, RowStatusOrders, Table, TableRow, TextField, TippyChooser, WrapperAnimation } from '@/components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import WraperDialog from '@/components/dialogs/WraperDialog';
 import { Button, DialogActions, DialogContent, DialogTitle, Stack, TableCell, Typography, styled } from '@mui/material';
-import { IRowStatusOrders } from '@/configs/interface';
+import { IOrderAdminFillterForm, IRowStatusOrders } from '@/configs/interface';
+import ThymeleafTable from './ThymeleafTable';
+import { useRouter } from 'next/navigation';
+import { StateType } from '@/configs/types';
+import { useDebounce } from '@/hooks';
 export interface IOrdersAdminPageProps {}
 
 const dataHeadTable = ['No', 'Order ID', 'User', 'Price', 'Placed Date', 'Status', 'Action'];
 const dataPopup = [
     {
-        id: '1',
-        title: 'Price',
+        id: 'id-desc',
+        title: 'Id desc',
     },
     {
-        id: '2',
-        title: 'Date',
+        id: 'id-asc',
+        title: 'Id asc',
     },
     {
-        id: '3',
-        title: 'ID',
+        id: 'total-desc',
+        title: 'Total desc',
+    },
+    {
+        id: 'total-asc',
+        title: 'Total asc',
+    },
+
+    {
+        id: 'date-desc',
+        title: 'Date desc',
+    },
+    {
+        id: 'date-asc',
+        title: 'Date asc',
     },
 ];
-
-interface IFillterForm {
-    search: string;
-    sort: string;
-    dateStart: string;
-    dateEnd: string;
-    status: string;
-}
 
 const iniData = {
     search: '',
@@ -45,22 +54,28 @@ const iniData = {
 };
 
 export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
-    const { data } = useQuery({
-        queryKey: ['ordersAdminPage/get'],
-        queryFn: () => getOrdersAdmin(),
-    });
+    // router
+    const router = useRouter();
 
     // states
     const [anotherLayout, setAnotherLayout] = useState(false);
-    const [filter, setFilter] = useState<IFillterForm>(iniData);
+    const [filter, setFilter] = useState<IOrderAdminFillterForm>(iniData);
     const [deleteData, setDeleteData] = useState<IRowStatusOrders | null>(null);
     const [openComfirm, setOpenComfirm] = useState({ open: false, comfirm: 'cancel' });
+
+    const searDebounce = useDebounce(filter.search, 500);
+
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setFilter({
             ...filter,
             search: e.target.value,
         });
     };
+
+    const { data, error, isLoading } = useQuery({
+        queryKey: ['ordersAdminPage/getOrdersAdminWithFilter', { ...filter, search: searDebounce }],
+        queryFn: () => getOrdersAdminWithFilter({ ...filter, search: searDebounce }),
+    });
 
     const handleOpenConfirm = (data?: IRowStatusOrders) => {
         setOpenComfirm({ ...openComfirm, open: true });
@@ -73,6 +88,13 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
         // handleDelete();
     };
 
+    if (error) {
+        router.back();
+        return;
+    }
+
+    const dataOrders = data?.data;
+
     return (
         <div className="">
             {!anotherLayout && (
@@ -82,7 +104,7 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                     </span>
                 </div>
             )}
-            {!anotherLayout && <div dangerouslySetInnerHTML={{ __html: data }}></div>}
+            {!anotherLayout && <ThymeleafTable />}
             {anotherLayout && (
                 <BoxTitle mt="mt-0" mbUnderline="mb-0" border={false} title="ORDER MANAGEMENT" className="">
                     <div className="flex items-center justify-between text-1xl mb-10 w-full">
@@ -97,7 +119,7 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                                     console.log(sort);
                                     setFilter({
                                         ...filter,
-                                        sort: sort.title,
+                                        sort: sort.id,
                                     });
                                 }}
                                 data={dataPopup}
@@ -121,7 +143,7 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                         onTab={(tab) => {
                             setFilter({
                                 ...filter,
-                                status: tab.title,
+                                status: tab.title === 'All order' ? '' : tab.title,
                             });
                         }}
                         styles="outline"
@@ -129,40 +151,33 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                     />
 
                     <div className="rounded-xl overflow-hidden border border-gray-primary">
-                        <Table dataHead={dataHeadTable}>
-                            <RowStatusOrders
-                                handleCacel={handleOpenConfirm}
-                                index={1}
-                                data={{
-                                    id: 1,
-                                    placedData: new Date().toUTCString(),
-                                    price: 90000,
-                                    status: 'cancelled',
-                                    user: 'hantlpc04927',
-                                }}
-                            />
-                            <RowStatusOrders
-                                handleCacel={handleOpenConfirm}
-                                index={1}
-                                data={{
-                                    id: 1,
-                                    placedData: new Date().toUTCString(),
-                                    price: 90000,
-                                    status: 'placed',
-                                    user: 'hantlpc04927',
-                                }}
-                            />
-                            <RowStatusOrders
-                                index={1}
-                                data={{
-                                    id: 1,
-                                    placedData: new Date().toUTCString(),
-                                    price: 90000,
-                                    status: 'delivered',
-                                    user: 'hantlpc04927',
-                                }}
-                            />
-                        </Table>
+                        {dataOrders && (
+                            <Table dataHead={dataHeadTable}>
+                                {dataOrders.length > 0 &&
+                                    dataOrders.map((order, index) => {
+                                        const status = order.status.toLowerCase() as StateType;
+                                        return (
+                                            <RowStatusOrders
+                                                key={order.orderId}
+                                                handleCacel={handleOpenConfirm}
+                                                index={index + 1}
+                                                data={{
+                                                    id: order.orderId,
+                                                    placedData: order.placedDate,
+                                                    price: order.total,
+                                                    status: status,
+                                                    user: order.username,
+                                                }}
+                                            />
+                                        );
+                                    })}
+                            </Table>
+                        )}
+                        {dataOrders && dataOrders.length <= 0 && (
+                            <div className="flex items-center justify-center py-5 text-violet-primary">
+                                <b>No suitable data found</b>
+                            </div>
+                        )}
                     </div>
 
                     <Comfirm
@@ -176,6 +191,8 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                         setOpen={setOpenComfirm}
                         onComfirm={handleComfirm}
                     />
+
+                    {isLoading && <LoadingPrimary />}
                 </BoxTitle>
             )}
         </div>
