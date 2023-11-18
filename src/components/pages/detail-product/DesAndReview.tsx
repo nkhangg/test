@@ -4,7 +4,7 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, Tab, Tabs, Typography, styled } from '@mui/material';
 import classNames from 'classnames';
-import React, { SyntheticEvent, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
 
 export interface IDesAndReviewProps {
     description: string;
@@ -55,6 +55,7 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export default function DesAndReview({ description, reviews }: IDesAndReviewProps) {
     const [value, setValue] = useState(0);
+
     const [limit, setLimit] = useState(reviews.length > 3 ? 3 : reviews.length);
     const [setshowLoadMore, setShowLoadMore] = useState(reviews.length > 3);
     const [loading, setLoading] = useState(false);
@@ -67,6 +68,10 @@ export default function DesAndReview({ description, reviews }: IDesAndReviewProp
         setLimit(reviews.length);
         setShowLoadMore(false);
     };
+
+    useEffect(() => {
+        setLimit(reviews.length > 3 ? 3 : reviews.length);
+    }, [reviews]);
     return (
         <Box sx={{ width: '100%', mt: '74px', position: 'relative' }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -83,6 +88,9 @@ export default function DesAndReview({ description, reviews }: IDesAndReviewProp
                     {reviews.slice(0, limit).map((review) => {
                         return <Review data={review} key={review.id} />;
                     })}
+                    {/* {reviews.map((review) => {
+                        return <Review data={review} key={review.id} />;
+                    })} */}
                 </div>
 
                 {setshowLoadMore && (

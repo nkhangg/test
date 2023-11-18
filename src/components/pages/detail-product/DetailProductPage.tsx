@@ -104,7 +104,7 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
                 }),
             );
 
-            router.push('/payment');
+            router.push(links.users.payment);
         })();
     };
 
@@ -149,7 +149,7 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
                                     value={dataDetailProductPage?.rating || 0}
                                     readOnly
                                 />
-                                <p className=" md:ml-3">1234 reviews</p>
+                                <p className=" md:ml-3">{dataDetailProductPage?.reviews} reviews</p>
                             </div>
                             <span className="mt-[22px] inline-block">
                                 Manufacturer: <b>{dataDetailProductPage?.brand}</b>
@@ -189,7 +189,7 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
                         </div>
                     </Grid>
                 </Grid>
-                <DesAndReview description={dataDetailProductPage?.desciption || ''} reviews={reviews} />
+                <DesAndReview description={dataDetailProductPage?.desciption || ''} reviews={dataDetailProductPage?.reviewItems || []} />
             </ContainerContent>
             <ProductRecents title="Suggestions just for you" fontSizeTitle="text-[24px]" data={dataDetailProductPage?.suggestions || []} />
 

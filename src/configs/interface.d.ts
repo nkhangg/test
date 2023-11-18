@@ -74,9 +74,8 @@ export interface IDetailProduct {
     desciption: string;
     sizeAndPrice: SizeAndPrice[];
     suggestions: IProduct[];
-    // thêm
-    reviews?: number;
-    reviewItem?: IReview[];
+    reviews: number;
+    reviewItems: IReview[];
 }
 
 export interface IDataReview {
@@ -346,9 +345,9 @@ export interface IReview {
     avatar: string;
     name: string;
     rating: number;
-    size: number;
+    sizes: number[];
     comment: string;
-    createdAt: string;
+    createAt: string;
 }
 export interface IDetailOrder {
     id: number;

@@ -9,6 +9,13 @@ export interface IReviewProps {
 }
 
 export default function Review({ data }: IReviewProps) {
+    const handleFormatSizes = () => {
+        const strSizes = data.sizes.map((item) => {
+            return toGam(item);
+        });
+        return strSizes.join(', ');
+    };
+
     return (
         <div className="text-black-main">
             <Grid container spacing={2}>
@@ -36,12 +43,12 @@ export default function Review({ data }: IReviewProps) {
                             value={data.rating}
                             readOnly
                         />
-                        <span className="text-sm italic text-grey-secondary">Size: {toGam(data.size)}</span>
+                        <span className="text-sm italic text-grey-secondary">Size: {handleFormatSizes()}</span>
                     </div>
                     <p className="text-sm">{data.comment}</p>
                 </Grid>
                 <Grid item lg={2}>
-                    <p className="text-sm text-grey-secondary">{moment(data.createdAt).fromNow()}</p>
+                    <p className="text-sm text-grey-secondary">{data.createAt}</p>
                 </Grid>
             </Grid>
         </div>
