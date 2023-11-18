@@ -2,9 +2,9 @@
 import React from 'react';
 import moment from 'moment';
 import Link from 'next/link';
-import { toCurrency } from '@/utils/format';
+import { getIconWithStatus, toCurrency } from '@/utils/format';
 import { BaseBreadcrumbs } from '../common';
-import { Grid, Stack } from '@mui/material';
+import { Grid, Stack, capitalize } from '@mui/material';
 import DetailOrderhistoryItem from './DetailOrderHistoryItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
@@ -12,6 +12,7 @@ import { detailOtherHistory } from '@/apis/app';
 import { notFound } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { links } from '@/datas/links';
+import { StateType } from '@/configs/types';
 
 export interface IDetailOrderHistoryProps {
     id: string | number;
@@ -69,8 +70,17 @@ export default function DetailOrderHistory({ id }: IDetailOrderHistoryProps) {
                                     Date Placed:<span className="text-grey-secondary text-1xl font-normal"> {dataDetail.placedDate} </span>
                                 </li>
                                 <li className="flex items-center gap-2">
-                                    <FontAwesomeIcon color="#65A30D" icon={faCheckCircle} />
-                                    <span>Delivered</span>
+                                    {(() => {
+                                        const status = dataDetail.state.toLowerCase() as StateType;
+                                        const { icon, color } = getIconWithStatus(status);
+
+                                        return (
+                                            <>
+                                                <FontAwesomeIcon color={color} icon={icon} />
+                                                <span>{capitalize(status)}</span>
+                                            </>
+                                        );
+                                    })()}
                                 </li>
                             </Stack>
                         </Grid>

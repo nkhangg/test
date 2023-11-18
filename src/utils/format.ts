@@ -1,4 +1,6 @@
 import { IAddress } from '@/configs/interface';
+import { StateType } from '@/configs/types';
+import { faBox, faCarSide, faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 
 const floor = Math.floor,
@@ -106,4 +108,33 @@ export const addressToString = (value: IAddress) => {
 
 export const formatIndex = (page: number, index: number) => {
     return page ? (index + 1) * page + 1 * 10 : index + 1;
+};
+
+export const getIconWithStatus = (status: StateType) => {
+    switch (status) {
+        case 'placed': {
+            return {
+                color: '#505DE8',
+                icon: faBox,
+            };
+        }
+        case 'delivered': {
+            return {
+                color: '#65A30D',
+                icon: faCheckCircle,
+            };
+        }
+        case 'shipping': {
+            return {
+                color: '#EF4444',
+                icon: faCarSide,
+            };
+        }
+        case 'cancelled': {
+            return {
+                color: '#EF4444',
+                icon: faCircleXmark,
+            };
+        }
+    }
 };

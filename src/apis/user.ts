@@ -1,11 +1,13 @@
 import {
     ApiChangePassword,
+    ApiCreateOrder,
     ApiGetAddresses,
     ApiGetAddressesById,
     ApiGetCurUser,
     ApiGetDefaultAddress,
     ApiHandleAddresses,
     ApiLogin,
+    ApiPayment,
     ApiRefreshVerifyCode,
     ApiRegister,
     ApiResetPassword,
@@ -16,7 +18,7 @@ import {
 } from '@/configs/types';
 import axios from '../configs/axios';
 import { setTokenToCookie } from '@/utils/cookie';
-import { IFormChangePassword, IInfoAddress, IProfile } from '@/configs/interface';
+import { IFormChangePassword, IInfoAddress, IOrder, IPayment, IProfile } from '@/configs/interface';
 import { dataURLtoFile } from '@/utils/format';
 import moment from 'moment';
 
@@ -94,6 +96,31 @@ export const changePassword: ApiChangePassword = async (data: IFormChangePasswor
     const res = await axios({
         method: 'POST',
         url: 'user/profile/change-password',
+        data,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const createPayment: ApiPayment = async (data: IPayment) => {
+    const res = await axios({
+        method: 'POST',
+        url: 'user/payment',
+        data,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const createOrder: ApiCreateOrder = async (data: IOrder) => {
+    console.log('indata', data);
+    const res = await axios({
+        method: 'POST',
+        url: 'user/order',
         data,
     });
 

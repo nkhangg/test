@@ -26,6 +26,8 @@ import {
     IInfoAddress,
     IFormChangePassword,
     IDetailOrder,
+    IPayment,
+    IOrder,
 } from './interface';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
@@ -47,7 +49,9 @@ export type ApiSalesOverviewType = (year: string) => Promise<IBaseResponse<ISale
 
 export type ApiRevenueDateType = (dates: { start?: string; end?: string }) => Promise<IBaseResponse<IProductRevenue>>;
 
-export type ApiPayment = (data: IDataFormPayment) => Promise<IBaseResponse<IOrderItem[]>>;
+export type ApiPayment = (data: IPayment) => Promise<IBaseResponse<any>>;
+
+export type ApiCreateOrder = (data: IOrder) => Promise<IBaseResponse<string>>;
 
 export type ApiBestSellerType = (page: number | undefined) => Promise<IBaseResponse<IApiBestSeller>>;
 
@@ -185,5 +189,7 @@ export type StatusColor = {
     delivered: string;
     cancelled: string;
 };
+
+export type PaymentMethod = 'cash' | 'pre-payment';
 
 export type ApiProvinces<T> = (id?: string | number) => Promise<T>;

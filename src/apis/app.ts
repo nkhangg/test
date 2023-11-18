@@ -77,20 +77,6 @@ export const detailOtherHistory: ApiDetailHistory = async (id: string | number) 
     return res?.data;
 };
 
-export const paymentsApi: ApiPayment = async (data: IDataFormPayment) => {
-    const res = await axios({
-        method: 'POST',
-        url: 'user/order',
-        data: {
-            ...data,
-        },
-    });
-
-    if (!res) return null;
-
-    return res?.data;
-};
-
 export const typesAndBrands: ApiTypesAndBrands = async () => {
     const res = await axios({
         method: 'GET',
