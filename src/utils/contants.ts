@@ -21,6 +21,10 @@ export const contants = {
         },
         success: {
             payment: 'You have placed your order successfully. Thank you for your trust ❤️❤️❤️',
+            review: 'Thank you for rating ❤️❤️❤️',
+        },
+        review: {
+            whenEmpty: 'Let us know your satisfaction with the product',
         },
     },
     roles: {

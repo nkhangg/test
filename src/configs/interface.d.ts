@@ -74,6 +74,19 @@ export interface IDetailProduct {
     desciption: string;
     sizeAndPrice: SizeAndPrice[];
     suggestions: IProduct[];
+    // thêm
+    reviews?: number;
+    reviewItem?: IReview[];
+}
+
+export interface IDataReview {
+    star: number;
+    content: string;
+}
+
+export interface IRequestReview extends IDataReview {
+    orderId: number;
+    productId: string;
 }
 
 export interface ISizeAndPrice {

@@ -67,7 +67,7 @@ export default function DetailOrderhistoryItem({ data }: IDetailOrderhistoryItem
                 </Grid>
             </Grid>
 
-            <RatingDialog open={togleDialog} setOpen={setTogleDialog} />
+            <RatingDialog data={data} open={togleDialog} setOpen={setTogleDialog} />
         </>
     );
 }
