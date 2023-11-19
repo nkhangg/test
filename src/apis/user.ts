@@ -1,9 +1,11 @@
 import {
     ApiChangePassword,
+    ApiCreateCartUser,
     ApiCreateOrder,
     ApiCreateReivew,
     ApiGetAddresses,
     ApiGetAddressesById,
+    ApiGetCartUser,
     ApiGetCurUser,
     ApiGetDefaultAddress,
     ApiHandleAddresses,
@@ -12,14 +14,14 @@ import {
     ApiRefreshVerifyCode,
     ApiRegister,
     ApiResetPassword,
+    ApiUpdateCartUser,
     ApiUpdateCurUser,
     ApiVerifyCode,
     DataRequestUpdateUser,
-    TestOrders,
 } from '@/configs/types';
 import axios from '../configs/axios';
 import { setTokenToCookie } from '@/utils/cookie';
-import { IFormChangePassword, IInfoAddress, IOrder, IPayment, IProfile, IRequestReview } from '@/configs/interface';
+import { ICart, IFormChangePassword, IInfoAddress, IOrder, IPayment, IProfile, IRequestReview } from '@/configs/interface';
 import { dataURLtoFile } from '@/utils/format';
 import moment from 'moment';
 
@@ -241,6 +243,51 @@ export const createReview: ApiCreateReivew = async (data: IRequestReview) => {
             productId: data.productId,
             comment: data.content,
             rate: data.star,
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const getCartUser: ApiGetCartUser = async () => {
+    const res = await axios({
+        method: 'GET',
+        url: 'user/carts',
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const updateCartUser: ApiUpdateCartUser = async (data: ICart[]) => {
+    const res = await axios({
+        method: 'PUT',
+        url: 'user/carts',
+        data: data.map((item) => {
+            return {
+                id: item.id,
+                size: item.size,
+                quantity: item.quantity,
+            };
+        }),
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const createCartUser: ApiCreateCartUser = async (data: ICart) => {
+    const res = await axios({
+        method: 'POST',
+        url: 'user/carts',
+        data: {
+            id: data.id,
+            size: data.size,
+            quantity: data.quantity,
         },
     });
 

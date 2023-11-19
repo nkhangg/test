@@ -3,6 +3,10 @@ import { RootState } from '@/configs/types';
 import { addCartTolocal, addPaymetnTolocal, getPaymentFromLocal, getStoreFromLocal } from '@/utils/localStorege';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { pushNoty } from './appSlice';
+import { createCartUser, getCartUser } from '@/apis/user';
+import { toast } from 'react-toastify';
+import { contants } from '@/utils/contants';
+import { capitalize } from '@mui/material';
 
 export const getPayment = createAsyncThunk('cart/getPayment', (_, thunkApi) => {
     const { userReducer } = thunkApi.getState() as RootState;
@@ -27,18 +31,34 @@ export const getCart = createAsyncThunk('cart/getCartUser', async (_, thunkApi) 
             username,
         };
 
-    const store = getStoreFromLocal(username);
+    try {
+        const response = await getCartUser();
 
-    if (!store)
+        // if call failure
+        if (!response)
+            return {
+                data: [],
+                username,
+            };
+
+        // if call failure
+        if (response.status !== 200)
+            return {
+                data: [],
+                username,
+            };
+
+        console.log('response', response);
+        return {
+            data: response.data as ICart[],
+            username,
+        };
+    } catch (error) {
         return {
             data: [],
             username,
         };
-
-    return {
-        data: store.cart as ICart[],
-        username,
-    };
+    }
 });
 export const getCheckedAllCart = createAsyncThunk('cart/getCheckedAllCart', async (_, thunkApi) => {
     const { userReducer } = thunkApi.getState() as RootState;
@@ -106,15 +126,45 @@ export const deletePayment = createAsyncThunk('cart/deletePayment', (index: numb
     };
 });
 
-export const addCart = createAsyncThunk('cart/addCartUser', (data: ICart, thunkApi) => {
+export const addCart = createAsyncThunk('cart/addCartUser', async (data: ICart, thunkApi) => {
     const { userReducer } = thunkApi.getState() as RootState;
     const username = userReducer.user?.username;
     if (!username || username === '') return undefined;
 
-    return {
-        data,
-        username,
-    };
+    try {
+        const response = await createCartUser(data);
+
+        if (!response) {
+            toast.warn(contants.messages.errors.handle);
+
+            return {
+                data,
+                username,
+            };
+        }
+
+        if (response.status != 200) {
+            toast.error(capitalize(response.message));
+
+            return {
+                data: {
+                    ...data,
+                    checked: true,
+                },
+                username,
+            };
+        }
+
+        return {
+            data,
+            username,
+        };
+    } catch (error) {
+        return {
+            data,
+            username,
+        };
+    }
 });
 
 export const removeCart = createAsyncThunk('cart/removeCartUser', (data: { data: ICart; index: number }, thunkApi) => {
@@ -259,6 +309,8 @@ export const cart = createSlice({
             }),
             //cart
             builder.addCase(getCart.fulfilled, (state, action) => {
+                if (!action.payload.username) return;
+                addCartTolocal({ payment: state.payment, cart: action.payload.data }, action.payload.username);
                 return {
                     ...state,
                     cartUser: action.payload.data,
