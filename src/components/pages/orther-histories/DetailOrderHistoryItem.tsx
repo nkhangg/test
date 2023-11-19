@@ -2,13 +2,15 @@
 /* eslint-disable @next/next/no-img-element */
 import { RatingDialog } from '@/components';
 import { IProductDetailOrders } from '@/configs/interface';
+import { StateType } from '@/configs/types';
 import { toCurrency, toGam } from '@/utils/format';
 import { Grid } from '@mui/material';
+import classNames from 'classnames';
 
 import React, { useState } from 'react';
 
 export interface IDetailOrderhistoryItemProps {
-    data: IProductDetailOrders;
+    data: IProductDetailOrders & { status: StateType };
 }
 
 export default function DetailOrderhistoryItem({ data }: IDetailOrderhistoryItemProps) {
@@ -17,6 +19,8 @@ export default function DetailOrderhistoryItem({ data }: IDetailOrderhistoryItem
     const handleTogleDialog = () => {
         setTogleDialog(!togleDialog);
     };
+
+    console.log(data.status);
 
     return (
         <>
@@ -43,7 +47,13 @@ export default function DetailOrderhistoryItem({ data }: IDetailOrderhistoryItem
                                     <span>{toGam(data.size as number)}</span>
                                 </div>
 
-                                <span onClick={!data.isRate ? handleTogleDialog : undefined} className="text-fill-heart hover:underline cursor-pointer">
+                                <span
+                                    onClick={!data.isRate && data.status === 'delivered' ? handleTogleDialog : undefined}
+                                    className={classNames('', {
+                                        ['text-gray-300 cursor-default']: data.status !== 'delivered',
+                                        ['text-fill-heart  cursor-pointer hover:underline']: data.status === 'delivered',
+                                    })}
+                                >
                                     {!data.isRate && 'Rate'}
                                 </span>
                             </div>

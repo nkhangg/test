@@ -1,18 +1,18 @@
 import React from 'react';
-import TableRow from './TableRow';
+import TableRow from '../TableRow';
 import { Chip, TableCell, Typography, capitalize } from '@mui/material';
 import { IRowStatusOrders } from '@/configs/interface';
 import { toCurrency } from '@/utils/format';
 import moment from 'moment';
-import { statusColor } from '../../../../tailwind.config';
+import { statusColor } from '../../../../../tailwind.config';
 
 export interface IRowStatusProps {
     data: IRowStatusOrders;
     index?: number;
-    handleCacel?: (data: IRowStatusOrders) => void;
+    handleOpen?: (data: IRowStatusOrders) => void;
 }
 
-export default function RowStatus({ data, index, handleCacel }: IRowStatusProps) {
+export default function RowStatus({ data, index, handleOpen }: IRowStatusProps) {
     return (
         <TableRow>
             <TableCell>
@@ -50,8 +50,8 @@ export default function RowStatus({ data, index, handleCacel }: IRowStatusProps)
                     }}
                 />
             </TableCell>
-            <TableCell onClick={handleCacel ? () => handleCacel(data) : undefined}>
-                <span className="text-violet-primary hover:underline cursor-pointer select-none">Detail</span>
+            <TableCell onClick={handleOpen ? () => handleOpen(data) : undefined}>
+                <span className="text-violet-primary hover:underline cursor-pointer select-none">Open</span>
             </TableCell>
         </TableRow>
     );

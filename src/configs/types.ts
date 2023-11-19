@@ -32,6 +32,7 @@ import {
     IRequestReview,
     IOrderAdminItem,
     IOrderAdminFillterForm,
+    ICart,
 } from './interface';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
@@ -131,6 +132,8 @@ export type ApiHandleAddresses = (data: IInfoAddress) => Promise<IBaseResponse<I
 
 export type ApiCreateReivew = (data: IRequestReview) => Promise<IBaseResponse<IRequestReview>>;
 
+export type ApiProvinces<T> = (id?: string | number) => Promise<T>;
+
 export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
@@ -160,6 +163,8 @@ export type DataRequestUpdateUser = {
     birthday: string;
     avatar?: string;
 };
+
+export type RowOrderSummaryUpdateStatusType = Pick<ICart, 'id' | 'image' | 'name' | 'price' | 'quantity'>;
 
 export type SortType = string | null;
 
@@ -199,5 +204,3 @@ export type StatusColor = {
 };
 
 export type PaymentMethod = 'cash' | 'pre-payment';
-
-export type ApiProvinces<T> = (id?: string | number) => Promise<T>;

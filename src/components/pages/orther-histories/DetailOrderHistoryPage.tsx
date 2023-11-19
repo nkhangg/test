@@ -148,7 +148,7 @@ export default function DetailOrderHistory({ id }: IDetailOrderHistoryProps) {
 
                             <div className="px-4">
                                 {dataDetail.products.map((item) => {
-                                    return <DetailOrderhistoryItem key={`${item.id} ${item.size}`} data={item} />;
+                                    return <DetailOrderhistoryItem key={`${item.id} ${item.size}`} data={{ ...item, status: dataDetail.state.toLowerCase() as StateType }} />;
                                 })}
                             </div>
 
