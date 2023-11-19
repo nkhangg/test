@@ -34,6 +34,7 @@ import {
     IOrderAdminFillterForm,
     ICart,
 } from './interface';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
 export type ApiGetUsers = () => Promise<IUser[]>;
@@ -132,6 +133,12 @@ export type ApiHandleAddresses = (data: IInfoAddress) => Promise<IBaseResponse<I
 
 export type ApiCreateReivew = (data: IRequestReview) => Promise<IBaseResponse<IRequestReview>>;
 
+export type ApiGetCartUser = () => Promise<IBaseResponse<ICart[]>>;
+
+export type ApiUpdateCartUser = (data: ICart[]) => Promise<IBaseResponse<ICart[]>>;
+
+export type ApiCreateCartUser = (data: ICart) => Promise<IBaseResponse<ICart>>;
+
 export type ApiProvinces<T> = (id?: string | number) => Promise<T>;
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -204,3 +211,9 @@ export type StatusColor = {
 };
 
 export type PaymentMethod = 'cash' | 'pre-payment';
+
+export type MenuHeaderType = {
+    title: string;
+    href: string;
+    icon: IconProp;
+};

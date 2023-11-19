@@ -15,6 +15,10 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { addPaymentFromCard } from '@/redux/slice/cartsSlide';
 import { useRouter } from 'next/navigation';
 import { RootState } from '@/configs/types';
+import { links } from '@/datas/links';
+import { updateCartUser } from '@/apis/user';
+import { toast } from 'react-toastify';
+import { contants } from '@/utils/contants';
 
 const Carts = dynamic(() => import('./Carts'), { ssr: false });
 
@@ -30,8 +34,28 @@ export default function CartPage(props: ICartPageProps) {
 
     const handleCheckout = () => {
         dispatch(addPaymentFromCard());
-        router.push('/payment');
+        router.push(links.users.payment);
     };
+
+    useEffect(() => {
+        return () => {
+            (async () => {
+                try {
+                    const response = await updateCartUser(cartUser);
+
+                    if (!response) {
+                        toast.warn(contants.messages.errors.handle);
+                        return;
+                    }
+
+                    console.log('response.data', response.data);
+                } catch (error) {
+                    toast.error(contants.messages.errors.handle + `. Can't save your cart !`);
+                    console.log('CartPage', error);
+                }
+            })();
+        };
+    }, [cartUser]);
 
     return (
         <>

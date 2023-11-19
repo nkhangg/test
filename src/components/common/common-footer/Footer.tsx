@@ -18,7 +18,6 @@ export interface IFooterProps {}
 
 export default function Footer(props: IFooterProps) {
     const { notifycation } = useAppSelector((state: RootState) => state.appReducer);
-    const { user } = useAppSelector((state: RootState) => state.userReducer);
 
     const dispath = useAppDispatch();
     return (
@@ -71,13 +70,6 @@ export default function Footer(props: IFooterProps) {
                 <div className="bg-white h-[1px] w-full mt-16"></div>
 
                 <div className="fixed bottom-[2%] right-[2%] flex flex-col gap-4">
-                    {user?.role === 'ROLE_ADMIN' && (
-                        <Tooltip placement="top" title="Go to dashboard">
-                            <Link href={links.admin} className="w-14 h-14 rounded-full bg-green-main-dark flex items-center justify-center text-2xl">
-                                <FontAwesomeIcon icon={faUserTie} />
-                            </Link>
-                        </Tooltip>
-                    )}
                     <ChatBox />
                 </div>
 

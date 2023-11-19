@@ -66,7 +66,7 @@ function MenuBars({ isScroll }: IMenuBarsProps) {
                                             return (
                                                 <li key={item.href} className="p-4 pr-0 font-medium rounded-tl-lg rounded-bl-lg hover:bg-[#f0f0f0] transition-all ease-linear ">
                                                     <Link href={item.href} className="flex gap-4 items-center">
-                                                        <CustomBadge invisible={!item.style?.badge || cartUser.length <= 0} badgeContent={cartUser.length}>
+                                                        <CustomBadge badgeContent={cartUser.length}>
                                                             <FontAwesomeIcon className=" h-5 w-5" icon={item.icon} />
                                                         </CustomBadge>
                                                         <span>{item.title}</span>

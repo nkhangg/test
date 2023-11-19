@@ -1,3 +1,4 @@
+import { MenuHeaderType } from '@/configs/types';
 import { faBox, faBoxesStacked, faCarSide, faCircleCheck, faCircleXmark, faHeart, faRightFromBracket, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
 
 export const navbar = [
@@ -15,12 +16,12 @@ export const listProfile = [
         href: '/profile',
         icon: faUser,
     },
-    {
-        title: 'Cart',
-        href: '/cart',
-        style: { badge: true },
-        icon: faShoppingCart,
-    },
+    // {
+    //     title: 'Cart',
+    //     href: '/cart',
+    //     style: { badge: true },
+    //     icon: faShoppingCart,
+    // },
     {
         title: 'Favorite',
         href: '/favorite',
@@ -31,7 +32,7 @@ export const listProfile = [
         href: '/log-out',
         icon: faRightFromBracket,
     },
-];
+] as MenuHeaderType[];
 
 export const dataHeadHistory = [
     {
