@@ -1,14 +1,16 @@
-import { TableBody, TableCell, TableHead, TableRow, Typography, Table as Tb } from '@mui/material';
+import { TableBody, TableCell, TableHead, TableRow, Typography, Table as Tb, TableCellProps } from '@mui/material';
 import React, { ReactNode } from 'react';
 
 export interface ITableProps {
     dataHead: string[];
     children: ReactNode;
+    styleHead?: TableCellProps;
 }
 
-export default function Table({ dataHead, children }: ITableProps) {
+export default function Table({ dataHead, children, styleHead }: ITableProps) {
     return (
         <Tb
+            stickyHeader
             aria-label="orders-table"
             sx={{
                 whiteSpace: 'nowrap',
@@ -23,7 +25,7 @@ export default function Table({ dataHead, children }: ITableProps) {
                 <TableRow>
                     {dataHead.map((item) => {
                         return (
-                            <TableCell key={item}>
+                            <TableCell {...styleHead} key={item}>
                                 <Typography variant="subtitle2" fontWeight={600}>
                                     {item}
                                 </Typography>

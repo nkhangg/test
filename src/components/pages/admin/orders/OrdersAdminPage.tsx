@@ -5,7 +5,19 @@ import { getOrdersAdmin, getOrdersAdminWithFilter } from '@/apis/admin/orders';
 import { HeadHistory } from '@/components/common';
 import { faBoxesStacked, faChevronDown, faMagnifyingGlass, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { dataHeadHistory } from '@/datas/header';
-import { BoxTitle, Comfirm, DialogDateChooser, LoadingPrimary, RowStatusOrders, Table, TableRow, TextField, TippyChooser, WrapperAnimation } from '@/components';
+import {
+    BoxTitle,
+    Comfirm,
+    DialogDateChooser,
+    LoadingPrimary,
+    RowStatusOrders,
+    Table,
+    TableRow,
+    TextField,
+    TippyChooser,
+    UpdateStateOrderDialog,
+    WrapperAnimation,
+} from '@/components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import WraperDialog from '@/components/dialogs/WraperDialog';
 import { Button, DialogActions, DialogContent, DialogTitle, Stack, TableCell, Typography, styled } from '@mui/material';
@@ -58,6 +70,7 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
     const router = useRouter();
 
     // states
+    const [open, setOpen] = useState(false);
     const [anotherLayout, setAnotherLayout] = useState(false);
     const [filter, setFilter] = useState<IOrderAdminFillterForm>(iniData);
     const [deleteData, setDeleteData] = useState<IRowStatusOrders | null>(null);
@@ -77,23 +90,19 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
         queryFn: () => getOrdersAdminWithFilter({ ...filter, search: searDebounce }),
     });
 
-    const handleOpenConfirm = (data?: IRowStatusOrders) => {
-        setOpenComfirm({ ...openComfirm, open: true });
-        setDeleteData(data || null);
-    };
-
-    const handleComfirm = async (v: { open: boolean; comfirm: 'cancel' | 'ok' }) => {
-        if (v.open || v.comfirm === 'cancel') return;
-
-        // handleDelete();
-    };
-
     if (error) {
         router.back();
         return;
     }
 
     const dataOrders = data?.data;
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <div className="">
@@ -159,7 +168,7 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                                         return (
                                             <RowStatusOrders
                                                 key={order.orderId}
-                                                handleCacel={handleOpenConfirm}
+                                                handleOpen={handleOpen}
                                                 index={index + 1}
                                                 data={{
                                                     id: order.orderId,
@@ -180,19 +189,9 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                         )}
                     </div>
 
-                    <Comfirm
-                        title={'Notification'}
-                        subtitle={
-                            <>
-                                {'Are want to cancel order id #'} {<b>{deleteData?.id}</b>}
-                            </>
-                        }
-                        open={openComfirm.open}
-                        setOpen={setOpenComfirm}
-                        onComfirm={handleComfirm}
-                    />
-
                     {isLoading && <LoadingPrimary />}
+
+                    <UpdateStateOrderDialog open={open} setOpen={setOpen} />
                 </BoxTitle>
             )}
         </div>

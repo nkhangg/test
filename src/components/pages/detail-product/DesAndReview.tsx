@@ -88,9 +88,6 @@ export default function DesAndReview({ description, reviews }: IDesAndReviewProp
                     {reviews.slice(0, limit).map((review) => {
                         return <Review data={review} key={review.id} />;
                     })}
-                    {/* {reviews.map((review) => {
-                        return <Review data={review} key={review.id} />;
-                    })} */}
                 </div>
 
                 {setshowLoadMore && (

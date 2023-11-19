@@ -28,11 +28,14 @@ export { default as AddressItem } from './inputs/address/AddressItem';
 export { default as ListAddress } from './inputs/address/ListAddress';
 export { default as AddressTippy } from './inputs/address/AddressTippy';
 export { default as AddressForm } from './inputs/address/AddressForm';
-export { default as Table } from './inputs/tables/Table';
-export { default as TableRow } from './inputs/tables/TableRow';
-export { default as RowStatusOrders } from './inputs/tables/RowStatusOrders';
 export { default as TippyChooser } from './inputs/tippys/TippyChooser';
 export { default as BaseAddressDialog } from './inputs/address/BaseAddressDialog';
+
+// table
+export { default as Table } from './inputs/tables/Table';
+export { default as TableRow } from './inputs/tables/TableRow';
+export { default as RowStatusOrders } from './inputs/tables/rows/RowStatusOrders';
+export { default as RowOrderSummaryUpdateStatus } from './inputs/tables/rows/RowOrderSummaryUpdateStatus';
 
 // bages
 export { default as CustomBadge } from './badges/CustomBadge';
@@ -83,6 +86,7 @@ export { default as Review } from './comments/Review';
 // dialog
 export { default as RatingDialog } from './dialogs/RatingDialog';
 export { default as DialogDateChooser } from './dialogs/DialogDateChooser';
+export { default as UpdateStateOrderDialog } from './dialogs/UpdateStateOrderDialog';
 
 // chats
 
