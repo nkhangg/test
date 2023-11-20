@@ -20,8 +20,6 @@ export default function DetailOrderhistoryItem({ data }: IDetailOrderhistoryItem
         setTogleDialog(!togleDialog);
     };
 
-    console.log(data.status);
-
     return (
         <>
             <Grid

@@ -1,4 +1,5 @@
 'use client';
+import { HeadTabType } from '@/configs/types';
 import { dataHeadHistory } from '@/datas/header';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faBox, faCarSide, faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
@@ -15,10 +16,6 @@ function a11yProps(index: number) {
 }
 
 const AntTabs = styled(Tabs)({
-    '& .MuiTabs-indicator': {
-        backgroundColor: '#505DE8',
-    },
-
     '& .MuiButtonBase-root': {
         padding: '0px',
 
@@ -30,22 +27,18 @@ const AntTabs = styled(Tabs)({
         display: 'flex',
         justifyContent: 'space-between',
     },
-    '& .Mui-selected': {
-        color: '#505DE8 !important',
-    },
+
     '&': { color: '#727272 !important' },
 });
 
 export interface IHeadHistoryProps {
-    iniData?: {
-        title: string;
-        icon: IconProp;
-    }[];
-    styles?: 'outline' | 'rounded';
+    iniData?: HeadTabType[];
+    styles?: 'outline' | 'rounded' | 'border-bottom';
+    color?: string;
     onTab?: (value: { index: number; title: string }) => void;
 }
 
-export default function HeadHistory({ iniData = dataHeadHistory, styles = 'rounded', onTab }: IHeadHistoryProps) {
+export default function HeadHistory({ iniData = dataHeadHistory, styles = 'rounded', color = '#505DE8', onTab }: IHeadHistoryProps) {
     const [value, setValue] = useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -64,20 +57,35 @@ export default function HeadHistory({ iniData = dataHeadHistory, styles = 'round
             className={classNames('border-gray-primary  px-2 md:px-10 w-full mb-6', {
                 ['border rounded-lg']: styles === 'rounded',
                 ['border-t border-b']: styles === 'outline',
+                ['border-b']: styles === 'border-bottom',
             })}
         >
-            <AntTabs scrollButtons allowScrollButtonsMobile value={value} onChange={handleChange} aria-label="header-tabs">
+            <AntTabs
+                sx={{
+                    '& .Mui-selected': {
+                        color: `${color} !important`,
+                    },
+                    '& .MuiTabs-indicator': {
+                        backgroundColor: color,
+                    },
+                }}
+                scrollButtons
+                allowScrollButtonsMobile
+                value={value}
+                onChange={handleChange}
+                aria-label="header-tabs"
+            >
                 {iniData.map((item, index) => {
                     return (
                         <Tab
                             sx={{
                                 fontSize: { xs: '14px', md: '18px', lg: '18px' },
                                 display: 'flex',
-                                justifyContent: 'space-between',
+                                justifyContent: 'center',
                             }}
                             key={item.title}
                             icon={<FontAwesomeIcon icon={item.icon} />}
-                            iconPosition="start"
+                            iconPosition={item.styles?.iconPosition || 'start'}
                             label={item.title}
                             {...a11yProps(index)}
                         />

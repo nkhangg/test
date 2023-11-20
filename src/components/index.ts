@@ -87,6 +87,7 @@ export { default as Review } from './comments/Review';
 export { default as RatingDialog } from './dialogs/RatingDialog';
 export { default as DialogDateChooser } from './dialogs/DialogDateChooser';
 export { default as UpdateStateOrderDialog } from './dialogs/UpdateStateOrderDialog';
+export { default as ReasonDialog } from './dialogs/ReasonDialog';
 
 // chats
 

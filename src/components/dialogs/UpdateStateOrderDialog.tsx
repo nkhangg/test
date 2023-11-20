@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import WraperDialog from './WraperDialog';
 import { Chip, Grid, capitalize } from '@mui/material';
-import { Comfirm, RowOrderSummaryUpdateStatus, Table, WrapperAnimation } from '..';
+import { Comfirm, ReasonDialog, RowOrderSummaryUpdateStatus, Table, WrapperAnimation } from '..';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { statusColor } from '../../../tailwind.config';
@@ -10,11 +10,11 @@ import classNames from 'classnames';
 import { useQuery } from '@tanstack/react-query';
 import { StateType } from '@/configs/types';
 import { toCurrency } from '@/utils/format';
-import { getOrdersDetailAdminWithFilter } from '@/apis/admin/orders';
+import { getOrdersDetailAdminWithFilter, updateStatusOrder } from '@/apis/admin/orders';
 import { toast } from 'react-toastify';
 import { contants } from '@/utils/contants';
-
-const status: StateType[] = ['placed', 'shipping', 'delivered', 'cancelled'];
+import { OrderAdminPageContext } from '../pages/admin/orders/OrdersAdminPage';
+import Validate from '@/utils/validate';
 
 const Header = ({ title, chip, options = { border: true } }: { title: string; chip?: StateType; options?: { border?: boolean } }) => {
     return (
@@ -48,24 +48,39 @@ export interface IUpdateStateOrderDialogProps {
 }
 
 export default function UpdateStateOrderDialog({ idOpen, open, setOpen }: IUpdateStateOrderDialogProps) {
-    const { data, error, isLoading } = useQuery({
+    const context = useContext(OrderAdminPageContext);
+
+    const { data, error, isLoading, refetch } = useQuery({
         queryKey: ['ordersAdminPage/getOrdersDetailAdminWithFilter', idOpen],
         queryFn: () => getOrdersDetailAdminWithFilter(idOpen),
     });
 
     // state
-    const [deleteData, setDeleteData] = useState<any | null>(null);
+    const [dataUpdate, setDataUpdate] = useState<StateType | null>(null);
+
     const [openComfirm, setOpenComfirm] = useState({ open: false, comfirm: 'cancel' });
 
-    const handleOpenConfirm = (data?: any) => {
-        setOpenComfirm({ ...openComfirm, open: true });
-        setDeleteData(data || null);
-    };
+    const renderStateUpdate = (curState: StateType): StateType[] => {
+        let status: StateType[] = ['placed', 'shipping', 'delivered', 'cancelled'];
 
-    const handleComfirm = async (v: { open: boolean; comfirm: 'cancel' | 'ok' }) => {
-        if (v.open || v.comfirm === 'cancel') return;
+        switch (curState) {
+            case 'placed': {
+                return ['shipping', 'delivered', 'cancelled'];
+            }
+            case 'shipping': {
+                return ['delivered', 'cancelled'];
+            }
+            case 'delivered': {
+                return [];
+            }
 
-        // handleDelete();
+            case 'cancelled': {
+                return [];
+            }
+            default: {
+                return status;
+            }
+        }
     };
 
     if (error) {
@@ -75,6 +90,44 @@ export default function UpdateStateOrderDialog({ idOpen, open, setOpen }: IUpdat
     }
 
     const dataDetail = data?.data;
+
+    const status = dataDetail && (dataDetail.state.toLowerCase() as StateType);
+
+    const handleUpdateStatus = async (reason?: string) => {
+        if (!dataUpdate || !dataDetail) return;
+
+        if (dataUpdate === 'cancelled' && (!reason || Validate.isBlank(reason))) return;
+
+        try {
+            const response = await updateStatusOrder({ id: dataDetail.id, status: dataUpdate, reason });
+
+            if (!response) {
+                toast.warn(contants.messages.errors.handle);
+                return;
+            }
+
+            if (response.errors) {
+                toast.warn(capitalize(response.message));
+                return;
+            }
+
+            toast.success(`Change success #${dataDetail.id} form ${dataDetail.state} to ${capitalize(dataUpdate)}`);
+            refetch();
+        } catch (error) {
+            toast.error(contants.messages.errors.server);
+        }
+    };
+
+    const handleOpenConfirm = (data: StateType) => {
+        setOpenComfirm({ ...openComfirm, open: true });
+        setDataUpdate(data || null);
+    };
+
+    const handleComfirm = async (v: { open: boolean; comfirm: 'cancel' | 'ok' }) => {
+        if (v.open || v.comfirm === 'cancel') return;
+
+        handleUpdateStatus();
+    };
 
     return (
         <WraperDialog
@@ -96,7 +149,7 @@ export default function UpdateStateOrderDialog({ idOpen, open, setOpen }: IUpdat
                 {dataDetail && (
                     <Grid container spacing={4}>
                         <Grid item xs={12} md={12} lg={5}>
-                            <Header title="DELIVERY DETAILS" chip={dataDetail.state.toLowerCase() as StateType} />
+                            <Header title="DELIVERY DETAILS" chip={status} />
                             <div className="w-full text-black-main py-6 border-b border-gray-primary mb-6">
                                 <ul className="w-full flex flex-col gap-5">
                                     <li className="flex items-start gap-3">
@@ -105,24 +158,29 @@ export default function UpdateStateOrderDialog({ idOpen, open, setOpen }: IUpdat
                                     <li className="flex items-start gap-3">
                                         <span className="text-black font-medium">Date Placed: </span> <p> {dataDetail.placedDate}</p>
                                     </li>
-                                    <li className="flex items-start gap-3">
+                                    <li className="flex flex-col items-start gap-1">
                                         <span className="text-black font-medium whitespace-nowrap">Shipping Info: </span>
-                                        <p>{dataDetail.address}</p>
+                                        <p>{`${dataDetail.name} - ${dataDetail.address}`}</p>
                                     </li>
-                                    <li className="flex items-start gap-3">
+                                    <li className="flex flex-col items-start gap-1">
                                         <span className="text-black font-medium">Payment Method: </span> <p>{dataDetail.paymentMethod}</p>
                                     </li>
-                                    <li className="flex items-start gap-3">
+                                    <li className="flex flex-col items-start gap-1">
                                         <span className="text-black font-medium">Delivery Method: </span> <p>{dataDetail.deliveryMethod}</p>
                                     </li>
+                                    {status === 'cancelled' && (
+                                        <li className="flex flex-col items-start gap-1">
+                                            <span className="text-black font-medium">Reason: </span> <p>{dataDetail.description}</p>
+                                        </li>
+                                    )}
                                 </ul>
                             </div>
 
-                            <Header title="UPDATE STATUS" options={{ border: false }} />
+                            {!['cancelled', 'delivered'].includes(status || 'cancelled') && <Header title="UPDATE STATUS" options={{ border: false }} />}
                             <div className="flex items-center gap-5">
-                                {status.map((item) => {
+                                {renderStateUpdate(status || 'placed').map((item) => {
                                     return (
-                                        <WrapperAnimation key={item} className="cursor-pointer">
+                                        <WrapperAnimation onClick={() => handleOpenConfirm(item)} key={item} className="cursor-pointer">
                                             <Chip
                                                 label={capitalize(item)}
                                                 variant="outlined"
@@ -182,17 +240,32 @@ export default function UpdateStateOrderDialog({ idOpen, open, setOpen }: IUpdat
                 )}
             </div>
 
-            <Comfirm
-                title={'Notification'}
-                subtitle={
-                    <>
-                        {'Are want to cancel order id #'} {<b>{deleteData?.id}</b>}
-                    </>
-                }
-                open={openComfirm.open}
-                setOpen={setOpenComfirm}
-                onComfirm={handleComfirm}
-            />
+            {dataUpdate && dataUpdate !== 'cancelled' && (
+                <Comfirm
+                    title={'Notification'}
+                    subtitle={
+                        <>
+                            {`Are want to update #`}
+                            {<b>{dataDetail?.id}</b>} {` to `} <b>{capitalize(dataUpdate || '')}</b>
+                        </>
+                    }
+                    open={openComfirm.open}
+                    setOpen={setOpenComfirm}
+                    onComfirm={handleComfirm}
+                />
+            )}
+
+            {dataUpdate === 'cancelled' && (
+                <ReasonDialog
+                    onClose={() => setDataUpdate(null)}
+                    handleAfterClickSend={async (reason) => {
+                        await handleUpdateStatus(reason);
+                        requestIdleCallback(() => {
+                            setDataUpdate(null);
+                        });
+                    }}
+                />
+            )}
         </WraperDialog>
     );
 }

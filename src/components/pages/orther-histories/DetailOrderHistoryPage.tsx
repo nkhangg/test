@@ -1,5 +1,5 @@
 'use client';
-import React, { createContext } from 'react';
+import React, { createContext, useState } from 'react';
 import moment from 'moment';
 import Link from 'next/link';
 import { getIconWithStatus, toCurrency } from '@/utils/format';
@@ -8,12 +8,16 @@ import { Grid, Stack, capitalize } from '@mui/material';
 import DetailOrderhistoryItem from './DetailOrderHistoryItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import { detailOtherHistory } from '@/apis/app';
 import { notFound } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { links } from '@/datas/links';
 import { StateType } from '@/configs/types';
 import { IDetailOrder } from '@/configs/interface';
+import { Comfirm, ReasonDialog } from '@/components';
+import classNames from 'classnames';
+import { detailOtherHistory, updateUserStatusOrder } from '@/apis/user';
+import { contants } from '@/utils/contants';
+import { toast } from 'react-toastify';
 
 export const DetailOrderHistoryContext = createContext<{ data: IDetailOrder | undefined; refetch: () => void }>({ data: undefined, refetch: () => {} });
 
@@ -27,11 +31,46 @@ export default function DetailOrderHistory({ id }: IDetailOrderHistoryProps) {
         queryFn: () => detailOtherHistory(id),
     });
 
+    const [open, setOpen] = useState(false);
+
     if (error) {
         notFound();
     }
 
     const dataDetail = data?.data;
+
+    const status = dataDetail && (dataDetail.state.toLowerCase() as StateType);
+
+    const handleOpenReason = () => {
+        setOpen((prev) => !prev);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleUpdateStatus = async (reason: string) => {
+        if (!dataDetail || status !== 'placed') return;
+
+        try {
+            const response = await updateUserStatusOrder({ id: dataDetail.id, status: 'cancelled', reason });
+
+            if (!response) {
+                toast.warn(contants.messages.errors.handle);
+                return;
+            }
+
+            if (response.errors) {
+                toast.warn(capitalize(response.message));
+                return;
+            }
+
+            toast.success(`Thank you for your interest in the product. We will improve product and service quality.`);
+            refetch();
+        } catch (error) {
+            toast.error(contants.messages.errors.server);
+        }
+    };
 
     return (
         <DetailOrderHistoryContext.Provider
@@ -56,6 +95,13 @@ export default function DetailOrderHistory({ id }: IDetailOrderHistoryProps) {
                             <FontAwesomeIcon icon={faArrowRight} />
                         </Link>
                     </div>
+                }
+                actions={
+                    status === 'placed' && (
+                        <span onClick={handleOpenReason} className="text-red-primary hover:underline cursor-pointer">
+                            Cancel
+                        </span>
+                    )
                 }
             >
                 {dataDetail && (
@@ -153,7 +199,14 @@ export default function DetailOrderHistory({ id }: IDetailOrderHistoryProps) {
                             </div>
 
                             <Grid container key={3} spacing={1} py={'18px'} px={'16px'} mt={'32px'}>
-                                <Grid item lg={6}></Grid>
+                                <Grid item lg={6}>
+                                    {/* {status === 'cancelled' && (
+                                        <>
+                                            <span className="text-center font-medium text-[#303B4E]">Cancellation reason: </span>
+                                            <span className="text-center text-grey-secondary">{dataDetail.description}</span>
+                                        </>
+                                    )} */}
+                                </Grid>
                                 <Grid
                                     item
                                     lg={2}
@@ -180,6 +233,21 @@ export default function DetailOrderHistory({ id }: IDetailOrderHistoryProps) {
                             </Grid>
                         </div>
                     </div>
+                )}
+
+                {open && (
+                    <ReasonDialog
+                        onClose={handleClose}
+                        handleAfterClickSend={async (reason) => {
+                            // do somthing
+
+                            await handleUpdateStatus(reason);
+
+                            requestIdleCallback(() => {
+                                handleClose();
+                            });
+                        }}
+                    />
                 )}
             </BaseBreadcrumbs>
         </DetailOrderHistoryContext.Provider>

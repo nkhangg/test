@@ -356,6 +356,7 @@ export interface IDetailOrder {
     name: string;
     phone: string;
     address: string;
+    description: string;
     paymentMethod: string;
     deliveryMethod: string;
     products: IProductDetailOrders[];

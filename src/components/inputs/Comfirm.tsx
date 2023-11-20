@@ -32,7 +32,9 @@ export default function Comfirm({ title, open, subtitle = 'You want to delete th
                 <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        <Typography>{subtitle}</Typography>
+                        <Typography variant="button" sx={{ textTransform: 'capitalize' }}>
+                            {subtitle}
+                        </Typography>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

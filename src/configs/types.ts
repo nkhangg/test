@@ -125,6 +125,8 @@ export type ApiGetFilterOrderAdmin = (data: IOrderAdminFillterForm) => Promise<I
 
 export type ApiGetDetailFilterOrderAdmin = (id: number | undefined) => Promise<IBaseResponse<IDetailOrder>>;
 
+export type ApiUpdateStatusOrder = (data: UpdateStatusOrderType) => Promise<IBaseResponse<any>>;
+
 export type ApiGetDefaultAddress = () => Promise<IBaseResponse<IInfoAddress>>;
 
 export type ApiGetAddresses = () => Promise<IBaseResponse<IInfoAddress[]>>;
@@ -173,6 +175,12 @@ export type DataRequestUpdateUser = {
     avatar?: string;
 };
 
+export type UpdateStatusOrderType = {
+    id: number;
+    status: StateType;
+    reason?: string;
+};
+
 export type RowOrderSummaryUpdateStatusType = Pick<ICart, 'id' | 'image' | 'name' | 'price' | 'quantity'>;
 
 export type SortType = string | null;
@@ -218,4 +226,12 @@ export type MenuHeaderType = {
     title: string;
     href: string;
     icon: IconProp;
+};
+
+export type HeadTabType = {
+    title: string;
+    icon: IconProp;
+    styles?: {
+        iconPosition: 'bottom' | 'top' | 'end' | 'start' | undefined;
+    };
 };

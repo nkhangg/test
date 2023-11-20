@@ -86,6 +86,7 @@ export const orderDetail: IDetailOrder = {
             repo: 10,
         },
     ],
+    description: '',
     shippingFee: 20000,
     subTotal: 59000,
     total: 79000,

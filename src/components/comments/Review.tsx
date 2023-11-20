@@ -18,13 +18,13 @@ export default function Review({ data }: IReviewProps) {
 
     return (
         <div className="text-black-main">
-            <Grid container spacing={2}>
+            <Grid container spacing={3}>
                 <Grid
                     item
                     lg={1}
                     sx={{
                         display: 'flex',
-                        justifyContent: 'center',
+                        justifyContent: 'flex-end',
                         alignItems: 'center',
                     }}
                 >

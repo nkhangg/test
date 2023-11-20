@@ -1,4 +1,5 @@
-import { IconCopy, IconLayoutDashboard, IconBox, IconDog, IconUser, IconBoxSeam, IconMessage, IconBrandCake } from '@tabler/icons-react';
+import { IconStars } from '@tabler/icons-react';
+import { IconLayoutDashboard, IconBox, IconDog, IconUser, IconBoxSeam, IconMessage, IconBrandCake } from '@tabler/icons-react';
 const Menuitems = [
     {
         navlabel: true,
@@ -44,11 +45,17 @@ const Menuitems = [
         href: '/admin/dashboard/orders',
     },
     {
+        id: 6,
+        title: 'Reviews',
+        icon: IconStars,
+        href: '/admin/dashboard/reviews',
+    },
+    {
         navlabel: true,
         subheader: 'Message Management',
     },
     {
-        id: 6,
+        id: 7,
         title: 'Message',
         icon: IconMessage,
         href: '/admin/dashboard/message/no-one',
@@ -58,7 +65,7 @@ const Menuitems = [
         subheader: 'Orther Management',
     },
     {
-        id: 7,
+        id: 8,
         title: 'Brand',
         icon: IconBrandCake,
         href: '/admin/dashboard/brand',

@@ -1,5 +1,5 @@
-import { MenuHeaderType } from '@/configs/types';
-import { faBox, faBoxesStacked, faCarSide, faCircleCheck, faCircleXmark, faHeart, faRightFromBracket, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
+import { HeadTabType, MenuHeaderType } from '@/configs/types';
+import { faBox, faBoxesStacked, faCarSide, faCircleCheck, faCircleXmark, faHeart, faRightFromBracket, faShoppingCart, faStar, faUser } from '@fortawesome/free-solid-svg-icons';
 
 export const navbar = [
     { title: 'Home', href: '/' },
@@ -55,4 +55,45 @@ export const dataHeadHistory = [
         title: 'Cancelled',
         icon: faCircleXmark,
     },
-];
+] as HeadTabType[];
+export const dataHeadReviews = [
+    {
+        title: 'All order',
+        icon: faBoxesStacked,
+    },
+    {
+        title: '5',
+        icon: faStar,
+        styles: {
+            iconPosition: 'end',
+        },
+    },
+    {
+        title: '4',
+        icon: faStar,
+        styles: {
+            iconPosition: 'end',
+        },
+    },
+    {
+        title: '3',
+        icon: faStar,
+        styles: {
+            iconPosition: 'end',
+        },
+    },
+    {
+        title: '2',
+        icon: faStar,
+        styles: {
+            iconPosition: 'end',
+        },
+    },
+    {
+        title: '1',
+        icon: faStar,
+        styles: {
+            iconPosition: 'end',
+        },
+    },
+] as HeadTabType[];
