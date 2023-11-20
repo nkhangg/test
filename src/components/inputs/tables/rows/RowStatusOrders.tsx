@@ -3,7 +3,6 @@ import TableRow from '../TableRow';
 import { Chip, TableCell, Typography, capitalize } from '@mui/material';
 import { IRowStatusOrders } from '@/configs/interface';
 import { toCurrency } from '@/utils/format';
-import moment from 'moment';
 import { statusColor } from '../../../../../tailwind.config';
 
 export interface IRowStatusProps {

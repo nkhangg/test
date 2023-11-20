@@ -20,6 +20,7 @@ export interface IBaseBreadcrumbsProps {
         border: boolean;
     };
     footer?: ReactNode;
+    actions?: ReactNode;
 }
 
 function BaseBreadcrumbs({
@@ -32,6 +33,7 @@ function BaseBreadcrumbs({
         border: true,
     },
     footer,
+    actions,
 }: IBaseBreadcrumbsProps) {
     const [loading, setLoading] = useState(isLoading);
 
@@ -57,6 +59,7 @@ function BaseBreadcrumbs({
                 </div>
             </ContainerContent>
             <BoxTitle
+                actions={actions}
                 border={stytle.border}
                 mbUnderline={stytle.mbUnderline}
                 mt="mt-[46px]"

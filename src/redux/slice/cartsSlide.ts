@@ -48,9 +48,15 @@ export const getCart = createAsyncThunk('cart/getCartUser', async (_, thunkApi) 
                 username,
             };
 
-        console.log('response', response);
+        const modifyResponse = response.data.map((item) => {
+            return {
+                ...item,
+                checked: false,
+            };
+        });
+
         return {
-            data: response.data as ICart[],
+            data: modifyResponse as ICart[],
             username,
         };
     } catch (error) {
@@ -147,10 +153,7 @@ export const addCart = createAsyncThunk('cart/addCartUser', async (data: ICart, 
             toast.error(capitalize(response.message));
 
             return {
-                data: {
-                    ...data,
-                    checked: true,
-                },
+                data,
                 username,
             };
         }

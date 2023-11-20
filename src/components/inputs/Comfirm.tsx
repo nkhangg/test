@@ -43,38 +43,37 @@ export default function Comfirm({
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [confirm]);
 
-   return (
-      <div>
-         <WraperDialogComfirm
-            open={open}
-            setOpen={setOpen}
-            handleClose={handleClose}
-         >
-            <DialogTitle id='alert-dialog-title'>{title}</DialogTitle>
-            <DialogContent>
-               <DialogContentText id='alert-dialog-description'>
-                  <Typography>{subtitle}</Typography>
-               </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-               <Button
-                  onClick={() => {
-                     setConfirm({...confirm, comfirm: 'cancel'});
-                     handleClose();
-                  }}
-               >
-                  Cancel
-               </Button>
-               <Button
-                  onClick={() => {
-                     setConfirm({...confirm, comfirm: 'ok'});
-                     handleClose();
-                  }}
-               >
-                  Ok
-               </Button>
-            </DialogActions>
-         </WraperDialogComfirm>
-      </div>
-   );
+    return (
+        <div>
+            <WraperDialogComfirm open={open} setOpen={setOpen} handleClose={handleClose}>
+                <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        <Typography variant="button" sx={{ textTransform: 'capitalize' }}>
+                            {subtitle}
+                        </Typography>
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={() => {
+                            setConfirm({ ...confirm, comfirm: 'cancel' });
+                            handleClose();
+                        }}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            setConfirm({ ...confirm, comfirm: 'ok' });
+                            handleClose();
+                        }}
+                    >
+                        Ok
+                    </Button>
+                </DialogActions>
+            </WraperDialogComfirm>
+        </div>
+    );
+  
 }

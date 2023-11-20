@@ -3,12 +3,14 @@ import {
     ApiCreateCartUser,
     ApiCreateOrder,
     ApiCreateReivew,
+    ApiDetailHistory,
     ApiGetAddresses,
     ApiGetAddressesById,
     ApiGetCartUser,
     ApiGetCurUser,
     ApiGetDefaultAddress,
     ApiHandleAddresses,
+    ApiHistory,
     ApiLogin,
     ApiPayment,
     ApiRefreshVerifyCode,
@@ -16,8 +18,11 @@ import {
     ApiResetPassword,
     ApiUpdateCartUser,
     ApiUpdateCurUser,
+    ApiUpdateStatusOrder,
     ApiVerifyCode,
     DataRequestUpdateUser,
+    StateType,
+    UpdateStatusOrderType,
 } from '@/configs/types';
 import axios from '../configs/axios';
 import { setTokenToCookie } from '@/utils/cookie';
@@ -289,6 +294,47 @@ export const createCartUser: ApiCreateCartUser = async (data: ICart) => {
             size: data.size,
             quantity: data.quantity,
         },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const updateUserStatusOrder: ApiUpdateStatusOrder = async (data: UpdateStatusOrderType) => {
+    const res = await axios({
+        method: 'POST',
+        url: 'user/order/cancel/' + data.id,
+        data: {
+            status: data.status,
+            reason: data.reason,
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const otherHistory: ApiHistory = async (page: number | undefined, status: StateType | string) => {
+    const res = await axios({
+        method: 'GET',
+        url: 'user/order/history',
+        params: {
+            page: page || 0,
+            status,
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const detailOtherHistory: ApiDetailHistory = async (id: string | number) => {
+    const res = await axios({
+        method: 'GET',
+        url: 'user/order/history/' + id,
     });
 
     if (!res) return null;

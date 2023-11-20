@@ -5,6 +5,7 @@
 
 body {
     overflow: overlay;
+    padding-right: 0px !important;
 }
 
 html {

@@ -5,10 +5,10 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
 import OtherHistoryItem from './OtherHistoryItem';
-import { otherHistory } from '@/apis/app';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { BaseBreadcrumbs } from '../common';
 import { links } from '@/datas/links';
+import { otherHistory } from '@/apis/user';
 export interface IOttherHistoryProps {}
 
 export default function OttherHistoryPage(props: IOttherHistoryProps) {
@@ -21,7 +21,7 @@ export default function OttherHistoryPage(props: IOttherHistoryProps) {
     const [status, setStatus] = useState('');
 
     const { data, isLoading, error } = useQuery({
-        queryKey: ['histories', page, status],
+        queryKey: ['histories/otherHistory', page, status],
         queryFn: () => otherHistory(page ? parseInt(page) - 1 : undefined, status),
     });
 
@@ -52,6 +52,9 @@ export default function OttherHistoryPage(props: IOttherHistoryProps) {
             >
                 <HeadHistory
                     onTab={(status) => {
+                        if (parseInt(page || '1') > 1) {
+                            router.push(links.history.orderHistory + `?page=1`);
+                        }
                         setStatus(status.title.toLowerCase() === 'all order' ? '' : status.title);
                     }}
                 />

@@ -42,5 +42,8 @@ export { default as InitState } from './InitState';
 // orders
 export { default as OrdersAdminPage } from './admin/orders/OrdersAdminPage';
 
-// manage
+// message
 export { default as MessagePage } from './admin/message/MessagePage';
+
+// reviews
+export { default as ReviewManamentPage } from './admin/review/ReviewManamentPage';

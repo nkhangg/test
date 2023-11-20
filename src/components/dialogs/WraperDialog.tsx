@@ -1,7 +1,7 @@
 'use client';
 import React, { ReactNode, useEffect, useLayoutEffect, useState } from 'react';
 import { TransitionProps } from '@mui/material/transitions';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogProps, DialogTitle, Slide } from '@mui/material';
+import { Dialog, DialogProps, Slide } from '@mui/material';
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -9,7 +9,7 @@ const Transition = React.forwardRef(function Transition(
     },
     ref: React.Ref<unknown>,
 ) {
-    return <Slide direction="down" ref={ref} {...props} />;
+    return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export interface IWraperDialogProps {
@@ -24,14 +24,6 @@ export default function WraperDialog({ open, children, className, setOpen, ...pr
         setOpen(false);
     };
 
-    useEffect(() => {
-        if (!open) return;
-        document.body.style.paddingRight = '0px';
-
-        return () => {
-            document.body.style.paddingRight = 'auto';
-        };
-    }, [open]);
     return (
         <>
             <Dialog

@@ -25,6 +25,7 @@ export const contants = {
         },
         review: {
             whenEmpty: 'Let us know your satisfaction with the product',
+            whenEmptyReason: 'Please let us know the reason for better service.',
         },
     },
     roles: {
