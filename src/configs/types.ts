@@ -123,6 +123,8 @@ export type ApiGetOrders = () => Promise<any>;
 
 export type ApiGetFilterOrderAdmin = (data: IOrderAdminFillterForm) => Promise<IBaseResponse<IOrderAdminItem[]>>;
 
+export type ApiGetDetailFilterOrderAdmin = (id: number | undefined) => Promise<IBaseResponse<IDetailOrder>>;
+
 export type ApiGetDefaultAddress = () => Promise<IBaseResponse<IInfoAddress>>;
 
 export type ApiGetAddresses = () => Promise<IBaseResponse<IInfoAddress[]>>;
