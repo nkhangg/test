@@ -1,10 +1,12 @@
+const commonAdmin = '/admin/dashboard';
+
 export const links = {
     home: '/',
     pet: '/pet/',
     produt: '/product/',
     products: '/take-action/',
-    admin: '/admin/dashboard/',
-    adminMidleware: '/admin/dashboard',
+    admin: commonAdmin + '/',
+    adminMidleware: commonAdmin,
     auth: {
         login: '/login',
         register: 'register',
@@ -17,5 +19,8 @@ export const links = {
     },
     history: {
         orderHistory: '/other-history',
+    },
+    reviews: {
+        management: commonAdmin + '/reviews',
     },
 };

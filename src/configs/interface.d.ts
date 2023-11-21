@@ -75,7 +75,7 @@ export interface IDetailProduct {
     sizeAndPrice: SizeAndPrice[];
     suggestions: IProduct[];
     reviews: number;
-    reviewItems: IReview[];
+    reviewItems: IReviewHasReplay[];
 }
 
 export interface IDataReview {
@@ -340,15 +340,6 @@ export interface IUserManage {
     active: boolean;
 }
 
-export interface IReview {
-    id: number;
-    avatar: string;
-    name: string;
-    rating: number;
-    sizes: number[];
-    comment: string;
-    createAt: string;
-}
 export interface IDetailOrder {
     id: number;
     placedDate: string;
@@ -481,8 +472,55 @@ export interface IOrderAdminFillterForm {
     status: string;
 }
 
+export interface IReviewAdminFillterForm {
+    search: string;
+    sort: string;
+    minStar: string;
+    maxStar: string;
+}
+
 export interface IBrand {
     id: number;
     brand: string;
     createdAt?: string;
+}
+
+export interface IRowReviewTable {
+    productId: string;
+    productName: string;
+    image: string;
+    rate: number;
+    lastest: string;
+    reviews: number;
+    commentNoRep: number;
+}
+
+export interface IReview {
+    id: number;
+    avatar: string;
+    name: string;
+    rating: number | null;
+    sizes: number[] | null;
+    comment: string;
+    createAt: string;
+}
+
+export interface IReviewHasReplay extends IReview {
+    replayItems: IReviewHasReplay[] | null;
+}
+
+export interface IDataDetailReview {
+    id: string;
+    name: string;
+    image: string;
+    rate: number;
+    totalRate: number;
+    detailRate: {
+        five: number;
+        four: number;
+        three: number;
+        two: number;
+        one: number;
+    };
+    reviews: IReviewHasReplay[];
 }

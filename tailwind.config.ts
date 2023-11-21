@@ -40,7 +40,7 @@ const config: Config = {
                 'green-86EFAC': '#86EFAC',
                 'green-5FA503': '#5FA503',
                 'black-main': '#374151',
-                'fill-heart': '#FB7185',
+                'fill-heart': '#FA536B',
                 'gray-primary': '#838383',
                 'red-primary': '#EF4444',
                 'violet-primary': '#505DE8',

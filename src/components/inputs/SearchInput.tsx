@@ -14,7 +14,7 @@ function SearchInput({ value, handleChange, handleClose }: ISearchInputProps) {
         <div className="flex items-center border border-gray-primary rounded py-2 px-4">
             <input value={value} onChange={handleChange} name="search" className="flex-1 outline-none mr-2" placeholder="Search for" type="text" />
             <WrapperAnimation onClick={handleClose} hover={{}} className="flex items-center justify-center cursor-pointer">
-                <FontAwesomeIcon className="text-[#A4A4A4]" icon={value.length > 0 ? faXmark : faMagnifyingGlass} />
+                <FontAwesomeIcon className="text-[#A4A4A4] h-4 w-4" icon={value.length > 0 ? faXmark : faMagnifyingGlass} />
             </WrapperAnimation>
         </div>
     );

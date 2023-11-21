@@ -10,7 +10,7 @@ export interface IWrapperAnimationProps {
         exits: {};
     };
     tag?: null | {};
-    styleTag?: 'scale';
+    styleTag?: 'scale' | 'none';
     hover?: {};
     className?: string;
     children: ReactNode;
@@ -36,6 +36,7 @@ const WrapperAnimation = forwardRef<Ref, IWrapperAnimationProps>(
             scale: {
                 scale: 0.9,
             },
+            none: {},
         };
 
         return (
