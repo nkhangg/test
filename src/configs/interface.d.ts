@@ -480,3 +480,9 @@ export interface IOrderAdminFillterForm {
     dateEnd: string;
     status: string;
 }
+
+export interface IBrand {
+    id: number;
+    brand: string;
+    createdAt?: string;
+}

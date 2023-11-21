@@ -5,7 +5,7 @@ import { getOrdersAdminWithFilter } from '@/apis/admin/orders';
 import { HeadHistory } from '@/components/common';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { dataHeadHistory } from '@/datas/header';
-import { BoxTitle, Comfirm, DialogDateChooser, LoadingPrimary, LoadingSecondary, RowStatusOrders, Table, TippyChooser, UpdateStateOrderDialog } from '@/components';
+import { BoxTitle, Comfirm, DialogDateChooser, LoadingPrimary, LoadingSecondary, RowStatusOrders, SearchInput, Table, TippyChooser, UpdateStateOrderDialog } from '@/components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IOrderAdminFillterForm, IRowStatusOrders } from '@/configs/interface';
 import ThymeleafTable from './ThymeleafTable';
@@ -116,10 +116,7 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                     <BoxTitle mt="mt-0" mbUnderline="mb-0" border={false} title="ORDER MANAGEMENT" className="">
                         <div className="flex items-center justify-between text-1xl mb-10 w-full">
                             <div className="flex items-center gap-5 md:gap-10">
-                                <div className="flex items-center border border-gray-primary rounded py-2 px-4">
-                                    <input name="search" onChange={handleChange} className="flex-1 outline-none mr-2" placeholder="Search for" type="text" />
-                                    <FontAwesomeIcon className="text-[#A4A4A4]" icon={faMagnifyingGlass} />
-                                </div>
+                                <SearchInput handleClose={() => setFilter({ ...filter, search: '' })} handleChange={handleChange} value={filter.search} />
 
                                 <TippyChooser
                                     onValue={(sort) => {

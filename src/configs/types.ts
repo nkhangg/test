@@ -33,6 +33,7 @@ import {
     IOrderAdminItem,
     IOrderAdminFillterForm,
     ICart,
+    IBrand,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 export type ValidTags = keyof JSX.IntrinsicElements;
@@ -142,6 +143,10 @@ export type ApiGetCartUser = () => Promise<IBaseResponse<ICart[]>>;
 export type ApiUpdateCartUser = (data: ICart[]) => Promise<IBaseResponse<ICart[]>>;
 
 export type ApiCreateCartUser = (data: ICart) => Promise<IBaseResponse<ICart>>;
+
+export type ApiGetBrands = () => Promise<IBaseResponse<IBrand[]>>;
+
+export type ApiActionBrand = (data: IBrand) => Promise<IBaseResponse<IBrand>>;
 
 export type ApiProvinces<T> = (id?: string | number) => Promise<T>;
 

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import { CardInfo, DynamicInput, TextField, Notifycation, LoadingPrimary } from '@/components';
+import { CardInfo, DynamicInput, TextField, Notifycation, LoadingPrimary, InputBrand } from '@/components';
 import { SelectImages } from '@/components/common';
 import { DashboardCard } from '@/components/dashboard';
 import { Button, CircularProgress, Grid, MenuItem, Stack, capitalize } from '@mui/material';
@@ -71,7 +71,7 @@ export interface ICreateOrUpdateProductProps {
 }
 
 export default function CreateOrUpdateProduct({ dataOusite }: ICreateOrUpdateProductProps) {
-    const { typesAndBrandsData } = useTypeAndBrand();
+    const { typesAndBrandsData, refetch } = useTypeAndBrand();
 
     const router = useRouter();
     const dispatch = useDispatch();
@@ -206,7 +206,7 @@ export default function CreateOrUpdateProduct({ dataOusite }: ICreateOrUpdatePro
                             </ComInput>
                         </Grid>
                         <Grid item lg={6} md={12} xs={12}>
-                            <DynamicInput
+                            <InputBrand
                                 propsInput={{
                                     name: 'brand',
                                     value: data.brand + '',
@@ -216,6 +216,9 @@ export default function CreateOrUpdateProduct({ dataOusite }: ICreateOrUpdatePro
                                 }}
                                 dataSelect={typesAndBrandsData.brands || []}
                                 title="Brand"
+                                onAfterSubmit={() => {
+                                    refetch();
+                                }}
                             />
                         </Grid>
                     </Grid>
