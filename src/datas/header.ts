@@ -58,39 +58,39 @@ export const dataHeadHistory = [
 ] as HeadTabType[];
 export const dataHeadReviews = [
     {
-        title: 'All order',
+        title: 'All',
         icon: faBoxesStacked,
     },
     {
-        title: '5',
+        title: '5 - 4',
         icon: faStar,
         styles: {
             iconPosition: 'end',
         },
     },
     {
-        title: '4',
+        title: '4 - 3',
         icon: faStar,
         styles: {
             iconPosition: 'end',
         },
     },
     {
-        title: '3',
+        title: '3 - 2',
         icon: faStar,
         styles: {
             iconPosition: 'end',
         },
     },
     {
-        title: '2',
+        title: '2 - 1',
         icon: faStar,
         styles: {
             iconPosition: 'end',
         },
     },
     {
-        title: '1',
+        title: '1 - 0',
         icon: faStar,
         styles: {
             iconPosition: 'end',

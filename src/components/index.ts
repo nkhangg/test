@@ -37,8 +37,9 @@ export { default as NativeConfirm } from './inputs/NativeConfirm';
 
 // table
 export { default as Table } from './inputs/tables/Table';
-export { default as RowBrand } from './inputs/tables/rows/RowBrand';
 export { default as TableRow } from './inputs/tables/TableRow';
+export { default as RowBrand } from './inputs/tables/rows/RowBrand';
+export { default as RowReview } from './inputs/tables/rows/RowReview';
 export { default as RowStatusOrders } from './inputs/tables/rows/RowStatusOrders';
 export { default as RowOrderSummaryUpdateStatus } from './inputs/tables/rows/RowOrderSummaryUpdateStatus';
 

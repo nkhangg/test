@@ -2,7 +2,7 @@
 import React, { ChangeEvent, createContext, useContext, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getOrdersAdminWithFilter } from '@/apis/admin/orders';
-import { HeadHistory } from '@/components/common';
+import { HeadHistory, SortAdmin } from '@/components/common';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { dataHeadHistory } from '@/datas/header';
 import { BoxTitle, Comfirm, DialogDateChooser, LoadingPrimary, LoadingSecondary, RowStatusOrders, SearchInput, Table, TippyChooser, UpdateStateOrderDialog } from '@/components';
@@ -114,7 +114,7 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
             {anotherLayout && (
                 <OrderAdminPageContext.Provider value={{ refetch }}>
                     <BoxTitle mt="mt-0" mbUnderline="mb-0" border={false} title="ORDER MANAGEMENT" className="">
-                        <div className="flex items-center justify-between text-1xl mb-10 w-full">
+                        {/* <div className="flex items-center justify-between text-1xl mb-10 w-full">
                             <div className="flex items-center gap-5 md:gap-10">
                                 <SearchInput handleClose={() => setFilter({ ...filter, search: '' })} handleChange={handleChange} value={filter.search} />
 
@@ -142,7 +142,37 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                                     });
                                 }}
                             />
-                        </div>
+                        </div> */}
+
+                        <SortAdmin
+                            searchProps={{
+                                handleClose: () => setFilter({ ...filter, search: '' }),
+                                handleChange: handleChange,
+                                value: filter.search,
+                            }}
+                            sortProps={{
+                                onValue: (sort) => {
+                                    console.log(sort);
+                                    setFilter({
+                                        ...filter,
+                                        sort: sort.id,
+                                    });
+                                },
+                                data: dataPopup,
+                                title: 'Sort by',
+                            }}
+                            dateProps={{
+                                onDatas: (dates) => {
+                                    if (!dates) return;
+
+                                    setFilter({
+                                        ...filter,
+                                        dateStart: dates.start || '',
+                                        dateEnd: dates.end || '',
+                                    });
+                                },
+                            }}
+                        />
                         <HeadHistory
                             onTab={(tab) => {
                                 setFilter({
