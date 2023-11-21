@@ -67,7 +67,7 @@ export default function BrandManagementPage(props: IBrandManagementPageProps) {
                             return <RowBrand handleOpenRow={handleOpen} key={brand.id} index={index} data={brand} />;
                         })}
                     </Table>
-                    {data && data.length <= 0 && (
+                    {dataAfterSort && dataAfterSort.length <= 0 && (
                         <div className="flex items-center justify-center py-5 text-violet-primary">
                             <b>No suitable data found</b>
                         </div>
