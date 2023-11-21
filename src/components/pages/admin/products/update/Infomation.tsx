@@ -1,7 +1,7 @@
 import { Button, CircularProgress, Grid, MenuItem, Stack } from '@mui/material';
 import React, { ChangeEvent, FocusEvent, FormEvent, memo, useEffect, useState } from 'react';
 import ComInput from '../ComInput';
-import { DynamicInput, LoadingPrimary, TextField } from '@/components';
+import { DynamicInput, InputBrand, LoadingPrimary, TextField } from '@/components';
 import { useQuery } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 import { typesAndBrands } from '@/apis/app';
@@ -40,7 +40,7 @@ export interface InfomationProps {
 
 function Infomation({ id }: InfomationProps) {
     // get types and brands on server
-    const { typesAndBrandsData } = useTypeAndBrand();
+    const { typesAndBrandsData, refetch } = useTypeAndBrand();
     // get init data on server
     const productInfoData = useQuery({
         queryKey: ['productInfoData', id],
@@ -161,16 +161,19 @@ function Infomation({ id }: InfomationProps) {
                     </ComInput>
                 </Grid>
                 <Grid item lg={6} md={12} xs={12}>
-                    <DynamicInput
+                    <InputBrand
                         propsInput={{
                             name: 'brand',
                             value: data.brand + '',
                             message: errors.brand,
-                            onBlur: handleBlur,
                             onChange: handleChange,
+                            onBlur: handleBlur,
                         }}
                         dataSelect={typesAndBrandsData.brands || []}
                         title="Brand"
+                        onAfterSubmit={() => {
+                            refetch();
+                        }}
                     />
                 </Grid>
             </Grid>

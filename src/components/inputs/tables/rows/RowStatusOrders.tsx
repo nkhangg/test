@@ -50,7 +50,7 @@ export default function RowStatus({ data, index, handleOpen }: IRowStatusProps) 
                 />
             </TableCell>
             <TableCell onClick={handleOpen ? () => handleOpen(data) : undefined}>
-                <span className="text-violet-primary hover:underline cursor-pointer select-none">Open</span>
+                <span className="text-violet-primary hover:underline cursor-pointer select-none font-medium">Open</span>
             </TableCell>
         </TableRow>
     );

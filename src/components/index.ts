@@ -20,7 +20,7 @@ export { default as DivTextfield } from './inputs/DivTextfield';
 export { default as MenuDropDown } from './inputs/MenuDropDown';
 export { default as MenuDropDownRadio } from './inputs/MenuDropDownRadio';
 export { default as DynamicInput } from './inputs/DynamicInput';
-export { default as Comfirm } from './inputs/Comfirm';
+export { default as InputBrand } from './inputs/InputBrand';
 export { default as AvartarEdit } from './inputs/AvartarEdit';
 export { default as AddressInfoPayment } from './inputs/address/AddressInfoPayment';
 export { default as AddressDialog } from './inputs/address/AddressDialog';
@@ -29,10 +29,15 @@ export { default as ListAddress } from './inputs/address/ListAddress';
 export { default as AddressTippy } from './inputs/address/AddressTippy';
 export { default as AddressForm } from './inputs/address/AddressForm';
 export { default as TippyChooser } from './inputs/tippys/TippyChooser';
-export { default as BaseAddressDialog } from './inputs/address/BaseAddressDialog';
+export { default as SearchInput } from './inputs/SearchInput';
+
+// comfirm
+export { default as Comfirm } from './inputs/Comfirm';
+export { default as NativeConfirm } from './inputs/NativeConfirm';
 
 // table
 export { default as Table } from './inputs/tables/Table';
+export { default as RowBrand } from './inputs/tables/rows/RowBrand';
 export { default as TableRow } from './inputs/tables/TableRow';
 export { default as RowStatusOrders } from './inputs/tables/rows/RowStatusOrders';
 export { default as RowOrderSummaryUpdateStatus } from './inputs/tables/rows/RowOrderSummaryUpdateStatus';
@@ -88,6 +93,8 @@ export { default as RatingDialog } from './dialogs/RatingDialog';
 export { default as DialogDateChooser } from './dialogs/DialogDateChooser';
 export { default as UpdateStateOrderDialog } from './dialogs/UpdateStateOrderDialog';
 export { default as ReasonDialog } from './dialogs/ReasonDialog';
+export { default as BaseAddressDialog } from './inputs/address/BaseAddressDialog';
+export { default as FormBrandDialog } from './dialogs/FormBrandDialog';
 
 // chats
 
