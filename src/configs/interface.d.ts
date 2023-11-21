@@ -75,7 +75,7 @@ export interface IDetailProduct {
     sizeAndPrice: SizeAndPrice[];
     suggestions: IProduct[];
     reviews: number;
-    reviewItems: IReview[];
+    reviewItems: IReviewHasReplay[];
 }
 
 export interface IDataReview {
@@ -499,14 +499,14 @@ export interface IReview {
     id: number;
     avatar: string;
     name: string;
-    rating: number;
-    sizes: number[];
+    rating: number | null;
+    sizes: number[] | null;
     comment: string;
     createAt: string;
 }
 
 export interface IReviewHasReplay extends IReview {
-    children: IReviewHasReplay[] | null;
+    replayItems: IReviewHasReplay[] | null;
 }
 
 export interface IDataDetailReview {
@@ -522,5 +522,5 @@ export interface IDataDetailReview {
         two: number;
         one: number;
     };
-    reivews: IReviewHasReplay[];
+    reviews: IReviewHasReplay[];
 }

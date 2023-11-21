@@ -4,7 +4,10 @@ const baseApiGHTK = 'https://services.giaohangtietkiem.vn/';
 const TOKEN_GHTK = 'dea4f0a9332fcc5d6c34f07a0f157ec6fe51e82e';
 
 export const contants = {
+    shopName: 'Pet Foster',
     avartarDefault: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+    avartarAdminDefault: 'https://media-cdn-v2.laodong.vn/storage/newsportal/2023/8/15/1229028/Yujin-2.jpeg',
+
     askConditions: [
         'Are you working or still in school?',
         'Have you received consent from your family/host/roommate to adopt your baby?',
@@ -18,6 +21,7 @@ export const contants = {
         errors: {
             server: 'Something went wrong !',
             handle: 'There was an error during processing, please try again or contact customer service. Thanks',
+            notFound: "Can't found this page.",
         },
         success: {
             payment: 'You have placed your order successfully. Thank you for your trust ❤️❤️❤️',

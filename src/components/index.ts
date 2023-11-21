@@ -30,6 +30,7 @@ export { default as AddressTippy } from './inputs/address/AddressTippy';
 export { default as AddressForm } from './inputs/address/AddressForm';
 export { default as TippyChooser } from './inputs/tippys/TippyChooser';
 export { default as SearchInput } from './inputs/SearchInput';
+export { default as RatingStar } from './inputs/RatingStar';
 
 // comfirm
 export { default as Comfirm } from './inputs/Comfirm';
@@ -82,6 +83,7 @@ export { default as Pagination } from './pagination/Pagination';
 // loadings
 export { default as LoadingPrimary } from './common/loadings/LoadingPrimary';
 export { default as LoadingSecondary } from './common/loadings/LoadingSecondary';
+export { default as BorderLinearProgress } from './common/loadings/BorderLinearProgress';
 
 // notifycation
 export { default as Notifycation } from './notifycations/Notifycation';

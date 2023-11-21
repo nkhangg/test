@@ -47,6 +47,7 @@ export { default as MessagePage } from './admin/message/MessagePage';
 
 // reviews
 export { default as ReviewManamentPage } from './admin/review/ReviewManamentPage';
+export { default as ReviewProductDetailPage } from './admin/review/ReviewProductDetailPage';
 
 // brand
 export { default as BrandManagementPage } from './admin/brand/BrandManagementPage';

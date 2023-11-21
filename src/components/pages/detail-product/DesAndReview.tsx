@@ -1,5 +1,5 @@
 import { LoadingSecondary, Review } from '@/components';
-import { IReview as RV } from '@/configs/interface';
+import { IReviewHasReplay } from '@/configs/interface';
 import { toAbbrevNumber } from '@/utils/format';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,7 +9,7 @@ import React, { SyntheticEvent, useEffect, useState } from 'react';
 
 export interface IDesAndReviewProps {
     description: string;
-    reviews: RV[];
+    reviews: IReviewHasReplay[];
 }
 
 interface TabPanelProps {

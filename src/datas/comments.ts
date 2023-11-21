@@ -89,7 +89,7 @@ export const reviews = [
 //     rate: 5,
 // };
 
-const detailReivewAdmin: IDataDetailReview = {
+export const detailReivewAdmin: IDataDetailReview = {
     id: 'PC0001',
     name: 'ME-O Tuna In Jelly',
     image: 'https://github.com/nkhangg/petfoster-animal-back-end-2.0/issues',
@@ -102,7 +102,7 @@ const detailReivewAdmin: IDataDetailReview = {
         one: 2,
     },
     totalRate: 200,
-    reivews: [
+    reviews: [
         {
             id: 1,
             name: 'An Yujin',
@@ -111,7 +111,7 @@ const detailReivewAdmin: IDataDetailReview = {
             avatar: 'https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2023/04/ahn-yujin1.jpeg?fit=640%2C20000&quality=95&ssl=1',
             comment: 'The product quality is amazing. I was really pleased with the overall shopping experience',
             createAt: new Date().toDateString(),
-            children: [
+            replayItems: [
                 {
                     id: 2,
                     name: 'An Yujin Replay',
@@ -120,7 +120,7 @@ const detailReivewAdmin: IDataDetailReview = {
                     avatar: 'https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2023/04/ahn-yujin1.jpeg?fit=640%2C20000&quality=95&ssl=1',
                     comment: 'The product quality is amazing. I was really pleased with the overall shopping experience',
                     createAt: new Date().toDateString(),
-                    children: null,
+                    replayItems: null,
                 },
                 {
                     id: 3,
@@ -130,7 +130,7 @@ const detailReivewAdmin: IDataDetailReview = {
                     avatar: 'https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2023/04/ahn-yujin1.jpeg?fit=640%2C20000&quality=95&ssl=1',
                     comment: 'The product quality is amazing. I was really pleased with the overall shopping experience',
                     createAt: new Date().toDateString(),
-                    children: null,
+                    replayItems: null,
                 },
             ],
         },
@@ -142,7 +142,7 @@ const detailReivewAdmin: IDataDetailReview = {
             avatar: 'https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2023/04/ahn-yujin1.jpeg?fit=640%2C20000&quality=95&ssl=1',
             comment: 'The product quality is amazing. I was really pleased with the overall shopping experience',
             createAt: new Date().toDateString(),
-            children: [
+            replayItems: [
                 {
                     id: 5,
                     name: 'An Yujin Replay',
@@ -151,7 +151,7 @@ const detailReivewAdmin: IDataDetailReview = {
                     avatar: 'https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2023/04/ahn-yujin1.jpeg?fit=640%2C20000&quality=95&ssl=1',
                     comment: 'The product quality is amazing. I was really pleased with the overall shopping experience',
                     createAt: new Date().toDateString(),
-                    children: null,
+                    replayItems: null,
                 },
             ],
         },
@@ -163,7 +163,7 @@ const detailReivewAdmin: IDataDetailReview = {
             avatar: 'https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2023/04/ahn-yujin1.jpeg?fit=640%2C20000&quality=95&ssl=1',
             comment: 'The product quality is amazing. I was really pleased with the overall shopping experience',
             createAt: new Date().toDateString(),
-            children: null,
+            replayItems: null,
         },
     ],
 };
