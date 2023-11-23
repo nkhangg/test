@@ -7,14 +7,17 @@ import { IRowReviewTable } from '@/configs/interface';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarEm } from '@fortawesome/free-regular-svg-icons';
+import moment from 'moment';
+import { useRouter } from 'next/navigation';
 export interface IRowReviewProps {
     index: number;
     data: IRowReviewTable;
 }
 
 export default function RowReview({ index, data }: IRowReviewProps) {
+    const router = useRouter();
     return (
-        <TableRow>
+        <TableRow onClick={() => router.push(links.reviews.management + `/${data.productId}`)}>
             <TableCell align="center">
                 <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
                     {index + 1}
@@ -57,7 +60,7 @@ export default function RowReview({ index, data }: IRowReviewProps) {
             </TableCell>
             <TableCell align="center">
                 <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                    {data.lastest}
+                    {data.lastest ? moment(data.lastest).format('DD/MM/yyyy') : 'not yet'}
                 </Typography>
             </TableCell>
             <TableCell align="center">

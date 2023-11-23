@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 import WraperDialog from './WraperDialog';
 import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import { reasons } from '@/datas/reason';
-import { WrapperAnimation } from '..';
+import { TextArea, WrapperAnimation } from '..';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import Validate from '@/utils/validate';
+import { motion, AnimatePresence } from 'framer-motion';
 import { contants } from '@/utils/contants';
 
 export interface IReasonDialogProps {
@@ -18,6 +19,7 @@ export default function ReasonDialog({ handleAfterClickSend, onClose }: IReasonD
     const [isOpen, setIsOpen] = useState(true);
     const [reason, setReason] = useState('');
     const [error, setError] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const handleClickSend = () => {
         console.log(reason);
@@ -46,6 +48,17 @@ export default function ReasonDialog({ handleAfterClickSend, onClose }: IReasonD
         }
     };
 
+    const handleChooseReason = (item: string, index: number) => {
+        if (index === reasons.length - 1) {
+            setReason('');
+            setOpen(true);
+            return;
+        } else {
+            setOpen(false);
+        }
+        setReason(item);
+    };
+
     return (
         <WraperDialog
             sx={{
@@ -56,13 +69,21 @@ export default function ReasonDialog({ handleAfterClickSend, onClose }: IReasonD
             setOpen={setIsOpen}
             open={isOpen}
         >
-            <div className="py-6 px-8 relative">
+            <div className="py-6 px-8 relative overflow-hidden">
                 <h4 className="text-xl text-[#303B4E] font-semibold text-center mb-5">LET US KNOW THE REASON FOR CANCELING ?</h4>
 
                 <RadioGroup aria-labelledby="demo-radio-buttons-group-label" defaultValue="female" name="radio-buttons-group">
-                    {reasons.map((item) => {
-                        return <FormControlLabel onClick={() => setReason(item)} key={item} value={item} control={<Radio />} label={item} />;
+                    {reasons.map((item, index) => {
+                        return <FormControlLabel onClick={() => handleChooseReason(item, index)} key={item} value={item} control={<Radio />} label={item} />;
                     })}
+
+                    <AnimatePresence>
+                        {open && (
+                            <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} className="">
+                                <TextArea autoFocus placeholder="write your reason..." className="w-full" value={reason} onChange={(e) => setReason(e.target.value)} />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
 
                     {error && <span className="text-xs text-red-primary">{contants.messages.review.whenEmptyReason}</span>}
                 </RadioGroup>

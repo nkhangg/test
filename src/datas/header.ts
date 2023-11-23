@@ -1,5 +1,17 @@
 import { HeadTabType, MenuHeaderType } from '@/configs/types';
-import { faBox, faBoxesStacked, faCarSide, faCircleCheck, faCircleXmark, faHeart, faRightFromBracket, faShoppingCart, faStar, faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+    faBox,
+    faBoxesStacked,
+    faCarSide,
+    faCircleCheck,
+    faCircleXmark,
+    faHeart,
+    faRightFromBracket,
+    faShoppingCart,
+    faStar,
+    faUser,
+    faUserTie,
+} from '@fortawesome/free-solid-svg-icons';
 
 export const navbar = [
     { title: 'Home', href: '/' },
@@ -56,44 +68,56 @@ export const dataHeadHistory = [
         icon: faCircleXmark,
     },
 ] as HeadTabType[];
+
 export const dataHeadReviews = [
     {
         title: 'All',
         icon: faBoxesStacked,
     },
     {
-        title: '5 - 4',
+        title: '5',
         icon: faStar,
         styles: {
             iconPosition: 'end',
         },
     },
     {
-        title: '4 - 3',
+        title: '4',
         icon: faStar,
         styles: {
             iconPosition: 'end',
         },
     },
     {
-        title: '3 - 2',
+        title: '3',
         icon: faStar,
         styles: {
             iconPosition: 'end',
         },
     },
     {
-        title: '2 - 1',
+        title: '2',
         icon: faStar,
         styles: {
             iconPosition: 'end',
         },
     },
     {
-        title: '1 - 0',
+        title: '1',
         icon: faStar,
         styles: {
             iconPosition: 'end',
         },
     },
 ] as HeadTabType[];
+
+export const dataHeadListUser = [
+    {
+        title: 'Users',
+        icon: faUser,
+    },
+    {
+        title: 'Staffs',
+        icon: faUserTie,
+    },
+];

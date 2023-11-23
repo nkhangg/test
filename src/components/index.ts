@@ -43,6 +43,8 @@ export { default as RowBrand } from './inputs/tables/rows/RowBrand';
 export { default as RowReview } from './inputs/tables/rows/RowReview';
 export { default as RowStatusOrders } from './inputs/tables/rows/RowStatusOrders';
 export { default as RowOrderSummaryUpdateStatus } from './inputs/tables/rows/RowOrderSummaryUpdateStatus';
+export { default as RowListUser } from './inputs/tables/rows/RowListUser';
+export { default as RowListProduct } from './inputs/tables/rows/RowListProduct';
 
 // bages
 export { default as CustomBadge } from './badges/CustomBadge';
@@ -98,6 +100,7 @@ export { default as UpdateStateOrderDialog } from './dialogs/UpdateStateOrderDia
 export { default as ReasonDialog } from './dialogs/ReasonDialog';
 export { default as BaseAddressDialog } from './inputs/address/BaseAddressDialog';
 export { default as FormBrandDialog } from './dialogs/FormBrandDialog';
+export { default as ContentComfirmPayment } from './dialogs/content-component/ContentComfirmPayment';
 
 // chats
 

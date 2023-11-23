@@ -13,11 +13,13 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
 import { closeNoty } from '@/redux/slice/appSlice';
 import { links } from '@/datas/links';
+import { contants } from '@/utils/contants';
 
 export interface IFooterProps {}
 
 export default function Footer(props: IFooterProps) {
     const { notifycation } = useAppSelector((state: RootState) => state.appReducer);
+    const { user } = useAppSelector((state: RootState) => state.userReducer);
 
     const dispath = useAppDispatch();
     return (
@@ -69,9 +71,13 @@ export default function Footer(props: IFooterProps) {
 
                 <div className="bg-white h-[1px] w-full mt-16"></div>
 
-                <div className="fixed bottom-[2%] right-[2%] flex flex-col gap-4">
-                    <ChatBox />
-                </div>
+                {user && user.role && contants.roles.manageRoles.includes(user?.role) ? (
+                    ''
+                ) : (
+                    <div className="fixed bottom-[2%] right-[2%] flex flex-col gap-4">
+                        <ChatBox />
+                    </div>
+                )}
 
                 <div className="flex items-center justify-center py-14">
                     <p>{dataFooter.coppyRight}</p>

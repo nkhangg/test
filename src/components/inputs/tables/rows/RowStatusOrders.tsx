@@ -2,7 +2,7 @@ import React from 'react';
 import TableRow from '../TableRow';
 import { Chip, TableCell, Typography, capitalize } from '@mui/material';
 import { IRowStatusOrders } from '@/configs/interface';
-import { toCurrency } from '@/utils/format';
+import { formatStatus, toCurrency } from '@/utils/format';
 import { statusColor } from '../../../../../tailwind.config';
 
 export interface IRowStatusProps {
@@ -41,11 +41,12 @@ export default function RowStatus({ data, index, handleOpen }: IRowStatusProps) 
             </TableCell>
             <TableCell>
                 <Chip
-                    label={capitalize(data.status)}
+                    label={formatStatus(data.status)}
                     variant="outlined"
                     sx={{
                         backgroundColor: statusColor[data.status],
                         borderColor: statusColor[data.status],
+                        textTransform: 'capitalize',
                     }}
                 />
             </TableCell>

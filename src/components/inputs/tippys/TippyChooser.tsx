@@ -1,21 +1,21 @@
 'use client';
+import { TippyChooserType } from '@/configs/types';
 import { faChevronDown, faChevronUp, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react/headless';
+import classNames from 'classnames';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-
-type TippyChooserType = {
-    id: string;
-    title: string;
-};
 
 export interface ITippyChooserProps {
     title: string;
     data: TippyChooserType[];
     onValue?: (value: TippyChooserType) => void;
+    styles?: {
+        minWidth?: string;
+    };
 }
 
-export default function TippyChooser({ title, data, onValue }: ITippyChooserProps) {
+export default function TippyChooser({ title, data, styles, onValue }: ITippyChooserProps) {
     const initValue = { id: '0', title };
 
     const ref = useRef<HTMLDivElement>(null);
@@ -88,7 +88,9 @@ export default function TippyChooser({ title, data, onValue }: ITippyChooserProp
                 <div
                     onClick={() => setOpen((prev) => !prev)}
                     ref={ref}
-                    className="flex items-center justify-between gap-2 border border-[#333333] rounded-xl py-2 px-4 whitespace-nowrap cursor-pointer w-full min-w-[140px]"
+                    className={classNames('flex items-center justify-between gap-2 border border-[#333333] rounded-xl py-2 px-4 whitespace-nowrap cursor-pointer w-full', {
+                        [styles?.minWidth || ' min-w-[140px]']: styles?.minWidth,
+                    })}
                 >
                     <span>{value.title}</span>
                     {value.id == '0' && <FontAwesomeIcon icon={!open ? faChevronDown : faChevronUp} />}

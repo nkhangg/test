@@ -53,7 +53,7 @@ export default function DetailOrderHistory({ id }: IDetailOrderHistoryProps) {
         if (!dataDetail || status !== 'placed') return;
 
         try {
-            const response = await updateUserStatusOrder({ id: dataDetail.id, status: 'cancelled', reason });
+            const response = await updateUserStatusOrder({ id: dataDetail.id, status: 'cancelled_by_customer', reason });
 
             if (!response) {
                 toast.warn(contants.messages.errors.handle);
@@ -199,14 +199,7 @@ export default function DetailOrderHistory({ id }: IDetailOrderHistoryProps) {
                             </div>
 
                             <Grid container key={3} spacing={1} py={'18px'} px={'16px'} mt={'32px'}>
-                                <Grid item lg={6}>
-                                    {/* {status === 'cancelled' && (
-                                        <>
-                                            <span className="text-center font-medium text-[#303B4E]">Cancellation reason: </span>
-                                            <span className="text-center text-grey-secondary">{dataDetail.description}</span>
-                                        </>
-                                    )} */}
-                                </Grid>
+                                <Grid item lg={6}></Grid>
                                 <Grid
                                     item
                                     lg={2}

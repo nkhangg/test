@@ -65,7 +65,7 @@ export default function DetailOrderhistoryItem({ data }: IDetailOrderhistoryItem
                 </Grid>
                 <Grid item lg={2}>
                     <div className="flex items-center justify-center h-full">
-                        <span className="text-center text-[#303B4E]">{data.quantity}</span>
+                        <span className="text-center text-[#303B4E]">x{data.quantity}</span>
                     </div>
                 </Grid>
                 <Grid item lg={2}>

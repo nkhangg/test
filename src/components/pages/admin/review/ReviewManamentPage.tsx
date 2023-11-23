@@ -9,7 +9,7 @@ import { contants } from '@/utils/contants';
 import { useQuery } from '@tanstack/react-query';
 
 import { useRouter } from 'next/navigation';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 
 const dataHeadTable = ['No', 'Id', 'Product', 'Image', 'Rate', 'Lastest', 'Reviews', 'Non Reviews', 'Action'];
@@ -30,6 +30,14 @@ const dataPopup = [
         id: 'review-desc',
         title: 'Review desc',
     },
+    {
+        id: 'latest-asc',
+        title: 'Latest asc',
+    },
+    {
+        id: 'latest-desc',
+        title: 'Latest desc',
+    },
 ];
 
 const iniData = {
@@ -46,10 +54,10 @@ export default function ReviewManamentPage(props: IReviewManamentPageProps) {
     const router = useRouter();
 
     // states
-    const [open, setOpen] = useState(false);
+
     const [filter, setFilter] = useState<IReviewAdminFillterForm>(iniData);
 
-    const searDebounce = useDebounce(filter.search, 500);
+    const searDebounce = useDebounce(filter.search, 600);
 
     const reviews = useQuery({
         queryKey: ['reviews/getReviews', { ...filter, search: searDebounce }],
@@ -70,6 +78,11 @@ export default function ReviewManamentPage(props: IReviewManamentPageProps) {
 
     const data = reviews.data?.data;
 
+    const dataMemo = useMemo(() => {
+        if (!data) return [];
+        return data;
+    }, [data]);
+
     return (
         <BoxTitle mt="mt-0" mbUnderline="mb-0" border={false} title="REVIEW  MANAGEMENT" className="">
             <SortAdmin
@@ -80,11 +93,13 @@ export default function ReviewManamentPage(props: IReviewManamentPageProps) {
                 }}
                 sortProps={{
                     onValue: (sort) => {
-                        console.log(sort);
                         setFilter({
                             ...filter,
                             sort: sort.id,
                         });
+                    },
+                    styles: {
+                        minWidth: 'min-w-[150px]',
                     },
                     data: dataPopup,
                     title: 'Sort by',
@@ -94,8 +109,8 @@ export default function ReviewManamentPage(props: IReviewManamentPageProps) {
                 onTab={(tab) => {
                     setFilter({
                         ...filter,
-                        minStar: tab.title === 'All' ? '' : tab.title.split(' - ')[1],
-                        maxStar: tab.title === 'All' ? '' : tab.title.split(' - ')[0],
+                        maxStar: tab.title === 'All' ? '' : tab.title,
+                        minStar: tab.title === 'All' ? '' : parseInt(tab.title) - 1 + '',
                     });
                 }}
                 styles="border-bottom"
@@ -111,7 +126,7 @@ export default function ReviewManamentPage(props: IReviewManamentPageProps) {
                         }}
                         dataHead={dataHeadTable}
                     >
-                        {data.map((item, index) => {
+                        {dataMemo.map((item, index) => {
                             return <RowReview key={item.productId} index={index} data={item} />;
                         })}
                     </Table>

@@ -1,12 +1,14 @@
 'use client';
-import { TableRow as Tr, styled } from '@mui/material';
+import { TableRowTypeMap, TableRow as Tr, styled } from '@mui/material';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
 import React, { ReactNode } from 'react';
 
 export interface ITableCellProps {
     children: ReactNode;
+    onClick?: () => void;
 }
 
-export default function TableRow({ children, ...props }: ITableCellProps & ITableCellProps) {
+export default function TableRow({ children, onClick, ...props }: ITableCellProps) {
     return (
         <Tr
             sx={{
@@ -21,8 +23,10 @@ export default function TableRow({ children, ...props }: ITableCellProps & ITabl
                     backgroundColor: '#f1f1f1',
                     transition: 'all ease-in .1s',
                 },
+                cursor: 'pointer',
             }}
             {...props}
+            onClick={onClick}
         >
             {children}
         </Tr>

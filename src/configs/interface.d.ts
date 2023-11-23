@@ -162,6 +162,7 @@ export interface IOtherHistory {
     total: number;
     state: 'buy' | 'cancel' | 'Delivered'; // vd buy | cancel
     stateMessage: string; //vd: Delivery on October 1, 2023
+    isTotalRate: boolean;
     products: ICart[];
 }
 

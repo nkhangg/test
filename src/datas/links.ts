@@ -7,6 +7,15 @@ export const links = {
     products: '/take-action/',
     admin: commonAdmin + '/',
     adminMidleware: commonAdmin,
+    adminFuntionsLink: {
+        product: {
+            create: commonAdmin + '/create',
+        },
+        users: {
+            detail: commonAdmin + '/users/',
+            create: commonAdmin + '/users/create',
+        },
+    },
     auth: {
         login: '/login',
         register: 'register',

@@ -14,6 +14,8 @@ import { getUserManage, updateUserManage } from '@/apis/admin/user';
 import { IUserManage } from '@/configs/interface';
 import Validate from '@/utils/validate';
 import { toast } from 'react-toastify';
+import { useAppSelector } from '@/hooks/reduxHooks';
+import { RoleType, RootState } from '@/configs/types';
 
 export interface ICreateOrUpdateUserProps {
     param: string | 'create';
@@ -56,6 +58,8 @@ const initdataErrors: IErrors = {
 
 export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
     let prevData = useRef<{ data: IUserManage; avatar: string } | undefined>();
+
+    const { user } = useAppSelector((state: RootState) => state.userReducer);
 
     const dataUser = useQuery({
         queryKey: ['updateUser', param],
@@ -296,14 +300,18 @@ export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
                                     id: 'ROLE_ADMIN',
                                     name: 'Admin',
                                 },
+                                {
+                                    id: 'ROLE_SUPPER_ADMIN',
+                                    name: 'Admin',
+                                },
                             ]}
                             propsInput={{
                                 name: 'role',
                                 type: 'role',
                                 value: data.role,
-                                disabled: true,
+                                disabled: user?.role !== ('ROLE_SUPER_ADMIN' as RoleType),
                             }}
-                            label="Role ( update on version 2.0) "
+                            label="Role"
                         />
                         <DivTextfield
                             propsInput={{
@@ -349,13 +357,6 @@ export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
                                 {param !== 'create' ? 'Update' : 'Create'}
                             </Button>
                         )}
-                    </Stack>
-                </Grid>
-
-                {/* History payment */}
-                <Grid item xs={12} md={12} lg={12}>
-                    <Stack direction={'row'} justifyContent={'flex-end'}>
-                        <Typography>Shopping History</Typography>
                     </Stack>
                 </Grid>
             </Grid>

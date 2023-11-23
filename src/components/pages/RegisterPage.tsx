@@ -139,7 +139,7 @@ export default function RegisterPage(props: IRegisterPageProps) {
                             name="username"
                             onChange={handleChange}
                             label="Username"
-                            size="small"
+                            size="medium"
                         />
 
                         <Box sx={{ width: { xs: '100%', md: '60%', lg: '60%' } }}>
@@ -149,7 +149,7 @@ export default function RegisterPage(props: IRegisterPageProps) {
                                 select
                                 id="gender-select"
                                 value={form.gender}
-                                size="small"
+                                size="medium"
                                 label="Gender"
                                 name="gender"
                                 onChange={handleChange}
@@ -174,9 +174,9 @@ export default function RegisterPage(props: IRegisterPageProps) {
                             onChange={handleChange}
                             id="full-name"
                             label="Full Name"
-                            size="small"
+                            size="medium"
                         />
-                        <TextField onBlur={handleBlur} value={form.email} message={errors.email} name="email" onChange={handleChange} id="email" label="Email" size="small" />
+                        <TextField onBlur={handleBlur} value={form.email} message={errors.email} name="email" onChange={handleChange} id="email" label="Email" size="medium" />
                     </Stack>
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
@@ -189,7 +189,7 @@ export default function RegisterPage(props: IRegisterPageProps) {
                         type="password"
                         id="password"
                         label="Password"
-                        size="small"
+                        size="medium"
                     />
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
@@ -202,7 +202,7 @@ export default function RegisterPage(props: IRegisterPageProps) {
                         type="password"
                         id="confirm-password"
                         label="Password Confirm"
-                        size="small"
+                        size="medium"
                     />
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
