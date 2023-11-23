@@ -114,36 +114,6 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
             {anotherLayout && (
                 <OrderAdminPageContext.Provider value={{ refetch }}>
                     <BoxTitle mt="mt-0" mbUnderline="mb-0" border={false} title="ORDER MANAGEMENT" className="">
-                        {/* <div className="flex items-center justify-between text-1xl mb-10 w-full">
-                            <div className="flex items-center gap-5 md:gap-10">
-                                <SearchInput handleClose={() => setFilter({ ...filter, search: '' })} handleChange={handleChange} value={filter.search} />
-
-                                <TippyChooser
-                                    onValue={(sort) => {
-                                        console.log(sort);
-                                        setFilter({
-                                            ...filter,
-                                            sort: sort.id,
-                                        });
-                                    }}
-                                    data={dataPopup}
-                                    title="Sort by"
-                                />
-                            </div>
-
-                            <DialogDateChooser
-                                onDatas={(dates) => {
-                                    if (!dates) return;
-
-                                    setFilter({
-                                        ...filter,
-                                        dateStart: dates.start || '',
-                                        dateEnd: dates.end || '',
-                                    });
-                                }}
-                            />
-                        </div> */}
-
                         <SortAdmin
                             searchProps={{
                                 handleClose: () => setFilter({ ...filter, search: '' }),
@@ -189,7 +159,7 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                                 <Table dataHead={dataHeadTable}>
                                     {dataOrders.length > 0 &&
                                         dataOrders.map((order, index) => {
-                                            const status = order.status.toLowerCase() as StateType;
+                                            const status = order.status.toLowerCase().trim().replaceAll(' ', '_') as StateType;
                                             return (
                                                 <RowStatusOrders
                                                     key={order.orderId}

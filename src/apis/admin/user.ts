@@ -3,12 +3,13 @@ import { IUserManage } from '@/configs/interface';
 import { ApiAllUser, ApiCreateUserManage, ApiDelete, ApiGetUserManage, ApiUpdateUserManage } from '@/configs/types';
 import { dataURLtoFile } from '@/utils/format';
 
-export const usersManage: ApiAllUser = async (page: number | undefined) => {
+export const usersManage: ApiAllUser = async (page: number | undefined, filter: {}) => {
     const res = await axios({
         method: 'GET',
         url: 'admin/users',
         params: {
             page,
+            ...filter,
         },
     });
 

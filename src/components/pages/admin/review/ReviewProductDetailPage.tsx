@@ -2,12 +2,9 @@
 import { BorderLinearProgress, RatingStar, Review, TippyChooser } from '@/components';
 import { contants } from '@/utils/contants';
 import { Avatar, Grid } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { detailReivewAdmin } from '@/datas/comments';
 import { getReview } from '@/apis/admin/reviews';
-import { error } from 'console';
 import { toast } from 'react-toastify';
 import { notFound } from 'next/navigation';
 
@@ -32,14 +29,9 @@ export default function ReviewProductDetailPage({ id }: IReviewProductDetailPage
 
     const data = reviews.data?.data;
 
-    // if (!data) {
-    //     handleError();
-    //     return;
-    // }
-
     return (
         <div className="text-black-main">
-            <h3 className="text-2xl font-medium">Ratings & Reviews Of {`" ${id} "`}</h3>
+            <h3 className="text-2xl font-medium">Ratings & Reviews Of {`" ${data?.name} "`}</h3>
 
             <Grid pt={'3.4rem'} container spacing={4}>
                 <Grid sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} item lg={2}>

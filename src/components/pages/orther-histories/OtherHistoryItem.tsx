@@ -32,8 +32,6 @@ const _Li = ({ title, value, styleContent }: { title: string; value: string | nu
 export default function OtherHistoryItem({ data }: IOtherHistoryItemProps) {
     const status = data.state.toLowerCase() as StateType;
 
-    console.log(status);
-
     return (
         <div className="w-full rounded-lg max-w-full">
             <div className="py-3 px-4 md:px-10 bg-[#F2F2F2] text-sm md:text-1xl flex items-center justify-between rounded-t-lg">
@@ -43,8 +41,14 @@ export default function OtherHistoryItem({ data }: IOtherHistoryItemProps) {
                     <_Li title="Order Items" value={'x' + data.products.length} styleContent="text-center" />
                     <_Li title="Total Amount" value={toCurrency(data.total)} />
                 </ul>
-                <Link href={'/other-history/' + data.id} className="text-violet-primary hover:underline">
-                    View details
+                <Link
+                    href={links.history.orderHistory + '/' + data.id}
+                    className={classNames(' hover:underline', {
+                        ['text-violet-primary']: data.isTotalRate || status !== 'delivered',
+                        ['text-red-primary']: !data.isTotalRate && status === 'delivered',
+                    })}
+                >
+                    {!data.isTotalRate && status === 'delivered' ? 'Rating now' : 'View details'}
                 </Link>
             </div>
 
@@ -87,7 +91,7 @@ export default function OtherHistoryItem({ data }: IOtherHistoryItemProps) {
                         return <FontAwesomeIcon color={color} icon={icon} />;
                     })()}
 
-                    <p>{` ${data.stateMessage} ${data.datePlace}`}</p>
+                    <p className="capitalize">{` ${data.stateMessage} ${data.datePlace}`}</p>
                 </div>
             </div>
         </div>

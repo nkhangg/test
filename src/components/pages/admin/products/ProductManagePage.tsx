@@ -1,29 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
-import React, { useState } from 'react';
-import {
-    Avatar,
-    Box,
-    Button,
-    Dialog,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Grid,
-    Skeleton,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    Typography,
-} from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import React, { ChangeEvent, useCallback, useMemo, useState } from 'react';
+
 import Tippy from '@tippyjs/react/headless';
-import TotipRepository from './TotipRepository';
 import { productManageListData } from '@/datas/product-manage-data';
-import { Comfirm, LoadingPrimary, Pagination, SekeletonTableItems } from '@/components';
+import { BoxTitle, Comfirm, LoadingPrimary, LoadingSecondary, Pagination, RowListProduct, SekeletonTableItems, Table, TippyChooser } from '@/components';
 import Link from 'next/link';
 import { DashboardCard } from '@/components/dashboard';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -34,14 +15,59 @@ import { pushNoty } from '@/redux/slice/appSlice';
 import { IRepository } from '@/configs/interface';
 import { links } from '@/datas/links';
 import { formatIndex } from '@/utils/format';
+import { SortAdmin } from '@/components/common';
+import { Box } from '@mui/material';
+import { useDebounce, useTypeAndBrand } from '@/hooks';
+import { TippyChooserType } from '@/configs/types';
 export interface IProductManagePageProps {}
 
-const dataHead = ['No', 'Id', 'Image', 'Name', 'Brand', 'Type', 'Total Repository'];
+const dataHead = ['No', 'Id', 'Image', 'Name', 'Brand', 'Type', 'Total Repository', 'Actions'];
+
+const listSort = [
+    {
+        id: 'id-asc',
+        title: 'Id asc',
+    },
+    {
+        id: 'id-desc',
+        title: 'Id desc',
+    },
+    {
+        id: 'total-asc',
+        title: 'Total asc',
+    },
+    {
+        id: 'total-desc',
+        title: 'Total desc',
+    },
+    {
+        id: 'date-asc',
+        title: 'Date asc',
+    },
+
+    {
+        id: 'date-desc',
+        title: 'Date desc',
+    },
+];
+
+type FilterType = {
+    keyword?: string;
+    typeName?: string;
+    brand?: string;
+    sort?: string;
+};
 
 export default function ProductManagePage(props: IProductManagePageProps) {
     const router = useRouter();
 
+    // cutom hook
+
+    const typeAndBrand = useTypeAndBrand();
+
     const [openComfirm, setOpenComfirm] = useState({ open: false, comfirm: 'cancel' });
+    const [filter, setFilter] = useState<FilterType>({});
+
     const [loading, setLoading] = useState(false);
 
     const [idDelete, setIdDelete] = useState('');
@@ -51,12 +77,43 @@ export default function ProductManagePage(props: IProductManagePageProps) {
 
     const page = searchParams.get('page');
 
-    const { data, isLoading, error, refetch } = useQuery({
-        queryKey: ['products-manage', page],
-        queryFn: () => productManage(page ? parseInt(page) - 1 : 0),
+    const keywordDebound = useDebounce(filter.keyword || '', 600);
+
+    const product = useQuery({
+        queryKey: ['products-manage', page, { ...filter, keyword: keywordDebound }],
+        queryFn: () => productManage(page ? parseInt(page) - 1 : 0, { ...filter, keyword: keywordDebound }),
     });
 
-    if (error) {
+    const getTotalQuantiyRepo = useCallback((arr: IRepository[]): number => {
+        return arr.reduce((acumentlator, curentValue) => {
+            return (acumentlator += curentValue.quantity);
+        }, 0);
+    }, []);
+
+    const listTypeAndBand = useMemo(() => {
+        if (typeAndBrand.error) return { type: [], brand: [] };
+
+        if (!typeAndBrand.typesAndBrandsData) return { type: [], brand: [] };
+
+        const { typesAndBrandsData } = typeAndBrand;
+
+        const brand = typesAndBrandsData.brands.map((item) => {
+            return {
+                id: item.id,
+                title: item.name,
+            } as TippyChooserType;
+        });
+        const type = typesAndBrandsData.types.map((item) => {
+            return {
+                id: item.id,
+                title: item.name,
+            } as TippyChooserType;
+        });
+
+        return { type, brand };
+    }, [typeAndBrand]);
+
+    if (product.error) {
         dispath(
             pushNoty({
                 title: "Something went wrong !, Can't get data",
@@ -67,191 +124,184 @@ export default function ProductManagePage(props: IProductManagePageProps) {
         return;
     }
 
-    const getTotalQuantiyRepo = (arr: IRepository[]): number => {
-        return arr.reduce((acumentlator, curentValue) => {
-            return (acumentlator += curentValue.quantity);
-        }, 0);
-    };
-
     const handleDeleteProduct = (id: string) => {
         setOpenComfirm({ ...openComfirm, open: true });
         setIdDelete(id);
     };
 
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setFilter({
+            ...filter,
+            keyword: e.target.value,
+        });
+    };
+
+    const data = product.data && product.data.data;
+
     return (
-        <DashboardCard
-            title="List product"
-            action={
-                <>
-                    <Button>
-                        <Link href={'/admin/dashboard/product/create'}>Create</Link>
-                    </Button>
-                </>
+        <BoxTitle
+            mt="mt-0"
+            title="List Product"
+            actions={
+                <Link className="text-violet-primary hover:underline" href={links.adminFuntionsLink.product.create}>
+                    Create
+                </Link>
             }
         >
-            <Grid container spacing={2}>
-                <Grid item xs={12} md={12} lg={12}>
-                    <Box sx={{ overflow: 'auto', width: { xs: '280px', sm: 'auto' } }}>
-                        <Table
-                            aria-label="simple table"
-                            sx={{
-                                whiteSpace: 'nowrap',
-                                mt: 2,
-                            }}
-                        >
-                            <TableHead>
-                                <TableRow>
-                                    {dataHead.map((item) => {
-                                        return (
-                                            <TableCell key={item}>
-                                                <Typography variant="subtitle2" fontWeight={600}>
-                                                    {item}
-                                                </Typography>
-                                            </TableCell>
-                                        );
-                                    })}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {data &&
-                                    data.data.data &&
-                                    !isLoading &&
-                                    data.data.data.map((item, index) => {
-                                        return (
-                                            <TableRow key={item.id} hover>
-                                                <TableCell>
-                                                    <Typography
-                                                        sx={{
-                                                            fontSize: '15px',
-                                                            fontWeight: '500',
-                                                        }}
-                                                    >
-                                                        {formatIndex(parseInt(page || '0'), index)}
-                                                    </Typography>
-                                                </TableCell>
-                                                <TableCell align="left">
-                                                    <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
-                                                        {item.id}
-                                                    </Typography>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Avatar src={item.image} variant="rounded" />
-                                                </TableCell>
+            {/* <SortAdmin
+                searchProps={{
+                    value: filter.keyword || '',
+                    handleChange,
+                    handleClose: () => setFilter({ ...filter, keyword: undefined }),
+                }}
+                sortProps={{
+                    styles: {
+                        minWidth: 'min-w-[190px]',
+                    },
+                    data: [],
+                    title: 'Sort by',
+                    // onValue(value) {
+                    //     setFilter({
+                    //         ...filter,
+                    //         sort: value.id,
+                    //     });
+                    // },
+                }}
+          > 
 
-                                                <TableCell align="left">
-                                                    <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
-                                                        {item.name}
-                                                    </Typography>
-                                                </TableCell>
-                                                <TableCell align="left">
-                                                    <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
-                                                        {item.brand}
-                                                    </Typography>
-                                                </TableCell>
-                                                <TableCell align="left">
-                                                    <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
-                                                        {item.type}
-                                                    </Typography>
-                                                </TableCell>
-                                                <TableCell align="center">
-                                                    <Tippy
-                                                        interactive
-                                                        placement="left-end"
-                                                        delay={200}
-                                                        render={() => {
-                                                            return <TotipRepository data={item.repo} />;
-                                                        }}
-                                                    >
-                                                        <Typography
-                                                            color="textSecondary"
-                                                            variant="subtitle2"
-                                                            maxWidth={'200px'}
-                                                            fontWeight={400}
-                                                            className="truncate cursor-default"
-                                                        >
-                                                            {getTotalQuantiyRepo(item.repo)}
-                                                        </Typography>
-                                                    </Tippy>
-                                                </TableCell>
-                                                <TableCell align="center">
-                                                    <Button onClick={() => handleDeleteProduct(item.id as string)}>
-                                                        <FontAwesomeIcon className="text-red-400" icon={faTrash} />
-                                                    </Button>
-                                                    <Link href={'/admin/dashboard/product/' + item.id}>
-                                                        <Button>
-                                                            <FontAwesomeIcon icon={faEdit} />
-                                                        </Button>
-                                                    </Link>
-                                                </TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
+          <span></span>
+          <SortAdmin  /> */}
+            <SortAdmin
+                searchProps={{
+                    value: filter.keyword || '',
+                    handleChange,
+                    handleClose: () => setFilter({ ...filter, keyword: undefined }),
+                }}
+                sortProps={{
+                    styles: {
+                        minWidth: 'min-w-[160px]',
+                    },
+                    data: listTypeAndBand.brand,
+                    title: 'Brand',
+                    onValue(value) {
+                        setFilter({
+                            ...filter,
+                            sort: value.id,
+                        });
+                    },
+                }}
+            >
+                <TippyChooser
+                    styles={{
+                        minWidth: 'min-w-[160px]',
+                    }}
+                    title="Type"
+                    data={listTypeAndBand.type}
+                    onValue={(value) => {
+                        setFilter({
+                            ...filter,
+                            typeName: value.title,
+                        });
+                    }}
+                />
+                <TippyChooser
+                    styles={{
+                        minWidth: 'min-w-[160px]',
+                    }}
+                    title="Sort by"
+                    data={listSort}
+                    onValue={(value) => {
+                        setFilter({
+                            ...filter,
+                            brand: value.title,
+                        });
+                    }}
+                />
+            </SortAdmin>
 
-                                {/* loading */}
-                                {isLoading && <SekeletonTableItems />}
-                            </TableBody>
+            {data && (
+                <>
+                    <div className="rounded-xl overflow-hidden border border-gray-primary relative">
+                        <Table styleHead={{ align: 'center' }} dataHead={dataHead}>
+                            {data.data.map((item, index) => {
+                                return (
+                                    <RowListProduct
+                                        key={item.id}
+                                        index={index}
+                                        page={page}
+                                        handleTotalQuantiyRepo={getTotalQuantiyRepo}
+                                        handleDeleteProduct={(id) => handleDeleteProduct(id)}
+                                        data={item}
+                                    />
+                                );
+                            })}
                         </Table>
+                        {data.data.length <= 0 && (
+                            <div className="flex items-center justify-center py-5 text-violet-primary">
+                                <b>No suitable data found</b>
+                            </div>
+                        )}
 
-                        <Box pb={'4%'}>
-                            {/* loading */}
-                            {((data && data.data.data && !isLoading) || (data?.data.pages && data?.data.pages > 1)) && (
-                                <Pagination baseHref="/admin/dashboard/product?page=" pages={data?.data.pages} />
-                            )}
+                        {(product.isLoading || loading) && (
+                            <div className="w-full h-full flex items-center justify-center absolute inset-0 bg-[rgba(0,0,0,0.04)]">
+                                <LoadingSecondary />
+                            </div>
+                        )}
+                    </div>
+                    <Box mt={'-2%'}>{data.pages > 1 && <Pagination baseHref="/admin/dashboard/product?page=" pages={data.pages} />}</Box>
+                </>
+            )}
 
-                            {isLoading && <Skeleton variant="text" sx={{ fontSize: '1rem' }} />}
-                            {loading && <LoadingPrimary />}
-                        </Box>
-                        <Comfirm
-                            title={'Comfirm delete product'}
-                            open={openComfirm.open}
-                            setOpen={setOpenComfirm}
-                            onComfirm={async (value) => {
-                                if (value.comfirm === 'ok' && idDelete !== '') {
-                                    try {
-                                        setLoading(true);
-                                        const response = await deleteProduct(idDelete);
-                                        setLoading(false);
+            {data && (
+                <Comfirm
+                    title={'Comfirm delete product'}
+                    open={openComfirm.open}
+                    setOpen={setOpenComfirm}
+                    onComfirm={async (value) => {
+                        if (value.comfirm === 'ok' && idDelete !== '') {
+                            try {
+                                setLoading(true);
+                                const response = await deleteProduct(idDelete);
+                                setLoading(false);
 
-                                        if (response.errors) {
-                                            dispath(
-                                                pushNoty({
-                                                    title: `Can't delete this product. try again`,
-                                                    open: true,
-                                                    type: 'error',
-                                                }),
-                                            );
-                                            return;
-                                        }
-
-                                        refetch();
-
-                                        if (page && data?.data.pages && parseInt(page) > data?.data.pages - 1) {
-                                            router.push(links.admin + 'product');
-                                        }
-                                        dispath(
-                                            pushNoty({
-                                                title: `${idDelete} deleted`,
-                                                open: true,
-                                                type: 'success',
-                                            }),
-                                        );
-                                        return;
-                                    } catch (error) {
-                                        setLoading(false);
-                                        dispath(
-                                            pushNoty({
-                                                title: `Can't delete this product. try again`,
-                                                open: true,
-                                                type: 'error',
-                                            }),
-                                        );
-                                    }
+                                if (response.errors) {
+                                    dispath(
+                                        pushNoty({
+                                            title: `Can't delete this product. try again`,
+                                            open: true,
+                                            type: 'error',
+                                        }),
+                                    );
+                                    return;
                                 }
-                            }}
-                        />
-                    </Box>
-                </Grid>
-            </Grid>
-        </DashboardCard>
+
+                                product.refetch();
+
+                                if (page && data.pages && parseInt(page) > data.pages - 1) {
+                                    router.push(links.admin + 'product');
+                                }
+                                dispath(
+                                    pushNoty({
+                                        title: `${idDelete} deleted`,
+                                        open: true,
+                                        type: 'success',
+                                    }),
+                                );
+                                return;
+                            } catch (error) {
+                                setLoading(false);
+                                dispath(
+                                    pushNoty({
+                                        title: `Can't delete this product. try again`,
+                                        open: true,
+                                        type: 'error',
+                                    }),
+                                );
+                            }
+                        }
+                    }}
+                />
+            )}
+        </BoxTitle>
     );
 }

@@ -50,7 +50,7 @@ export const updateStatusOrder: ApiUpdateStatusOrder = async (data: UpdateStatus
         method: 'POST',
         url: 'admin/orders/status/' + data.id,
         data: {
-            status: data.status,
+            status: data.status === 'cancelled' ? 'cancelled_by_admin'.toLocaleUpperCase() : data.status.toLocaleUpperCase(),
             reason: data.reason,
         },
     });

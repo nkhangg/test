@@ -13,12 +13,13 @@ import {
     ApiUpdateProductWithInfo,
 } from '@/configs/types';
 
-export const productManage: ApiProductsManage = async (page: number | undefined) => {
+export const productManage: ApiProductsManage = async (page: number | undefined, filter: {}) => {
     const res = await axios({
         method: 'GET',
         url: 'admin/product/',
         params: {
             page: page || 0,
+            ...filter,
         },
     });
 

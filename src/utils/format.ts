@@ -1,5 +1,5 @@
 import { IAddress } from '@/configs/interface';
-import { StateType } from '@/configs/types';
+import { RoleType, StateType } from '@/configs/types';
 import { faBox, faCarSide, faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 
@@ -110,6 +110,20 @@ export const formatIndex = (page: number, index: number) => {
     return page ? (index + 1) * page + 1 * 10 : index + 1;
 };
 
+export const formatStatus = (status: StateType) => {
+    return status.replaceAll('_', ' ');
+};
+
+export const toStatus = (value: string) => {
+    return value.toLocaleLowerCase().replaceAll(' ', '_') as StateType;
+};
+
+export const formatRole = (value: RoleType) => {
+    const [prefix, ...role] = value.split('_');
+
+    return role;
+};
+
 export const getIconWithStatus = (status: StateType) => {
     switch (status) {
         case 'placed': {
@@ -131,6 +145,12 @@ export const getIconWithStatus = (status: StateType) => {
             };
         }
         case 'cancelled': {
+            return {
+                color: '#EF4444',
+                icon: faCircleXmark,
+            };
+        }
+        default: {
             return {
                 color: '#EF4444',
                 icon: faCircleXmark,

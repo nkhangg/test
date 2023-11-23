@@ -1,3 +1,5 @@
+import { StateType } from '@/configs/types';
+
 const baseApiProvince = 'https://provinces.open-api.vn/api/';
 const baseApiGHTK = 'https://services.giaohangtietkiem.vn/';
 
@@ -73,4 +75,9 @@ export const contants = {
     notify: {
         nonLogin: 'Please login to use !',
     },
+    dataCard: [
+        { id: 1, title: 'Express (in Can Tho)', business: '4 hours', price: 20000 },
+        { id: 2, title: 'GHTK', business: '2 - 6 business days', price: 45000 },
+    ],
+    stateCancel: ['cancelled', 'cancelled_by_admin', 'cancelled_by_customer'] as StateType[],
 };

@@ -306,7 +306,7 @@ export const updateUserStatusOrder: ApiUpdateStatusOrder = async (data: UpdateSt
         method: 'POST',
         url: 'user/order/cancel/' + data.id,
         data: {
-            status: data.status,
+            status: data.status.toLocaleUpperCase(),
             reason: data.reason,
         },
     });

@@ -87,9 +87,9 @@ export type ApiUpdateProduct = (data: DataProductType) => Promise<IBaseResponse<
 
 export type ApiCreateProduct = (data: DataProductType) => Promise<IBaseResponse<any>>;
 
-export type ApiProductsManage = (page: number | undefined) => Promise<IBaseResponse<PagiantionResponse<IProductManageList>>>;
+export type ApiProductsManage = (page: number | undefined, filter: any) => Promise<IBaseResponse<PagiantionResponse<IProductManageList>>>;
 
-export type ApiAllUser = (page: number | undefined) => Promise<IBaseResponse<PagiantionResponse<IProfile>>>;
+export type ApiAllUser = (page: number | undefined, filter: any) => Promise<IBaseResponse<PagiantionResponse<IProfile>>>;
 
 export type ApiVerifyCode = (code: string) => Promise<IBaseResponse<any>>;
 
@@ -223,7 +223,7 @@ export type ModeType = 'create' | 'update';
 
 export type RoleType = 'ROLE_USER' | 'ROLE_STAFF' | 'ROLE_ADMIN' | 'ROLE_SUPER_ADMIN';
 
-export type StateType = 'placed' | 'shipping' | 'delivered' | 'cancelled';
+export type StateType = 'placed' | 'shipping' | 'delivered' | 'cancelled' | 'cancelled_by_admin' | 'cancelled_by_customer';
 
 export type StatusColor = {
     placed: string;
@@ -246,4 +246,9 @@ export type HeadTabType = {
     styles?: {
         iconPosition: 'bottom' | 'top' | 'end' | 'start' | undefined;
     };
+};
+
+export type TippyChooserType = {
+    id: string;
+    title: string;
 };

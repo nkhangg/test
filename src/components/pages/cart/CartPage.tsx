@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { dataCart } from '@/datas/cart-data';
 import { toCurrency } from '@/utils/format';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
@@ -76,11 +76,11 @@ export default function CartPage(props: ICartPageProps) {
                     actions={
                         <>
                             {payment.length > 0 && (
-                                <div className="flex gap-1 items-center hover:text-violet-primary">
+                                <div className="flex gap-1 items-center hover:text-violet-primary text-1xl">
                                     <Link className="hover:underline  transition-all ease-linear" href={'/payment'}>
                                         Go to pay page
                                     </Link>
-                                    <FontAwesomeIcon icon={faChevronRight} />
+                                    <FontAwesomeIcon className="text-sm" icon={faArrowRight} />
                                 </div>
                             )}
                         </>

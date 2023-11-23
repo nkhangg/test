@@ -23,10 +23,6 @@ const AntTabs = styled(Tabs)({
         textTransform: 'capitalize !important',
         minHeight: '60px',
     },
-    '& .MuiTabs-flexContainer ': {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
 
     '&': { color: '#727272 !important' },
 });
@@ -34,11 +30,12 @@ const AntTabs = styled(Tabs)({
 export interface IHeadHistoryProps {
     iniData?: HeadTabType[];
     styles?: 'outline' | 'rounded' | 'border-bottom';
+    layouts?: 'center' | 'space-between' | 'flex-start';
     color?: string;
     onTab?: (value: { index: number; title: string }) => void;
 }
 
-export default function HeadHistory({ iniData = dataHeadHistory, styles = 'rounded', color = '#505DE8', onTab }: IHeadHistoryProps) {
+export default function HeadHistory({ iniData = dataHeadHistory, styles = 'rounded', color = '#505DE8', layouts = 'space-between', onTab }: IHeadHistoryProps) {
     const [value, setValue] = useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -54,7 +51,7 @@ export default function HeadHistory({ iniData = dataHeadHistory, styles = 'round
 
     return (
         <div
-            className={classNames('border-gray-primary  px-2 md:px-10 w-full mb-6', {
+            className={classNames('border-gray-primary  px-2 md:px-10 w-full mb-6 ', {
                 ['border rounded-lg']: styles === 'rounded',
                 ['border-t border-b']: styles === 'outline',
                 ['border-b']: styles === 'border-bottom',
@@ -67,6 +64,12 @@ export default function HeadHistory({ iniData = dataHeadHistory, styles = 'round
                     },
                     '& .MuiTabs-indicator': {
                         backgroundColor: color,
+                    },
+                    '& .MuiTabs-flexContainer ': {
+                        display: 'flex',
+                        justifyContent: layouts,
+
+                        [layouts === 'flex-start' ? 'gap' : '']: '2rem',
                     },
                 }}
                 scrollButtons

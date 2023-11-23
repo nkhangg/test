@@ -5,6 +5,8 @@ export const statusColor = {
     shipping: '#FADCD9',
     delivered: '#BBEAD9',
     cancelled: '#DFDFDF',
+    cancelled_by_admin: '#DFDFDF',
+    cancelled_by_customer: '#DFDFDF',
 };
 
 const config: Config = {

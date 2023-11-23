@@ -9,7 +9,7 @@ import { statusColor } from '../../../tailwind.config';
 import classNames from 'classnames';
 import { useQuery } from '@tanstack/react-query';
 import { StateType } from '@/configs/types';
-import { toCurrency } from '@/utils/format';
+import { formatStatus, toCurrency, toStatus } from '@/utils/format';
 import { getOrdersDetailAdminWithFilter, updateStatusOrder } from '@/apis/admin/orders';
 import { toast } from 'react-toastify';
 import { contants } from '@/utils/contants';
@@ -24,15 +24,16 @@ const Header = ({ title, chip, options = { border: true } }: { title: string; ch
             })}
         >
             <div className="flex items-center gap-3">
-                <h2>{title}</h2>
+                <h2 className="capitalize">{title}</h2>
                 {chip && (
                     <Chip
-                        label={capitalize(chip)}
+                        label={formatStatus(chip)}
                         variant="outlined"
                         size="medium"
                         sx={{
                             backgroundColor: statusColor[chip],
                             borderColor: statusColor[chip],
+                            textTransform: 'capitalize',
                         }}
                     />
                 )}
@@ -65,7 +66,7 @@ export default function UpdateStateOrderDialog({ idOpen, open, setOpen }: IUpdat
 
         switch (curState) {
             case 'placed': {
-                return ['shipping', 'delivered', 'cancelled'];
+                return ['shipping', 'cancelled'];
             }
             case 'shipping': {
                 return ['delivered', 'cancelled'];
@@ -73,8 +74,13 @@ export default function UpdateStateOrderDialog({ idOpen, open, setOpen }: IUpdat
             case 'delivered': {
                 return [];
             }
-
             case 'cancelled': {
+                return [];
+            }
+            case 'cancelled_by_admin': {
+                return [];
+            }
+            case 'cancelled_by_customer': {
                 return [];
             }
             default: {
@@ -91,12 +97,12 @@ export default function UpdateStateOrderDialog({ idOpen, open, setOpen }: IUpdat
 
     const dataDetail = data?.data;
 
-    const status = dataDetail && (dataDetail.state.toLowerCase() as StateType);
+    const status = dataDetail && toStatus(dataDetail.state.toLowerCase());
 
     const handleUpdateStatus = async (reason?: string) => {
         if (!dataUpdate || !dataDetail) return;
 
-        if (dataUpdate === 'cancelled' && (!reason || Validate.isBlank(reason))) return;
+        if (contants.stateCancel.includes(dataUpdate) && (!reason || Validate.isBlank(reason))) return;
 
         try {
             const response = await updateStatusOrder({ id: dataDetail.id, status: dataUpdate, reason });
@@ -176,7 +182,7 @@ export default function UpdateStateOrderDialog({ idOpen, open, setOpen }: IUpdat
                                 </ul>
                             </div>
 
-                            {!['cancelled', 'delivered'].includes(status || 'cancelled') && <Header title="UPDATE STATUS" options={{ border: false }} />}
+                            {renderStateUpdate(status || 'placed').length > 0 && <Header title="UPDATE STATUS" options={{ border: false }} />}
                             <div className="flex items-center gap-5">
                                 {renderStateUpdate(status || 'placed').map((item) => {
                                     return (
@@ -240,7 +246,7 @@ export default function UpdateStateOrderDialog({ idOpen, open, setOpen }: IUpdat
                 )}
             </div>
 
-            {dataUpdate && dataUpdate !== 'cancelled' && (
+            {dataUpdate && !contants.stateCancel.includes(dataUpdate) && (
                 <Comfirm
                     title={'Notification'}
                     subtitle={
@@ -255,7 +261,7 @@ export default function UpdateStateOrderDialog({ idOpen, open, setOpen }: IUpdat
                 />
             )}
 
-            {dataUpdate === 'cancelled' && (
+            {dataUpdate && contants.stateCancel.includes(dataUpdate) && (
                 <ReasonDialog
                     onClose={() => setDataUpdate(null)}
                     handleAfterClickSend={async (reason) => {
