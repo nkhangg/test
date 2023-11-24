@@ -37,6 +37,7 @@ import {
     IRowReviewTable,
     IReviewAdminFillterForm,
     IDataDetailReview,
+    IPriceHistories,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 export type ValidTags = keyof JSX.IntrinsicElements;
@@ -110,6 +111,8 @@ export type ApiUpdateARepository = (data: RepoType) => Promise<IBaseResponse<Rep
 export type ApiDeleteARepository = (id: number) => Promise<IBaseResponse<RepoType>>;
 
 export type ApiGetImagesByProduct = (id: string) => Promise<IBaseResponse<IImage[]>>;
+
+export type ApiGetPriceHistories = (id: string) => Promise<IBaseResponse<IPriceHistories[]>>;
 
 export type ApiCreateImagesByProduct = (id: string, files: File[]) => Promise<IBaseResponse<any>>;
 

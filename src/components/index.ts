@@ -45,6 +45,7 @@ export { default as RowStatusOrders } from './inputs/tables/rows/RowStatusOrders
 export { default as RowOrderSummaryUpdateStatus } from './inputs/tables/rows/RowOrderSummaryUpdateStatus';
 export { default as RowListUser } from './inputs/tables/rows/RowListUser';
 export { default as RowListProduct } from './inputs/tables/rows/RowListProduct';
+export { default as RowPriceHistories } from './inputs/tables/rows/RowPriceHistories';
 
 // bages
 export { default as CustomBadge } from './badges/CustomBadge';

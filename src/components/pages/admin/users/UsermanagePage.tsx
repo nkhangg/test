@@ -56,7 +56,7 @@ const listSort = [
 type FilterType = {
     keyword?: string;
     sort?: string;
-    roles?: string;
+    role?: string;
 };
 
 export interface IUserManagePageProps {}
@@ -68,7 +68,7 @@ export default function UserManagePage(props: IUserManagePageProps) {
     const baseUrl = links.admin + 'users?page=';
 
     const [openComfirm, setOpenComfirm] = useState({ open: false, comfirm: 'cancel' });
-    const [filter, setFilter] = useState<FilterType>({});
+    const [filter, setFilter] = useState<FilterType>({ role: 'user' });
 
     const [loading, setLoading] = useState(false);
 
@@ -141,10 +141,9 @@ export default function UserManagePage(props: IUserManagePageProps) {
             />
             <HeadHistory
                 onTab={(value) => {
-                    console.log(value);
                     setFilter({
                         ...filter,
-                        roles: value.title.toLowerCase(),
+                        role: value.index === 0 ? 'user' : 'admin',
                     });
                 }}
                 layouts="flex-start"

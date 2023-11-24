@@ -19,6 +19,7 @@ import { SortAdmin } from '@/components/common';
 import { Box } from '@mui/material';
 import { useDebounce, useTypeAndBrand } from '@/hooks';
 import { TippyChooserType } from '@/configs/types';
+import Validate from '@/utils/validate';
 export interface IProductManagePageProps {}
 
 const dataHead = ['No', 'Id', 'Image', 'Name', 'Brand', 'Type', 'Total Repository', 'Actions'];
@@ -184,9 +185,16 @@ export default function ProductManagePage(props: IProductManagePageProps) {
                     data: listTypeAndBand.brand,
                     title: 'Brand',
                     onValue(value) {
+                        if (Validate.isBlank(value.title) && filter.brand) {
+                            delete filter.brand;
+                            setFilter({
+                                ...filter,
+                            });
+                            return;
+                        }
                         setFilter({
                             ...filter,
-                            sort: value.id,
+                            brand: value.title,
                         });
                     },
                 }}
@@ -198,6 +206,13 @@ export default function ProductManagePage(props: IProductManagePageProps) {
                     title="Type"
                     data={listTypeAndBand.type}
                     onValue={(value) => {
+                        if (Validate.isBlank(value.title) && filter.typeName) {
+                            delete filter.typeName;
+                            setFilter({
+                                ...filter,
+                            });
+                            return;
+                        }
                         setFilter({
                             ...filter,
                             typeName: value.title,
@@ -213,7 +228,7 @@ export default function ProductManagePage(props: IProductManagePageProps) {
                     onValue={(value) => {
                         setFilter({
                             ...filter,
-                            brand: value.title,
+                            sort: value.id,
                         });
                     }}
                 />
