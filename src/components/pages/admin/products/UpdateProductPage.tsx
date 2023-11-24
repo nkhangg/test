@@ -19,6 +19,7 @@ import TabCustom from '@/components/inputs/TabCustom';
 import Infomation from './update/Infomation';
 import Repositories from './update/Repositories';
 import Images from './update/Images';
+import PriceHistories from './update/PriceHistories';
 
 type DataProductErrorsType = {
     name: string;
@@ -160,6 +161,7 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
                         <Tab label="Information" />
                         <Tab label="Repositories" />
                         <Tab label="Images" />
+                        <Tab label="Price Histories" />
                     </Tabs>
                 </Box>
                 <TabCustom value={value} index={0}>
@@ -170,6 +172,9 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
                 </TabCustom>
                 <TabCustom value={value} index={2}>
                     <Images id={idProduct} />
+                </TabCustom>
+                <TabCustom value={value} index={3}>
+                    <PriceHistories id={idProduct} />
                 </TabCustom>
             </Box>
         </DashboardCard>

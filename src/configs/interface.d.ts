@@ -525,3 +525,18 @@ export interface IDataDetailReview {
     };
     reviews: IReviewHasReplay[];
 }
+
+export interface IPriceHistories {
+    id: number;
+    newInPrice: number;
+    newOutPrice: number;
+    oldInPrice: number;
+    oldOutPrice: number;
+    updateAt: string;
+    size: number;
+    user: {
+        id: string;
+        fullname: string;
+        avartar: string;
+    };
+}

@@ -6,6 +6,7 @@ import {
     ApiDelete,
     ApiDetailProductManaege,
     ApiGetImagesByProduct,
+    ApiGetPriceHistories,
     ApiGetProductInfo,
     ApiGetRepositories,
     ApiProductsManage,
@@ -141,6 +142,17 @@ export const getImages: ApiGetImagesByProduct = async (id: string) => {
     const res = await axios({
         method: 'GET',
         url: 'admin/images/' + id,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const getPriceHistories: ApiGetPriceHistories = async (id: string) => {
+    const res = await axios({
+        method: 'GET',
+        url: 'admin/price-changes/' + id,
     });
 
     if (!res) return null;
