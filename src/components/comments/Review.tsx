@@ -1,29 +1,43 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
 'use client';
+import React, { Fragment, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { IReviewHasReplay } from '@/configs/interface';
 import { contants } from '@/utils/contants';
 import { toGam } from '@/utils/format';
 import { Rating } from '@mui/material';
 import classNames from 'classnames';
-import React, { useState } from 'react';
-import { TextArea, WrapperAnimation } from '..';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFaceSmile } from '@fortawesome/free-regular-svg-icons';
 import { faPaperPlane, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { motion, AnimatePresence } from 'framer-motion';
+import { deleteReview, replayReview } from '@/apis/admin/reviews';
+import Validate from '@/utils/validate';
+import { toast } from 'react-toastify';
+import NativeComfirm from '../inputs/NativeConfirm';
+import { EmojiPicker, WrapperAnimation } from '..';
+import { EmojiClickData } from 'emoji-picker-react';
+
 export interface IReviewProps {
     data: IReviewHasReplay;
     option?: {
         replay?: boolean;
+        delete?: boolean;
         item?: boolean;
         adminAvatar?: string;
         adminName?: string;
     };
+    handleAfterReplay?: (data: IReviewHasReplay) => void;
+    handleAffterDelete?: () => void;
 }
 
-export default function Review({ data, option }: IReviewProps) {
+export default function Review({ data, option, handleAfterReplay, handleAffterDelete }: IReviewProps) {
     const [open, setOpen] = useState(false);
+    const [openComfirm, setOpenComfirm] = useState(false);
+
+    const [text, setText] = useState('');
+
+    const refInput = useRef<HTMLTextAreaElement>(null);
 
     const handleFormatSizes = () => {
         if (!data.sizes) return '';
@@ -39,6 +53,64 @@ export default function Review({ data, option }: IReviewProps) {
     };
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const handleClear = () => {
+        if (!refInput.current) return;
+
+        refInput.current.innerHTML = '';
+        handleClose();
+    };
+
+    const handleSendMessage = async () => {
+        if (!refInput.current || Validate.isBlank(refInput.current?.value)) return;
+
+        try {
+            const response = await replayReview({ ...data, comment: refInput.current?.value });
+
+            if (!response || response.errors) {
+                toast.warn(contants.messages.errors.handle);
+                return;
+            }
+
+            handleClear();
+
+            if (!handleAfterReplay) return;
+
+            handleAfterReplay({ ...data, id: response.data.id, comment: response.data.comment, replayItems: null, rating: null, sizes: null });
+        } catch (error) {
+            toast.error(contants.messages.errors.server);
+        }
+    };
+
+    const handleEnter = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key !== 'Enter') return;
+        handleSendMessage();
+    };
+
+    const handleOpenComfirm = () => {
+        setOpenComfirm(true);
+    };
+
+    const handleDelete = async () => {
+        try {
+            const response = await deleteReview({ ...data });
+            if (!response || response.errors) {
+                toast.warn(contants.messages.errors.handle);
+                return;
+            }
+
+            if (!handleAffterDelete) return;
+            handleAffterDelete();
+        } catch (error) {
+            toast.error(contants.messages.errors.server);
+        }
+    };
+
+    const handleAddIcon = (emojiObject: EmojiClickData, event: MouseEvent) => {
+        if (!refInput.current) return;
+
+        refInput.current.value += emojiObject.emoji;
     };
 
     return (
@@ -72,11 +144,18 @@ export default function Review({ data, option }: IReviewProps) {
                                 ''
                             )}
                             <p className=" mt-2 text-sm">{data.comment}</p>
-                            {option?.replay && (
-                                <span onClick={handleOpen} className="text-left text-red-primary hover:underline text-sm cursor-pointer mt-2 select-none">
-                                    Reply
-                                </span>
-                            )}
+                            <div className="flex items-center gap-2">
+                                {option?.delete && (
+                                    <span onClick={handleOpenComfirm} className="text-left text-red-primary hover:underline text-sm cursor-pointer mt-2 select-none">
+                                        Delete
+                                    </span>
+                                )}
+                                {option?.replay && (
+                                    <span onClick={handleOpen} className="text-left text-red-primary hover:underline text-sm cursor-pointer mt-2 select-none">
+                                        Reply
+                                    </span>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -92,17 +171,17 @@ export default function Review({ data, option }: IReviewProps) {
 
             {data.replayItems &&
                 data.replayItems.length > 0 &&
-                data.replayItems.map((comment) => {
+                data.replayItems.map((comment, index) => {
                     return (
-                        <>
+                        <Fragment key={comment.id + 'replay' + index + comment.comment}>
                             <div className="text-gray-300 font-bold pl-14">|</div>
 
                             <Review
-                                key={comment.id}
+                                handleAffterDelete={handleAffterDelete}
                                 data={{ ...comment, avatar: option?.adminAvatar || contants.avartarAdminDefault, name: option?.adminName || contants.shopName }}
-                                option={{ item: true }}
+                                option={{ item: true, delete: option?.delete }}
                             />
-                        </>
+                        </Fragment>
                     );
                 })}
 
@@ -118,29 +197,53 @@ export default function Review({ data, option }: IReviewProps) {
                         >
                             <div className="flex gap-3 items-start">
                                 <img src={contants.avartarAdminDefault} className="object-cover w-10 h-10 rounded-full " />
-                                <div className="flex flex-col">
-                                    <TextArea cols={100} maxRows={3} />
-                                    <div className="flex items-center justify-end mt-2">
-                                        <WrapperAnimation onClick={handleClose} hover={{}} className="p-3 text-lg">
-                                            <FontAwesomeIcon icon={faXmark} className="text-2xl" />
-                                        </WrapperAnimation>
-                                        <WrapperAnimation hover={{}} className="p-3 text-lg">
-                                            <FontAwesomeIcon icon={faFaceSmile} className="text-2xl" />
-                                        </WrapperAnimation>
+                                <div className="flex flex-col relative">
+                                    <textarea
+                                        spellCheck={false}
+                                        onKeyDown={handleEnter}
+                                        ref={refInput}
+                                        placeholder="Your message..."
+                                        className="text-sm resize-none border border-gray-primary rounded outline-none p-2 min-h-[100px]"
+                                        cols={100}
+                                    />
+                                    <div className="flex items-center justify-end mt-0">
+                                        <EmojiPicker onEmoji={handleAddIcon} />
                                         <WrapperAnimation
+                                            onClick={handleSendMessage}
                                             hover={{}}
-                                            className="bg-violet-primary rounded-lg px-6 py-2 text-white font-medium flex items-center gap-2 cursor-pointer"
+                                            className="bg-violet-primary rounded-lg px-4 py-1 text-white font-medium flex items-center gap-2 cursor-pointer text-1xl"
                                         >
                                             <p>Send</p>
                                             <FontAwesomeIcon icon={faPaperPlane} />
                                         </WrapperAnimation>
                                     </div>
+
+                                    <WrapperAnimation
+                                        onClick={handleClose}
+                                        hover={{}}
+                                        className="p-2 flex items-center justify-center text-sm absolute top-0 right-0 cursor-pointer"
+                                    >
+                                        <FontAwesomeIcon icon={faXmark} className="text-sm" />
+                                    </WrapperAnimation>
                                 </div>
                             </div>
                         </motion.div>
                     </>
                 )}
             </AnimatePresence>
+
+            {option?.delete && openComfirm && (
+                <NativeComfirm
+                    title="Notifycation"
+                    onClose={() => setOpenComfirm(false)}
+                    handleSubmit={handleDelete}
+                    subtitle={
+                        <>
+                            Are you want to delete comment of <b>{data.name}</b>
+                        </>
+                    }
+                />
+            )}
         </div>
     );
 }

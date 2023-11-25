@@ -1,16 +1,32 @@
 /* eslint-disable @next/next/no-img-element */
+import { updateRecentViews } from '@/apis/user';
 import { IProduct } from '@/configs/interface';
 import { links } from '@/datas/links';
+import { contants } from '@/utils/contants';
 import { capitalize, stringToUrl, toCurrency, toGam } from '@/utils/format';
 import { Rating } from '@mui/material';
 import Link from 'next/link';
 import * as React from 'react';
+import { toast } from 'react-toastify';
 
 export interface IProductProps {
     data: IProduct;
 }
 
 export default function Product({ data }: IProductProps) {
+    const handleClickProduct = async () => {
+        try {
+            const response = await updateRecentViews(data.id as string);
+
+            if (!response || response.errors) {
+                toast.warn(contants.messages.errors.handle);
+                return;
+            }
+        } catch (error) {
+            console.log('Product: ' + error);
+        }
+    };
+
     return (
         <div className="flex flex-col items-center hover:shadow-primary pb-[21px] transition-all ease-linear max-h-[468px] rounded">
             <div className="w-full h-3/5 min-h-[304px] relative">
@@ -25,7 +41,11 @@ export default function Product({ data }: IProductProps) {
                     <span className="w-full max-w-[80%] line-clamp-1">{capitalize(data.brand)}</span>
                     <p>{toGam(data.size[0] as number)}</p>
                 </div>
-                <Link href={links.produt + `${data.id}/${stringToUrl(data.name)}`} className="text-[18px] line-clamp-1 hover:underline cursor-pointer mt-2 mb-2">
+                <Link
+                    onClick={handleClickProduct}
+                    href={links.produt + `${data.id}/${stringToUrl(data.name)}`}
+                    className="text-[18px] line-clamp-1 hover:underline cursor-pointer mt-2 mb-2"
+                >
                     {data.name}
                 </Link>
                 <Rating

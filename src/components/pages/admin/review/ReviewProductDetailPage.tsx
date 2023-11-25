@@ -7,6 +7,8 @@ import React from 'react';
 import { getReview } from '@/apis/admin/reviews';
 import { toast } from 'react-toastify';
 import { notFound } from 'next/navigation';
+import { IReviewHasReplay } from '@/configs/interface';
+import ReviewOfDetail from './ReviewOfDetail';
 
 export interface IReviewProductDetailPageProps {
     id: string;
@@ -97,37 +99,7 @@ export default function ReviewProductDetailPage({ id }: IReviewProductDetailPage
                 </Grid>
             </Grid>
 
-            <div className="flex items-center justify-between py-4 px-5 border-t border-b border-gray-primary mt-[4%]">
-                <h2 className="text-xl font-medium">Product Reivews</h2>
-                <div className="flex items-center justify-between gap-5">
-                    <div className="flex items-center justify-between gap-2">
-                        <div className="w-6 h-6 bg-[#D9D9D9] rounded"></div>
-                        <p className="whitespace-nowrap">No reply</p>
-                    </div>
-
-                    <TippyChooser title="Sort by" data={[]} />
-                </div>
-            </div>
-
-            {data && data.reviews && data.reviews.length ? (
-                <div className="mt-9 flex flex-col gap-5">
-                    {data.reviews.map((item) => {
-                        return (
-                            <Review
-                                key={item.id}
-                                data={item}
-                                option={{
-                                    replay: true,
-                                }}
-                            />
-                        );
-                    })}
-                </div>
-            ) : (
-                <div className="flex items-center justify-center border border-gray-primary py-[100px] w-full rounded-xl mt-9">
-                    <span className="text-violet-primary text-xl font-semibold">No review for {id}</span>
-                </div>
-            )}
+            <ReviewOfDetail data={data} id={id} refetch={reviews.refetch} />
         </div>
     );
 }

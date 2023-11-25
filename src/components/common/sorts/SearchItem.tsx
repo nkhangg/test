@@ -8,9 +8,17 @@ import React, { MouseEvent, MouseEventHandler } from 'react';
 export interface ISearchItemProps {
     data: ISearchItem;
     onClickItem?: (e: MouseEvent<HTMLDivElement>, data: ISearchItem) => void;
+    handleDelete?: (data: ISearchItem) => void;
 }
 
-export default function SearchItem({ data, onClickItem }: ISearchItemProps) {
+export default function SearchItem({ data, onClickItem, handleDelete }: ISearchItemProps) {
+    const handleClickDelete = (e: MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+
+        if (!handleDelete) return;
+        handleDelete(data);
+    };
+
     return (
         <div
             onClick={onClickItem ? (e) => onClickItem(e, data) : undefined}
@@ -25,6 +33,7 @@ export default function SearchItem({ data, onClickItem }: ISearchItemProps) {
                 hover={{
                     rotate: 10,
                 }}
+                onClick={handleDelete ? handleClickDelete : undefined}
             >
                 <FontAwesomeIcon className="text-lg cursor-pointer" icon={faXmark} />
             </WrapperAnimation>

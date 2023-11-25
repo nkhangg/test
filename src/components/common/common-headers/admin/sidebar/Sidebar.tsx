@@ -1,6 +1,8 @@
 import { useMediaQuery, Box, Drawer } from '@mui/material';
 import Logo from '../shared/logo/Logo';
 import SidebarItems from './SidebarItems';
+import { usePathname } from 'next/navigation';
+import { links } from '@/datas/links';
 
 interface ItemType {
     isMobileSidebarOpen: boolean;
@@ -9,7 +11,9 @@ interface ItemType {
 }
 
 const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }: ItemType) => {
-    const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up('lg'));
+    const pathname = usePathname();
+
+    const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up('lg')) && !pathname.includes(links.message);
 
     const sidebarWidth = '270px';
 

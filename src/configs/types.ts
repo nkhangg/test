@@ -38,6 +38,10 @@ import {
     IReviewAdminFillterForm,
     IDataDetailReview,
     IPriceHistories,
+    ISearchItem,
+    IProduct,
+    IReview,
+    IReviewHasReplay,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 export type ValidTags = keyof JSX.IntrinsicElements;
@@ -69,6 +73,14 @@ export type ApiBestSellerType = (page: number | undefined) => Promise<IBaseRespo
 export type ApiHistory = (page: number | undefined, status: StateType | string) => Promise<IBaseResponse<IOtherHistories>>;
 
 export type ApiDetailHistory = (id: string | number) => Promise<IBaseResponse<IDetailOrder>>;
+
+export type ApiGetSearchHistories = () => Promise<IBaseResponse<ISearchItem[]>>;
+
+export type ApiActionSearchHistories = (data: ISearchItem) => Promise<IBaseResponse<ISearchItem[]>>;
+
+export type ApiGetRecentViews = () => Promise<IBaseResponse<IProduct[]>>;
+
+export type ApiActionRecentViews = (id: string) => Promise<IBaseResponse<IProduct[]>>;
 
 export type ApiTypesAndBrands = () => Promise<IBaseResponse<TypesAndBrands>>;
 
@@ -155,6 +167,10 @@ export type ApiGetBrands = () => Promise<IBaseResponse<IBrand[]>>;
 export type ApiGetReviews = (data: IReviewAdminFillterForm) => Promise<IBaseResponse<IRowReviewTable[]>>;
 
 export type ApiGetReview = (id: string) => Promise<IBaseResponse<IDataDetailReview>>;
+
+export type ApiReplayReview = (data: IReview) => Promise<IBaseResponse<any>>;
+
+export type ApiFilterReviews = (data: { id: string; noReplay: boolean }) => Promise<IBaseResponse<IReviewHasReplay[]>>;
 
 export type ApiActionBrand = (data: IBrand) => Promise<IBaseResponse<IBrand>>;
 

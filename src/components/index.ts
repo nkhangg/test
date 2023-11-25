@@ -31,6 +31,7 @@ export { default as AddressForm } from './inputs/address/AddressForm';
 export { default as TippyChooser } from './inputs/tippys/TippyChooser';
 export { default as SearchInput } from './inputs/SearchInput';
 export { default as RatingStar } from './inputs/RatingStar';
+export { default as EmojiPicker } from './inputs/EmojiPicker';
 
 // comfirm
 export { default as Comfirm } from './inputs/Comfirm';
@@ -62,6 +63,7 @@ export { default as Product } from './products-and-pets/Product';
 export { default as Products } from './products-and-pets/Products';
 export { default as ProductRecent } from './products-and-pets/ProductRecent';
 export { default as ProductRecents } from './products-and-pets/ProductRecents';
+export { default as ProductSuggestion } from './products-and-pets/ProductSuggestion';
 export { default as SekeletonProduct } from './products-and-pets/SekeletonProduct';
 export { default as SekeletonTableItems } from './products-and-pets/SekeletonTableItems';
 
