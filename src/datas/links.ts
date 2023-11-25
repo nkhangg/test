@@ -32,4 +32,5 @@ export const links = {
     reviews: {
         management: commonAdmin + '/reviews',
     },
+    message: commonAdmin + '/message',
 };

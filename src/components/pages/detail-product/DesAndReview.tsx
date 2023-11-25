@@ -72,6 +72,7 @@ export default function DesAndReview({ description, reviews }: IDesAndReviewProp
 
     useEffect(() => {
         setLimit(reviews.length > 3 ? 3 : reviews.length);
+        setShowLoadMore(reviews.length > 3);
     }, [reviews]);
     return (
         <Box sx={{ width: '100%', mt: '32px', position: 'relative' }}>

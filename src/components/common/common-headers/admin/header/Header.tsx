@@ -8,13 +8,15 @@ import { IconBellRinging, IconMenu } from '@tabler/icons-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { WrapperAnimation, NotifycationCom } from '@/components';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { links } from '@/datas/links';
 
 interface ItemType {
     toggleMobileSidebar: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 const Header = ({ toggleMobileSidebar }: ItemType) => {
+    const pathname = usePathname();
     const router = useRouter();
     const AppBarStyled = styled(AppBar)(({ theme }) => ({
         boxShadow: 'none',
@@ -39,7 +41,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
                     onClick={toggleMobileSidebar}
                     sx={{
                         display: {
-                            lg: 'none',
+                            lg: pathname.includes(links.message) ? 'inline' : 'none',
                             xs: 'inline',
                         },
                     }}

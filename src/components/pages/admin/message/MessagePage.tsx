@@ -68,7 +68,7 @@ export default function MessagePage(props: IMessagePageProps) {
         };
     }, []);
     return (
-        <div style={style} className="w-full max-w-[100%] ">
+        <div style={style} className="w-full max-w-[100%] mt-[-20px]">
             <Grid container spacing={1}>
                 <Grid item lg={3}>
                     <div className="w-full h-full py-8 flex flex-col justify-between items-center gap-16  border-r border-gray-primary">

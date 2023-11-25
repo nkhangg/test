@@ -10,11 +10,16 @@ import { RootState } from '@/configs/types';
 import { fetchUserByToken } from '@/redux/slice/userSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { getCart, getPayment } from '@/redux/slice/cartsSlide';
+import { addPreviousUrl } from '@/utils/session';
+import { usePathname } from 'next/navigation';
 export interface IHeaderProps {
     dynamic?: boolean;
 }
 
 export default function Header({ dynamic = true }: IHeaderProps) {
+    // path name
+    const pathname = usePathname();
+
     const { scrollY } = useScroll();
     const { token } = useAppSelector((state: RootState) => state.userReducer);
     const [isChangeBg, setIsChangeBg] = useState(false);
@@ -22,6 +27,10 @@ export default function Header({ dynamic = true }: IHeaderProps) {
     // const { token } = useAppSelector((state: RootState) => state.userReducer);
     const { user } = useAppSelector((state: RootState) => state.userReducer);
     const dispatch = useAppDispatch();
+
+    const handleClickLogin = () => {
+        addPreviousUrl(pathname);
+    };
 
     useMotionValueEvent(scrollY, 'change', (latest) => {
         setIsChangeBg(latest > 0);
@@ -69,7 +78,7 @@ export default function Header({ dynamic = true }: IHeaderProps) {
                                     ['text-white']: !isChangeBg,
                                 })}
                             >
-                                <Link className="hover:underline text-1xl" href={'/login'}>
+                                <Link onClick={handleClickLogin} className="hover:underline text-1xl" href={'/login'}>
                                     Login
                                 </Link>
                                 /

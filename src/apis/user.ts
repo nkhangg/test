@@ -1,4 +1,6 @@
 import {
+    ApiActionRecentViews,
+    ApiActionSearchHistories,
     ApiChangePassword,
     ApiCreateCartUser,
     ApiCreateOrder,
@@ -9,6 +11,8 @@ import {
     ApiGetCartUser,
     ApiGetCurUser,
     ApiGetDefaultAddress,
+    ApiGetRecentViews,
+    ApiGetSearchHistories,
     ApiHandleAddresses,
     ApiHistory,
     ApiLogin,
@@ -26,7 +30,7 @@ import {
 } from '@/configs/types';
 import axios from '../configs/axios';
 import { setTokenToCookie } from '@/utils/cookie';
-import { ICart, IFormChangePassword, IInfoAddress, IOrder, IPayment, IProfile, IRequestReview } from '@/configs/interface';
+import { ICart, IFormChangePassword, IInfoAddress, IOrder, IPayment, IProfile, IRequestReview, ISearchItem } from '@/configs/interface';
 import { dataURLtoFile } from '@/utils/format';
 import moment from 'moment';
 
@@ -335,6 +339,75 @@ export const detailOtherHistory: ApiDetailHistory = async (id: string | number) 
     const res = await axios({
         method: 'GET',
         url: 'user/order/history/' + id,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const getSearchHistories: ApiGetSearchHistories = async () => {
+    const res = await axios({
+        method: 'GET',
+        url: 'user/search-histories',
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const addSearchHistories: ApiActionSearchHistories = async (data: ISearchItem) => {
+    const form = new FormData();
+
+    form.append('keyword', data.title);
+    const res = await axios({
+        method: 'PUT',
+        url: 'user/search-histories',
+        headers: {
+            'content-type': 'multipart/form-data',
+        },
+        data: form,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const deleteSearchHistories: ApiActionSearchHistories = async (data: ISearchItem) => {
+    const form = new FormData();
+
+    form.append('keyword', data.title);
+    const res = await axios({
+        method: 'DELETE',
+        url: 'user/search-histories',
+        headers: {
+            'content-type': 'multipart/form-data',
+        },
+        data: form,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const getRecentViews: ApiGetRecentViews = async () => {
+    const res = await axios({
+        method: 'GET',
+        url: 'user/recent-views',
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const updateRecentViews: ApiActionRecentViews = async (id: string) => {
+    const res = await axios({
+        method: 'PUT',
+        url: 'user/recent-views/' + id,
     });
 
     if (!res) return null;
