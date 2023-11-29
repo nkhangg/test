@@ -1,3 +1,4 @@
+import { MessageManageLayout } from '@/components/layouts';
 import React, { ReactNode } from 'react';
 
 export interface ILayoutMessageProps {
@@ -5,5 +6,9 @@ export interface ILayoutMessageProps {
 }
 
 export default function LayoutMessage({ children }: ILayoutMessageProps) {
-    return <div className="md:mx-[-10%] ">{children}</div>;
+    return (
+        <div className="md:mx-[-10%] ">
+            <MessageManageLayout>{children}</MessageManageLayout>
+        </div>
+    );
 }

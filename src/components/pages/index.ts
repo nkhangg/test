@@ -44,6 +44,8 @@ export { default as OrdersAdminPage } from './admin/orders/OrdersAdminPage';
 
 // message
 export { default as MessagePage } from './admin/message/MessagePage';
+export { default as MessageWelcomePage } from './admin/message/MessageWelcomePage';
+export { default as DrawerChat } from './admin/message/DrawerChat';
 
 // reviews
 export { default as ReviewManamentPage } from './admin/review/ReviewManamentPage';

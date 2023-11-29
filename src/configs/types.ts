@@ -42,6 +42,7 @@ import {
     IProduct,
     IReview,
     IReviewHasReplay,
+    IProfileMessageManage,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 export type ValidTags = keyof JSX.IntrinsicElements;
@@ -131,6 +132,8 @@ export type ApiCreateImagesByProduct = (id: string, files: File[]) => Promise<IB
 export type ApiDeleteImagesByProduct = (data: { id: string; idImage: number }) => Promise<IBaseResponse<any>>;
 
 export type ApiGetUserManage = (id: string) => Promise<IBaseResponse<IUserManage>>;
+
+export type ApiGetUserProfileMessageManage = (id: string) => Promise<IBaseResponse<IProfileMessageManage>>;
 
 export type ApiUpdateUserManage = (data: IUserManage) => Promise<IBaseResponse<any>>;
 

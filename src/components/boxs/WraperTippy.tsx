@@ -5,10 +5,11 @@ import React, { JSXElementConstructor, ReactElement, ReactNode, useLayoutEffect,
 
 export interface IWraperTippyProps {
     children: ReactElement<any, string | JSXElementConstructor<any>> | undefined;
+    classNameWraper?: string;
     renderEl: ReactNode;
 }
 
-export default function WraperTippy({ children, renderEl, ...props }: IWraperTippyProps & TippyProps) {
+export default function WraperTippy({ children, renderEl, classNameWraper, ...props }: IWraperTippyProps & TippyProps) {
     const ref = useRef<HTMLDivElement>(null);
     const [width, setWidth] = useState(0);
 
@@ -31,7 +32,9 @@ export default function WraperTippy({ children, renderEl, ...props }: IWraperTip
                     );
                 }}
             >
-                <div ref={ref}>{children}</div>
+                <div className={classNameWraper} ref={ref}>
+                    {children}
+                </div>
             </Tippy>
         </div>
     );

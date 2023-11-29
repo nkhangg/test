@@ -1,6 +1,7 @@
 import { IAddress } from '@/configs/interface';
 import { RoleType, StateType } from '@/configs/types';
 import { faBox, faCarSide, faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { Timestamp } from 'firebase/firestore';
 import moment from 'moment';
 
 const floor = Math.floor,
@@ -158,3 +159,5 @@ export const getIconWithStatus = (status: StateType) => {
         }
     }
 };
+
+export const convertFirestoreTimestampToString = (timestamp: Timestamp) => new Date(timestamp?.toDate().getTime());

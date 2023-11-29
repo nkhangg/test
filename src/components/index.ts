@@ -88,6 +88,7 @@ export { default as Pagination } from './pagination/Pagination';
 // loadings
 export { default as LoadingPrimary } from './common/loadings/LoadingPrimary';
 export { default as LoadingSecondary } from './common/loadings/LoadingSecondary';
+export { default as MiniLoading } from './common/loadings/MiniLoading';
 export { default as BorderLinearProgress } from './common/loadings/BorderLinearProgress';
 
 // notifycation
@@ -104,6 +105,7 @@ export { default as ReasonDialog } from './dialogs/ReasonDialog';
 export { default as BaseAddressDialog } from './inputs/address/BaseAddressDialog';
 export { default as FormBrandDialog } from './dialogs/FormBrandDialog';
 export { default as ContentComfirmPayment } from './dialogs/content-component/ContentComfirmPayment';
+export { default as ConversationDialog } from './dialogs/ConversationDialog';
 
 // chats
 

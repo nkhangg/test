@@ -1,17 +1,21 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { JSXElementConstructor, ReactElement, ReactNode, useEffect, useState } from 'react';
 import { WraperTippy, WrapperAnimation } from '..';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFaceSmile } from '@fortawesome/free-regular-svg-icons';
 import dynamic from 'next/dynamic';
-import { EmojiClickData, EmojiStyle, SuggestionMode } from 'emoji-picker-react';
+import { EmojiClickData, EmojiStyle, PickerProps, SuggestionMode } from 'emoji-picker-react';
+import Tippy, { TippyProps } from '@tippyjs/react/headless';
 
 const Picker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 export interface IEmojiPickerProps {
+    icon?: ReactElement<any, string | JSXElementConstructor<any>>;
     onEmoji?: (emojiObject: EmojiClickData, event: MouseEvent) => void;
+    options?: TippyProps;
+    stylePicker?: PickerProps;
 }
 
-export default function EmojiPicker({ onEmoji }: IEmojiPickerProps) {
+export default function EmojiPicker({ icon, options, stylePicker, onEmoji }: IEmojiPickerProps) {
     const [open, setOpen] = useState(false);
 
     const handleClose = () => {
@@ -23,31 +27,39 @@ export default function EmojiPicker({ onEmoji }: IEmojiPickerProps) {
 
     return (
         <div>
-            <WraperTippy
+            <Tippy
+                {...options}
                 visible={open}
                 interactive
                 onClickOutside={handleClose}
-                renderEl={
-                    <div>
-                        <Picker
-                            previewConfig={{
-                                showPreview: false,
-                            }}
-                            suggestedEmojisMode={SuggestionMode.RECENT}
-                            searchDisabled={true}
-                            skinTonesDisabled={true}
-                            emojiStyle={EmojiStyle.NATIVE}
-                            onEmojiClick={onEmoji}
-                            autoFocusSearch={false}
-                            lazyLoadEmojis={true}
-                        />
-                    </div>
-                }
+                render={(attr) => {
+                    return (
+                        <div {...attr}>
+                            <Picker
+                                {...stylePicker}
+                                previewConfig={{
+                                    showPreview: false,
+                                }}
+                                suggestedEmojisMode={SuggestionMode.RECENT}
+                                searchDisabled={true}
+                                skinTonesDisabled={true}
+                                emojiStyle={EmojiStyle.NATIVE}
+                                onEmojiClick={onEmoji}
+                                autoFocusSearch={false}
+                                lazyLoadEmojis={true}
+                            />
+                        </div>
+                    );
+                }}
             >
-                <WrapperAnimation onClick={handleOpen} hover={{}} className="p-3 text-lg">
-                    <FontAwesomeIcon icon={faFaceSmile} className="text-xl" />
-                </WrapperAnimation>
-            </WraperTippy>
+                {!icon ? (
+                    <WrapperAnimation onClick={handleOpen} hover={{}} className="p-3 text-lg">
+                        <FontAwesomeIcon icon={faFaceSmile} className="text-xl" />
+                    </WrapperAnimation>
+                ) : (
+                    <div onClick={handleOpen}>{icon}</div>
+                )}
+            </Tippy>
         </div>
     );
 }

@@ -1,5 +1,6 @@
 import exp from 'constants';
 import { StateType, UserFormType } from './types';
+import { Timestamp } from 'firebase/firestore';
 
 export interface Action<T, P> {
     readonly type: T;
@@ -539,4 +540,44 @@ export interface IPriceHistories {
         fullname: string;
         avartar: string;
     };
+}
+
+export interface IConversation {
+    users: string[];
+    newMessage: string;
+    sendAt: Timestamp;
+    gim: boolean;
+    seenMessage: boolean;
+}
+
+export interface IConversationId extends IConversation {
+    id: string;
+}
+
+export interface IMessage {
+    id: string;
+    convertsationId: string;
+    message: string;
+    sendAt: Date;
+    username: string;
+    currentUser: string;
+    recall: boolean;
+}
+
+export interface IUserFirebase {
+    username: string;
+    avartar: string;
+    lassSeen: Date;
+    online?: boolean;
+    keywords: string[];
+    conversationId?: string;
+}
+
+export interface INavChatItemData extends IUserFirebase {
+    id: string;
+    messages: string;
+}
+
+export interface IProfileMessageManage extends Pick<IProfile, 'id' | 'avatar' | 'username' | 'fullname' | 'phone' | 'email'> {
+    address: string;
 }
