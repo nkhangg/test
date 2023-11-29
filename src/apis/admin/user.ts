@@ -1,6 +1,6 @@
 import axios from '@/configs/axios';
 import { IUserManage } from '@/configs/interface';
-import { ApiAllUser, ApiCreateUserManage, ApiDelete, ApiGetUserManage, ApiUpdateUserManage } from '@/configs/types';
+import { ApiAllUser, ApiCreateUserManage, ApiDelete, ApiGetUserManage, ApiGetUserProfileMessageManage, ApiUpdateUserManage } from '@/configs/types';
 import { dataURLtoFile } from '@/utils/format';
 
 export const usersManage: ApiAllUser = async (page: number | undefined, filter: {}) => {
@@ -33,6 +33,17 @@ export const getUserManage: ApiGetUserManage = async (id: string) => {
     const res = await axios({
         method: 'GET',
         url: 'admin/users/' + id,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const getUserManageWithUsername: ApiGetUserProfileMessageManage = async (username: string) => {
+    const res = await axios({
+        method: 'GET',
+        url: 'admin/users/username/' + username,
     });
 
     if (!res) return null;

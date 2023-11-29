@@ -1,15 +1,36 @@
 import { WrapperAnimation } from '@/components';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Avatar, Box, Button, Divider, List, ListItem, ListItemButton, ListItemText, SwipeableDrawer } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import { Avatar, SwipeableDrawer } from '@mui/material';
 import React from 'react';
+import { getUserManageWithUsername } from '@/apis/admin/user';
+import { contants } from '@/utils/contants';
 
 export interface IDrawerChatProps {
     open: boolean;
+    username: string;
     setOpen: (open: boolean) => void;
 }
 
-export default function DrawerChat({ open, setOpen }: IDrawerChatProps) {
+export default function DrawerChat({ open, username, setOpen }: IDrawerChatProps) {
+    const dataUser = useQuery({
+        queryKey: ['updateUser', username],
+        queryFn: () => getUserManageWithUsername(username),
+    });
+
+    if (dataUser.error) {
+        setOpen(false);
+        return;
+    }
+
+    const data = dataUser?.data?.data;
+
+    if (!data) {
+        setOpen(false);
+        return;
+    }
+
     const toggleDrawer = () => (event: React.KeyboardEvent | React.MouseEvent) => {
         if (event && event.type === 'keydown' && ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')) {
             return;
@@ -37,22 +58,22 @@ export default function DrawerChat({ open, setOpen }: IDrawerChatProps) {
                                     height: '102px',
                                     cursor: 'pointer',
                                 }}
-                                src="https://congluan-cdn.congluan.vn/files/content/2021/09/04/ahn-yu-jin-cuu-ca-si-nhom-izone-va-hang-loat-sao-han-mac-covid-19-224735591.jpg"
+                                src={data.avatar || contants.avartarDefault}
                             />
-                            <h4 className="font-bold text-xl break-all">Ha Lam </h4>
+                            <h4 className="font-bold text-xl break-all">{data.username}</h4>
 
                             <ul className="w-full flex flex-col justify-start gap-5">
                                 <li>
                                     <span className="text-[#797878]">Phone</span>
-                                    <p>964909321</p>
+                                    <p>{data.phone || 'phone not yet'}</p>
                                 </li>
                                 <li>
                                     <span className="text-[#797878]">Email</span>
-                                    <p>hantlpc04927@gmail.com</p>
+                                    <p>{data.email}</p>
                                 </li>
                                 <li>
                                     <span className="text-[#797878]">Address</span>
-                                    <p>132 3/2 Street, Hung Loi Ward, Ninh Kieu District</p>
+                                    <p>{data.address || 'address not yet'}</p>
                                 </li>
                             </ul>
                         </div>

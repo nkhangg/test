@@ -7,11 +7,12 @@ import Image from 'next/image';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
-import { fetchUserByToken } from '@/redux/slice/userSlice';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { getCart, getPayment } from '@/redux/slice/cartsSlide';
 import { addPreviousUrl } from '@/utils/session';
 import { usePathname } from 'next/navigation';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { fetchUserByToken } from '@/redux/slice/userSlice';
+import { getCart, getPayment } from '@/redux/slice/cartsSlide';
+import firebaseService from '@/services/firebaseService';
 export interface IHeaderProps {
     dynamic?: boolean;
 }
@@ -21,12 +22,10 @@ export default function Header({ dynamic = true }: IHeaderProps) {
     const pathname = usePathname();
 
     const { scrollY } = useScroll();
-    const { token } = useAppSelector((state: RootState) => state.userReducer);
     const [isChangeBg, setIsChangeBg] = useState(false);
-
-    // const { token } = useAppSelector((state: RootState) => state.userReducer);
-    const { user } = useAppSelector((state: RootState) => state.userReducer);
     const dispatch = useAppDispatch();
+
+    const { user, token } = useAppSelector((state: RootState) => state.userReducer);
 
     const handleClickLogin = () => {
         addPreviousUrl(pathname);
@@ -48,6 +47,15 @@ export default function Header({ dynamic = true }: IHeaderProps) {
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token]);
+
+    useEffect(() => {
+        (async () => {
+            if (!user) return;
+
+            // set user into db on firebase
+            await firebaseService.setUserInBd(user);
+        })();
+    }, [user]);
 
     return (
         <>

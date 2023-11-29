@@ -12,6 +12,8 @@ export interface ITippyChooserProps {
     onValue?: (value: TippyChooserType) => void;
     styles?: {
         minWidth?: string;
+        className?: string;
+        classNamePopup?: string;
     };
 }
 
@@ -68,7 +70,9 @@ export default function TippyChooser({ title, data, styles, onValue }: ITippyCho
                             }}
                             {...attr}
                             tabIndex={-1}
-                            className="border border-gray-primary bg-white rounded-xl shadow-lg overflow-hidden"
+                            className={classNames('shadow-lg overflow-hidden', {
+                                [styles?.classNamePopup || 'border border-gray-primary bg-white rounded-xl']: true,
+                            })}
                         >
                             {data.map((item) => {
                                 return (
@@ -88,8 +92,9 @@ export default function TippyChooser({ title, data, styles, onValue }: ITippyCho
                 <div
                     onClick={() => setOpen((prev) => !prev)}
                     ref={ref}
-                    className={classNames('flex items-center justify-between gap-2 border border-[#333333] rounded-xl py-2 px-4 whitespace-nowrap cursor-pointer w-full', {
+                    className={classNames('flex items-center justify-between gap-2  whitespace-nowrap cursor-pointer w-full', {
                         [styles?.minWidth || ' min-w-[140px]']: styles?.minWidth,
+                        [styles?.className || 'border border-[#333333] rounded-xl py-2 px-4']: true,
                     })}
                 >
                     <span>{value.title}</span>

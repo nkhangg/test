@@ -1,29 +1,30 @@
 'use client';
-import React, { useEffect, useMemo, useRef } from 'react';
-import { ChatItem } from '..';
-import ChatAswer from './ChatAswer';
 import { IMessage } from '@/configs/interface';
-import { useAppSelector } from '@/hooks/reduxHooks';
-import { RootState } from '@/configs/types';
-import { useCollection } from 'react-firebase-hooks/firestore';
 import firebaseService from '@/services/firebaseService';
-import { Timestamp } from 'firebase/firestore';
 import { convertFirestoreTimestampToString } from '@/utils/format';
+import { Timestamp } from 'firebase/firestore';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { ChatItem } from '..';
+import { contants } from '@/utils/contants';
 
-export interface IChatBodyProps {
+export interface IChatBodyAdminProps {
     conversationId: string;
+    avartar?: string;
 }
 
-export default function ChatBody({ conversationId }: IChatBodyProps) {
-    const { user } = useAppSelector((state: RootState) => state.userReducer);
+export default function ChatBodyAdmin({ conversationId, avartar }: IChatBodyAdminProps) {
     const refDiv = useRef<HTMLDivElement>(null);
 
     const queryMessages = firebaseService.querys.generateQueryGetMessages(conversationId);
     const [messageSnapshot] = useCollection(queryMessages);
 
     const handleScrollIntoView = () => {
-        refDiv.current?.scrollIntoView({
+        if (!refDiv.current) return;
+
+        refDiv.current.scrollIntoView({
             behavior: 'smooth',
+            block: 'end',
         });
     };
 
@@ -47,11 +48,11 @@ export default function ChatBody({ conversationId }: IChatBodyProps) {
 
     return (
         <>
-            <div className="bg-[#F3F4F6] flex-1 w-full relative py-8 pb-0 px-5 flex flex-col gap-5 overflow-y-auto scroll hide-scroll scroll-smooth">
+            <div className="bg-[#F3F4F6] flex-1 w-full relative py-8 pb-0 px-5 flex flex-col gap-5 overflow-y-auto scroll hide-scroll scroll-smooth rounded-md shadow-sm">
                 {messagesData.map((item) => {
-                    return <ChatItem key={item.id} data={item} me={user?.username === item.username} />;
+                    return <ChatItem avartar={avartar} key={item.id} data={item} me={item?.username === contants.usernameAdmin} />;
                 })}
-                <div ref={refDiv} className="h-0 flex-none"></div>
+                <div ref={refDiv} className="h-0"></div>
             </div>
         </>
     );

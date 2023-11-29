@@ -2,13 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Avatar, Box, Menu, Button, IconButton, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
-
 import { IconListCheck, IconMail, IconUser } from '@tabler/icons-react';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
-import { fetchUserByToken } from '@/redux/slice/userSlice';
-import { unwrapResult } from '@reduxjs/toolkit';
 import { contants } from '@/utils/contants';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { fetchUserByToken } from '@/redux/slice/userSlice';
 
 const Profile = () => {
     const { user, token } = useAppSelector((state: RootState) => state.userReducer);

@@ -45,5 +45,5 @@ html {
 }
 
 .drop-scroll {
-    overflow: hidden;
+    /* overflow: hidden !important; */
 }

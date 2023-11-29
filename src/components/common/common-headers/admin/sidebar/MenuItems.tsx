@@ -58,7 +58,7 @@ const Menuitems = [
         id: 7,
         title: 'Message',
         icon: IconMessage,
-        href: '/admin/dashboard/message/no-one',
+        href: '/admin/dashboard/message',
     },
     {
         navlabel: true,

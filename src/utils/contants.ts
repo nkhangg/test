@@ -9,7 +9,7 @@ export const contants = {
     shopName: 'Pet Foster',
     avartarDefault: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
     avartarAdminDefault: 'https://media-cdn-v2.laodong.vn/storage/newsportal/2023/8/15/1229028/Yujin-2.jpeg',
-
+    usernameAdmin: 'management-admin',
     askConditions: [
         'Are you working or still in school?',
         'Have you received consent from your family/host/roommate to adopt your baby?',
@@ -80,4 +80,7 @@ export const contants = {
         { id: 2, title: 'GHTK', business: '2 - 6 business days', price: 45000 },
     ],
     stateCancel: ['cancelled', 'cancelled_by_admin', 'cancelled_by_customer'] as StateType[],
+    styleMessageManagePage: {
+        height: 'calc(100vh - 90px)',
+    },
 };
