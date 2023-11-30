@@ -50,6 +50,7 @@ export { default as RowPriceHistories } from './inputs/tables/rows/RowPriceHisto
 
 // bages
 export { default as CustomBadge } from './badges/CustomBadge';
+export { default as BadgeAvartar } from './badges/BadgeAvartar';
 
 //impacts
 export { default as ImpactOfYear } from './impacts/ImpactOfYear';
@@ -106,6 +107,7 @@ export { default as BaseAddressDialog } from './inputs/address/BaseAddressDialog
 export { default as FormBrandDialog } from './dialogs/FormBrandDialog';
 export { default as ContentComfirmPayment } from './dialogs/content-component/ContentComfirmPayment';
 export { default as ConversationDialog } from './dialogs/ConversationDialog';
+export { default as ComfirmPaymentDialog } from './dialogs/ComfirmPaymentDialog';
 
 // chats
 

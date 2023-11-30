@@ -23,7 +23,7 @@ export default function RowListProduct({ page, index, data, handleDeleteProduct,
             <TableCell>
                 <Typography
                     sx={{
-                        fontSize: '15px',
+                        fontSize: '16px',
                         fontWeight: '500',
                     }}
                 >
@@ -31,7 +31,7 @@ export default function RowListProduct({ page, index, data, handleDeleteProduct,
                 </Typography>
             </TableCell>
             <TableCell align="left">
-                <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
                     {data.id}
                 </Typography>
             </TableCell>
@@ -40,17 +40,17 @@ export default function RowListProduct({ page, index, data, handleDeleteProduct,
             </TableCell>
 
             <TableCell align="left">
-                <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
                     {data.name}
                 </Typography>
             </TableCell>
             <TableCell align="left">
-                <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
                     {data.brand}
                 </Typography>
             </TableCell>
             <TableCell align="left">
-                <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
                     {data.type}
                 </Typography>
             </TableCell>
@@ -64,18 +64,18 @@ export default function RowListProduct({ page, index, data, handleDeleteProduct,
                         return <TotipRepository data={data.repo} />;
                     }}
                 >
-                    <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate cursor-default">
+                    <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate cursor-default">
                         {handleTotalQuantiyRepo(data.repo)}
                     </Typography>
                 </Tippy>
             </TableCell>
             <TableCell align="center">
                 <Button onClick={() => handleDeleteProduct(data.id as string)}>
-                    <FontAwesomeIcon className="text-red-400" icon={faTrash} />
+                    <FontAwesomeIcon className="text-red-400 text-lg" icon={faTrash} />
                 </Button>
                 <Link href={'/admin/dashboard/product/' + data.id}>
                     <Button>
-                        <FontAwesomeIcon icon={faEdit} />
+                        <FontAwesomeIcon className="text-lg" icon={faEdit} />
                     </Button>
                 </Link>
             </TableCell>

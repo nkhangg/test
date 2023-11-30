@@ -70,21 +70,25 @@ const ProductPerformance = ({ dataOutsite }: IProductPerformanceProps) => {
                         <DialogTitle>{'Choose date you want to show on table'}</DialogTitle>
                         <DialogContent>
                             <Stack spacing={'10px'} mb={'20px'}>
-                                <div>Start Date</div>
+                                <div>Start</div>
                                 <div className="flex-1">
                                     <TextField type="date" onChange={handleChangeDate} fullWidth name="start" size="small" />
                                 </div>
                             </Stack>
                             <Stack spacing={'10px'}>
-                                <div>Start Date</div>
+                                <div>To</div>
                                 <div className="flex-1">
                                     <TextField type="date" name="end" onChange={handleChangeDate} fullWidth size="small" />
                                 </div>
                             </Stack>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={handleClose}>Close</Button>
-                            <Button onClick={handleClose}>Oke</Button>
+                            <Button variant="contained" onClick={handleClose}>
+                                Close
+                            </Button>
+                            <Button variant="contained" onClick={handleClose}>
+                                OK
+                            </Button>
                         </DialogActions>
                     </Dialog>
                 </>

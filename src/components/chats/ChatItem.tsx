@@ -62,7 +62,7 @@ export default function ChatItem({ data, me, avartar }: IChatItemProps) {
                         })}
                     >
                         <div
-                            className={classNames('py-2 px-3 rounded-full max-w-[100%] break-all shadow-sm flex flex-col ', {
+                            className={classNames('py-2 px-3 rounded-full max-w-[100%] break-all shadow-sm flex flex-col text-1xl', {
                                 ['bg-white']: true,
                                 [' text-right']: me,
                                 ['order-1']: me,

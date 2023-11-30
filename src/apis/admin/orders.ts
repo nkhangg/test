@@ -14,7 +14,7 @@ export const getOrdersAdmin: ApiGetOrders = async () => {
     return res?.data;
 };
 
-export const getOrdersAdminWithFilter: ApiGetFilterOrderAdmin = async (data: IOrderAdminFillterForm) => {
+export const getOrdersAdminWithFilter: ApiGetFilterOrderAdmin = async (data: IOrderAdminFillterForm, page: string | null) => {
     const res = await axios({
         method: 'GET',
         url: 'admin/orders/filter',
@@ -25,6 +25,7 @@ export const getOrdersAdminWithFilter: ApiGetFilterOrderAdmin = async (data: IOr
             sort: data.sort,
             maxDate: data.dateEnd,
             minDate: data.dateStart,
+            page: page ? parseInt(page) - 1 : 0,
         },
     });
 

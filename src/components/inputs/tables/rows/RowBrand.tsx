@@ -13,23 +13,23 @@ export default function RowBrand({ index, data, handleOpenRow }: IRowBrandProps)
     return (
         <TableRow>
             <TableCell align="center">
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
                     {index + 1}
                 </Typography>
             </TableCell>
 
             <TableCell align="center">
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
                     #{data.id}
                 </Typography>
             </TableCell>
             <TableCell align="center">
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
                     {data.brand}
                 </Typography>
             </TableCell>
             <TableCell align="center">
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
                     {data.createdAt}
                 </Typography>
             </TableCell>

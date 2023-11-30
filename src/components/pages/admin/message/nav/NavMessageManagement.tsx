@@ -77,8 +77,8 @@ export default function NavMessageManament(props: INavMessageManamentProps) {
     };
 
     return (
-        <div className="w-full h-full py-8 pr-2 flex flex-col justify-between items-center gap-16  border-r border-gray-primary">
-            <h2 className=" px-5 text-center text-2xl font-semibold">CHAT MANAGEMENT</h2>
+        <div className="w-full h-full py-8 pr-2 flex flex-col justify-between items-center gap-8  border-r border-gray-primary">
+            <h2 className=" px-5 text-[28px] font-semibold text-left w-full">CHAT MANAGEMENT</h2>
             <div style={contants.styleMessageManagePage} className="w-full flex flex-col gap-8  h-full">
                 <Filter handleSort={handleSort} />
 

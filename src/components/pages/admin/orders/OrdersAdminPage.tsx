@@ -5,13 +5,26 @@ import { getOrdersAdminWithFilter } from '@/apis/admin/orders';
 import { HeadHistory, SortAdmin } from '@/components/common';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { dataHeadHistory } from '@/datas/header';
-import { BoxTitle, Comfirm, DialogDateChooser, LoadingPrimary, LoadingSecondary, RowStatusOrders, SearchInput, Table, TippyChooser, UpdateStateOrderDialog } from '@/components';
+import {
+    BoxTitle,
+    Comfirm,
+    DialogDateChooser,
+    LoadingPrimary,
+    LoadingSecondary,
+    Pagination,
+    RowStatusOrders,
+    SearchInput,
+    Table,
+    TippyChooser,
+    UpdateStateOrderDialog,
+} from '@/components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IOrderAdminFillterForm, IRowStatusOrders } from '@/configs/interface';
 import ThymeleafTable from './ThymeleafTable';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { StateType } from '@/configs/types';
 import { useDebounce } from '@/hooks';
+import { Box } from '@mui/material';
 export interface IOrdersAdminPageProps {}
 
 const dataHeadTable = ['No', 'Order ID', 'User', 'Price', 'Placed Date', 'Status', 'Action'];
@@ -61,19 +74,20 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
     // router
     const router = useRouter();
 
+    // params
+    const searchParams = useSearchParams();
+    const page = searchParams.get('page');
+
     // context
 
     const parentContext = useContext(OrderAdminPageContext);
 
     // states
     const [open, setOpen] = useState(false);
-    const [anotherLayout, setAnotherLayout] = useState(false);
+    const [anotherLayout, setAnotherLayout] = useState(true);
     const [filter, setFilter] = useState<IOrderAdminFillterForm>(iniData);
 
     const [dataOpen, setDataOpen] = useState<number>(0);
-
-    const [deleteData, setDeleteData] = useState<IRowStatusOrders | null>(null);
-    const [openComfirm, setOpenComfirm] = useState({ open: false, comfirm: 'cancel' });
 
     const searDebounce = useDebounce(filter.search, 500);
 
@@ -85,8 +99,8 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
     };
 
     const { data, error, isLoading, refetch } = useQuery({
-        queryKey: ['ordersAdminPage/getOrdersAdminWithFilter', { ...filter, search: searDebounce }],
-        queryFn: () => getOrdersAdminWithFilter({ ...filter, search: searDebounce }),
+        queryKey: ['ordersAdminPage/getOrdersAdminWithFilter', page, { ...filter, search: searDebounce }],
+        queryFn: () => getOrdersAdminWithFilter({ ...filter, search: searDebounce }, page),
     });
 
     if (error) {
@@ -103,13 +117,13 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
 
     return (
         <div className="">
-            {!anotherLayout && (
+            {
                 <div className="py-2 text-right w-full">
-                    <span onClick={() => setAnotherLayout(true)} className="hover:underline text-violet-primary cursor-pointer">
+                    <span onClick={() => setAnotherLayout(!anotherLayout)} className="hover:underline text-violet-primary cursor-pointer">
                         Other Layout
                     </span>
                 </div>
-            )}
+            }
             {!anotherLayout && <ThymeleafTable />}
             {anotherLayout && (
                 <OrderAdminPageContext.Provider value={{ refetch }}>
@@ -157,14 +171,15 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                         <div className="rounded-xl overflow-hidden border border-gray-primary relative">
                             {dataOrders && (
                                 <Table dataHead={dataHeadTable}>
-                                    {dataOrders.length > 0 &&
-                                        dataOrders.map((order, index) => {
+                                    {dataOrders.orderFilters.length > 0 &&
+                                        dataOrders.orderFilters.map((order, index) => {
                                             const status = order.status.toLowerCase().trim().replaceAll(' ', '_') as StateType;
                                             return (
                                                 <RowStatusOrders
+                                                    page={page}
                                                     key={order.orderId}
                                                     handleOpen={handleOpen}
-                                                    index={index + 1}
+                                                    index={index}
                                                     data={{
                                                         id: order.orderId,
                                                         placedData: order.placedDate,
@@ -177,7 +192,7 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                                         })}
                                 </Table>
                             )}
-                            {dataOrders && dataOrders.length <= 0 && (
+                            {dataOrders && dataOrders.orderFilters.length <= 0 && (
                                 <div className="flex items-center justify-center py-5 text-violet-primary">
                                     <b>No suitable data found</b>
                                 </div>
@@ -189,6 +204,8 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                                 </div>
                             )}
                         </div>
+
+                        {dataOrders && <Box mt={'-2%'}>{dataOrders.pages > 1 && <Pagination baseHref="/admin/dashboard/orders?page=" pages={dataOrders.pages} />}</Box>}
 
                         {dataOpen ? <UpdateStateOrderDialog idOpen={dataOpen} open={open} setOpen={setOpen} /> : <span></span>}
                     </BoxTitle>

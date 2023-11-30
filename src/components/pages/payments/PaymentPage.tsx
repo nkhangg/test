@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ContainerContent } from '@/components/common';
 import { Breadcrumbs, FormControlLabel, Grid, Radio, RadioGroup, Stack } from '@mui/material';
 import { PaymentCard, PaymentItem } from '..';
-import { AddressInfoPayment, Comfirm, ContentComfirmPayment, LoadingPrimary, LoadingSecondary, SocialButton } from '@/components';
+import { AddressInfoPayment, Comfirm, ComfirmPaymentDialog, ContentComfirmPayment, LoadingPrimary, LoadingSecondary, SocialButton } from '@/components';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { PaymentMethod, RootState } from '@/configs/types';
 import dynamic from 'next/dynamic';
@@ -56,10 +56,7 @@ export default function PaymentPage(props: IPaymentPageProps) {
     const [loading, setLoading] = useState(false);
     const [form, setForm] = useState<IOrder>(initData);
 
-    const [openComfirm, setOpenComfirm] = useState({
-        open: false,
-        comfirm: 'cancel',
-    });
+    const [openComfirm, setOpenComfirm] = useState(false);
 
     const handleDelivery = (item: { id: number; title: string; business: string; price: number }, index: number) => {
         setChecked(index);
@@ -72,19 +69,13 @@ export default function PaymentPage(props: IPaymentPageProps) {
 
     const handleOpenConfirm = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setOpenComfirm({ ...openComfirm, open: true });
+        setOpenComfirm(true);
     };
 
     const handleClearWhenSuccess = () => {
         dispatch(clearAllPayment());
         toast.success(contants.messages.success.payment);
         router.push(links.products);
-    };
-
-    const handleComfirm = async (v: { open: boolean; comfirm: 'cancel' | 'ok' }) => {
-        if (v.open || v.comfirm === 'cancel') return;
-
-        handlePaymentBeforeComfirm();
     };
 
     const handleChangePaymentMethod = (e: ChangeEvent<HTMLInputElement>) => {
@@ -321,12 +312,26 @@ export default function PaymentPage(props: IPaymentPageProps) {
 
                 {loading && <LoadingPrimary />}
 
-                <Comfirm
-                    title={'ORDER CONFIRMATION'}
+                {/* <Comfirm
+                
+                    title={
+                        <>
+                            <b>ORDER CONFIRMATION</b>
+                        </>
+                    }
                     subtitle={<ContentComfirmPayment form={form} totalAndWeight={totalAndWeight} addresses={addresses} />}
                     open={openComfirm.open}
                     setOpen={setOpenComfirm}
                     onComfirm={handleComfirm}
+                /> */}
+
+                <ComfirmPaymentDialog
+                    handleSubmit={handlePaymentBeforeComfirm}
+                    addresses={addresses}
+                    totalAndWeight={totalAndWeight}
+                    form={form}
+                    setOpen={setOpenComfirm}
+                    open={openComfirm}
                 />
             </Grid>
         </ContainerContent>

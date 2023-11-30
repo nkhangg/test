@@ -4,12 +4,16 @@ import { EmojiPicker, WrapperAnimation } from '..';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFaceSmile, faPaperPlane, faPhotoFilm } from '@fortawesome/free-solid-svg-icons';
 import { EmojiClickData } from 'emoji-picker-react';
+import classNames from 'classnames';
 
 export interface IChatFooterProps {
     handleSubmit?: (value: string) => void;
+    options?: {
+        styleIcon?: string;
+    };
 }
 
-export default function ChatFooter({ handleSubmit }: IChatFooterProps) {
+export default function ChatFooter({ options, handleSubmit }: IChatFooterProps) {
     const refInput = useRef<HTMLInputElement>(null);
 
     const handleClickSendMessage = () => {
@@ -46,7 +50,12 @@ export default function ChatFooter({ handleSubmit }: IChatFooterProps) {
                     />
                 </div>
                 <div className="flex items-center gap-2 text-[#ACABAB]">
-                    <WrapperAnimation className="py-2 cursor-pointer flex items-center justify-center" hover={{}}>
+                    <WrapperAnimation
+                        className={classNames('py-2 cursor-pointer flex items-center justify-center', {
+                            [options?.styleIcon || '']: true,
+                        })}
+                        hover={{}}
+                    >
                         <FontAwesomeIcon icon={faPhotoFilm} />
                     </WrapperAnimation>
 
@@ -56,7 +65,12 @@ export default function ChatFooter({ handleSubmit }: IChatFooterProps) {
                         }}
                         onEmoji={handleAddEmoji}
                         icon={
-                            <WrapperAnimation className="py-2 cursor-pointer flex items-center justify-center" hover={{}}>
+                            <WrapperAnimation
+                                className={classNames('py-2 cursor-pointer flex items-center justify-center', {
+                                    [options?.styleIcon || '']: true,
+                                })}
+                                hover={{}}
+                            >
                                 <FontAwesomeIcon icon={faFaceSmile} />
                             </WrapperAnimation>
                         }

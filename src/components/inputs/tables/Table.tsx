@@ -26,7 +26,7 @@ export default function Table({ dataHead, children, styleHead }: ITableProps) {
                     {dataHead.map((item) => {
                         return (
                             <TableCell {...styleHead} key={item}>
-                                <Typography variant="subtitle2" fontWeight={600}>
+                                <Typography variant="subtitle2" fontSize={'16px'} fontWeight={600}>
                                     {item}
                                 </Typography>
                             </TableCell>

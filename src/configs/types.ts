@@ -143,7 +143,7 @@ export type ApiHistories = () => Promise<IBaseResponse<IProfile>>;
 
 export type ApiGetOrders = () => Promise<any>;
 
-export type ApiGetFilterOrderAdmin = (data: IOrderAdminFillterForm) => Promise<IBaseResponse<IOrderAdminItem[]>>;
+export type ApiGetFilterOrderAdmin = (data: IOrderAdminFillterForm, page: string | null) => Promise<IBaseResponse<{ orderFilters: IOrderAdminItem[]; pages: number }>>;
 
 export type ApiGetDetailFilterOrderAdmin = (id: number | undefined) => Promise<IBaseResponse<IDetailOrder>>;
 
