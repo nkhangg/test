@@ -65,6 +65,7 @@ function Chart({ data, type = 'bar' }: IChartProps) {
         },
         legend: {
             show: false,
+            fontSize: '32px',
         },
         grid: {
             borderColor: 'rgba(0,0,0,0.1)',
@@ -77,11 +78,23 @@ function Chart({ data, type = 'bar' }: IChartProps) {
         },
         yaxis: {
             tickAmount: 4,
+            labels: {
+                style: {
+                    fontSize: '14px',
+                    fontWeight: 500,
+                },
+            },
         },
         xaxis: {
             categories: data.categories,
             axisBorder: {
                 show: false,
+            },
+            labels: {
+                style: {
+                    fontSize: '14px',
+                    fontWeight: 500,
+                },
             },
         },
         tooltip: {

@@ -15,6 +15,7 @@ import { HeadTabType } from '@/configs/types';
 import firebaseService from '@/services/firebaseService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { BadgeAvartar } from '@/components';
 
 export interface INavChatItemProps {
     data: IConversationId;
@@ -35,7 +36,9 @@ export default function NavChatItem({ data, currentUser }: INavChatItemProps) {
             })}
         >
             <div className="flex items-center gap-3 ">
-                <Avatar sx={{ width: '50px', height: '50px', border: '2px solid #ccc' }} src={user?.avartar || contants.avartarDefault} />
+                <BadgeAvartar visible={!user.online}>
+                    <Avatar sx={{ width: '50px', height: '50px', border: '2px solid #ccc' }} src={user?.avartar || contants.avartarDefault} />
+                </BadgeAvartar>
 
                 <div className="max-w-full flex flex-col">
                     <h6 className="text-1xl w-[140px] text-ellipsis overflow-hidden whitespace-nowrap ">{user?.username || 'user'}</h6>

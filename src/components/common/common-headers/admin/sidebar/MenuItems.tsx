@@ -23,16 +23,22 @@ const Menuitems = [
         href: '/admin/dashboard/product',
     },
     {
+        id: 4,
+        title: 'Users',
+        icon: IconUser,
+        href: '/admin/dashboard/users',
+    },
+    {
         id: 3,
         title: 'Pets',
         icon: IconDog,
         href: '/admin/dashboard/pet',
     },
     {
-        id: 4,
-        title: 'Users',
-        icon: IconUser,
-        href: '/admin/dashboard/users',
+        id: 8,
+        title: 'Brand',
+        icon: IconBrandCake,
+        href: '/admin/dashboard/brand',
     },
     {
         navlabel: true,
@@ -63,12 +69,6 @@ const Menuitems = [
     {
         navlabel: true,
         subheader: 'Orther Management',
-    },
-    {
-        id: 8,
-        title: 'Brand',
-        icon: IconBrandCake,
-        href: '/admin/dashboard/brand',
     },
 ];
 

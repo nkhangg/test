@@ -16,7 +16,7 @@ export interface IContentCongirmPaymentProps {
 
 export default function ContentCongirmPayment({ addresses, totalAndWeight, form }: IContentCongirmPaymentProps) {
     return (
-        <div className="flex items-start justify-between gap-6">
+        <div className="flex items-start justify-between gap-6 rounded-xl">
             <ul className="max-w-[50%] flex flex-col gap-3">
                 <li className="text-lg font-medium">Infomation</li>
                 <li>

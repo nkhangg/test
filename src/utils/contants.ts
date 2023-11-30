@@ -77,10 +77,10 @@ export const contants = {
     },
     dataCard: [
         { id: 1, title: 'Express (in Can Tho)', business: '4 hours', price: 20000 },
-        { id: 2, title: 'GHTK', business: '2 - 6 business days', price: 45000 },
+        { id: 2, title: 'GHN', business: '2 - 6 business days', price: 45000 },
     ],
     stateCancel: ['cancelled', 'cancelled_by_admin', 'cancelled_by_customer'] as StateType[],
     styleMessageManagePage: {
-        height: 'calc(100vh - 90px)',
+        height: 'calc(100vh - 140px)',
     },
 };

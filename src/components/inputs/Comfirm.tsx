@@ -7,7 +7,7 @@ import WraperDialogComfirm from '../dialogs/WraperDialogComfirm';
 
 export interface IComfirmProps {
     open: boolean;
-    title: string;
+    title: string | ReactNode;
     subtitle?: string | ReactNode;
     setOpen: (value: { open: boolean; comfirm: 'ok' | 'cancel' }) => void;
     onComfirm?: (value: { open: boolean; comfirm: 'ok' | 'cancel' }) => void;

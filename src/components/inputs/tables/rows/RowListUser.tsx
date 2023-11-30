@@ -24,7 +24,7 @@ export default function RowListUser({ data, index, handleDeleteUser }: IRowListU
                 {/* no */}
                 <Typography
                     sx={{
-                        fontSize: '15px',
+                        fontSize: '16px',
                         fontWeight: '500',
                     }}
                 >
@@ -40,26 +40,26 @@ export default function RowListUser({ data, index, handleDeleteUser }: IRowListU
 
             {/* username */}
             <TableCell>
-                <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
+                <Typography color="textSecondary" variant="subtitle2" fontSize={'16px'} maxWidth={'200px'} fontWeight={400} className="truncate">
                     {data.username}
                 </Typography>
             </TableCell>
 
             {/* fullname */}
             <TableCell align="left">
-                <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
+                <Typography color="textSecondary" variant="subtitle2" fontSize={'16px'} maxWidth={'200px'} fontWeight={400} className="truncate">
                     {data.fullname}
                 </Typography>
             </TableCell>
             {/* email */}
             <TableCell align="left">
-                <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
+                <Typography color="textSecondary" variant="subtitle2" fontSize={'16px'} maxWidth={'200px'} fontWeight={400} className="truncate">
                     {data.email}
                 </Typography>
             </TableCell>
             {/* gender */}
             <TableCell align="left">
-                <Typography color="textSecondary" variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
+                <Typography color="textSecondary" variant="subtitle2" fontSize={'16px'} maxWidth={'200px'} fontWeight={400} className="truncate">
                     {data.gender ? 'Male' : 'Female'}
                 </Typography>
             </TableCell>
@@ -75,7 +75,7 @@ export default function RowListUser({ data, index, handleDeleteUser }: IRowListU
                         <Tooltip title={`Delete ${data.username}`}>
                             <Button disabled={conditionShowBtn} onClick={() => handleDeleteUser(data.id as string)}>
                                 <FontAwesomeIcon
-                                    className={classNames('', {
+                                    className={classNames('text-lg', {
                                         'text-red-400': !conditionShowBtn,
                                         'text-gray-400': conditionShowBtn,
                                     })}
@@ -88,7 +88,7 @@ export default function RowListUser({ data, index, handleDeleteUser }: IRowListU
                 <Link href={links.adminFuntionsLink.users.detail + data.id}>
                     <Tooltip title={'profile ' + data.username}>
                         <Button>
-                            <FontAwesomeIcon icon={faChevronRight} />
+                            <FontAwesomeIcon className="text-lg" icon={faChevronRight} />
                         </Button>
                     </Tooltip>
                 </Link>

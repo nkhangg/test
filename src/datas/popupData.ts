@@ -2,12 +2,12 @@ import { HeadTabType } from '@/configs/types';
 
 export const listPopupNavChatItem = [
     {
-        title: 'Gim',
+        title: 'Pin',
     },
 ] as HeadTabType[];
 
 export const listPopupNavChatItemHasGim = [
     {
-        title: 'Un gim',
+        title: 'Unpin',
     },
 ] as HeadTabType[];

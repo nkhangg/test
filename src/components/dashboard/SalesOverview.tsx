@@ -70,9 +70,9 @@ const SalesOverview = ({ dataOusite }: ISalesOverviewProps) => {
             }
         >
             <>
-                <Tabs value={value} onChange={handleChanges} aria-label="basic tabs example">
-                    <Tab label="Revenue" />
-                    <Tab label="Product Revenue By Type" />
+                <Tabs value={value} onChange={handleChanges} aria-label="tabs-sales-overviews">
+                    <Tab sx={{ fontSize: '18px' }} label="Revenue" />
+                    <Tab sx={{ fontSize: '18px' }} label="Product Revenue By Type" />
                 </Tabs>
                 <CustomTabPanel value={value} index={0}>
                     <Chart data={dataCharts?.revenue || dataOusite.revenue} type="area" />

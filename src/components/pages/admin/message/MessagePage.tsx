@@ -73,7 +73,12 @@ export default function MessagePage({ params }: IMessagePageProps) {
                 <DrawerChat username={params.username} open={open} setOpen={setOpen} />
             </div>
             <ChatBodyAdmin avartar={userMemo?.avartar} conversationId={params.id} />
-            <ChatFooter handleSubmit={handleSendMessage} />
+            <ChatFooter
+                options={{
+                    styleIcon: 'text-lg',
+                }}
+                handleSubmit={handleSendMessage}
+            />
         </div>
     );
 }

@@ -149,29 +149,6 @@ export default function ProductManagePage(props: IProductManagePageProps) {
                 </Link>
             }
         >
-            {/* <SortAdmin
-                searchProps={{
-                    value: filter.keyword || '',
-                    handleChange,
-                    handleClose: () => setFilter({ ...filter, keyword: undefined }),
-                }}
-                sortProps={{
-                    styles: {
-                        minWidth: 'min-w-[190px]',
-                    },
-                    data: [],
-                    title: 'Sort by',
-                    // onValue(value) {
-                    //     setFilter({
-                    //         ...filter,
-                    //         sort: value.id,
-                    //     });
-                    // },
-                }}
-          > 
-
-          <span></span>
-          <SortAdmin  /> */}
             <SortAdmin
                 searchProps={{
                     value: filter.keyword || '',
@@ -270,6 +247,7 @@ export default function ProductManagePage(props: IProductManagePageProps) {
             {data && (
                 <Comfirm
                     title={'Comfirm delete product'}
+                    subtitle={<span className="normal-case">You want to delete this product ?</span>}
                     open={openComfirm.open}
                     setOpen={setOpenComfirm}
                     onComfirm={async (value) => {

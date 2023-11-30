@@ -2,40 +2,41 @@ import React from 'react';
 import TableRow from '../TableRow';
 import { Chip, TableCell, Typography, capitalize } from '@mui/material';
 import { IRowStatusOrders } from '@/configs/interface';
-import { formatStatus, toCurrency } from '@/utils/format';
+import { formatIndex, formatStatus, toCurrency } from '@/utils/format';
 import { statusColor } from '../../../../../tailwind.config';
 
 export interface IRowStatusProps {
     data: IRowStatusOrders;
-    index?: number;
+    index: number;
+    page: string | null;
     handleOpen?: (data: IRowStatusOrders) => void;
 }
 
-export default function RowStatus({ data, index, handleOpen }: IRowStatusProps) {
+export default function RowStatus({ data, index, page, handleOpen }: IRowStatusProps) {
     return (
         <TableRow>
             <TableCell>
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                    {index}
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
+                    {formatIndex(parseInt(page || '0'), index)}
                 </Typography>
             </TableCell>
             <TableCell>
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
                     #{data.id}
                 </Typography>
             </TableCell>
             <TableCell>
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
                     {data.user}
                 </Typography>
             </TableCell>
             <TableCell>
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
                     {toCurrency(data.price)}
                 </Typography>
             </TableCell>
             <TableCell>
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
                     {data.placedData}
                 </Typography>
             </TableCell>

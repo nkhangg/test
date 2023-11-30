@@ -19,13 +19,13 @@ export default function RowReview({ index, data }: IRowReviewProps) {
     return (
         <TableRow onClick={() => router.push(links.reviews.management + `/${data.productId}`)}>
             <TableCell align="center">
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
                     {index + 1}
                 </Typography>
             </TableCell>
 
             <TableCell align="center">
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
                     {data.productId}
                 </Typography>
             </TableCell>
@@ -59,17 +59,17 @@ export default function RowReview({ index, data }: IRowReviewProps) {
                 />
             </TableCell>
             <TableCell align="center">
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
                     {data.lastest ? moment(data.lastest).format('DD/MM/yyyy') : 'not yet'}
                 </Typography>
             </TableCell>
             <TableCell align="center">
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
                     x{data.reviews}
                 </Typography>
             </TableCell>
             <TableCell align="center">
-                <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
                     x{data.commentNoRep}
                 </Typography>
             </TableCell>

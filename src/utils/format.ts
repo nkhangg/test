@@ -107,8 +107,14 @@ export const addressToString = (value: IAddress) => {
     return `${value.address}, ${value.ward}, ${value.district}, ${value.province}`;
 };
 
-export const formatIndex = (page: number, index: number) => {
-    return page ? (index + 1) * page + 1 * 10 : index + 1;
+export const formatIndex = (page: number | null, index: number) => {
+    if (!page) return index + 1;
+
+    if (page <= 1) {
+        return index + 1;
+    }
+
+    return index + 1 + page * 10;
 };
 
 export const formatStatus = (status: StateType) => {
