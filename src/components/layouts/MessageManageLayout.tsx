@@ -23,10 +23,10 @@ export default function MessageManageLayout({ children }: IMessageManageLayoutPr
     return (
         <div style={contants.styleMessageManagePage} className="w-full max-w-[100%] mt-[-20px]">
             <Grid container spacing={1}>
-                <Grid item lg={3}>
+                <Grid item xs={4} md={4} lg={3}>
                     <NavMessageManament />
                 </Grid>
-                <Grid item lg={9}>
+                <Grid item xs={8} md={8} lg={9}>
                     {children}
                 </Grid>
             </Grid>

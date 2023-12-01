@@ -95,7 +95,7 @@ export default function ChatBox(props: IChatBoxProps) {
                             <div
                                 {...attr}
                                 tabIndex={-1}
-                                className=" w-[80vw] md:w-[30vw] h-[58vh] max-w-[420px] rounded-lg bg-white flex flex-col justify-between items-center overflow-hidden
+                                className=" w-[80vw] md:w-[40vw] lg:w-[30vw] h-[58vh] max-w-[420px] rounded-lg bg-white flex flex-col justify-between items-center overflow-hidden
                             shadow-primary
                             "
                             >

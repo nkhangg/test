@@ -303,7 +303,7 @@ export default function CreateUser({ param }: ICreateOrUpdateUserProps) {
                                 name: 'role',
                                 onChange: handleChange,
                                 value: data.role,
-                                disabled: (user?.role as RoleType) !== 'ROLE_SUPER_ADMIN',
+                                disabled: (user?.role as RoleType) !== 'ROLE_SUPER',
                             }}
                             label="Role"
                         />
