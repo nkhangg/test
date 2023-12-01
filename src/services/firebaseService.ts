@@ -106,6 +106,21 @@ const setRecallMessage = async (id: string) => {
     }
 };
 
+const setSeenMessage = async (id: string) => {
+    try {
+        await setDoc(
+            doc(db, 'messages', id),
+            {
+                seen: true,
+            },
+            { merge: true }, // just update what is change
+        );
+    } catch (error) {
+        console.log(error);
+        console.log('setSeenMessage: Error setting setSeenMessage info in DB');
+    }
+};
+
 const queryGetConversationForCurrentUser = (usernameUser: string | undefined) => {
     return query(collection(db, 'conversations'), where('users', 'array-contains', usernameUser));
 };
@@ -143,6 +158,7 @@ const handleSendMessage = async (value: string, conversationId: string, username
         sendAt: serverTimestamp(),
         username: contants.usernameAdmin,
         recall: false,
+        seen: true,
     });
 
     const idNewMessage = newMessage.id;
@@ -158,18 +174,20 @@ const handleSendMessageToUser = async (value: string, conversationId: string, us
         sendAt: serverTimestamp(),
         username: username,
         recall: false,
+        seen: false,
     });
 };
 
 const firebaseService = {
     setLastseen,
     setUserInBd,
+    setSeenMessage,
     addConversation,
     setRecallMessage,
     handleSendMessage,
+    handleSendMessageToUser,
     setActionGimConversation,
     setNewMessageConversation,
-    handleSendMessageToUser,
     querys: {
         getConversations,
         getMessageWithId,

@@ -9,7 +9,8 @@ import classNames from 'classnames';
 import { contants } from '@/utils/contants';
 import { IProfile } from '@/configs/interface';
 import { links } from '@/datas/links';
-import { RoleType } from '@/configs/types';
+import { RoleType, RootState } from '@/configs/types';
+import { useAppSelector } from '@/hooks/reduxHooks';
 
 export interface IRowListUserProps {
     data: IProfile;
@@ -18,6 +19,8 @@ export interface IRowListUserProps {
 }
 
 export default function RowListUser({ data, index, handleDeleteUser }: IRowListUserProps) {
+    const { user } = useAppSelector((state: RootState) => state.userReducer);
+
     return (
         <TableRow>
             <TableCell>
@@ -70,14 +73,24 @@ export default function RowListUser({ data, index, handleDeleteUser }: IRowListU
 
             <TableCell align="center">
                 {(() => {
-                    const conditionShowBtn = contants.roles.manageRoles.includes(data.role);
+                    let conditionShowBtn = false;
+
+                    if ((user?.role as RoleType) === 'ROLE_SUPER') {
+                        conditionShowBtn = true;
+                        if ((data.role as RoleType) === 'ROLE_SUPER') {
+                            conditionShowBtn = false;
+                        }
+                    } else if ((user?.role as RoleType) !== 'ROLE_SUPER' && contants.roles.manageRoles.includes(user?.role as RoleType)) {
+                        conditionShowBtn = !contants.roles.manageRoles.includes(data?.role as RoleType);
+                    }
+
                     return (
                         <Tooltip title={`Delete ${data.username}`}>
                             <Button disabled={conditionShowBtn} onClick={() => handleDeleteUser(data.id as string)}>
                                 <FontAwesomeIcon
                                     className={classNames('text-lg', {
-                                        'text-red-400': !conditionShowBtn,
-                                        'text-gray-400': conditionShowBtn,
+                                        'text-red-400': conditionShowBtn,
+                                        'text-gray-400': !conditionShowBtn,
                                     })}
                                     icon={faTrash}
                                 />

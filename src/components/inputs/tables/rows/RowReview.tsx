@@ -45,6 +45,7 @@ export default function RowReview({ index, data }: IRowReviewProps) {
                 <Rating
                     name="read-only"
                     readOnly
+                    precision={0.2}
                     value={data.rate}
                     icon={
                         <span className="text-[16px] mx-2">

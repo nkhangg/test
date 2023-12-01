@@ -33,7 +33,7 @@ export default function ChatAswer({ handleClickChatNow, handleClose }: IChatAswe
                 <WrapperAnimation
                     onClick={handleClickChatNow}
                     hover={{}}
-                    className="w-full py-2 flex items-center justify-center bg-violet-primary text-white font-medium rounded-lg cursor-pointer"
+                    className="w-full py-2 flex items-center justify-center bg-orange-primary text-white font-medium rounded-lg cursor-pointer"
                 >
                     <span>Chat now</span>
                 </WrapperAnimation>

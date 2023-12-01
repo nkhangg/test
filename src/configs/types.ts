@@ -45,6 +45,7 @@ import {
     IProfileMessageManage,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { RolesName } from './enum';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
 export type ApiGetUsers = () => Promise<IUser[]>;
@@ -138,6 +139,8 @@ export type ApiGetUserProfileMessageManage = (id: string) => Promise<IBaseRespon
 export type ApiUpdateUserManage = (data: IUserManage) => Promise<IBaseResponse<any>>;
 
 export type ApiCreateUserManage = (data: IUserManage) => Promise<IBaseResponse<any>>;
+
+export type ApiUpdateRoleUser = (data: { id: string; roleId: RolesName }) => Promise<IBaseResponse<any>>;
 
 export type ApiHistories = () => Promise<IBaseResponse<IProfile>>;
 
@@ -243,7 +246,7 @@ export type RepoTypeErrors = {
 
 export type ModeType = 'create' | 'update';
 
-export type RoleType = 'ROLE_USER' | 'ROLE_STAFF' | 'ROLE_ADMIN' | 'ROLE_SUPER_ADMIN';
+export type RoleType = 'ROLE_USER' | 'ROLE_STAFF' | 'ROLE_ADMIN' | 'ROLE_SUPER';
 
 export type StateType = 'placed' | 'shipping' | 'delivered' | 'cancelled' | 'cancelled_by_admin' | 'cancelled_by_customer';
 

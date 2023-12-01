@@ -59,7 +59,7 @@ export default function PopupNavChatItem({ customs, handleClickItem }: IPopupNav
             <WrapperAnimation
                 onClick={handleClick}
                 hover={{}}
-                className={classNames('p-1 text-white flex items-center justify-center transition-all ease-linear', {
+                className={classNames('p-1 flex items-center justify-center transition-all ease-linear text-[#ccc]', {
                     [style['popup-nav-chat-item']]: true,
                 })}
             >

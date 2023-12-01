@@ -562,6 +562,7 @@ export interface IMessage {
     username: string;
     currentUser: string;
     recall: boolean;
+    seen: boolean;
 }
 
 export interface IUserFirebase {

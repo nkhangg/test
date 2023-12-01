@@ -3,6 +3,8 @@ import { filterReviewsOfProduct } from '@/apis/admin/reviews';
 import { Review } from '@/components';
 import { IDataDetailReview, IReviewHasReplay } from '@/configs/interface';
 import { contants } from '@/utils/contants';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { memo, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -57,18 +59,10 @@ function ReviewOfDetail({ data, id, refetch }: IReviewOfDetailProps) {
                 <h2 className="text-xl font-medium">Product Reivews</h2>
                 <div className="flex items-center justify-between gap-5">
                     <div onClick={handleClickFilter} className="flex items-center justify-between gap-2 cursor-pointer select-none">
-                        {noReplay && (
-                            <>
-                                <div className="w-6 h-6 bg-[#D9D9D9] rounded"></div>
-                                <p className="whitespace-nowrap">No reply</p>
-                            </>
-                        )}
-                        {!noReplay && (
-                            <>
-                                <div className="w-6 h-6 bg-violet-primary rounded"></div>
-                                <p className="whitespace-nowrap">All reply</p>
-                            </>
-                        )}
+                        <div className="w-6 h-6 bg-[#D9D9D9] rounded flex items-center justify-center">
+                            {noReplay && <FontAwesomeIcon icon={faCheck} className="text-sm text-green-5FA503" />}
+                        </div>
+                        <p className="whitespace-nowrap">No reply</p>
                     </div>
                 </div>
             </div>

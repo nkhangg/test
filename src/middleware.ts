@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { links } from './datas/links';
+import { contants } from './utils/contants';
 
 // This function can be marked `async` if using `await` inside
 export default async function middlewares(request: NextRequest) {
@@ -15,7 +16,7 @@ export default async function middlewares(request: NextRequest) {
         return NextResponse.redirect(new URL('/login', request.url));
     }
 
-    if (request.nextUrl.pathname.includes(links.adminMidleware) && roles && roles.value !== 'ROLE_ADMIN') {
+    if (request.nextUrl.pathname.includes(links.adminMidleware) && roles && !contants.roles.manageRoles.includes(roles.value)) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 }

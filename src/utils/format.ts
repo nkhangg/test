@@ -1,3 +1,4 @@
+import { RolesName } from '@/configs/enum';
 import { IAddress } from '@/configs/interface';
 import { RoleType, StateType } from '@/configs/types';
 import { faBox, faCarSide, faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
@@ -167,3 +168,20 @@ export const getIconWithStatus = (status: StateType) => {
 };
 
 export const convertFirestoreTimestampToString = (timestamp: Timestamp) => new Date(timestamp?.toDate().getTime());
+
+export const convertRoleToId = (role: RoleType) => {
+    switch (role) {
+        case 'ROLE_SUPER': {
+            return RolesName.ROLE_SUPER;
+        }
+        case 'ROLE_ADMIN': {
+            return RolesName.ROLE_ADMIN;
+        }
+        case 'ROLE_USER': {
+            return RolesName.ROLE_USER;
+        }
+        default: {
+            return RolesName.ROLE_USER;
+        }
+    }
+};

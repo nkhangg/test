@@ -35,7 +35,8 @@ export const contants = {
         },
     },
     roles: {
-        manageRoles: ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'],
+        superRole: 'ROLE_SUPER',
+        manageRoles: ['ROLE_SUPER', 'ROLE_ADMIN'],
         userRoles: ['ROLE_STAFF', 'ROLE_USER'],
     },
     apis: {

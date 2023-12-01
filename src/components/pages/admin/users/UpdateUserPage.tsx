@@ -10,12 +10,14 @@ import React, { ChangeEvent, FocusEvent, FormEvent, useEffect, useRef, useState 
 import { contants } from '@/utils/contants';
 import { AvartarEdit, Comfirm, DivTextfield, LoadingPrimary } from '@/components';
 import moment from 'moment';
-import { getUserManage, updateUserManage } from '@/apis/admin/user';
+import { getUserManage, updateRoleUser, updateUserManage } from '@/apis/admin/user';
 import { IUserManage } from '@/configs/interface';
 import Validate from '@/utils/validate';
 import { toast } from 'react-toastify';
 import { useAppSelector } from '@/hooks/reduxHooks';
 import { RoleType, RootState } from '@/configs/types';
+import { RolesName } from '@/configs/enum';
+import { convertRoleToId } from '@/utils/format';
 
 export interface ICreateOrUpdateUserProps {
     param: string | 'create';
@@ -72,15 +74,37 @@ export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
     const [errors, setErrors] = useState({ ...initdataErrors });
     const [openComfirm, setOpenComfirm] = useState({ open: false, comfirm: 'cancel' });
     const [data, setData] = useState(initdata);
+    const [role, setRole] = useState(data.role as RoleType);
     const [showButtonUpdate, setShowButtonUpdate] = useState(false);
 
     const [loading, setLoading] = useState(false);
+
+    const listRoles = [
+        {
+            id: 'ROLE_USER',
+            name: 'User',
+        },
+        {
+            id: 'ROLE_ADMIN',
+            name: 'Admin',
+        },
+    ];
+
+    if ((data.role as RoleType) === 'ROLE_SUPER') {
+        listRoles.push({
+            id: contants.roles.superRole,
+            name: 'Super',
+        });
+    }
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setData({
             ...data,
             [event.target.name]: event.target.value,
         });
+    };
+    const handleChangeRole = (e: ChangeEvent<HTMLInputElement>) => {
+        setRole(e.target.value as RoleType);
     };
 
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
@@ -114,7 +138,9 @@ export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
     const handleComfirm = async (v: { open: boolean; comfirm: 'cancel' | 'ok' }) => {
         if (validate() || v.comfirm === 'cancel') return;
 
-        console.log(data);
+        if ((user?.role as RoleType) === 'ROLE_SUPER' && (data.role as RoleType) !== role) {
+            const res = await updateRoleUser({ id: data.id, roleId: convertRoleToId(role) });
+        }
 
         try {
             setLoading(true);
@@ -138,10 +164,10 @@ export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
         if (dataUser.data && dataUser.data.data) {
             const objData = {
                 ...dataUser.data.data,
-                birthday: dataUser.data.data.birthday ? moment(dataUser.data.data?.birthday).format('yyyy-MM-D') : '',
             };
             setData(objData);
             setAvartar(dataUser.data.data.avatar || contants.avartarDefault);
+            setRole(dataUser.data.data.role as RoleType);
 
             // set prev data after update to compare and show btn
             prevData.current = { data: { ...objData }, avatar: dataUser.data.data.avatar || contants.avartarDefault };
@@ -151,12 +177,12 @@ export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
     useEffect(() => {
         if (!prevData.current) return;
 
-        if (JSON.stringify(prevData.current.data) != JSON.stringify(data) || prevData.current.avatar != avartar) {
+        if (JSON.stringify(prevData.current.data) != JSON.stringify(data) || prevData.current.avatar != avartar || prevData.current.data.role !== role) {
             setShowButtonUpdate(true);
         } else {
             setShowButtonUpdate(false);
         }
-    }, [data, avartar]);
+    }, [data, avartar, role]);
 
     return (
         <div>
@@ -291,25 +317,13 @@ export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
                             label="Gender"
                         />
                         <DivTextfield
-                            dataSelect={[
-                                {
-                                    id: 'ROLE_USER',
-                                    name: 'User',
-                                },
-                                {
-                                    id: 'ROLE_ADMIN',
-                                    name: 'Admin',
-                                },
-                                {
-                                    id: 'ROLE_SUPPER_ADMIN',
-                                    name: 'Admin',
-                                },
-                            ]}
+                            dataSelect={listRoles}
                             propsInput={{
                                 name: 'role',
                                 type: 'role',
-                                value: data.role,
-                                disabled: user?.role !== ('ROLE_SUPER_ADMIN' as RoleType),
+                                value: role,
+                                onChange: handleChangeRole,
+                                disabled: user?.role !== (contants.roles.superRole as RoleType) || (data.role as RoleType) === 'ROLE_SUPER',
                             }}
                             label="Role"
                         />
@@ -373,9 +387,7 @@ export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
                 title={'Comfirm update user'}
                 subtitle={
                     <>
-                        <p>
-                            {'Are you sure update '} <b>{data.username}</b>
-                        </p>
+                        {'Are you sure update '} <b>{data.username}</b>
                     </>
                 }
                 open={openComfirm.open}
