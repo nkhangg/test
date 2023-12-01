@@ -1,6 +1,7 @@
 import axios from '@/configs/axios';
+import { RolesName } from '@/configs/enum';
 import { IUserManage } from '@/configs/interface';
-import { ApiAllUser, ApiCreateUserManage, ApiDelete, ApiGetUserManage, ApiGetUserProfileMessageManage, ApiUpdateUserManage } from '@/configs/types';
+import { ApiAllUser, ApiCreateUserManage, ApiDelete, ApiGetUserManage, ApiGetUserProfileMessageManage, ApiUpdateRoleUser, ApiUpdateUserManage } from '@/configs/types';
 import { dataURLtoFile } from '@/utils/format';
 
 export const usersManage: ApiAllUser = async (page: number | undefined, filter: {}) => {
@@ -90,6 +91,22 @@ export const createUserManage: ApiCreateUserManage = async (data: IUserManage) =
             role: data.role,
             password: data.password,
             avatar: data.avatar ? dataURLtoFile(data.avatar) : null,
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const updateRoleUser: ApiUpdateRoleUser = async (data: { id: string; roleId: RolesName }) => {
+    const res = await axios({
+        method: 'PUT',
+        url: 'admin/authorities',
+
+        data: {
+            userId: data.id,
+            roleId: data.roleId,
         },
     });
 

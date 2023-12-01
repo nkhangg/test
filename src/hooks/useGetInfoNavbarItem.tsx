@@ -27,7 +27,10 @@ export default function useGetInfoNavbarItem(conversation: IConversationId) {
             const messageRef = doc(db, 'messages', idFirstMessage);
             const messageSnapshot = await getDoc(messageRef);
 
-            setLastMessage(messageSnapshot?.data() as IMessage);
+            setLastMessage({
+                ...(messageSnapshot?.data() as IMessage),
+                id: messageSnapshot.id,
+            });
         })();
     }, [idFirstMessage]);
 
