@@ -185,3 +185,9 @@ export const convertRoleToId = (role: RoleType) => {
         }
     }
 };
+
+export function wraperTextToLink(content: string) {
+    const reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
+
+    return content.replace(reg, `<a class="message-link" href="$1$2" target="_blank">$1$2</a>`);
+}

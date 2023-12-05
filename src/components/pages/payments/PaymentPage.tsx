@@ -6,7 +6,7 @@ import { Breadcrumbs, FormControlLabel, Grid, Radio, RadioGroup, Stack } from '@
 import { PaymentCard, PaymentItem } from '..';
 import { AddressInfoPayment, Comfirm, ComfirmPaymentDialog, ContentComfirmPayment, LoadingPrimary, LoadingSecondary, SocialButton } from '@/components';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { PaymentMethod, RootState } from '@/configs/types';
+import { AddressCodeType, PaymentMethod, RootState } from '@/configs/types';
 import dynamic from 'next/dynamic';
 import { IInfoAddress, IOrder, IOrderItem, IPayment } from '@/configs/interface';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -17,6 +17,7 @@ import { toast } from 'react-toastify';
 import { contants } from '@/utils/contants';
 import { clearAllPayment } from '@/redux/slice/cartsSlide';
 import { addressToString, capitalize, toCurrency, toGam } from '@/utils/format';
+import { getShippingFee, searchDistrichts, searchProvinces, searchWards } from '@/apis/outside';
 const OrderSummary = dynamic(() => import('./OrderSummary'), {
     ssr: false,
 });
@@ -51,6 +52,8 @@ export default function PaymentPage(props: IPaymentPageProps) {
     const [checked, setChecked] = useState(0);
     const [isClient, setIsClient] = useState(false);
     const [addresses, setAddresses] = useState<IInfoAddress | null>(null);
+    const [loadingShippingItem, setloadingShippingItem] = useState(false);
+
     const [shippingItem, setShippingItem] = useState(dataCard[1]);
 
     const [loading, setLoading] = useState(false);
@@ -119,6 +122,56 @@ export default function PaymentPage(props: IPaymentPageProps) {
         }
     };
 
+    const handleShowShipping = async () => {
+        if (!addresses) return;
+        const addressCodes: AddressCodeType = {
+            province: null,
+            district: null,
+            ward: null,
+        };
+        try {
+            setloadingShippingItem(true);
+            const province = await searchProvinces(addresses.address.province);
+
+            if (!province) return;
+            addressCodes.province = province.ProvinceID;
+
+            const district = await searchDistrichts(province, addresses.address.district);
+
+            if (!district) return;
+
+            // set district code
+            addressCodes.district = district.DistrictID;
+
+            const ward = await searchWards(district, addresses.address.ward);
+
+            if (!ward) return;
+
+            // set district code
+            addressCodes.ward = ward.WardCode;
+
+            if (payment.length < 0 || totalAndWeight.weight < 0) return;
+
+            const shippingFee: number = await getShippingFee(addressCodes, totalAndWeight);
+
+            setShippingItem({
+                ...shippingItem,
+                price: shippingFee,
+            });
+            setloadingShippingItem(false);
+
+            if (checked === 0) return;
+
+            setForm({
+                ...form,
+                ship: shippingFee,
+            });
+        } catch (error) {
+            setloadingShippingItem(false);
+            console.log('error in handleShowShipping', error);
+        }
+    };
+
     const totalAndWeight = useMemo(() => {
         if (payment.length <= 0) return { value: 0, weight: 0, quantity: 0 };
 
@@ -164,12 +217,12 @@ export default function PaymentPage(props: IPaymentPageProps) {
             ...form,
             addressId: addresses.id,
         });
+
+        (async () => {
+            await handleShowShipping();
+        })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [addresses]);
-
-    useEffect(() => {
-        if (!addresses) return;
-    }, [addresses, totalAndWeight]);
 
     useEffect(() => {
         if (!payment) return;
@@ -268,7 +321,7 @@ export default function PaymentPage(props: IPaymentPageProps) {
                             <PaymentItem title="Delivery method">
                                 <div className="flex flex-col md:flex-row items-center justify-between gap-5 mt-6">
                                     <PaymentCard onClick={() => handleDelivery(dataCard[0], 0)} data={dataCard[0]} checked={checked === 0} />
-                                    <PaymentCard onClick={() => handleDelivery(shippingItem, 1)} data={shippingItem} checked={checked === 1} />
+                                    <PaymentCard loading={loadingShippingItem} onClick={() => handleDelivery(shippingItem, 1)} data={shippingItem} checked={checked === 1} />
                                 </div>
                             </PaymentItem>
                             <PaymentItem title="Payment">
@@ -311,19 +364,6 @@ export default function PaymentPage(props: IPaymentPageProps) {
                 )}
 
                 {loading && <LoadingPrimary />}
-
-                {/* <Comfirm
-                
-                    title={
-                        <>
-                            <b>ORDER CONFIRMATION</b>
-                        </>
-                    }
-                    subtitle={<ContentComfirmPayment form={form} totalAndWeight={totalAndWeight} addresses={addresses} />}
-                    open={openComfirm.open}
-                    setOpen={setOpenComfirm}
-                    onComfirm={handleComfirm}
-                /> */}
 
                 <ComfirmPaymentDialog
                     handleSubmit={handlePaymentBeforeComfirm}

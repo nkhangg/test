@@ -10,7 +10,7 @@ import DrawerChat from './DrawerChat';
 import { contants } from '@/utils/contants';
 import Validate from '@/utils/validate';
 import { useAppSelector } from '@/hooks/reduxHooks';
-import { RootState } from '@/configs/types';
+import { ImageType, RootState } from '@/configs/types';
 import { Timestamp, addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/configs/firebase';
 import firebaseService from '@/services/firebaseService';
@@ -34,10 +34,12 @@ export default function MessagePage({ params }: IMessagePageProps) {
 
     const { user } = useAppSelector((state: RootState) => state.userReducer);
 
-    const handleSendMessage = async (value: string) => {
-        if (Validate.isBlank(value) || !params.id || !user) return;
+    const handleSendMessage = async (value: string, images?: ImageType[]) => {
+        if (!params.id || !user) return;
 
-        await firebaseService.handleSendMessage(value, params.id, user.username);
+        if (Validate.isBlank(value) && (!images || images.length <= 0)) return;
+
+        await firebaseService.handleSendMessage(value, params.id, user.username, { images: images });
     };
 
     const userMemo = useMemo(() => {
@@ -50,7 +52,7 @@ export default function MessagePage({ params }: IMessagePageProps) {
     }, [userSnapshot]);
 
     return (
-        <div style={contants.styleMessageManagePage} className="w-full flex flex-col items-center justify-between px-8">
+        <div style={contants.styleMessageManagePage} className="w-full h-full flex flex-col items-center justify-between px-8">
             <div className="w-full flex justify-between items-center">
                 <div className="py-5  flex items-center justify-start w-full gap-2">
                     <Avatar sx={{ width: '50px', height: '50px', border: '2px solid #ccc' }} src={userMemo?.avartar || contants.avartarDefault} />

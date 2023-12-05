@@ -9,18 +9,20 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faStarEm } from '@fortawesome/free-regular-svg-icons';
 import moment from 'moment';
 import { useRouter } from 'next/navigation';
+import { formatIndex } from '@/utils/format';
 export interface IRowReviewProps {
     index: number;
     data: IRowReviewTable;
+    page: string | null;
 }
 
-export default function RowReview({ index, data }: IRowReviewProps) {
+export default function RowReview({ index, page, data }: IRowReviewProps) {
     const router = useRouter();
     return (
         <TableRow onClick={() => router.push(links.reviews.management + `/${data.productId}`)}>
             <TableCell align="center">
                 <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
-                    {index + 1}
+                    {formatIndex(parseInt(page || '0'), index)}
                 </Typography>
             </TableCell>
 

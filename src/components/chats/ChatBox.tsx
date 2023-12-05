@@ -4,15 +4,15 @@ import { faPhotoFilm, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Fab } from '@mui/material';
 import Tippy from '@tippyjs/react/headless';
-import React, { MouseEventHandler, useEffect, useState } from 'react';
+import React, { MouseEventHandler, useCallback, useEffect, useState } from 'react';
 import { ChatBody, ChatFooter, ChatItem, WrapperAnimation } from '..';
 import { faFaceSmile, faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { useAppSelector } from '@/hooks/reduxHooks';
-import { RootState } from '@/configs/types';
+import { ImageType, RootState } from '@/configs/types';
 import { contants } from '@/utils/contants';
 import firebaseService from '@/services/firebaseService';
-import { useCollection } from 'react-firebase-hooks/firestore';
-import { IConversation, IMessage } from '@/configs/interface';
+import { useCollection, useCollectionData } from 'react-firebase-hooks/firestore';
+import { IConversation, IConversationId, IMessage, IUserFirebase } from '@/configs/interface';
 import ChatAswer from './ChatAswer';
 import { Timestamp, addDoc, collection, getDocs, serverTimestamp } from 'firebase/firestore';
 import Validate from '@/utils/validate';
@@ -41,6 +41,9 @@ export default function ChatBox(props: IChatBoxProps) {
     const [showChatNow, setShowChatNow] = useState(true);
     const [conversationId, setConversationId] = useState<string | null>(null);
 
+    const [conversationSnapshot] = useCollection(firebaseService.querys.queryGetConversationForCurrentUser(user?.username));
+    const [userSnapshot] = useCollection(firebaseService.querys.getUserByUsername(user && user.username));
+
     const handleToggle = () => {
         setOpen((prev) => !prev);
     };
@@ -49,9 +52,7 @@ export default function ChatBox(props: IChatBoxProps) {
         setOpen(false);
     };
 
-    const [conversationSnapshot] = useCollection(firebaseService.querys.queryGetConversationForCurrentUser(user?.username));
-
-    const handleClickChatNow = async () => {
+    const handleClickChatNow = useCallback(async () => {
         setShowChatNow(false);
         if (!user || contants.roles.manageRoles.includes(user.role)) return;
 
@@ -69,18 +70,36 @@ export default function ChatBox(props: IChatBoxProps) {
         const newConversation = await firebaseService.addConversation(user.username);
 
         setConversationId(newConversation.id);
-    };
+    }, [conversationSnapshot, user]);
 
-    const handleSendMessage = async (value: string) => {
-        if (Validate.isBlank(value) || !conversationId || !user) return;
+    const handleSendMessage = async (value: string, images?: ImageType[]) => {
+        if (!conversationId || !user) return;
+
+        if (Validate.isBlank(value) && (!images || images.length <= 0)) return;
+
+        console.log(images);
 
         // user send message to manage
-        const newMessage = await firebaseService.handleSendMessageToUser(value, conversationId, user.username);
+        const newMessage = await firebaseService.handleSendMessageToUser(value, conversationId, user.username, { images });
 
         const idNewMessage = newMessage.id;
 
         await firebaseService.setNewMessageConversation(conversationId, idNewMessage);
     };
+
+    useEffect(() => {
+        if (!userSnapshot) return;
+
+        const userRef = {
+            ...(userSnapshot?.docs[0]?.data() as IUserFirebase),
+            id: userSnapshot?.docs[0]?.id,
+        };
+
+        if (!userRef?.conversationId) return;
+
+        setConversationId(userRef.conversationId);
+        setShowChatNow(false);
+    }, [userSnapshot]);
 
     return (
         <div>

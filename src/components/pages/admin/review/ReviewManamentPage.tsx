@@ -1,14 +1,16 @@
 'use client';
 import { getReviews } from '@/apis/admin/reviews';
-import { BoxTitle, LoadingSecondary, RowReview, Table } from '@/components';
+import { BoxTitle, LoadingSecondary, Pagination, RowReview, Table } from '@/components';
 import { HeadHistory, SortAdmin } from '@/components/common';
 import { IOrderAdminFillterForm, IReviewAdminFillterForm, IRowStatusOrders } from '@/configs/interface';
 import { dataHeadReviews } from '@/datas/header';
+import { links } from '@/datas/links';
 import { useDebounce } from '@/hooks';
 import { contants } from '@/utils/contants';
+import { Box } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -53,6 +55,11 @@ export default function ReviewManamentPage(props: IReviewManamentPageProps) {
     // router
     const router = useRouter();
 
+    // param page
+    const searchParams = useSearchParams();
+
+    const page = searchParams.get('page');
+
     // states
 
     const [filter, setFilter] = useState<IReviewAdminFillterForm>(iniData);
@@ -60,15 +67,23 @@ export default function ReviewManamentPage(props: IReviewManamentPageProps) {
     const searDebounce = useDebounce(filter.search, 600);
 
     const reviews = useQuery({
-        queryKey: ['reviews/getReviews', { ...filter, search: searDebounce }],
-        queryFn: () => getReviews({ ...filter, search: searDebounce }),
+        queryKey: ['reviews/getReviews', { ...filter, search: searDebounce }, page],
+        queryFn: () => getReviews({ ...filter, search: searDebounce }, page),
     });
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        // reset page before click filter
+        handleResetPage();
         setFilter({
             ...filter,
             search: e.target.value,
         });
+    };
+
+    const handleResetPage = () => {
+        if (!page) return;
+
+        router.push(links.reviews.management);
     };
 
     if (reviews.error) {
@@ -79,8 +94,8 @@ export default function ReviewManamentPage(props: IReviewManamentPageProps) {
     const data = reviews.data?.data;
 
     const dataMemo = useMemo(() => {
-        if (!data) return [];
-        return data;
+        if (!data?.data) return [];
+        return data.data;
     }, [data]);
 
     return (
@@ -107,6 +122,8 @@ export default function ReviewManamentPage(props: IReviewManamentPageProps) {
             />
             <HeadHistory
                 onTab={(tab) => {
+                    // reset page before click filter
+                    handleResetPage();
                     setFilter({
                         ...filter,
                         maxStar: tab.title === 'All' ? '' : tab.title,
@@ -127,11 +144,11 @@ export default function ReviewManamentPage(props: IReviewManamentPageProps) {
                         dataHead={dataHeadTable}
                     >
                         {dataMemo.map((item, index) => {
-                            return <RowReview key={item.productId} index={index} data={item} />;
+                            return <RowReview page={page} key={item.productId} index={index} data={item} />;
                         })}
                     </Table>
                 )}
-                {data && data.length <= 0 && (
+                {data && data.data.length <= 0 && (
                     <div className="flex items-center justify-center py-5 text-violet-primary">
                         <b>No suitable data found</b>
                     </div>
@@ -143,6 +160,10 @@ export default function ReviewManamentPage(props: IReviewManamentPageProps) {
                     </div>
                 )}
             </div>
+
+            {data && dataMemo && dataMemo.length > 0 && (
+                <Box mt={'-2%'}>{data?.pages > 1 && <Pagination baseHref={links.reviews.management + '?page='} pages={data?.pages} />}</Box>
+            )}
         </BoxTitle>
     );
 }

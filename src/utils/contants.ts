@@ -1,9 +1,10 @@
 import { StateType } from '@/configs/types';
 
 const baseApiProvince = 'https://provinces.open-api.vn/api/';
-const baseApiGHTK = 'https://services.giaohangtietkiem.vn/';
+const baseApiGHTK = 'https://dev-online-gateway.ghn.vn/shiip/public-api/v2/';
 
-const TOKEN_GHTK = 'dea4f0a9332fcc5d6c34f07a0f157ec6fe51e82e';
+const TOKEN_GHN = '461c907b-8f99-11ee-a6e6-e60958111f48';
+const CLIENT_ID = '190422';
 
 export const contants = {
     shopName: 'Pet Foster',
@@ -41,16 +42,20 @@ export const contants = {
     },
     apis: {
         provinces: baseApiProvince + 'p/',
+        provincesSearch: baseApiProvince + 'p/search/',
         districts: (province: number | string) => {
             return baseApiProvince + `p/${province}?depth=2`;
         },
+        districtsSearch: baseApiProvince + 'd/search/',
+
         wards: (district: number | string) => {
             return baseApiProvince + `d/${district}?depth=2`;
         },
-        ghtk: {
-            token: TOKEN_GHTK,
-
-            shippingFee: baseApiGHTK + 'services/shipment/fee',
+        wardsSearch: baseApiProvince + 'w/search/',
+        ghn: {
+            token: TOKEN_GHN,
+            clientId: CLIENT_ID,
+            shippingFee: baseApiGHTK + 'shipping-order/fee',
         },
     },
 
@@ -82,6 +87,6 @@ export const contants = {
     ],
     stateCancel: ['cancelled', 'cancelled_by_admin', 'cancelled_by_customer'] as StateType[],
     styleMessageManagePage: {
-        height: 'calc(100vh - 140px)',
+        height: 'calc(100vh - 100px)',
     },
 };

@@ -26,6 +26,9 @@ const Validate = {
 
         return num.test(value);
     },
+    isUrl(url: string) {
+        return /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g.test(url);
+    },
 
     isPhone(value: string): boolean {
         const regexPhoneNumber = /(84|0[3|5|7|8|9|1])+([0-9]{8})\b/g;

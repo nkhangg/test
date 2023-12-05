@@ -14,10 +14,9 @@ import classNames from 'classnames';
 import { listPopupNavChatItemHasGim } from '@/datas/popupData';
 import { HeadTabType } from '@/configs/types';
 import firebaseService from '@/services/firebaseService';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { BadgeAvartar } from '@/components';
 import { usePathname, useSearchParams } from 'next/navigation';
+import audioService from '@/services/audioService';
 
 export interface INavChatItemProps {
     data: IConversationId;
@@ -40,13 +39,20 @@ export default function NavChatItem({ data, currentUser }: INavChatItemProps) {
     }, [lastMessage]);
 
     useEffect(() => {
-        console.log(lastMessage);
         if (!pathname.includes(data.id) || !lastMessage || lastMessage.seen) return;
 
         (async () => {
             await handleSeenMessage();
         })();
     }, [data.id, handleSeenMessage, lastMessage, pathname]);
+
+    useEffect(() => {
+        if (!lastMessage) return;
+
+        if (lastMessage.seen) return;
+
+        audioService.messageAudio().play();
+    }, [lastMessage]);
     return (
         <Link
             onClick={handleSeenMessage}
@@ -62,13 +68,30 @@ export default function NavChatItem({ data, currentUser }: INavChatItemProps) {
 
                 <div className="max-w-full flex flex-col">
                     <h6 className="text-1xl w-[140px] text-ellipsis overflow-hidden whitespace-nowrap ">{user?.username || 'user'}</h6>
-                    <p
-                        className={classNames('text-sm w-[160px]  overflow-hidden truncate text-ellipsis', {
-                            ['font-semibold']: !lastMessage?.seen,
-                        })}
-                    >
-                        {lastMessage?.currentUser === user?.username ? `${lastMessage?.currentUser}: ${lastMessage?.message}` : `you: ${lastMessage?.message}`}
-                    </p>
+                    {lastMessage && lastMessage?.message.length > 0 && (
+                        <p
+                            className={classNames('text-sm w-[160px]  overflow-hidden truncate text-ellipsis', {
+                                ['font-semibold']: !lastMessage?.seen,
+                            })}
+                            dangerouslySetInnerHTML={{
+                                __html: lastMessage?.currentUser === user?.username ? `${lastMessage?.currentUser}: ${lastMessage?.message}` : `you: ${lastMessage?.message}`,
+                            }}
+                        ></p>
+                    )}
+                    {!lastMessage ||
+                        (lastMessage?.message.length <= 0 && lastMessage.images && lastMessage.images.length > 0 && (
+                            <p
+                                className={classNames('text-sm w-[160px]  overflow-hidden truncate text-ellipsis', {
+                                    ['font-semibold']: !lastMessage?.seen,
+                                })}
+                                dangerouslySetInnerHTML={{
+                                    __html:
+                                        lastMessage?.currentUser === user?.username
+                                            ? `${lastMessage?.currentUser}: ${lastMessage.images.length <= 1 ? 'sent an image' : 'sent images'}`
+                                            : `you: ${lastMessage.images.length <= 1 ? 'sent an image' : 'sent images'}`,
+                                }}
+                            ></p>
+                        ))}
                 </div>
             </div>
             <div className="flex flex-col items-end gap-2 ">

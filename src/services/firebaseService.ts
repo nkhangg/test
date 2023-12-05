@@ -1,5 +1,7 @@
+import { uploadImagesMessage } from '@/apis/admin/images';
 import { db } from '@/configs/firebase';
 import { IProfile } from '@/configs/interface';
+import { ImageType } from '@/configs/types';
 import { contants } from '@/utils/contants';
 import { generateKeywords } from '@/utils/firebaseUltils';
 import Validate from '@/utils/validate';
@@ -15,7 +17,6 @@ const setUserInBd = async (user: IProfile) => {
                 avartar: user.avatar || contants.avartarDefault,
                 online: true,
                 keywords: generateKeywords(user.username),
-                conversationId: null,
             },
             { merge: true }, // just update what is change
         );
@@ -136,7 +137,8 @@ const getConversations = (typeSort: OrderByDirection = 'desc') => {
 
 // just get conversations have message and gim
 
-const getUserByUsername = (username: string) => {
+const getUserByUsername = (username: string | null) => {
+    if (!username) return;
     return query(collection(db, 'users'), where('username', '==', username));
 };
 
@@ -150,7 +152,13 @@ const getMessageWithId = (id: string) => {
     return query(collection(db, `messages`));
 };
 
-const handleSendMessage = async (value: string, conversationId: string, username: string) => {
+const handleSendMessage = async (value: string, conversationId: string, username: string, differentData?: { images?: ImageType[] }) => {
+    let images: string[] | null = null;
+
+    if (differentData) {
+        images = await handleImages(differentData);
+    }
+
     const newMessage = await addDoc(collection(db, 'messages'), {
         conversationId: conversationId,
         currentUser: username,
@@ -159,6 +167,7 @@ const handleSendMessage = async (value: string, conversationId: string, username
         username: contants.usernameAdmin,
         recall: false,
         seen: true,
+        images: images,
     });
 
     const idNewMessage = newMessage.id;
@@ -166,7 +175,13 @@ const handleSendMessage = async (value: string, conversationId: string, username
     await firebaseService.setNewMessageConversation(conversationId, idNewMessage);
 };
 
-const handleSendMessageToUser = async (value: string, conversationId: string, username: string) => {
+const handleSendMessageToUser = async (value: string, conversationId: string, username: string, differentData?: { images?: ImageType[] }) => {
+    let images: string[] | null = null;
+
+    if (differentData) {
+        images = await handleImages(differentData);
+    }
+
     return await addDoc(collection(db, 'messages'), {
         conversationId: conversationId,
         currentUser: username,
@@ -175,7 +190,53 @@ const handleSendMessageToUser = async (value: string, conversationId: string, us
         username: username,
         recall: false,
         seen: false,
+        images: images,
     });
+};
+
+const handleImages = async (differentData: { images?: ImageType[] }) => {
+    let images: string[] | null = null;
+    let linksResponse: string[] = [];
+
+    if (differentData?.images && differentData.images.length > 0) {
+        const imagesRaw = differentData.images.filter((item) => {
+            return item.data;
+        });
+
+        if (imagesRaw.length > 0) {
+            // call api here
+
+            try {
+                const response = await uploadImagesMessage(imagesRaw);
+
+                if (!response.errors && response.data.length > 0) {
+                    linksResponse = [...response.data];
+                }
+            } catch (error) {
+                console.log('error in handleImages file firebase service: ', error);
+            }
+        }
+
+        const imagesLink = differentData.images.filter((item) => {
+            return !item.data;
+        });
+
+        if (linksResponse.length > 0) {
+            images = [...linksResponse];
+        }
+
+        const imageLinkAfterMap = imagesLink.map((item) => {
+            return item.link;
+        });
+
+        if (!images) {
+            images = [...imageLinkAfterMap];
+        } else {
+            images = [...images, ...imageLinkAfterMap];
+        }
+    }
+
+    return images;
 };
 
 const firebaseService = {

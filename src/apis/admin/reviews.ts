@@ -2,12 +2,20 @@ import axios from '@/configs/axios';
 import { IReview, IReviewAdminFillterForm } from '@/configs/interface';
 import { ApiFilterReviews, ApiGetReview, ApiGetReviews, ApiReplayReview } from '@/configs/types';
 
-export const getReviews: ApiGetReviews = async (data: IReviewAdminFillterForm) => {
+export const getReviews: ApiGetReviews = async (data: IReviewAdminFillterForm, page: string | null) => {
     let search = {};
+
+    let pages = {};
 
     if (data.search.length > 0) {
         search = {
             productName: data.search,
+        };
+    }
+
+    if (pages) {
+        pages = {
+            page: parseInt(page || '1') - 1,
         };
     }
 
@@ -19,6 +27,7 @@ export const getReviews: ApiGetReviews = async (data: IReviewAdminFillterForm) =
             minStar: data.minStar,
             sort: data.sort,
             ...search,
+            ...pages,
         },
     });
 

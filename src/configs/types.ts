@@ -43,6 +43,9 @@ import {
     IReview,
     IReviewHasReplay,
     IProfileMessageManage,
+    IProvinceOutside,
+    IDistrictOutside,
+    IWardOutside,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { RolesName } from './enum';
@@ -132,6 +135,8 @@ export type ApiCreateImagesByProduct = (id: string, files: File[]) => Promise<IB
 
 export type ApiDeleteImagesByProduct = (data: { id: string; idImage: number }) => Promise<IBaseResponse<any>>;
 
+export type ApiUploadImageMessage = (images: ImageType[]) => Promise<IBaseResponse<string[]>>;
+
 export type ApiGetUserManage = (id: string) => Promise<IBaseResponse<IUserManage>>;
 
 export type ApiGetUserProfileMessageManage = (id: string) => Promise<IBaseResponse<IProfileMessageManage>>;
@@ -170,7 +175,7 @@ export type ApiCreateCartUser = (data: ICart) => Promise<IBaseResponse<ICart>>;
 
 export type ApiGetBrands = () => Promise<IBaseResponse<IBrand[]>>;
 
-export type ApiGetReviews = (data: IReviewAdminFillterForm) => Promise<IBaseResponse<IRowReviewTable[]>>;
+export type ApiGetReviews = (data: IReviewAdminFillterForm, page: string | null) => Promise<IBaseResponse<PagiantionResponse<IRowReviewTable>>>;
 
 export type ApiGetReview = (id: string) => Promise<IBaseResponse<IDataDetailReview>>;
 
@@ -182,9 +187,21 @@ export type ApiActionBrand = (data: IBrand) => Promise<IBaseResponse<IBrand>>;
 
 export type ApiProvinces<T> = (id?: string | number) => Promise<T>;
 
+export type ApiProvincesOutside = (id?: string | number) => Promise<IProvinceOutside>;
+
+export type ApiDistrictOutside = (data: IProvinceOutside, district: string) => Promise<IDistrictOutside>;
+
+export type ApiWardOutside = (data: IDistrictOutside, ward: string) => Promise<IWardOutside>;
+
 export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
+
+export type AddressCodeType = {
+    province: number | null;
+    district: number | null;
+    ward: string | null;
+};
 
 export type RegisterFormData = {
     username: string;
@@ -276,4 +293,9 @@ export type HeadTabType = {
 export type TippyChooserType = {
     id: string;
     title: string;
+};
+
+export type ImageType = {
+    link: string;
+    data: File | null;
 };

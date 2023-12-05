@@ -4,6 +4,7 @@ import { toCurrency } from '@/utils/format';
 import classNames from 'classnames';
 import React, { MouseEventHandler } from 'react';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { LoadingSecondary, MiniLoading } from '@/components';
 
 export interface IPaymentCardProps {
     data: {
@@ -11,17 +12,18 @@ export interface IPaymentCardProps {
         business: string;
         price: number;
     };
+    loading?: boolean;
     checked: boolean;
     // setChecked: (value: boolean) => void;
     onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
-export default function PaymentCard({ data, checked, onClick }: IPaymentCardProps) {
+export default function PaymentCard({ data, checked, loading, onClick }: IPaymentCardProps) {
     return (
         <div
             onClick={onClick}
             className={classNames(
-                'py-[24px] px-[28px] pr-[20px] w-full bg-[#F2F2F2] rounded-xl border-2 hover:border-violet-secondary transition-all ease-linear cursor-pointer select-none ',
+                'relative overflow-hidden py-[24px] px-[28px] pr-[20px] w-full bg-[#F2F2F2] rounded-xl border-2 hover:border-violet-secondary transition-all ease-linear cursor-pointer select-none ',
                 {
                     // [styles['check-label']]: true,
                     'border-violet-secondary': checked,
@@ -40,6 +42,12 @@ export default function PaymentCard({ data, checked, onClick }: IPaymentCardProp
             </div>
             <p className="text-sm text-[#666666] mt-2">{data.business}</p>
             <span className="text-lg font-medium mt-3 block">{toCurrency(data.price)}</span>
+
+            {loading && (
+                <div className="absolute inset-0 bg-[rgba(0,0,0,.09)]">
+                    <MiniLoading />
+                </div>
+            )}
         </div>
     );
 }
