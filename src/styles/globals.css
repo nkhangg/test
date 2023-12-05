@@ -47,3 +47,15 @@ html {
 .drop-scroll {
     /* overflow: hidden !important; */
 }
+
+.message-link {
+    color: #0ea5e9;
+}
+
+.message-link:hover {
+    text-decoration: underline;
+}
+
+#ReactSimpleImageViewer {
+    z-index: 9999;
+}
