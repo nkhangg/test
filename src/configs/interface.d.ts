@@ -356,6 +356,7 @@ export interface IDetailOrder {
     subTotal: number;
     shippingFee: number;
     total: number;
+    expectedTime: string | null;
 }
 
 export interface IProductDetailOrders {

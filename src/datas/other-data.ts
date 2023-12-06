@@ -62,6 +62,7 @@ export const orderDetail: IDetailOrder = {
     name: 'Ha Lam',
     paymentMethod: 'Credit Card',
     phone: '0964 909 321',
+    expectedTime: null,
     products: [
         {
             id: 1,

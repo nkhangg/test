@@ -47,11 +47,8 @@ export default function CartPage(props: ICartPageProps) {
                         toast.warn(contants.messages.errors.handle);
                         return;
                     }
-
-                    console.log('response.data', response.data);
                 } catch (error) {
                     toast.error(contants.messages.errors.handle + `. Can't save your cart !`);
-                    console.log('CartPage', error);
                 }
             })();
         };

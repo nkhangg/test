@@ -89,4 +89,5 @@ export const contants = {
     styleMessageManagePage: {
         height: 'calc(100vh - 100px)',
     },
+    instantProvince: 'Thành phố Cần Thơ',
 };
