@@ -124,6 +124,11 @@ export default function DetailOrderHistory({ id }: IDetailOrderHistoryProps) {
                                     <li className="text-lg text-black-main font-medium">
                                         Date Placed:<span className="text-grey-secondary text-1xl font-normal"> {dataDetail.placedDate} </span>
                                     </li>
+                                    {dataDetail.expectedTime && (
+                                        <li className="text-lg text-black-main font-medium">
+                                            Expected Time:<span className="text-grey-secondary text-1xl font-normal"> {moment(dataDetail.expectedTime).format('D/MM/yyyy')} </span>
+                                        </li>
+                                    )}
                                     <li className="flex items-center gap-2">
                                         {(() => {
                                             const status = dataDetail.state.toLowerCase() as StateType;

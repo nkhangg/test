@@ -5,7 +5,7 @@ import React, { ChangeEvent, memo, useEffect, useState } from 'react';
 import { toCurrency, toGam } from '@/utils/format';
 import Quantity from './Quantity';
 import { Checkbox } from '@mui/material';
-import { addCart, modifyChecked, modifyQuantity, removeCart } from '@/redux/slice/cartsSlide';
+import { modifyChecked, modifyQuantity, removeCart } from '@/redux/slice/cartsSlide';
 import { Comfirm } from '@/components';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 
@@ -77,7 +77,10 @@ function Cart({ data, index }: ICartProps) {
                     Remove
                 </span>
             </div>
-            <div className="ml-2 md:w-[20%]  flex items-center justify-center md:text-xl md:ml-0">
+            <div className="ml-2 md:w-[16%]  flex items-center justify-center md:text-xl md:ml-0">
+                <span className="text-sm md:text-lg">{toCurrency(data.price)}</span>
+            </div>
+            <div className="ml-2 md:w-[16%]  flex items-center justify-center md:text-xl md:ml-0">
                 <span className="text-sm md:text-lg">{toCurrency(data.price * quantity <= 0 ? data.price : data.price * quantity)}</span>
             </div>
 

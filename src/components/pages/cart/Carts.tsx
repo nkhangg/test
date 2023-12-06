@@ -67,11 +67,15 @@ export default function Carts({ data, onTotal }: ICartsProps) {
                 <div className="flex-1 ml-8 flex flex-col items-center justify-center gap-5">
                     <span>Product</span>
                 </div>
-
                 <div className="w-[40%] lg:w-[10%] flex flex-col items-center justify-center">
                     <span>Quantity</span>
                 </div>
-                <div className="ml-2 md:w-[20%] flex items-center justify-center">
+
+                <div className="ml-2 md:w-[16%] flex items-center justify-center">
+                    <span>Price</span>
+                </div>
+
+                <div className="ml-2 md:w-[16%] flex items-center justify-center">
                     <span>Total</span>
                 </div>
             </div>

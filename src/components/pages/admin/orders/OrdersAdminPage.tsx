@@ -205,10 +205,9 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                             )}
                         </div>
 
-                        {dataOrders && <Box mt={'-2%'}>{dataOrders.pages > 1 && <Pagination baseHref="/admin/dashboard/orders?page=" pages={dataOrders.pages} />}</Box>}
-
-                        {dataOpen ? <UpdateStateOrderDialog idOpen={dataOpen} open={open} setOpen={setOpen} /> : <span></span>}
+                        {dataOrders && <Box mt={'-2%'}>{<Pagination baseHref="/admin/dashboard/orders?page=" pages={dataOrders.pages} />}</Box>}
                     </BoxTitle>
+                    {dataOpen ? <UpdateStateOrderDialog idOpen={dataOpen} open={open} setOpen={setOpen} /> : <span></span>}
                 </OrderAdminPageContext.Provider>
             )}
         </div>

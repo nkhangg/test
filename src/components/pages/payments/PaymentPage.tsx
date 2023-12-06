@@ -12,7 +12,7 @@ import { IInfoAddress, IOrder, IOrderItem, IPayment } from '@/configs/interface'
 import { useRouter, useSearchParams } from 'next/navigation';
 import LineProPress from './LinePropress';
 import { links } from '@/datas/links';
-import { createOrder, createPayment } from '@/apis/user';
+import { createOrder, createPayment, updateUserStatusOrder } from '@/apis/user';
 import { toast } from 'react-toastify';
 import { contants } from '@/utils/contants';
 import { clearAllPayment } from '@/redux/slice/cartsSlide';
@@ -91,37 +91,6 @@ export default function PaymentPage(props: IPaymentPageProps) {
         });
     };
 
-    const handlePaymentBeforeComfirm = async () => {
-        try {
-            setLoading(true);
-            const response = await createOrder(form);
-            setLoading(false);
-
-            if (!response) {
-                console.log(response);
-                toast.warn(contants.messages.errors.handle);
-                return;
-            }
-
-            if (response.status !== 200) {
-                toast.error(capitalize(response.message));
-                return;
-            }
-
-            // handle cash method
-            if (form.methodId == 1) {
-                handleClearWhenSuccess();
-
-                // handle pre-payment method
-            } else if (form.methodId == 2) {
-                window.location.assign(response.data);
-            }
-        } catch (error) {
-            setLoading(false);
-            toast.error(contants.messages.errors.server);
-        }
-    };
-
     const handleShowShipping = async () => {
         if (!addresses) return;
         const addressCodes: AddressCodeType = {
@@ -160,11 +129,14 @@ export default function PaymentPage(props: IPaymentPageProps) {
             });
             setloadingShippingItem(false);
 
-            if (checked === 0) return;
+            if (checked <= 0) return;
+
+            console.log('in handle shipping fee: ', shippingFee);
 
             setForm({
                 ...form,
                 ship: shippingFee,
+                addressId: addresses.id,
             });
         } catch (error) {
             setloadingShippingItem(false);
@@ -204,25 +176,48 @@ export default function PaymentPage(props: IPaymentPageProps) {
     }, []);
 
     useEffect(() => {
-        if (!addresses) {
+        (async () => {
+            if (!addresses) {
+                // set line
+                setLine(2);
+                return;
+            }
+
             // set line
-            setLine(2);
-            return;
-        }
+            setLine(4);
 
-        // set line
-        setLine(4);
+            if (addresses.address.province != contants.instantProvince) {
+                setChecked(1);
+                setForm({
+                    ...form,
+                    addressId: addresses.id,
+                    deliveryId: shippingItem.id,
+                });
+            } else {
+                setChecked(0);
+                setForm({
+                    ...form,
+                    addressId: addresses.id,
+                    deliveryId: dataCard[0].id,
+                });
+            }
 
+            await handleShowShipping();
+        })();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [addresses]);
+
+    useEffect(() => {
+        if (!addresses) return;
+        console.log('init data', addresses);
         setForm({
             ...form,
             addressId: addresses.id,
+            deliveryId: checked <= 0 ? dataCard[0].id : shippingItem.id,
         });
-
-        (async () => {
-            await handleShowShipping();
-        })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [addresses]);
+    }, []);
 
     useEffect(() => {
         if (!payment) return;
@@ -242,31 +237,55 @@ export default function PaymentPage(props: IPaymentPageProps) {
     }, [payment]);
 
     useEffect(() => {
-        const status = searchParams.get('vnp_TransactionStatus');
-
-        const validateArr = [
-            parseInt(searchParams.get('order_Id') || '0'),
-            parseInt(searchParams.get('vnp_Amount') || '0'),
-            parseInt(searchParams.get('vnp_TransactionNo') || '0'),
-        ];
-
-        const valid = validateArr.some((item) => item <= 0);
-
-        if (valid) return;
-
-        const form: IPayment = {
-            orderId: parseInt(searchParams.get('order_Id') || '0'),
-            amount: parseInt(searchParams.get('vnp_Amount') || '0'),
-            isPaid: status === '00' || false,
-            payAt: searchParams.get('vnp_PayDate') || '',
-            transactionNumber: parseInt(searchParams.get('vnp_TransactionNo') || '0'),
-            paymentMethod: {
-                id: 2,
-                method: searchParams.get('vnp_CardType') || 'ATM',
-            },
-        };
-
         (async () => {
+            const status = searchParams.get('vnp_TransactionStatus');
+            const responseCode = searchParams.get('vnp_ResponseCode');
+
+            const validateArr = [
+                parseInt(searchParams.get('order_Id') || '0'),
+                parseInt(searchParams.get('vnp_Amount') || '0'),
+                parseInt(searchParams.get('vnp_TransactionNo') || '0'),
+            ];
+
+            const valid = validateArr.some((item) => item <= 0);
+
+            if (responseCode === '24') {
+                try {
+                    const response = await updateUserStatusOrder({ id: parseInt(searchParams.get('order_Id') || '0'), status: 'cancelled_by_customer', reason: 'Payment failed' });
+
+                    if (!response) {
+                        toast.warn(contants.messages.errors.handle);
+                        return;
+                    }
+
+                    if (response.errors) {
+                        toast.warn(capitalize(response.message));
+                        return;
+                    }
+
+                    toast.warn(`Payment failed`);
+                    router.push(links.home);
+                } catch (error) {
+                    toast.error(contants.messages.errors.server);
+                }
+
+                return;
+            }
+
+            if (valid) return;
+
+            const form: IPayment = {
+                orderId: parseInt(searchParams.get('order_Id') || '0'),
+                amount: parseInt(searchParams.get('vnp_Amount') || '0'),
+                isPaid: status === '00' || false,
+                payAt: searchParams.get('vnp_PayDate') || '',
+                transactionNumber: parseInt(searchParams.get('vnp_TransactionNo') || '0'),
+                paymentMethod: {
+                    id: 2,
+                    method: searchParams.get('vnp_CardType') || 'ATM',
+                },
+            };
+
             const response = await createPayment(form);
 
             try {
@@ -313,14 +332,18 @@ export default function PaymentPage(props: IPaymentPageProps) {
                             {/* default address */}
                             <AddressInfoPayment
                                 onData={(data) => {
-                                    if (!data) return;
                                     setAddresses(data);
                                 }}
                             />
 
                             <PaymentItem title="Delivery method">
                                 <div className="flex flex-col md:flex-row items-center justify-between gap-5 mt-6">
-                                    <PaymentCard onClick={() => handleDelivery(dataCard[0], 0)} data={dataCard[0]} checked={checked === 0} />
+                                    <PaymentCard
+                                        disabled={(addresses && addresses.address.province != contants.instantProvince) || false}
+                                        onClick={() => handleDelivery(dataCard[0], 0)}
+                                        data={dataCard[0]}
+                                        checked={checked === 0}
+                                    />
                                     <PaymentCard loading={loadingShippingItem} onClick={() => handleDelivery(shippingItem, 1)} data={shippingItem} checked={checked === 1} />
                                 </div>
                             </PaymentItem>
@@ -353,7 +376,7 @@ export default function PaymentPage(props: IPaymentPageProps) {
                     )}
                 </Grid>
                 <Grid item xs={12} md={12} lg={6}>
-                    <OrderSummary dataDelevery={dataCard[checked]} />
+                    <OrderSummary dataDelevery={checked <= 0 ? dataCard[checked] : shippingItem} />
                 </Grid>
                 {!isClient && (
                     <Grid item xs={12} md={12} lg={12}>
@@ -366,10 +389,10 @@ export default function PaymentPage(props: IPaymentPageProps) {
                 {loading && <LoadingPrimary />}
 
                 <ComfirmPaymentDialog
-                    handleSubmit={handlePaymentBeforeComfirm}
+                    setLoading={setLoading}
                     addresses={addresses}
                     totalAndWeight={totalAndWeight}
-                    form={form}
+                    form={{ ...form, ship: checked <= 0 ? dataCard[checked].price : shippingItem.price }}
                     setOpen={setOpenComfirm}
                     open={openComfirm}
                 />

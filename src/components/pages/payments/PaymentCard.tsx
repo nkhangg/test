@@ -14,22 +14,22 @@ export interface IPaymentCardProps {
     };
     loading?: boolean;
     checked: boolean;
+    disabled?: boolean;
     // setChecked: (value: boolean) => void;
     onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
-export default function PaymentCard({ data, checked, loading, onClick }: IPaymentCardProps) {
+export default function PaymentCard({ data, checked, loading, disabled, onClick }: IPaymentCardProps) {
     return (
         <div
-            onClick={onClick}
-            className={classNames(
-                'relative overflow-hidden py-[24px] px-[28px] pr-[20px] w-full bg-[#F2F2F2] rounded-xl border-2 hover:border-violet-secondary transition-all ease-linear cursor-pointer select-none ',
-                {
-                    // [styles['check-label']]: true,
-                    'border-violet-secondary': checked,
-                    'border-transparent': !checked,
-                },
-            )}
+            onClick={onClick && !disabled ? onClick : undefined}
+            className={classNames('relative overflow-hidden py-[24px] px-[28px] pr-[20px] w-full  rounded-xl border-2  transition-all ease-linear  select-none ', {
+                // [styles['check-label']]: true,
+                'border-violet-secondary': checked,
+                'border-transparent': !checked,
+                'bg-[#F2F2F2] hover:border-violet-secondary cursor-pointer': !disabled,
+                'bg-gray-400': disabled,
+            })}
         >
             <div className="flex items-center justify-between">
                 <h4 className="text-black-main text-lg">{data.title}</h4>

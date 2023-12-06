@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import { contants } from '@/utils/contants';
 import { OrderAdminPageContext } from '../pages/admin/orders/OrdersAdminPage';
 import Validate from '@/utils/validate';
+import moment from 'moment';
 
 const Header = ({ title, chip, options = { border: true } }: { title: string; chip?: StateType; options?: { border?: boolean } }) => {
     return (
@@ -177,6 +178,11 @@ export default function UpdateStateOrderDialog({ idOpen, open, setOpen }: IUpdat
                                     {status === 'cancelled' && (
                                         <li className="flex flex-col items-start gap-1">
                                             <span className="text-black font-medium">Reason: </span> <p>{dataDetail.description}</p>
+                                        </li>
+                                    )}
+                                    {dataDetail.expectedTime && (
+                                        <li className="flex flex-col items-start gap-1">
+                                            <span className="text-black font-medium">Expected Time: </span> <p>{moment(dataDetail.expectedTime).format('D/MM/yyyy')}</p>
                                         </li>
                                     )}
                                 </ul>
