@@ -5,7 +5,13 @@ import { DialogContent, DialogTitle } from '@mui/material';
 import { ContentComfirmPayment, WrapperAnimation } from '..';
 import { IInfoAddress, IOrder } from '@/configs/interface';
 import { contants } from '@/utils/contants';
-import { addressToString, toCurrency, toGam } from '@/utils/format';
+import { addressToString, capitalize, toCurrency, toGam } from '@/utils/format';
+import { createOrder } from '@/apis/user';
+import { toast } from 'react-toastify';
+import { useAppDispatch } from '@/hooks/reduxHooks';
+import { clearAllPayment } from '@/redux/slice/cartsSlide';
+import { links } from '@/datas/links';
+import { useRouter } from 'next/navigation';
 
 export interface IComfirmPaymentDialogProps {
     addresses: IInfoAddress | null;
@@ -17,17 +23,56 @@ export interface IComfirmPaymentDialogProps {
     };
     open: boolean;
     setOpen: (v: boolean) => void;
-    handleSubmit?: () => void;
+    setLoading: (v: boolean) => void;
 }
 
-export default function ComfirmPaymentDialog({ open, setOpen, handleSubmit, addresses, totalAndWeight, form }: IComfirmPaymentDialogProps) {
-    const handleClickSubmit = () => {
-        if (handleSubmit) {
-            handleSubmit();
-        }
+export default function ComfirmPaymentDialog({ open, setOpen, setLoading, addresses, totalAndWeight, form }: IComfirmPaymentDialogProps) {
+    // router
+    const router = useRouter();
 
-        setOpen(false);
+    const dispatch = useAppDispatch();
+
+    const handleClearWhenSuccess = () => {
+        dispatch(clearAllPayment());
+        toast.success(contants.messages.success.payment);
+        router.push(links.products);
     };
+
+    const handleClickSubmit = async () => {
+        setOpen(false);
+
+        try {
+            setLoading(true);
+            const response = await createOrder(form);
+            setLoading(false);
+
+            if (!response) {
+                toast.warn(contants.messages.errors.handle);
+                return;
+            }
+
+            if (response.status !== 200) {
+                toast.error(capitalize(response.message));
+                return;
+            }
+
+            // handle cash method
+            if (form.methodId == 1) {
+                handleClearWhenSuccess();
+
+                // handle pre-payment method
+            } else if (form.methodId == 2) {
+                window.location.assign(response.data);
+            }
+        } catch (error) {
+            setLoading(false);
+            toast.error(contants.messages.errors.server);
+        }
+    };
+
+    React.useEffect(() => {
+        console.log('form in cofirm: ', form);
+    }, [form]);
 
     return (
         <WraperDialog
