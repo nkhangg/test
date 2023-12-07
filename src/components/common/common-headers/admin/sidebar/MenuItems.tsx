@@ -66,10 +66,6 @@ const Menuitems = [
         icon: IconMessage,
         href: '/admin/dashboard/message',
     },
-    {
-        navlabel: true,
-        subheader: 'Orther Management',
-    },
 ];
 
 export default Menuitems;

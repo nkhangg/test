@@ -170,8 +170,12 @@ const Validate = {
 
         return { message: '', error: false };
     },
-    address(value: string): ValidateType {
+    address(value: string, dataMatch?: any[]): ValidateType {
         if (this.isBlank(value)) return { message: "Address can't be blank ", error: true };
+
+        if (dataMatch) {
+            if (dataMatch.length <= 0) return { message: 'Address invalid ', error: true };
+        }
 
         return { message: '', error: false };
     },

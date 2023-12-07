@@ -1,20 +1,19 @@
 'use client';
 import { RootState } from '@/configs/types';
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { getCart, getPayment } from '@/redux/slice/cartsSlide';
-import { fetchUserByToken } from '@/redux/slice/userSlice';
-import { unwrapResult } from '@reduxjs/toolkit';
-import firebaseService from '@/services/firebaseService';
+import { useAppSelector } from '@/hooks/reduxHooks';
 import React, { ReactNode, useEffect } from 'react';
-import { IProfile } from '@/configs/interface';
 import { handleSetLastSeenInfoFirebase } from '@/utils/firebaseUltils';
+import { usePathname, useRouter } from 'next/navigation';
+import { links } from '@/datas/links';
 
 export interface IInitStateProps {
     children: ReactNode;
 }
 
 export default function InitState({ children }: IInitStateProps) {
-    const { user } = useAppSelector((state: RootState) => state.userReducer);
+    const { user, token } = useAppSelector((state: RootState) => state.userReducer);
+    const pathname = usePathname();
+    const router = useRouter();
 
     useEffect(() => {
         if (!user) return;
@@ -24,6 +23,14 @@ export default function InitState({ children }: IInitStateProps) {
             removeEventListener('beforeunload', () => handleSetLastSeenInfoFirebase(user));
         };
     }, [user]);
+
+    useEffect(() => {
+        if (user && token && Object.values(links.auth).some((item) => pathname.includes(item) || pathname === item)) {
+            router.push(links.home);
+            return;
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user, token, pathname]);
 
     return <>{children}</>;
 }

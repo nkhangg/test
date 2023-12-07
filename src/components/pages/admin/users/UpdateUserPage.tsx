@@ -82,7 +82,7 @@ export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
     const listRoles = [
         {
             id: 'ROLE_USER',
-            name: 'User',
+            name: 'Customer',
         },
         {
             id: 'ROLE_ADMIN',

@@ -86,7 +86,7 @@ export default function RowListUser({ data, index, handleDeleteUser }: IRowListU
 
                     return (
                         <Tooltip title={`Delete ${data.username}`}>
-                            <Button disabled={conditionShowBtn} onClick={() => handleDeleteUser(data.id as string)}>
+                            <Button disabled={!conditionShowBtn} onClick={() => handleDeleteUser(data.id as string)}>
                                 <FontAwesomeIcon
                                     className={classNames('text-lg', {
                                         'text-red-400': conditionShowBtn,

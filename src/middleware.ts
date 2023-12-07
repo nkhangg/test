@@ -13,6 +13,7 @@ export default async function middlewares(request: NextRequest) {
         if (request.nextUrl.pathname.includes(links.adminMidleware)) {
             return NextResponse.redirect(new URL('/', request.url));
         }
+
         return NextResponse.redirect(new URL('/login', request.url));
     }
 
