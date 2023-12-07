@@ -1,5 +1,5 @@
 'use client';
-import * as React from 'react';
+import React, { memo, useEffect } from 'react';
 import WraperDialog from './WraperDialog';
 import { DialogContent, DialogTitle } from '@mui/material';
 import { ContentComfirmPayment, WrapperAnimation } from '..';
@@ -26,7 +26,7 @@ export interface IComfirmPaymentDialogProps {
     setLoading: (v: boolean) => void;
 }
 
-export default function ComfirmPaymentDialog({ open, setOpen, setLoading, addresses, totalAndWeight, form }: IComfirmPaymentDialogProps) {
+function ComfirmPaymentDialog({ open, setOpen, setLoading, addresses, totalAndWeight, form }: IComfirmPaymentDialogProps) {
     // router
     const router = useRouter();
 
@@ -39,6 +39,11 @@ export default function ComfirmPaymentDialog({ open, setOpen, setLoading, addres
     };
 
     const handleClickSubmit = async () => {
+        if (totalAndWeight.weight > 30000) {
+            toast.warn(contants.messages.errors.exceedTheLimit);
+            return;
+        }
+
         setOpen(false);
 
         try {
@@ -70,7 +75,7 @@ export default function ComfirmPaymentDialog({ open, setOpen, setLoading, addres
         }
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         console.log('form in cofirm: ', form);
     }, [form]);
 
@@ -162,3 +167,5 @@ export default function ComfirmPaymentDialog({ open, setOpen, setLoading, addres
         </WraperDialog>
     );
 }
+
+export default memo(ComfirmPaymentDialog);

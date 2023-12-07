@@ -92,7 +92,7 @@ export default function CartPage(props: ICartPageProps) {
                 >
                     {cartUser.length <= 0 ? (
                         <div className="flex items-center justify-center py-20">
-                            <span>Make a purchase to fill your cart ❤️</span>
+                            <span>{contants.messages.cart.empty}</span>
                         </div>
                     ) : (
                         <Carts onTotal={(t) => setTotal(t)} data={dataCart} />
@@ -110,7 +110,9 @@ export default function CartPage(props: ICartPageProps) {
                         </div>
                     )}
                     <div className="flex flex-col items-center justify-center mt-20 mb-[60px] lg:mb-[-100px] gap-6">
-                        {cartUser.length > 0 && <MainButton onClick={handleCheckout} title="Checkout" background="bg-violet-primary" />}
+                        {cartUser.length > 0 && cartUser.filter((i) => i.checked && i.repo > 0).length > 0 && (
+                            <MainButton onClick={handleCheckout} title="Checkout" background="bg-violet-primary" />
+                        )}
                         <Link
                             href={'/take-action'}
                             className={classNames(' hover:underline text-violet-primary flex items-center gap-[10px] text-1xl', {

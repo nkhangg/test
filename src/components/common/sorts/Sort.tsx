@@ -40,7 +40,7 @@ function Sort({ categories, sorts, initDataCategory, onCategories, onSorts, onSe
     const [search, setSearch] = useState('');
     const [toggleHisroy, setToggleHisroy] = useState(false);
 
-    const searchDebounce = useDebounce(search, 400);
+    const searchDebounce = useDebounce(search, 600);
 
     const handleChangeCategory = (event: SelectChangeEvent<any>) => {
         setCategory(event.target.value as string);

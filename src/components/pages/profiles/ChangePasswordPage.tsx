@@ -26,6 +26,7 @@ export default function ChangePasswordPage(props: IChangePasswordPageProps) {
 
     const handleOpenConfirm = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (validate()) return;
         setOpenComfirm({ ...openComfirm, open: true });
     };
 
@@ -86,6 +87,12 @@ export default function ChangePasswordPage(props: IChangePasswordPageProps) {
                 flagList.push(error);
             }
         });
+
+        if (form.newPassword == form.password) {
+            const { message, error } = Validate.newPassword(form.newPassword, 6, form.password);
+            validateErrors.newPassword = message;
+            flagList.push(error);
+        }
 
         setErrors({
             ...validateErrors,

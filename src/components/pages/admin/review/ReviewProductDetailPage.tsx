@@ -53,7 +53,7 @@ export default function ReviewProductDetailPage({ id }: IReviewProductDetailPage
                     <div className="flex flex-col items-center justify-center w-full h-full">
                         <div className="flex items-start justify-center flex-col gap-4">
                             <span className="text-fill-heart text-[2.2rem] font-bold text-left ">{data?.rate.toFixed(1)}</span>
-                            {data && <RatingStar sx={{ ml: '-12px' }} readOnly value={data.rate} precision={0.2} />}
+                            {data && <RatingStar sx={{ ml: '-12px' }} readOnly value={data.rate} precision={0.1} />}
                             <p className="text-lg ">{data?.totalRate} ratings</p>
                         </div>
                     </div>

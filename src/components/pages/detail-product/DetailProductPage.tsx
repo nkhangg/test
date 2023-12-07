@@ -76,6 +76,13 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
             handleNonLogin();
             return;
         }
+
+        // check if repo is empty
+        if (dataDetailProductPage?.sizeAndPrice[indexSizeAndPrice].repo <= 0) {
+            toast.warn(contants.messages.product.repIsEmpty);
+            return;
+        }
+
         dispatch(
             addCart({
                 id: params.id,
@@ -98,6 +105,11 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
         }
 
         (async () => {
+            if (dataDetailProductPage?.sizeAndPrice[indexSizeAndPrice].repo <= 0) {
+                toast.warn(contants.messages.product.repIsEmpty);
+                return;
+            }
+
             dispatch(
                 addPayment({
                     id: params.id,

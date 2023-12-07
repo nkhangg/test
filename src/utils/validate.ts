@@ -170,8 +170,12 @@ const Validate = {
 
         return { message: '', error: false };
     },
-    address(value: string): ValidateType {
+    address(value: string, dataMatch?: any[]): ValidateType {
         if (this.isBlank(value)) return { message: "Address can't be blank ", error: true };
+
+        if (dataMatch) {
+            if (dataMatch.length <= 0) return { message: 'Address invalid ', error: true };
+        }
 
         return { message: '', error: false };
     },
@@ -194,7 +198,7 @@ const Validate = {
         return { message: '', error: false };
     },
 
-    newPassword(value: string, min = 6): ValidateType {
+    newPassword(value: string, min = 6, curPassword?: string): ValidateType {
         const valueTrim = value.trim();
 
         if (valueTrim.length <= 0) return { message: "Password can't be blank ", error: true };
@@ -204,6 +208,13 @@ const Validate = {
                 message: `Password must be longer than ${min} characters`,
                 error: true,
             };
+
+        if (curPassword && curPassword.length > 0 && curPassword == value) {
+            return {
+                message: `The new password must not match the old password`,
+                error: true,
+            };
+        }
 
         return { message: '', error: false };
     },

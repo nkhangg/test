@@ -171,7 +171,9 @@ export default function UserManagePage(props: IUserManagePageProps) {
                             </div>
                         )}
                     </div>
-                    <Box mt={'-2%'}>{data.pages > 1 && <Pagination baseHref={baseUrl} pages={data.pages} />}</Box>
+                    <Box mt={'-2%'} mb={'4%'}>
+                        {data.pages > 1 && <Pagination baseHref={baseUrl} pages={data.pages} />}
+                    </Box>
                 </>
             )}
 

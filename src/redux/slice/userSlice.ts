@@ -20,18 +20,6 @@ export const fetchUserByToken = createAsyncThunk('user/fetchUserByToken', async 
         return res.data;
     } catch (error) {
         clearToken();
-        thunkApi.dispatch(
-            pushNoty({
-                title: 'Some thing went wrong, please relogin to use',
-                open: true,
-                type: 'error',
-                plament: {
-                    vertical: 'top',
-                    horizontal: 'right',
-                },
-            }),
-        );
-
         return null;
     }
 });

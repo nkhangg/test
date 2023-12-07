@@ -36,7 +36,7 @@ export default function AddressTippy({ data, placeholder, messageUndefined, init
     };
 
     const validate = () => {
-        const { error, message } = Validate.address(value);
+        const { error, message } = Validate.address(value, data as any[]);
 
         setError(message);
 
@@ -44,7 +44,7 @@ export default function AddressTippy({ data, placeholder, messageUndefined, init
     };
 
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
-        const { error, message } = Validate.address(e.target.value);
+        const { error, message } = Validate.address(e.target.value, data as any[]);
 
         setError(message);
     };

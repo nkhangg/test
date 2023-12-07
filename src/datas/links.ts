@@ -9,7 +9,7 @@ export const links = {
     adminMidleware: commonAdmin,
     adminFuntionsLink: {
         product: {
-            create: commonAdmin + '/create',
+            create: commonAdmin + '/product/create',
         },
         users: {
             detail: commonAdmin + '/users/',
@@ -18,7 +18,7 @@ export const links = {
     },
     auth: {
         login: '/login',
-        register: 'register',
+        register: '/register',
         resetPassword: '/reset-password',
     },
     users: {
