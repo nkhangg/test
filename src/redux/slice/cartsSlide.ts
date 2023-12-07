@@ -342,7 +342,7 @@ export const cart = createSlice({
                 const newCartUser = state.cartUser.map((item) => {
                     return {
                         ...item,
-                        checked: action.payload?.data,
+                        checked: item.repo > 0 ? action.payload?.data : false,
                     };
                 });
 
@@ -376,8 +376,6 @@ export const cart = createSlice({
                 };
             }),
             builder.addCase(addCart.fulfilled, (state, action) => {
-                console.log('action.payload add cart', action.payload);
-
                 if (!action.payload) return;
 
                 const item = state.cartUser.find((i) => i.id === action.payload?.data.id && i.size === action.payload.data.size);

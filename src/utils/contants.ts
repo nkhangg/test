@@ -25,6 +25,7 @@ export const contants = {
             server: 'Something went wrong !',
             handle: 'There was an error during processing, please try again or contact customer service. Thanks',
             notFound: "Can't found this page.",
+            exceedTheLimit: 'Your order exceeds 30kg. Please contact us for support',
         },
         success: {
             payment: 'You have placed your order successfully. Thank you for your trust ❤️❤️❤️',
@@ -33,6 +34,12 @@ export const contants = {
         review: {
             whenEmpty: 'Let us know your satisfaction with the product',
             whenEmptyReason: 'Please let us know the reason for better service.',
+        },
+        product: {
+            repIsEmpty: 'The product is currently out of stock',
+        },
+        cart: {
+            empty: 'Make a purchase to fill your cart ❤️',
         },
     },
     roles: {

@@ -12,7 +12,7 @@ export const AddressInfoPaymentContext = createContext<{ addressActive: IInfoAdd
 });
 
 export interface IAddressInfoPaymentProps {
-    onData?: (data: IInfoAddress) => void;
+    onData?: (data: IInfoAddress | null) => void;
 }
 
 function AddressInfoPayment({ onData }: IAddressInfoPaymentProps) {
@@ -39,8 +39,8 @@ function AddressInfoPayment({ onData }: IAddressInfoPaymentProps) {
     }, [data]);
 
     useEffect(() => {
-        if (!onData || !defaultValue) return;
-        onData(defaultValue);
+        if (!onData) return;
+        onData(defaultValue || null);
     }, [defaultValue, onData]);
     return (
         <AddressInfoPaymentContext.Provider

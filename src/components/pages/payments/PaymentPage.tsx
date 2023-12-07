@@ -92,7 +92,7 @@ export default function PaymentPage(props: IPaymentPageProps) {
     };
 
     const handleShowShipping = async () => {
-        if (!addresses) return;
+        if (!addresses || payment.length <= 0) return;
         const addressCodes: AddressCodeType = {
             province: null,
             district: null,
@@ -332,19 +332,36 @@ export default function PaymentPage(props: IPaymentPageProps) {
                             {/* default address */}
                             <AddressInfoPayment
                                 onData={(data) => {
+                                    if (!data) {
+                                        setAddresses(null);
+                                        return;
+                                    }
                                     setAddresses(data);
+
+                                    if (form.addressId === 0) {
+                                        setForm({
+                                            ...form,
+                                            addressId: data.id,
+                                        });
+                                    }
                                 }}
                             />
 
                             <PaymentItem title="Delivery method">
                                 <div className="flex flex-col md:flex-row items-center justify-between gap-5 mt-6">
                                     <PaymentCard
-                                        disabled={(addresses && addresses.address.province != contants.instantProvince) || false}
+                                        disabled={addresses ? addresses.address.province != contants.instantProvince : true}
                                         onClick={() => handleDelivery(dataCard[0], 0)}
                                         data={dataCard[0]}
                                         checked={checked === 0}
                                     />
-                                    <PaymentCard loading={loadingShippingItem} onClick={() => handleDelivery(shippingItem, 1)} data={shippingItem} checked={checked === 1} />
+                                    <PaymentCard
+                                        disabled={!addresses}
+                                        loading={loadingShippingItem}
+                                        onClick={() => handleDelivery(shippingItem, 1)}
+                                        data={shippingItem}
+                                        checked={checked === 1}
+                                    />
                                 </div>
                             </PaymentItem>
                             <PaymentItem title="Payment">
