@@ -221,8 +221,16 @@ export default function DetailOrderHistory({ id }: IDetailOrderHistoryProps) {
                                     </div>
                                 </Grid>
                                 <Grid item lg={2}></Grid>
-                                <Grid item lg={2}>
-                                    <div className="flex flex-col items-center justify-center gap-5">
+                                <Grid
+                                    item
+                                    lg={2}
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <div className="flex flex-col items-end justify-center gap-5">
                                         <span className="text-center text-grey-secondary">{toCurrency(dataDetail.subTotal)}</span>
                                         <span className="text-center text-grey-secondary">{toCurrency(dataDetail.shippingFee)}</span>
                                         <span className="text-center text-grey-secondary">{toCurrency(dataDetail.total)}</span>

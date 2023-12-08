@@ -161,7 +161,7 @@ export default function UserManagePage(props: IUserManagePageProps) {
                         </Table>
                         {data.data.length <= 0 && (
                             <div className="flex items-center justify-center py-5 text-violet-primary">
-                                <b>No suitable data found</b>
+                                <b>No data available</b>
                             </div>
                         )}
 

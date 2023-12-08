@@ -33,12 +33,12 @@ export default function RowPriceHistories({ index, data }: IRowPriceHistoriesPro
             </TableCell>
             <TableCell align="center">
                 <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                    {toCurrency(data.newOutPrice)}
+                    {toCurrency(data.oldInPrice)}
                 </Typography>
             </TableCell>
             <TableCell align="center">
                 <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                    {toCurrency(data.oldInPrice)}
+                    {toCurrency(data.newOutPrice)}
                 </Typography>
             </TableCell>
 

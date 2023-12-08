@@ -33,22 +33,23 @@ const listSort = [
         id: 'id-desc',
         title: 'Id desc',
     },
+    // {
+    //     id: 'date-asc',
+    //     title: 'Date asc',
+    // },
+
+    // {
+    //     id: 'date-desc',
+    //     title: 'Date desc',
+    // },
     {
-        id: 'total-asc',
-        title: 'Total asc',
-    },
-    {
-        id: 'total-desc',
-        title: 'Total desc',
-    },
-    {
-        id: 'date-asc',
-        title: 'Date asc',
+        id: 'name-asc',
+        title: 'Name asc',
     },
 
     {
-        id: 'date-desc',
-        title: 'Date desc',
+        id: 'name-desc',
+        title: 'Name desc',
     },
 ];
 
@@ -230,7 +231,7 @@ export default function ProductManagePage(props: IProductManagePageProps) {
                         </Table>
                         {data.data.length <= 0 && (
                             <div className="flex items-center justify-center py-5 text-violet-primary">
-                                <b>No suitable data found</b>
+                                <b>No data available</b>
                             </div>
                         )}
 

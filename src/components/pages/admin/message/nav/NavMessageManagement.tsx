@@ -84,7 +84,7 @@ export default function NavMessageManament(props: INavMessageManamentProps) {
 
                 {/* contents */}
 
-                <div className="scroll hide-scroll overflow-y-auto w-full h-full relative">
+                <div className="scroll hide-scroll overflow-y-auto w-full h-full relative pb-[120px]">
                     {/* List conversations has gim */}
                     {memoHasGimData.length > 0 && (
                         <NavContainer head={{ title: 'BOOKMARKED', icon: faBookmark }}>

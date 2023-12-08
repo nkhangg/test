@@ -31,7 +31,7 @@ import {
 import axios from '../configs/axios';
 import { setTokenToCookie } from '@/utils/cookie';
 import { ICart, IFormChangePassword, IInfoAddress, IOrder, IPayment, IProfile, IRequestReview, ISearchItem } from '@/configs/interface';
-import { dataURLtoFile } from '@/utils/format';
+import { dataURLtoFile, replaceValidDistrich } from '@/utils/format';
 import moment from 'moment';
 
 export const login: ApiLogin = async (data) => {
@@ -209,6 +209,10 @@ export const addAddress: ApiHandleAddresses = async (data: IInfoAddress) => {
         data: {
             ...data,
             setDefault: data.isDefault,
+            address: {
+                ...data.address,
+                district: replaceValidDistrich(data.address.district),
+            },
         },
     });
 
@@ -235,6 +239,10 @@ export const updateAddress: ApiHandleAddresses = async (data: IInfoAddress) => {
         data: {
             ...data,
             setDefault: data.isDefault,
+            address: {
+                ...data.address,
+                district: replaceValidDistrich(data.address.district),
+            },
         },
     });
 

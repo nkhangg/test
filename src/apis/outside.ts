@@ -2,6 +2,7 @@ import { ICart, IDistrict, IDistrictOutside, IProvinceOutside, IProvinces, IWard
 import { ApiGetShippingFee, DataFormShippingFee } from '@/configs/type-ousite';
 import { AddressCodeType, ApiDistrictOutside, ApiProvinces, ApiProvincesOutside, ApiWardOutside } from '@/configs/types';
 import { contants } from '@/utils/contants';
+import { replaceValidDistrich } from '@/utils/format';
 import axios from 'axios';
 
 // address
@@ -139,7 +140,7 @@ export const getShippingFee = async (
             to_district_id: data.district,
             to_ward_code: data.ward,
             weight: totalAndWeight.weight,
-            insurance_value: totalAndWeight.value,
+            insurance_value: 0,
             coupon: null,
         },
     });

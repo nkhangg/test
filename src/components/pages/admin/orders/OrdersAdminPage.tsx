@@ -27,7 +27,7 @@ import { useDebounce } from '@/hooks';
 import { Box } from '@mui/material';
 export interface IOrdersAdminPageProps {}
 
-const dataHeadTable = ['No', 'Order ID', 'User', 'Price', 'Placed Date', 'Status', 'Action'];
+const dataHeadTable = ['No', 'Order ID', 'User', 'Total', 'Placed Date', 'Status', 'Action'];
 const dataPopup = [
     {
         id: 'id-desc',
@@ -194,7 +194,7 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                             )}
                             {dataOrders && dataOrders.orderFilters.length <= 0 && (
                                 <div className="flex items-center justify-center py-5 text-violet-primary">
-                                    <b>No suitable data found</b>
+                                    <b>No data available</b>
                                 </div>
                             )}
 
