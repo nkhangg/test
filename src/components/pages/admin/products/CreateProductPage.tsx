@@ -168,17 +168,17 @@ export default function CreateOrUpdateProduct({ dataOusite }: ICreateOrUpdatePro
 
     return (
         <DashboardCard
-            title="Product Manage"
-            action={
-                <>
-                    <Button>
-                        <Link href={'/admin/dashboard/product/preview'}>Preview</Link>
-                    </Button>
-                </>
-            }
+            title="Create Product"
+            // action={
+            //     <>
+            //         <Button>
+            //             <Link href={'/admin/dashboard/product/preview'}>Preview</Link>
+            //         </Button>
+            //     </>
+            // }
         >
             <>
-                <CardInfo title="Infomation">
+                <CardInfo title="Information">
                     <Grid container spacing={4}>
                         <Grid lg={12} md={12} xs={12} item>
                             <ComInput

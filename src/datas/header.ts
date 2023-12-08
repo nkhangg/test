@@ -113,11 +113,11 @@ export const dataHeadReviews = [
 
 export const dataHeadListUser = [
     {
-        title: 'Users',
+        title: 'User',
         icon: faUser,
     },
     {
-        title: 'Staffs',
+        title: 'Admin',
         icon: faUserTie,
     },
 ];

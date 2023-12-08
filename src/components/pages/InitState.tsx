@@ -18,10 +18,6 @@ export default function InitState({ children }: IInitStateProps) {
     useEffect(() => {
         if (!user) return;
         window.addEventListener('beforeunload', () => handleSetLastSeenInfoFirebase(user));
-
-        return () => {
-            removeEventListener('beforeunload', () => handleSetLastSeenInfoFirebase(user));
-        };
     }, [user]);
 
     useEffect(() => {

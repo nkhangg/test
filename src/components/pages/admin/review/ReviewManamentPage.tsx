@@ -135,7 +135,7 @@ export default function ReviewManamentPage(props: IReviewManamentPageProps) {
                 color="#FCBD18"
             />
 
-            <div className="rounded-xl overflow-hidden border border-gray-primary relative">
+            <div className="rounded-xl overflow-hidden border border-gray-primary relative ">
                 {data && (
                     <Table
                         styleHead={{
@@ -150,7 +150,7 @@ export default function ReviewManamentPage(props: IReviewManamentPageProps) {
                 )}
                 {data && data.data.length <= 0 && (
                     <div className="flex items-center justify-center py-5 text-violet-primary">
-                        <b>No suitable data found</b>
+                        <b>No data available</b>
                     </div>
                 )}
 
@@ -161,8 +161,10 @@ export default function ReviewManamentPage(props: IReviewManamentPageProps) {
                 )}
             </div>
 
-            {data && dataMemo && dataMemo.length > 0 && (
-                <Box mt={'-2%'}>{data?.pages > 1 && <Pagination baseHref={links.reviews.management + '?page='} pages={data?.pages} />}</Box>
+            {data && dataMemo && (
+                <Box mt={'-2%'} mb={'1%'}>
+                    {data?.pages > 1 && <Pagination baseHref={links.reviews.management + '?page='} pages={data?.pages} />}
+                </Box>
             )}
         </BoxTitle>
     );

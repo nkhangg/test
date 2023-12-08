@@ -16,6 +16,7 @@ import { addRepository, deleteRepository, updateRepository } from '@/apis/admin/
 import { toast } from 'react-toastify';
 import { contants } from '@/utils/contants';
 import classNames from 'classnames';
+import { DataProductType } from '@/configs/interface';
 
 const dataHead = ['No', 'Id', 'Size', 'Quantity', 'In Price', 'Out Price'];
 
@@ -42,9 +43,10 @@ type RepoTypeLocalCom = {
 
 export interface IRepositoriesProps {
     id: string;
+    dataProduct: DataProductType;
 }
 
-export default function Repositories({ id }: IRepositoriesProps) {
+export default function Repositories({ id, dataProduct }: IRepositoriesProps) {
     const repositoriesData = useQuery({
         queryKey: ['Repositories', id],
         queryFn: () => getRepositories(id),
@@ -217,7 +219,12 @@ export default function Repositories({ id }: IRepositoriesProps) {
             <div className="flex items-center justify-end p-[14px] mb-2 text-2xl">
                 <Tooltip title={open ? 'Close new repository' : 'Add new repository'}>
                     <motion.div
-                        onClick={() => setOpen(!open)}
+                        onClick={() => {
+                            setOpen(!open);
+                            if (!open) {
+                                handleClear();
+                            }
+                        }}
                         animate={{
                             rotate: open ? 45 : 0,
                         }}
@@ -397,7 +404,7 @@ export default function Repositories({ id }: IRepositoriesProps) {
                                 <p>
                                     {`You want to update `}
                                     <b>
-                                        {toGam(items.size)} of {id}
+                                        {toGam(items.size)} of {dataProduct.name}
                                     </b>
                                 </p>
                             </>

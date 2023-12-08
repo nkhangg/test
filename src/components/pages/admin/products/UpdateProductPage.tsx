@@ -58,7 +58,6 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
     // redux
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
     const [value, setValue] = useState(0);
 
     const typesAndBrandsData = useQuery({
@@ -102,44 +101,6 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataProduct.data?.data]);
 
-    const handleSubmit = async () => {
-        try {
-            setLoading(true);
-            const response = await updateProduct(data);
-            setLoading(false);
-            if (!response.data || response.errors) {
-                dispatch(
-                    pushNoty({
-                        title: 'Update Falure !',
-                        open: true,
-                        type: 'error',
-                    }),
-                );
-
-                return;
-            }
-
-            router.push(links.admin + 'product');
-            dispatch(
-                pushNoty({
-                    title: 'Update Successfuly !',
-                    open: true,
-                    type: 'success',
-                }),
-            );
-        } catch (error) {
-            console.log('error in update product ' + error);
-            setLoading(false);
-            dispatch(
-                pushNoty({
-                    title: 'Update Falure !',
-                    open: true,
-                    type: 'error',
-                }),
-            );
-        }
-    };
-
     const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
@@ -147,13 +108,13 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
     return (
         <DashboardCard
             title="Product Detail"
-            action={
-                <>
-                    <Button>
-                        <Link href={'/admin/dashboard/product/preview'}>Preview</Link>
-                    </Button>
-                </>
-            }
+            // action={
+            //     <>
+            //         <Button>
+            //             <Link href={'/admin/dashboard/product/preview'}>Preview</Link>
+            //         </Button>
+            //     </>
+            // }
         >
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -168,7 +129,7 @@ export default function UpdateProduct({ idProduct, dataOusite }: ICreateOrUpdate
                     <Infomation id={idProduct} />
                 </TabCustom>
                 <TabCustom value={value} index={1}>
-                    <Repositories id={idProduct} />
+                    <Repositories dataProduct={data} id={idProduct} />
                 </TabCustom>
                 <TabCustom value={value} index={2}>
                     <Images id={idProduct} />

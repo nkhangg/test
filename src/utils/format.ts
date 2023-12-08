@@ -62,7 +62,7 @@ export function capitalize(value: string) {
 }
 
 export const toGam = (value: number) => {
-    return value < 1000 ? value + 'g' : (value / 1000).toFixed(0) + 'kg';
+    return value < 1000 ? value + 'g' : (value / 1000).toFixed(1) + 'kg';
 };
 
 export const urlToString = (value: string) => {
@@ -187,7 +187,13 @@ export const convertRoleToId = (role: RoleType) => {
 };
 
 export function wraperTextToLink(content: string) {
-    const reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-|~)+)/g;
+    const reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-|~|%)+)/g;
 
     return content.replace(reg, `<a class="message-link" href="$1$2" target="_blank">$1$2</a>`);
 }
+
+export const replaceValidDistrich = (content: string) => {
+    const reg = /(Thuỷ)/g;
+
+    return content.replace(reg, `Thủy`);
+};

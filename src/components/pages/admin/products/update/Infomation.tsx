@@ -106,7 +106,6 @@ function Infomation({ id }: InfomationProps) {
         if (validate()) return;
 
         try {
-            console.log({ ...data, id });
             setLoading(true);
             const response = await updateInfoProduct(id, { ...data, id });
             setLoading(false);

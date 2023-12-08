@@ -1,5 +1,5 @@
 'use client';
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 import WraperDialog from './WraperDialog';
 import { DialogContent, DialogTitle } from '@mui/material';
 import { ContentComfirmPayment, WrapperAnimation } from '..';
@@ -12,6 +12,7 @@ import { useAppDispatch } from '@/hooks/reduxHooks';
 import { clearAllPayment } from '@/redux/slice/cartsSlide';
 import { links } from '@/datas/links';
 import { useRouter } from 'next/navigation';
+import { dataCart } from '@/datas/cart-data';
 
 export interface IComfirmPaymentDialogProps {
     addresses: IInfoAddress | null;
@@ -31,6 +32,7 @@ function ComfirmPaymentDialog({ open, setOpen, setLoading, addresses, totalAndWe
     const router = useRouter();
 
     const dispatch = useAppDispatch();
+    const [data, setData] = useState<IOrder>(form);
 
     const handleClearWhenSuccess = () => {
         dispatch(clearAllPayment());
@@ -39,7 +41,7 @@ function ComfirmPaymentDialog({ open, setOpen, setLoading, addresses, totalAndWe
     };
 
     const handleClickSubmit = async () => {
-        if (totalAndWeight.weight > 30000) {
+        if (totalAndWeight.weight > 30000 && form.deliveryId !== dataCart[0].id) {
             toast.warn(contants.messages.errors.exceedTheLimit);
             return;
         }
@@ -76,7 +78,8 @@ function ComfirmPaymentDialog({ open, setOpen, setLoading, addresses, totalAndWe
     };
 
     useEffect(() => {
-        console.log('form in cofirm: ', form);
+        if (!form) return;
+        setData(form);
     }, [form]);
 
     return (
@@ -105,7 +108,7 @@ function ComfirmPaymentDialog({ open, setOpen, setLoading, addresses, totalAndWe
 
             <div className="flex items-start justify-between gap-6 rounded-xl px-10 mt-5 text-black-main">
                 <ul className="max-w-[50%] flex flex-col gap-3">
-                    <li className="text-xl font-semibold">Infomation</li>
+                    <li className="text-xl font-semibold">Information</li>
                     <li className="flex flex-col text-1xl">
                         <p className="font-semibold"> Fullname: </p>
                         <span className=" tracking-wide ">{addresses && addresses.name}</span>
@@ -119,10 +122,10 @@ function ComfirmPaymentDialog({ open, setOpen, setLoading, addresses, totalAndWe
                         <span className=" tracking-wide ">{addresses && addressToString(addresses?.address)}</span>
                     </li>
                     <li className="flex flex-col text-1xl">
-                        <p className="font-semibold">Payment Method:</p> <span className=" tracking-wide ">{form.methodId === 1 ? 'Cash' : 'Pre-Payment'}</span>
+                        <p className="font-semibold">Payment Method:</p> <span className=" tracking-wide ">{data.methodId === 1 ? 'Cash' : 'Pre-Payment'}</span>
                     </li>
                     <li className="flex flex-col text-1xl">
-                        <p className="font-semibold">Delivery Method:</p> <span className=" tracking-wide ">{contants.dataCard[form.deliveryId - 1].title}</span>
+                        <p className="font-semibold">Delivery Method:</p> <span className=" tracking-wide ">{contants.dataCard[data.deliveryId - 1].title}</span>
                     </li>
                 </ul>
                 <ul className="flex-1 flex flex-col gap-3">

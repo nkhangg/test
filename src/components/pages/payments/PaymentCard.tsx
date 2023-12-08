@@ -25,8 +25,8 @@ export default function PaymentCard({ data, checked, loading, disabled, onClick 
             onClick={onClick && !disabled ? onClick : undefined}
             className={classNames('relative overflow-hidden py-[24px] px-[28px] pr-[20px] w-full rounded-xl bg-[#F2F2F2] border-2 transition-all ease-linear select-none ', {
                 // [styles['check-label']]: true,
-                'border-violet-secondary': checked,
-                'border-transparent': !checked,
+                'border-violet-secondary': checked && !disabled,
+                'border-transparent': !checked && !disabled,
                 'hover:border-violet-secondary cursor-pointer text-black-main': !disabled,
                 'text-[#c1c1c1]': disabled,
             })}
@@ -34,7 +34,7 @@ export default function PaymentCard({ data, checked, loading, disabled, onClick 
             <div className="flex items-center justify-between">
                 <h4 className="text-lg">{data.title}</h4>
 
-                {checked && (
+                {checked && !disabled && (
                     <div className="w-5 h-5 bg-violet-secondary rounded-full flex items-center justify-center">
                         <FontAwesomeIcon icon={faCheck} className="text-white w-3 h-3" />
                     </div>

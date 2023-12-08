@@ -101,18 +101,20 @@ export default function PaymentPage(props: IPaymentPageProps) {
         try {
             setloadingShippingItem(true);
             const province = await searchProvinces(addresses.address.province);
-
+            console.log(province);
             if (!province) return;
             addressCodes.province = province.ProvinceID;
 
             const district = await searchDistrichts(province, addresses.address.district);
 
+            console.log(district);
             if (!district) return;
 
             // set district code
             addressCodes.district = district.DistrictID;
 
             const ward = await searchWards(district, addresses.address.ward);
+            console.log(ward);
 
             if (!ward) return;
 
