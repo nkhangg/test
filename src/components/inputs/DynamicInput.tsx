@@ -17,7 +17,7 @@ export default function DynamicInput({ title, type, propsInput, dataSelect }: ID
     const [state, setState] = useState(false);
 
     const handleClick = () => {
-        setState(!state);
+        setState((prev) => !prev);
     };
     return (
         <Stack>

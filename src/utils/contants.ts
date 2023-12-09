@@ -9,7 +9,7 @@ const CLIENT_ID = '190422';
 export const contants = {
     shopName: 'Pet Foster',
     avartarDefault: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-    avartarAdminDefault: 'https://media-cdn-v2.laodong.vn/storage/newsportal/2023/8/15/1229028/Yujin-2.jpeg',
+    avartarAdminDefault: '/icons/icon-chat-now.svg',
     usernameAdmin: 'management-admin',
     askConditions: [
         'Are you working or still in school?',

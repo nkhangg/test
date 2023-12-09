@@ -22,6 +22,7 @@ export interface IChatItemProps {
     me?: boolean;
     styles?: {
         maxImageOnRow: number;
+        ojectFit?: string;
     };
 }
 
@@ -52,6 +53,9 @@ export default function ChatItem({ data, me, avartar, styles = { maxImageOnRow: 
                         sx={{
                             width: '34px',
                             height: '34px',
+                            '& .MuiAvatar-img': {
+                                objectFit: styles.ojectFit || 'cover',
+                            },
                         }}
                         src={avartar && !me ? avartar : contants.avartarAdminDefault}
                     />

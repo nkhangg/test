@@ -77,8 +77,6 @@ export default function ChatBox(props: IChatBoxProps) {
 
         if (Validate.isBlank(value) && (!images || images.length <= 0)) return;
 
-        console.log(images);
-
         // user send message to manage
         const newMessage = await firebaseService.handleSendMessageToUser(value, conversationId, user.username, { images });
 
@@ -120,7 +118,7 @@ export default function ChatBox(props: IChatBoxProps) {
                             >
                                 <Header onClick={handleClose} />
 
-                                <ChatBody conversationId={conversationId} />
+                                <ChatBody open={open} conversationId={conversationId} />
 
                                 <ChatFooter handleSubmit={handleSendMessage} />
                             </div>
