@@ -73,6 +73,10 @@ export const searchDistrichts: ApiDistrictOutside = async (data: IProvinceOutsid
 
     if (res?.data.data) {
         return res?.data.data.find((item: IDistrictOutside) => {
+            if (!item?.NameExtension) {
+                return item.DistrictName.includes(district);
+            }
+
             return item.NameExtension.includes(district);
         });
     }

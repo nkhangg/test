@@ -12,9 +12,10 @@ import { convertFirestoreTimestampToString } from '@/utils/format';
 
 export interface IChatBodyProps {
     conversationId: string;
+    open?: boolean;
 }
 
-export default function ChatBody({ conversationId }: IChatBodyProps) {
+export default function ChatBody({ conversationId, open }: IChatBodyProps) {
     const { user } = useAppSelector((state: RootState) => state.userReducer);
     const refDiv = useRef<HTMLDivElement>(null);
 
@@ -42,18 +43,24 @@ export default function ChatBody({ conversationId }: IChatBodyProps) {
     }, [messageSnapshot]);
 
     useEffect(() => {
-        handleScrollIntoView();
+        if (open) {
+            handleScrollIntoView();
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [messageSnapshot]);
 
     useEffect(() => {
-        handleScrollIntoView();
-    }, []);
+        if (open) {
+            handleScrollIntoView();
+        }
+    }, [open]);
 
     return (
         <>
-            <div className="bg-[#F3F4F6] flex-1 w-full relative py-8 pb-0 px-5 flex flex-col gap-5 overflow-y-auto scroll hide-scroll scroll-smooth">
+            <div className="bg-[#F3F4F6] flex-1  w-full relative py-8 pb-0 px-5 flex flex-col gap-5 overflow-y-auto scroll hide-scroll scroll-smooth">
                 {messagesData.map((item) => {
-                    return <ChatItem styles={{ maxImageOnRow: 3 }} key={item.id} data={item} me={user?.username === item.username} />;
+                    return <ChatItem styles={{ maxImageOnRow: 3, ojectFit: 'contain' }} key={item.id} data={item} me={user?.username === item.username} />;
                 })}
                 <div ref={refDiv} className="h-0 flex-none"></div>
             </div>

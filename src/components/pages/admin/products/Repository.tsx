@@ -1,5 +1,5 @@
 'use client';
-import { CardInfo, DynamicInput, TextField } from '@/components';
+import { CardInfo, DynamicInput } from '@/components';
 import { Box, Button, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import React, { ChangeEvent, FocusEvent, useEffect, useState } from 'react';
 import ComInput from './ComInput';
@@ -59,6 +59,23 @@ export default function Repository({ dataOusite, onRepos }: IRepositoryProps) {
         const dynamicKey = e.target.name as keyof RepoTypeErrors;
 
         const { message } = Validate.number(e.target.value, dynamicKey);
+
+        if (data.length > 0) {
+            // check overlap
+            // check data has item has size overlap ?
+            const doubleSize = data.some((i) => {
+                return i.size == items.size;
+            });
+
+            // handle if doubleSize = true
+            if (doubleSize) {
+                setErrors({
+                    ...errors,
+                    size: 'Dimensions cannot overlap',
+                });
+                return;
+            }
+        }
         setErrors({
             ...errors,
             [dynamicKey]: message,
@@ -86,6 +103,18 @@ export default function Repository({ dataOusite, onRepos }: IRepositoryProps) {
                 flag = error;
             }
         });
+
+        if (data.length > 0) {
+            const doubleSize = data.find((i) => {
+                return i.size == items.size;
+            });
+
+            // handle if doubleSize = true
+            if (doubleSize && Validate.isBlank(validateErrors.size)) {
+                validateErrors.size = 'Dimensions cannot overlap';
+                flag = !!doubleSize;
+            }
+        }
 
         setErrors(validateErrors);
 
