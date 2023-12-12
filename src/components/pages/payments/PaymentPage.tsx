@@ -139,6 +139,7 @@ export default function PaymentPage(props: IPaymentPageProps) {
                 ...form,
                 ship: shippingFee,
                 addressId: addresses.id,
+                deliveryId: contants.instantProvince === addresses.address.province ? dataCard[0].id : shippingItem.id,
             });
         } catch (error) {
             setloadingShippingItem(false);
@@ -344,6 +345,7 @@ export default function PaymentPage(props: IPaymentPageProps) {
                                         setForm({
                                             ...form,
                                             addressId: data.id,
+                                            deliveryId: contants.instantProvince === data.address.province ? dataCard[0].id : shippingItem.id,
                                         });
                                     }
                                 }}

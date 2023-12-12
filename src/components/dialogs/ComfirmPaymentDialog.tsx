@@ -82,6 +82,10 @@ function ComfirmPaymentDialog({ open, setOpen, setLoading, addresses, totalAndWe
         setData(form);
     }, [form]);
 
+    useEffect(() => {
+        console.log(data);
+    }, [data]);
+
     return (
         <WraperDialog
             sx={{
@@ -125,7 +129,9 @@ function ComfirmPaymentDialog({ open, setOpen, setLoading, addresses, totalAndWe
                         <p className="font-semibold">Payment Method:</p> <span className=" tracking-wide ">{data.methodId === 1 ? 'Cash' : 'Pre-Payment'}</span>
                     </li>
                     <li className="flex flex-col text-1xl">
-                        <p className="font-semibold">Delivery Method:</p> <span className=" tracking-wide ">{contants.dataCard[data.deliveryId - 1].title}</span>
+                        {/* <p className="font-semibold">Delivery Method:</p> <span className=" tracking-wide ">{contants.dataCard[data.deliveryId - 1].title}</span> */}
+                        <p className="font-semibold">Delivery Method:</p>{' '}
+                        <span className=" tracking-wide ">{data.deliveryId === 1 ? contants.dataCard[0].title : contants.dataCard[1].title}</span>
                     </li>
                 </ul>
                 <ul className="flex-1 flex flex-col gap-3">
