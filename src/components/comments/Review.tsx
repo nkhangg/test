@@ -122,7 +122,12 @@ export default function Review({ data, option, handleAfterReplay, handleAffterDe
             >
                 <div className="p-3">
                     <div className="flex gap-3 items-start">
-                        <img src={data.avatar || contants.avartarDefault} className="object-cover w-10 h-10 rounded-full " />
+                        <img
+                            src={data.avatar || contants.avartarDefault}
+                            className={classNames(' w-10 h-10 rounded-full ', {
+                                ['object-cover']: !option?.item,
+                            })}
+                        />
                         <div className="flex flex-col">
                             <h3 className="font-semibold">{data.name}</h3>
                             {data.rating && data.sizes ? (

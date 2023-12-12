@@ -14,7 +14,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 
-const dataHeadTable = ['No', 'Id', 'Product', 'Image', 'Rate', 'Lastest', 'Reviews', 'Non Reviews', 'Action'];
+const dataHeadTable = ['No', 'Id', 'Product', 'Image', 'Rate', 'Lastest', 'Reviews', 'Non Replies', 'Action'];
 const dataPopup = [
     {
         id: 'rate-asc',
@@ -162,7 +162,7 @@ export default function ReviewManamentPage(props: IReviewManamentPageProps) {
             </div>
 
             {data && dataMemo && (
-                <Box mt={'-2%'} mb={'1%'}>
+                <Box mt={'-2%'} mb={'2%'}>
                     {data?.pages > 1 && <Pagination baseHref={links.reviews.management + '?page='} pages={data?.pages} />}
                 </Box>
             )}

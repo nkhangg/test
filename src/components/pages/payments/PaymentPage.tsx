@@ -76,7 +76,7 @@ export default function PaymentPage(props: IPaymentPageProps) {
     };
 
     const handleClearWhenSuccess = () => {
-        // dispatch(clearAllPayment());
+        dispatch(clearAllPayment());
         toast.success(contants.messages.success.payment);
         router.push(links.products);
     };

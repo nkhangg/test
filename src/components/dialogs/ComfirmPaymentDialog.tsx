@@ -171,4 +171,4 @@ function ComfirmPaymentDialog({ open, setOpen, setLoading, addresses, totalAndWe
     );
 }
 
-export default memo(ComfirmPaymentDialog);
+export default ComfirmPaymentDialog;

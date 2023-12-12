@@ -198,7 +198,6 @@ export default function DetailProductPage({ params }: IDetailProductPageProps) {
 
                             <Quantity
                                 onQuantity={(quantity: number) => {
-                                    console.log(quantity);
                                     setQuantity(quantity);
                                 }}
                                 maxValue={dataDetailProductPage?.sizeAndPrice[indexSizeAndPrice].repo}

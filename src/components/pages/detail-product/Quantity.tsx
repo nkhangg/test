@@ -14,7 +14,7 @@ export interface IQuantityProps {
     onQuantity?: (value: number) => void;
 }
 
-export default function Quantity({ title = 'Số lượng', maxValue, onQuantity }: IQuantityProps) {
+export default function Quantity({ title = 'Quantity', maxValue, onQuantity }: IQuantityProps) {
     const [value, setValue] = useState(1);
 
     const ref = useRef<HTMLLIElement>(null);
@@ -128,7 +128,7 @@ export default function Quantity({ title = 'Số lượng', maxValue, onQuantity
                     [robotoFlex.className]: true,
                 })}
             >
-                Còn lại: {maxValue}
+                Stock: {maxValue}
             </span>
         </div>
     );

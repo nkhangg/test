@@ -104,6 +104,23 @@ export const resetPassword: ApiResetPassword = async (email: string) => {
     return res?.data;
 };
 
+export const verifyAndSendNewPasswordToEmail: ApiResetPassword = async (code: string) => {
+    const res = await axios({
+        method: 'POST',
+        url: 'verify-forgot',
+        headers: {
+            'content-type': 'multipart/form-data',
+        },
+        data: {
+            code,
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
 export const changePassword: ApiChangePassword = async (data: IFormChangePassword) => {
     const res = await axios({
         method: 'POST',

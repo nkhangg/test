@@ -144,6 +144,9 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                                 },
                                 data: dataPopup,
                                 title: 'Sort by',
+                                styles: {
+                                    minWidth: 'min-w-[150px]',
+                                },
                             }}
                             dateProps={{
                                 onDatas: (dates) => {

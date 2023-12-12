@@ -1,5 +1,5 @@
 'use client';
-import React, { ChangeEvent, FocusEvent, FormEvent, FormEventHandler, InputHTMLAttributes, useState } from 'react';
+import React, { ChangeEvent, FocusEvent, FormEvent, FormEventHandler, InputHTMLAttributes, useEffect, useState } from 'react';
 import { BoxSign, LoadingPrimary, SocialButton, TextField, WrapperAnimation } from '@/components';
 import { ContainerContent } from '@/components/common';
 import { faSquareFacebook, faSquareGooglePlus } from '@fortawesome/free-brands-svg-icons';
@@ -7,10 +7,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 import Validate from '@/utils/validate';
-import { resetPassword } from '@/apis/user';
+import { resetPassword, verifyAndSendNewPasswordToEmail } from '@/apis/user';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { pushNoty } from '@/redux/slice/appSlice';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { links } from '@/datas/links';
 import { contants } from '@/utils/contants';
@@ -18,8 +18,10 @@ export interface IResetPasswordProps {}
 
 export default function ResetPassword(props: IResetPasswordProps) {
     // router
-
     const router = useRouter();
+
+    // pathname
+    const searchParam = useSearchParams();
 
     const [loading, setloading] = useState(false);
 
@@ -63,9 +65,9 @@ export default function ResetPassword(props: IResetPasswordProps) {
                 return;
             }
 
-            toast.success(`New password has been sent to email ${email}. Please check your email ❤️❤️❤️`);
+            toast.success(`Please check your email`);
 
-            router.push(links.auth.login);
+            // router.push(links.auth.login);
         } catch (error) {
             setloading(false);
 
@@ -79,6 +81,33 @@ export default function ResetPassword(props: IResetPasswordProps) {
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
         validate();
     };
+
+    useEffect(() => {
+        (async () => {
+            if (!searchParam) return;
+
+            const code = searchParam.get('code');
+
+            if (!code) return;
+
+            try {
+                setloading(true);
+                const response = await verifyAndSendNewPasswordToEmail(code);
+                setloading(false);
+                if (!response || response.errors || !response.data) {
+                    toast.warn(contants.messages.errors.handle);
+                    return;
+                }
+
+                toast.success(`Your new password has been sent. Please check your email`);
+                router.push(links.auth.login);
+            } catch (error) {
+                toast.warn(contants.messages.errors.handle);
+                setloading(false);
+            }
+        })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchParam]);
     return (
         <BoxSign showForgot={false} title="RESET PASSWORD" onSubmit={handleSubmit}>
             <Typography
