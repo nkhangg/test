@@ -21,6 +21,7 @@ const setUserInBd = async (user: IProfile) => {
             { merge: true }, // just update what is change
         );
     } catch (error) {
+        console.log(error);
         console.log('LOGIN: Error setting user info in DB');
     }
 };

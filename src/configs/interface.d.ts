@@ -30,6 +30,8 @@ export interface IProfile {
     email: string;
     avatar: string;
     role: string;
+    displayName: string;
+    provider: string;
     createAt: string;
 }
 

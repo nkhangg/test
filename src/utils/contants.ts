@@ -26,6 +26,8 @@ export const contants = {
             handle: 'There was an error during processing, please try again or contact customer service. Thanks',
             notFound: "Can't found this page.",
             exceedTheLimit: 'Your order exceeds 30kg. Please contact us for support',
+            loginWithFacebook: 'Sonething went wrong when connect to facebook. Try agin !',
+            loginWithGoogle: 'Sonething went wrong when connect to google. Try agin !',
         },
         success: {
             payment: 'You have placed your order successfully. Thank you for your trust ❤️❤️❤️',

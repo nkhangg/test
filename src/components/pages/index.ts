@@ -25,6 +25,8 @@ export { default as AskConditionPage } from './AskConditionPage';
 export { default as ResetPasswordPage } from './ResetPasswordPage';
 export { default as ChangePasswordPage } from './profiles/ChangePasswordPage';
 export { default as AddressesPage } from './profiles/AddressesPage';
+export { default as NotificationPage } from './profiles/notification-page/NotificationPage';
+export { default as NotificationPageItem } from './profiles/notification-page/NotificationPageItem';
 
 export { default as DashboardPage } from './admin/DashboardPage';
 export { default as CreateProductPage } from './admin/products/CreateProductPage';
