@@ -12,6 +12,7 @@ import {
     faUser,
     faUserTie,
 } from '@fortawesome/free-solid-svg-icons';
+import { links } from './links';
 
 export const navbar = [
     { title: 'Home', href: '/' },
@@ -20,6 +21,11 @@ export const navbar = [
     { title: 'Adopt', href: '/adopt' },
     { title: 'Contact', href: '/contact' },
     { title: 'Donation', href: '/donation', style: { border: true } },
+];
+
+export const navarMobileNonLogin = [
+    { title: 'Login', href: links.auth.login },
+    { title: 'Register', href: links.auth.register },
 ];
 
 export const listProfile = [

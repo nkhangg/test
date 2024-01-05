@@ -55,6 +55,10 @@ export type ApiGetUsers = () => Promise<IUser[]>;
 
 export type ApiLogin = (data: UserFormType) => Promise<ISignDataResponse>;
 
+export type ApiLoginWithFacebook = (data: UserLoginWithFacebookFormType) => Promise<ISignDataResponse>;
+
+export type ApiLoginWithGoogle = (data: UserLoginWithGoogleFormType) => Promise<ISignDataResponse>;
+
 export type TestOrders = () => Promise<ISignDataResponse>;
 
 export type ApiRegister = (data: RegisterFormData) => Promise<ISignDataResponse>;
@@ -246,6 +250,8 @@ export type PagesProfileType = 'me' | 'history' | 'logout';
 export type ValidateType = { message: string; error: boolean };
 
 export type UserFormType = { username: string; password: string };
+export type UserLoginWithFacebookFormType = { username: string; uuid: string; avartar: string };
+export type UserLoginWithGoogleFormType = { username: string; uuid: string; avartar: string; email: string };
 
 export type RepoType = {
     id?: number;

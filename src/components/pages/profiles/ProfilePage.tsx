@@ -181,6 +181,7 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [form, avartar]);
 
+    console.log(user);
     return (
         <>
             <form onSubmit={handleOpenConfirm} className="px-14 py-[60px] w-full h-full rounded flex flex-col justify-between">
@@ -228,7 +229,13 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
                         <div className="flex items-center flex-col w-full gap-[40px]">
                             <DivTextfield
                                 propsInput={{
-                                    disabled: true,
+                                    disabled: (() => {
+                                        if (!user) return true;
+
+                                        if ((!user.email || user.email.length < 0) && user.provider === 'facebook') return false;
+
+                                        return true;
+                                    })(),
                                     name: 'email',
                                     type: 'email',
                                     onChange: handleChange,

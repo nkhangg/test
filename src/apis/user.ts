@@ -16,6 +16,8 @@ import {
     ApiHandleAddresses,
     ApiHistory,
     ApiLogin,
+    ApiLoginWithFacebook,
+    ApiLoginWithGoogle,
     ApiPayment,
     ApiRefreshVerifyCode,
     ApiRegister,
@@ -38,6 +40,32 @@ export const login: ApiLogin = async (data) => {
     const res = await axios({
         method: 'POST',
         url: 'login',
+        data,
+    });
+
+    if (!res) return null;
+
+    setTokenToCookie(res?.data.token);
+    return res?.data;
+};
+
+export const loginWithFacebook: ApiLoginWithFacebook = async (data) => {
+    const res = await axios({
+        method: 'POST',
+        url: 'login-facebook',
+        data,
+    });
+
+    if (!res) return null;
+
+    setTokenToCookie(res?.data.token);
+    return res?.data;
+};
+
+export const loginWithGoogle: ApiLoginWithGoogle = async (data) => {
+    const res = await axios({
+        method: 'POST',
+        url: 'login-google',
         data,
     });
 

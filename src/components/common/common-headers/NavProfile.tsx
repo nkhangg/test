@@ -27,7 +27,7 @@ export default function NavProfile(props: INavProfileProps) {
                     alt="avatar"
                     src={user?.avatar || contants.avartarDefault}
                 />
-                <span className="font-medium text-lg">{user?.username}</span>
+                <span className="font-medium text-lg">{user?.displayName || user?.username}</span>
             </div>
 
             <ul>
