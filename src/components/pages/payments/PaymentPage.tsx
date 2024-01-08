@@ -18,6 +18,7 @@ import { contants } from '@/utils/contants';
 import { clearAllPayment } from '@/redux/slice/cartsSlide';
 import { addressToString, capitalize, toCurrency, toGam } from '@/utils/format';
 import { getShippingFee, searchDistrichts, searchProvinces, searchWards } from '@/apis/outside';
+import firebaseService from '@/services/firebaseService';
 const OrderSummary = dynamic(() => import('./OrderSummary'), {
     ssr: false,
 });
@@ -46,6 +47,7 @@ export default function PaymentPage(props: IPaymentPageProps) {
     // redux
     const dispatch = useAppDispatch();
     const { payment } = useAppSelector((state: RootState) => state.cartReducer);
+    const { user } = useAppSelector((state: RootState) => state.userReducer);
 
     const [line, setLine] = useState(2);
 
@@ -75,10 +77,18 @@ export default function PaymentPage(props: IPaymentPageProps) {
         setOpenComfirm(true);
     };
 
-    const handleClearWhenSuccess = () => {
+    const handleClearWhenSuccess = async (photourl: string, orderId?: number) => {
         dispatch(clearAllPayment());
         toast.success(contants.messages.success.payment);
         router.push(links.products);
+
+        if (!user) return;
+
+        await firebaseService.addSuccessfulPurchaseNotification({
+            photourl,
+            username: user.username,
+            orderId,
+        });
     };
 
     const handleChangePaymentMethod = (e: ChangeEvent<HTMLInputElement>) => {
@@ -101,20 +111,17 @@ export default function PaymentPage(props: IPaymentPageProps) {
         try {
             setloadingShippingItem(true);
             const province = await searchProvinces(addresses.address.province);
-            console.log(province);
             if (!province) return;
             addressCodes.province = province.ProvinceID;
 
             const district = await searchDistrichts(province, addresses.address.district);
 
-            console.log(district);
             if (!district) return;
 
             // set district code
             addressCodes.district = district.DistrictID;
 
             const ward = await searchWards(district, addresses.address.ward);
-            console.log(ward);
 
             if (!ward) return;
 
@@ -132,8 +139,6 @@ export default function PaymentPage(props: IPaymentPageProps) {
             setloadingShippingItem(false);
 
             if (checked <= 0) return;
-
-            console.log('in handle shipping fee: ', shippingFee);
 
             setForm({
                 ...form,
@@ -213,7 +218,6 @@ export default function PaymentPage(props: IPaymentPageProps) {
 
     useEffect(() => {
         if (!addresses) return;
-        console.log('init data', addresses);
         setForm({
             ...form,
             addressId: addresses.id,
@@ -302,7 +306,7 @@ export default function PaymentPage(props: IPaymentPageProps) {
                     return;
                 }
 
-                handleClearWhenSuccess();
+                handleClearWhenSuccess(response.data.photourl, form.orderId);
             } catch (error) {
                 toast.error(contants.messages.errors.server);
             }
@@ -413,6 +417,7 @@ export default function PaymentPage(props: IPaymentPageProps) {
                     setLoading={setLoading}
                     addresses={addresses}
                     totalAndWeight={totalAndWeight}
+                    paymentData={payment}
                     form={{ ...form, ship: checked <= 0 ? dataCard[checked].price : shippingItem.price }}
                     setOpen={setOpenComfirm}
                     open={openComfirm}

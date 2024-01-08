@@ -1,11 +1,12 @@
 import { uploadImagesMessage } from '@/apis/admin/images';
 import { db } from '@/configs/firebase';
-import { IProfile } from '@/configs/interface';
-import { ImageType } from '@/configs/types';
+import { IImageDefaultNotification, INotification, IProfile } from '@/configs/interface';
+import { ImageType, TypeNotification } from '@/configs/types';
+import { links } from '@/datas/links';
 import { contants } from '@/utils/contants';
 import { generateKeywords } from '@/utils/firebaseUltils';
 import Validate from '@/utils/validate';
-import { addDoc, doc, serverTimestamp, setDoc, collection, query, where, orderBy, and, or, OrderByDirection, limit } from 'firebase/firestore';
+import { addDoc, doc, serverTimestamp, setDoc, collection, query, where, orderBy, and, or, OrderByDirection, limit, QueryFilterConstraint, getDoc } from 'firebase/firestore';
 
 const setUserInBd = async (user: IProfile) => {
     try {
@@ -25,6 +26,7 @@ const setUserInBd = async (user: IProfile) => {
         console.log('LOGIN: Error setting user info in DB');
     }
 };
+
 const setLastseen = async (user: IProfile) => {
     try {
         await setDoc(
@@ -40,6 +42,20 @@ const setLastseen = async (user: IProfile) => {
     }
 };
 
+const setRead = async (notificationid: string, readArr: string[], newRead: string) => {
+    try {
+        await setDoc(
+            doc(db, 'notifications', notificationid),
+            {
+                read: [...readArr, newRead],
+            },
+            { merge: true }, // just update what is change
+        );
+    } catch (error) {
+        console.log('setRead: Error setting setRead info in DB');
+    }
+};
+
 const setActionGimConversation = async (conversationId: string, gim = true) => {
     try {
         await setDoc(
@@ -51,6 +67,43 @@ const setActionGimConversation = async (conversationId: string, gim = true) => {
         );
     } catch (error) {
         console.log('setActionGimConversation: Error setting setActionGimConversation info in DB');
+    }
+};
+
+const setImageDefaultNotification = async (data: IImageDefaultNotification) => {
+    try {
+        await setDoc(
+            doc(db, 'config-image-notification', data.id),
+            {
+                updatedAt: serverTimestamp(),
+                photourl: data.photourl,
+            },
+            { merge: true }, // just update what is change
+        );
+    } catch (error) {
+        console.log('setActionGimConversation: Error setting setActionGimConversation info in DB');
+    }
+};
+
+const getNotification = async (notificationId: string) => {
+    try {
+        const notificationRef = doc(db, 'notifications', notificationId);
+        const notificationRefShapshot = await getDoc(notificationRef);
+
+        return notificationRefShapshot;
+    } catch (error) {
+        console.log('getNotification: Error setting getNotification info in DB');
+    }
+};
+
+const getConstantNotification = async (notificationId: string) => {
+    try {
+        const notificationRef = doc(db, 'config-constant-notifications', notificationId);
+        const notificationRefShapshot = await getDoc(notificationRef);
+
+        return notificationRefShapshot;
+    } catch (error) {
+        console.log('getNotification: Error setting getNotification info in DB');
     }
 };
 
@@ -76,6 +129,106 @@ const addConversation = async (usernameUser: string) => {
     }
 
     return response;
+};
+
+const addNotification = async (data: INotification) => {
+    console.log(data.options);
+    const options = (() => {
+        if (!data.options || !data.options.end || !data.options.start) {
+            return {
+                start: 0,
+                end: 0,
+            };
+        }
+
+        return data.options;
+    })();
+
+    try {
+        await addDoc(collection(db, 'notifications'), {
+            content: data.content,
+            createdAt: serverTimestamp(),
+            deleted: false,
+            link: Validate.isBlank(data.link as string) ? null : data.link,
+            photourl: data.photourl,
+            read: [],
+            target: data.target.length <= 0 ? ['all'] : data.target,
+            title: data.title,
+            type: data.type,
+            options: options,
+            public: true,
+        });
+    } catch (error) {
+        console.log(error);
+        console.log('AddNotification: Error setting addNotification info in DB');
+    }
+};
+
+const addSuccessfulPurchaseNotification = async ({ orderId, photourl, username }: { orderId?: number | string; photourl: string; username: string }) => {
+    try {
+        const notificationRef = doc(db, 'config-constant-notifications', 'RPk9O04QQMTdMExcHUnK');
+        const notificationRefShapshot = await getDoc(notificationRef);
+
+        const constNotification = {
+            id: notificationRefShapshot.id,
+            ...notificationRefShapshot.data(),
+        } as INotification;
+
+        return await addDoc(collection(db, 'notifications'), {
+            content: constNotification.content,
+            createdAt: serverTimestamp(),
+            deleted: false,
+            link: orderId ? links.history.orderHistory + `/${orderId}` : links.history.orderHistory,
+            photourl: photourl,
+            read: [],
+            target: [username],
+            title: constNotification.title,
+            type: constNotification.type,
+            options: constNotification.options,
+            public: false,
+        });
+    } catch (error) {
+        console.log('addSuccessfulPurchaseNotification: Error setting addSuccessfulPurchaseNotification info in DB');
+    }
+};
+
+const setNotification = async (data: INotification, collectionName?: string) => {
+    const collection = collectionName || 'notifications';
+
+    try {
+        await setDoc(
+            doc(db, collection, data.id),
+            {
+                content: data.content,
+                link: Validate.isBlank(data.link as string) ? null : data.link,
+                photourl: data.photourl,
+                target: data.target.length <= 0 || data.target[0] === 'all' ? ['all'] : data.target,
+                title: data.title,
+                type: data.type,
+                options: data.options,
+            },
+            {
+                merge: true,
+            },
+        );
+    } catch (error) {
+        console.log('AddNotification: Error setting addNotification info in DB');
+    }
+};
+const deleteNotification = async (id: string) => {
+    try {
+        await setDoc(
+            doc(db, 'notifications', id),
+            {
+                deleted: true,
+            },
+            {
+                merge: true,
+            },
+        );
+    } catch (error) {
+        console.log('AddNotification: Error setting addNotification info in DB');
+    }
 };
 
 const setNewMessageConversation = async (conversationId: string, newMessageId: string) => {
@@ -136,6 +289,24 @@ const getConversations = (typeSort: OrderByDirection = 'desc') => {
     return query(collection(db, 'conversations'), where('sendAt', '!=', 'null'), orderBy('sendAt', typeSort));
 };
 
+const getNotifications = (username: string) => {
+    return query(collection(db, 'notifications'), and(where('deleted', '==', false), or(where('target', 'array-contains', 'all'), where('target', 'array-contains', username))));
+};
+
+const getAllNotification = (search?: string, type?: TypeNotification) => {
+    const condition: QueryFilterConstraint[] = [];
+
+    if (search && !Validate.isBlank(search)) {
+        condition.push(where('title', '==', search));
+    }
+
+    if (type) {
+        condition.push(where('type', '==', type));
+    }
+
+    return query(collection(db, 'notifications'), and(where('deleted', '==', false), where('public', '==', true), or(...condition)));
+};
+
 // just get conversations have message and gim
 
 const getUserByUsername = (username: string | null) => {
@@ -146,6 +317,19 @@ const getUserByUsername = (username: string | null) => {
 const getUsersByKeywords = (keyword: string) => {
     if (Validate.isBlank(keyword)) return;
     return query(collection(db, 'users'), where('keywords', 'array-contains', keyword), limit(4));
+};
+
+const getUsersToAddRecidient = (keyword: string) => {
+    if (Validate.isBlank(keyword)) return query(collection(db, 'users'), limit(8));
+    return query(collection(db, 'users'), where('keywords', 'array-contains', keyword), limit(4));
+};
+
+const getImageDefaultNotification = () => {
+    return query(collection(db, 'config-image-notification'));
+};
+
+const getAllConstantNotification = () => {
+    return query(collection(db, 'config-constant-notifications'));
 };
 
 const getMessageWithId = (id: string) => {
@@ -195,6 +379,16 @@ const handleSendMessageToUser = async (value: string, conversationId: string, us
     });
 };
 
+const handleMarkAllAsRead = async (dataNotifications: INotification[], user: IProfile | null) => {
+    if (!user) return;
+
+    dataNotifications.forEach(async (item) => {
+        if (!item.read.includes(user.username)) {
+            await firebaseService.setRead(item.id, item.read, user.username);
+        }
+    });
+};
+
 const handleImages = async (differentData: { images?: ImageType[] }) => {
     let images: string[] | null = null;
     let linksResponse: string[] = [];
@@ -241,21 +435,35 @@ const handleImages = async (differentData: { images?: ImageType[] }) => {
 };
 
 const firebaseService = {
+    setRead,
     setLastseen,
     setUserInBd,
     setSeenMessage,
+    addNotification,
     addConversation,
+    setNotification,
     setRecallMessage,
     handleSendMessage,
+    deleteNotification,
+    handleMarkAllAsRead,
     handleSendMessageToUser,
     setActionGimConversation,
     setNewMessageConversation,
+    setImageDefaultNotification,
+    addSuccessfulPurchaseNotification,
     querys: {
+        getNotification,
+        getNotifications,
         getConversations,
         getMessageWithId,
         getUserByUsername,
         getUsersByKeywords,
+        getAllNotification,
+        getUsersToAddRecidient,
+        getConstantNotification,
         generateQueryGetMessages,
+        getAllConstantNotification,
+        getImageDefaultNotification,
         queryGetConversationForCurrentUser,
     },
 };

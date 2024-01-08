@@ -59,3 +59,21 @@ html {
 #ReactSimpleImageViewer {
     z-index: 9999;
 }
+
+.text-success-notification {
+    color: #65a30d;
+    font-weight: 600;
+}
+.text-error-notification {
+    color: #ef4444;
+    font-weight: 600;
+}
+.text-warning-notification {
+    color: #fdae61;
+    font-weight: 600;
+}
+
+.text-info-notification {
+    color: #505de8;
+    font-weight: 600;
+}

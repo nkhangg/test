@@ -1,4 +1,4 @@
-import { IconStars } from '@tabler/icons-react';
+import { IconBell, IconStars } from '@tabler/icons-react';
 import { IconLayoutDashboard, IconBox, IconDog, IconUser, IconBoxSeam, IconMessage, IconBrandCake } from '@tabler/icons-react';
 const Menuitems = [
     {
@@ -65,6 +65,16 @@ const Menuitems = [
         title: 'Message',
         icon: IconMessage,
         href: '/admin/dashboard/message',
+    },
+    {
+        navlabel: true,
+        subheader: 'Notification Management',
+    },
+    {
+        id: 9,
+        title: 'Notification',
+        icon: IconBell,
+        href: '/admin/dashboard/notification',
     },
 ];
 

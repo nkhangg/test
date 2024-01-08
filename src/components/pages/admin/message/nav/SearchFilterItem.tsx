@@ -23,8 +23,8 @@ export default function SearchFilterItem({ data, handleClickItem }: ISearchFilte
             >
                 {!data.avartar && data.username.charAt(0).toUpperCase()}
             </Avatar>
-            <div className="text-black-main text-sm ">
-                <span>{data.username}</span>
+            <div className="text-black-main text-sm w-full">
+                <span className="block w-full truncate max-w-[70%]">{data.username}</span>
                 <div className="flex items-center text-xs gap-1">
                     {data.online && (
                         <>

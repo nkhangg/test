@@ -5,16 +5,18 @@ import { Button, DialogActions, DialogContent, DialogTitle, Stack } from '@mui/m
 import { TextField, WrapperAnimation } from '..';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons';
+import classNames from 'classnames';
 
 type DialogDateChooserType = { start: string | undefined; end: string | undefined };
 
 const iniData = { start: undefined, end: undefined };
 
 export interface IDialogDateChooserProps {
+    className?: string;
     onDatas?: (dates: DialogDateChooserType) => void;
 }
 
-export default function DialogDateChooser({ onDatas }: IDialogDateChooserProps) {
+export default function DialogDateChooser({ className, onDatas }: IDialogDateChooserProps) {
     const [dates, setDates] = useState<DialogDateChooserType>(iniData);
     const [open, setOpen] = useState(false);
     const handleChangeDate = (e: ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +36,12 @@ export default function DialogDateChooser({ onDatas }: IDialogDateChooserProps) 
 
     return (
         <div className="">
-            <span onClick={() => setOpen((prev) => !prev)} className=" text-violet-primary font-medium text-right cursor-pointer hover:underline">
+            <span
+                onClick={() => setOpen((prev) => !prev)}
+                className={classNames('text-violet-primary font-medium text-right cursor-pointer hover:underline', {
+                    [className || '']: className,
+                })}
+            >
                 CHOOSE DATE
             </span>
 

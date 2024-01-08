@@ -181,7 +181,6 @@ export default function ProfilePage({ pages }: IProfilePageProps) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [form, avartar]);
 
-    console.log(user);
     return (
         <>
             <form onSubmit={handleOpenConfirm} className="px-14 py-[60px] w-full h-full rounded flex flex-col justify-between">

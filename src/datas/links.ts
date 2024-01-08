@@ -33,4 +33,7 @@ export const links = {
         management: commonAdmin + '/reviews',
     },
     message: commonAdmin + '/message',
+    profile: {
+        notification: '/profile/notification',
+    },
 };

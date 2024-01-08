@@ -73,6 +73,11 @@ const Validate = {
         return { message: '', error: false };
     },
 
+    message(value: string): ValidateType {
+        if (this.isBlank(value)) return { message: `Message can't be blank `, error: true };
+        return { message: '', error: false };
+    },
+
     number(value: string | number, name?: string): ValidateType {
         if (!this.isNumber(value.toString())) return { message: `${name} is invalid `, error: true };
 
@@ -119,8 +124,19 @@ const Validate = {
         return this.isValidString(value, 'Name');
     },
 
+    title(value: string): ValidateType {
+        return this.isValidString(value, 'Name');
+    },
+
     brand(value: string): ValidateType {
         return this.isValidAcceptNunString(value, 'Brand');
+    },
+
+    link(value: string): ValidateType {
+        if (this.isBlank(value)) return { message: '', error: false };
+
+        if (!this.isUrl(value)) return { message: 'Link invalid ', error: true };
+        return { message: '', error: false };
     },
 
     type(value: string): ValidateType {

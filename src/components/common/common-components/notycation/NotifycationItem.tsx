@@ -1,49 +1,63 @@
 /* eslint-disable @next/next/no-img-element */
-import {contants} from '@/utils/contants';
-import {Avatar, Grid} from '@mui/material';
+import { CustomDynamicCom } from '@/components';
+import { INotification, IProfile } from '@/configs/interface';
+import firebaseService from '@/services/firebaseService';
+import { contants } from '@/utils/contants';
+import { convertFirestoreTimestampToString } from '@/utils/format';
+import { Avatar, Grid } from '@mui/material';
 import classNames from 'classnames';
 import moment from 'moment';
 import React from 'react';
-import {toast} from 'react-toastify';
 
 export interface INotifycationItemProps {
-   data: {
-      id: string;
-      image: string;
-      content: string;
-      checked?: boolean;
-      createdAt: string;
-   };
+    data: INotification;
+    user: IProfile | null;
 }
 
-export default function NotifycationItem({data}: INotifycationItemProps) {
-   return (
-      <div
-         className={classNames(
-            'px-8 hover:bg-[#F1F1F1] py-5 h-[108px] w-full cursor-pointer transition-all duration-100',
-            {
-               ['bg-[#F1F1F1]']: data?.checked,
-            },
-         )}
-      >
-         <Grid container spacing={1} className='flex items-center'>
-            <Grid item lg={2} className='flex justify-center items-center'>
-               <Avatar
-                  sx={{
-                     width: '50px',
-                     height: '50px',
-                  }}
-                  variant='rounded'
-                  src={data?.image || contants.avartarDefault}
-               />
+export default function NotifycationItem({ data, user }: INotifycationItemProps) {
+    const handleIsRead = async () => {
+        if (!user || data.read.includes(user.username)) return;
+        await firebaseService.setRead(data.id, data.read, user?.username);
+    };
+    return (
+        <CustomDynamicCom
+            href={data.link || undefined}
+            onClick={handleIsRead}
+            className={classNames('px-6 hover:bg-[#F1F1F1] py-4  w-full cursor-pointer transition-all duration-100', {
+                ['bg-[#F1F1F1]']: user && !data.read.includes(user.username),
+            })}
+        >
+            <Grid container spacing={1} className="flex items-center">
+                <Grid item lg={2} className="flex justify-center items-center">
+                    <Avatar
+                        sx={{
+                            width: '50px',
+                            height: '50px',
+                        }}
+                        variant="rounded"
+                        src={data?.photourl || contants.avartarDefault}
+                    />
+                </Grid>
+                <Grid item lg={10}>
+                    <div className="flex flex-col gap-2">
+                        <span
+                            className="text-1xl line-clamp-2"
+                            dangerouslySetInnerHTML={{
+                                __html: (() => {
+                                    if (data.options && data.options.end && data.options.start && data.type !== 'none') {
+                                        const textWrap = data.content.substring(data.options.start, data.options.end);
+
+                                        return data.content.replaceAll(textWrap, `<span class="text-${data.type}-notification">${textWrap}</span>`);
+                                    }
+
+                                    return data.content;
+                                })(),
+                            }}
+                        ></span>
+                        <p className="text-sm">{moment(data.createdAt instanceof Date ? data.createdAt : convertFirestoreTimestampToString(data.createdAt)).fromNow()}</p>
+                    </div>
+                </Grid>
             </Grid>
-            <Grid item lg={10}>
-               <div className='flex flex-col gap-2'>
-                  <span className='text-1xl line-clamp-2'>{data?.content}</span>
-                  <p className='text-sm'>{moment(data?.createdAt).fromNow()}</p>
-               </div>
-            </Grid>
-         </Grid>
-      </div>
-   );
+        </CustomDynamicCom>
+    );
 }

@@ -1,5 +1,5 @@
 import exp from 'constants';
-import { StateType, UserFormType } from './types';
+import { StateType, TypeNotification, UserFormType } from './types';
 import { Timestamp } from 'firebase/firestore';
 
 export interface Action<T, P> {
@@ -646,4 +646,31 @@ export interface IWardOutside {
     ReasonCode: string;
     ReasonMessage: string;
     OnDates: any;
+}
+
+export interface INotification {
+    id: string;
+    title: string;
+    content: string;
+    createdAt: Timestamp | Date;
+    deleted: boolean;
+    photourl: string;
+    read: string[];
+    target: string[];
+    type: TypeNotification;
+    link: string | null;
+    public?: boolean;
+    options?: {
+        start?: number | null;
+        end?: number | null;
+    };
+}
+
+export interface IImageDefaultNotification {
+    id: string;
+    type: TypeNotification;
+    photourl: string;
+    createdAt: Timestamp | Date;
+    updatedAt: Timestamp | Date;
+    file?: File;
 }
