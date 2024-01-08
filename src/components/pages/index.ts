@@ -55,3 +55,6 @@ export { default as ReviewProductDetailPage } from './admin/review/ReviewProduct
 
 // brand
 export { default as BrandManagementPage } from './admin/brand/BrandManagementPage';
+
+// notification manage page
+export { default as NotificationManagePage } from './admin/notification/NotificationManagePage';

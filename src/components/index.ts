@@ -108,6 +108,10 @@ export { default as FormBrandDialog } from './dialogs/FormBrandDialog';
 export { default as ContentComfirmPayment } from './dialogs/content-component/ContentComfirmPayment';
 export { default as ConversationDialog } from './dialogs/ConversationDialog';
 export { default as ComfirmPaymentDialog } from './dialogs/ComfirmPaymentDialog';
+export { default as NotificationDialog } from './dialogs/notification-dialog/NotificationDialog';
+export { default as AddRecipient } from './dialogs/notification-dialog/AddRecipient';
+export { default as UpdateNotificationDialog } from './dialogs/notification-dialog/UpdateNotificationDialog';
+export { default as SettingNotificationDialog } from './dialogs/notification-dialog/SettingNotificationDialog';
 
 // chats
 
@@ -115,3 +119,6 @@ export { default as ChatBox } from './chats/ChatBox';
 export { default as ChatItem } from './chats/ChatItem';
 export { default as ChatFooter } from './chats/ChatFooter';
 export { default as ChatBody } from './chats/ChatBody';
+
+// custom
+export { default as CustomDynamicCom } from './custom/CustomDynamicCom';

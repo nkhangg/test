@@ -1,6 +1,6 @@
 import { RolesName } from '@/configs/enum';
 import { IAddress } from '@/configs/interface';
-import { RoleType, StateType } from '@/configs/types';
+import { RoleType, StateType, TypeNotification } from '@/configs/types';
 import { faBox, faCarSide, faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { Timestamp } from 'firebase/firestore';
 import moment from 'moment';

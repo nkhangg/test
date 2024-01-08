@@ -5,8 +5,6 @@ import { RootState } from '@/configs/types';
 import { links } from '@/datas/links';
 import { useAppSelector } from '@/hooks/reduxHooks';
 import { contants } from '@/utils/contants';
-import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar } from '@mui/material';
 import classNames from 'classnames';
 import moment from 'moment';

@@ -3,18 +3,21 @@ import React, { memo, useEffect, useMemo, useState } from 'react';
 import WraperDialog from './WraperDialog';
 import { DialogContent, DialogTitle } from '@mui/material';
 import { ContentComfirmPayment, WrapperAnimation } from '..';
-import { IInfoAddress, IOrder } from '@/configs/interface';
+import { ICart, IInfoAddress, IOrder } from '@/configs/interface';
 import { contants } from '@/utils/contants';
 import { addressToString, capitalize, toCurrency, toGam } from '@/utils/format';
 import { createOrder } from '@/apis/user';
 import { toast } from 'react-toastify';
-import { useAppDispatch } from '@/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { clearAllPayment } from '@/redux/slice/cartsSlide';
 import { links } from '@/datas/links';
 import { useRouter } from 'next/navigation';
 import { dataCart } from '@/datas/cart-data';
+import firebaseService from '@/services/firebaseService';
+import { RootState } from '@/configs/types';
 
 export interface IComfirmPaymentDialogProps {
+    paymentData?: ICart[];
     addresses: IInfoAddress | null;
     form: IOrder;
     totalAndWeight: {
@@ -27,17 +30,29 @@ export interface IComfirmPaymentDialogProps {
     setLoading: (v: boolean) => void;
 }
 
-function ComfirmPaymentDialog({ open, setOpen, setLoading, addresses, totalAndWeight, form }: IComfirmPaymentDialogProps) {
+function ComfirmPaymentDialog({ open, setOpen, setLoading, addresses, totalAndWeight, form, paymentData }: IComfirmPaymentDialogProps) {
     // router
     const router = useRouter();
+
+    // redux
+
+    const { user } = useAppSelector((state: RootState) => state.userReducer);
 
     const dispatch = useAppDispatch();
     const [data, setData] = useState<IOrder>(form);
 
-    const handleClearWhenSuccess = () => {
+    const handleClearWhenSuccess = async (orderId?: number | string) => {
         dispatch(clearAllPayment());
         toast.success(contants.messages.success.payment);
         router.push(links.products);
+
+        if (!paymentData || paymentData.length <= 0 || !user) return;
+
+        await firebaseService.addSuccessfulPurchaseNotification({
+            photourl: paymentData[0].image,
+            username: user.username,
+            orderId,
+        });
     };
 
     const handleClickSubmit = async () => {
@@ -45,28 +60,22 @@ function ComfirmPaymentDialog({ open, setOpen, setLoading, addresses, totalAndWe
             toast.warn(contants.messages.errors.exceedTheLimit);
             return;
         }
-
         setOpen(false);
-
         try {
             setLoading(true);
             const response = await createOrder(form);
             setLoading(false);
-
             if (!response) {
                 toast.warn(contants.messages.errors.handle);
                 return;
             }
-
             if (response.status !== 200) {
                 toast.error(capitalize(response.message));
                 return;
             }
-
             // handle cash method
             if (form.methodId == 1) {
-                handleClearWhenSuccess();
-
+                handleClearWhenSuccess(response.data);
                 // handle pre-payment method
             } else if (form.methodId == 2) {
                 window.location.assign(response.data);

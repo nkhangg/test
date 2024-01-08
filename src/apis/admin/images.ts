@@ -53,3 +53,24 @@ export const uploadImagesMessage: ApiUploadImageMessage = async (images: ImageTy
 
     return res?.data;
 };
+
+export const uploadImagesNotification: ApiUploadImageMessage = async (images: ImageType[]) => {
+    const formData = new FormData();
+
+    images.forEach((item) => {
+        formData.append('images', item.data as File);
+    });
+
+    const res = await axios({
+        method: 'POST',
+        url: `user/notification`,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+        data: formData,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};

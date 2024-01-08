@@ -296,6 +296,8 @@ export type HeadTabType = {
     };
 };
 
+export type TypeNotification = 'success' | 'error' | 'warning' | 'info' | 'none';
+
 export type TippyChooserType = {
     id: string;
     title: string;
