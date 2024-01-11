@@ -290,7 +290,11 @@ const getConversations = (typeSort: OrderByDirection = 'desc') => {
 };
 
 const getNotifications = (username: string) => {
-    return query(collection(db, 'notifications'), and(where('deleted', '==', false), or(where('target', 'array-contains', 'all'), where('target', 'array-contains', username))));
+    return query(
+        collection(db, 'notifications'),
+        and(where('deleted', '==', false), or(where('target', 'array-contains', 'all'), where('target', 'array-contains', username))),
+        orderBy('createdAt', 'desc'),
+    );
 };
 
 const getAllNotification = (search?: string, type?: TypeNotification) => {

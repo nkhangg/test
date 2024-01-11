@@ -88,15 +88,17 @@ export default function ChatBox(props: IChatBoxProps) {
     useEffect(() => {
         if (!userSnapshot) return;
 
-        const userRef = {
-            ...(userSnapshot?.docs[0]?.data() as IUserFirebase),
-            id: userSnapshot?.docs[0]?.id,
-        };
+        requestIdleCallback(() => {
+            const userRef = {
+                ...(userSnapshot?.docs[0]?.data() as IUserFirebase),
+                id: userSnapshot?.docs[0]?.id,
+            };
 
-        if (!userRef?.conversationId) return;
+            if (!userRef?.conversationId) return;
 
-        setConversationId(userRef.conversationId);
-        setShowChatNow(false);
+            setConversationId(userRef.conversationId);
+            setShowChatNow(false);
+        });
     }, [userSnapshot]);
 
     return (

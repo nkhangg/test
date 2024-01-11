@@ -17,7 +17,7 @@ export default function NotificationPage(props: INotificationPageProps) {
     const dataNotifications = useMemo(() => {
         if (!notificationSnapshot) return [];
 
-        return notificationSnapshot.docs.reverse().map((item) => {
+        return notificationSnapshot.docs.map((item) => {
             return {
                 id: item.id,
                 ...item.data(),
