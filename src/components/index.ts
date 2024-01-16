@@ -10,6 +10,8 @@ export { default as MainButton } from './buttons/MainButton';
 export { default as HandCatButton } from './buttons/HandCatButton';
 export { default as SocialButton } from './buttons/SocialButton';
 export { default as RoudedButton } from './buttons/RoudedButton';
+export { default as PrimaryPostButton } from './buttons/PrimaryPostButton';
+export { default as OptionButton } from './buttons/OptionButton';
 
 // inputs
 export { default as Find } from './inputs/Find';
@@ -82,6 +84,9 @@ export { default as BoxTitle } from './boxs/BoxTitle';
 export { default as BoxSign } from './boxs/BoxSign';
 export { default as CardInfo } from './boxs/CardInfo';
 export { default as WraperTippy } from './boxs/WraperTippy';
+export { default as BoxPost } from './boxs/posts/BoxPost';
+export { default as BoxPostHighlight } from './boxs/posts/BoxPostHighlight';
+export { default as InfinityPosts } from './boxs/posts/InfinityPosts';
 
 // paginations
 export { default as Pagination } from './pagination/Pagination';
@@ -97,6 +102,7 @@ export { default as Notifycation } from './notifycations/Notifycation';
 
 // comments
 export { default as Review } from './comments/Review';
+export { default as Comment } from './comments/Comment';
 
 // dialog
 export { default as RatingDialog } from './dialogs/RatingDialog';
@@ -112,6 +118,8 @@ export { default as NotificationDialog } from './dialogs/notification-dialog/Not
 export { default as AddRecipient } from './dialogs/notification-dialog/AddRecipient';
 export { default as UpdateNotificationDialog } from './dialogs/notification-dialog/UpdateNotificationDialog';
 export { default as SettingNotificationDialog } from './dialogs/notification-dialog/SettingNotificationDialog';
+export { default as PostDialog } from './dialogs/posts/PostDialog';
+export { default as PostDetailDialog } from './dialogs/posts/PostDetailDialog';
 
 // chats
 
@@ -122,3 +130,6 @@ export { default as ChatBody } from './chats/ChatBody';
 
 // custom
 export { default as CustomDynamicCom } from './custom/CustomDynamicCom';
+
+// post
+export { default as Post } from './posts/Post';

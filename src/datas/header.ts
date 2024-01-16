@@ -19,7 +19,7 @@ export const navbar = [
     { title: 'About', href: '/about' },
     { title: 'Take Action', href: '/take-action' },
     { title: 'Adopt', href: '/adopt' },
-    { title: 'Contact', href: '/contact' },
+    { title: 'ADORABLE SNAPSHOTS', href: '/adorable-snapshots' },
     { title: 'Donation', href: '/donation', style: { border: true } },
 ];
 
@@ -125,5 +125,14 @@ export const dataHeadListUser = [
     {
         title: 'Admin',
         icon: faUserTie,
+    },
+];
+
+export const listTabsPostProfile = [
+    {
+        title: 'Posts',
+    },
+    {
+        title: 'Likes',
     },
 ];

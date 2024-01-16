@@ -576,6 +576,7 @@ export interface IUserFirebase {
     online?: boolean;
     keywords: string[];
     conversationId?: string;
+    displayname?: string;
 }
 
 export interface INavChatItemData extends IUserFirebase {

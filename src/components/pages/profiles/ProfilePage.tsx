@@ -1,12 +1,10 @@
 'use client';
 import style from './styles/product.module.css';
-import { AvartarEdit, BoxTitle, Comfirm, DivTextfield, LoadingPrimary, MainButton } from '@/components';
-import { profileUiData } from '@/datas/profile';
+import { AvartarEdit, Comfirm, DivTextfield, LoadingPrimary, MainButton } from '@/components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Avatar, Grid } from '@mui/material';
+import { Avatar } from '@mui/material';
 import classNames from 'classnames';
-import React, { ChangeEvent, FocusEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
-import Link from 'next/link';
+import React, { ChangeEvent, FocusEvent, FormEvent, useEffect, useState } from 'react';
 import Validate from '@/utils/validate';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { ProfileType, RootState } from '@/configs/types';
@@ -15,8 +13,8 @@ import { pushNoty } from '@/redux/slice/appSlice';
 import moment from 'moment';
 import { contants } from '@/utils/contants';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import { curUser, updateUser } from '@/apis/user';
-import { fetchUserByToken, update } from '@/redux/slice/userSlice';
+import { updateUser } from '@/apis/user';
+import { fetchUserByToken } from '@/redux/slice/userSlice';
 import { toast } from 'react-toastify';
 
 export interface IProfilePageProps {

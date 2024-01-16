@@ -77,3 +77,16 @@ html {
     color: #505de8;
     font-weight: 600;
 }
+
+.text-gradient {
+    background: linear-gradient(90deg, rgba(179, 168, 255, 1), rgba(200, 173, 255, 1), rgba(73, 182, 255, 1));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@layer base {
+    .gradient-btn {
+        @apply bg-gradient-to-r from-[rgba(179,168,255,1)] via-[rgba(200,173,255,1)] to-[rgba(73,182,255,1)];
+    }
+}
