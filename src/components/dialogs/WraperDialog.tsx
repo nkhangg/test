@@ -14,14 +14,17 @@ const Transition = React.forwardRef(function Transition(
 
 export interface IWraperDialogProps {
     open: boolean;
-    setOpen: (open: boolean) => void;
     children: ReactNode;
     className?: string;
+    setOpen: (open: boolean) => void;
+    onClose?: () => void;
 }
 
-export default function WraperDialog({ open, children, className, setOpen, ...props }: IWraperDialogProps & DialogProps) {
+export default function WraperDialog({ open, children, className, setOpen, onClose, ...props }: IWraperDialogProps & DialogProps) {
     const handleClose = () => {
         setOpen(false);
+        if (!onClose) return;
+        onClose();
     };
 
     return (
@@ -36,7 +39,7 @@ export default function WraperDialog({ open, children, className, setOpen, ...pr
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
-                aria-describedby="alert-dialog-slide-description"
+                aria-describedby="alert-dialog"
             >
                 {children}
             </Dialog>

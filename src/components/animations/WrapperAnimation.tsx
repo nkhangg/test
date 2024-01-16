@@ -1,7 +1,7 @@
 'use client';
-import React, { MouseEventHandler, ReactNode, forwardRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-export type Ref = HTMLDivElement;
+import React, { HTMLProps, MouseEventHandler, ReactHTML, ReactNode, forwardRef } from 'react';
+import { motion, AnimatePresence, HTMLMotionProps, ForwardRefComponent } from 'framer-motion';
+export type Ref = HTMLDivElement & HTMLLabelElement;
 // This interface of local component. Can delete if component haven't actribute
 export interface IWrapperAnimationProps {
     styleAnimation?: {
@@ -14,6 +14,7 @@ export interface IWrapperAnimationProps {
     hover?: {};
     className?: string;
     children: ReactNode;
+    htmlFor?: string;
     onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
@@ -28,6 +29,7 @@ const WrapperAnimation = forwardRef<Ref, IWrapperAnimationProps>(
             children,
             styleTag = 'scale',
             className,
+            htmlFor,
             onClick,
         },
         ref,

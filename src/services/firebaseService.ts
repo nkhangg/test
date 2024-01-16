@@ -18,6 +18,7 @@ const setUserInBd = async (user: IProfile) => {
                 avartar: user.avatar || contants.avartarDefault,
                 online: true,
                 keywords: generateKeywords(user.username),
+                displayname: user.displayName || user.username,
             },
             { merge: true }, // just update what is change
         );

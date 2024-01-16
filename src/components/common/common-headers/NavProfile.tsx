@@ -42,7 +42,7 @@ export default function NavProfile(props: INavProfileProps) {
                                         'bg-green-65a30d text-white': item.link === pathname,
                                     },
                                 )}
-                                href={item.link}
+                                href={item.verify ? item.link + user?.username : item.link}
                             >
                                 <div className="h-[18px] w-[18px]">
                                     <FontAwesomeIcon className="text-1xl" icon={item.icon} />

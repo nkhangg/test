@@ -27,6 +27,7 @@ export default function useGetNotification(
                 ...data.data(),
             } as INotification);
         })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
     return notificationSnapshot;
