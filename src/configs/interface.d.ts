@@ -103,13 +103,7 @@ export interface IPost {
     title: string;
     thumbnail: string;
     contents: string;
-    createdAt: string | number;
-    updatedAt: string | number;
-}
-
-export interface IPostsPreview {
-    primary: IPost;
-    propose: IPost[];
+    containVideo?: boolean;
 }
 
 export interface ICart {
@@ -156,6 +150,22 @@ export interface IApiTakeAction {
 export interface IApiBestSeller {
     data: IProduct[];
     pages: number;
+}
+
+export interface IHomepage {
+    impactOfYear: any;
+    pets: IPet[];
+    postsPreview: IPost[];
+}
+
+export interface IPetDetail extends IPet {
+    color: string;
+    images: string[];
+}
+
+export interface IPetDetailPageResponse {
+    pet: IPetDetail;
+    orthers: IPet[];
 }
 
 // phân trang
