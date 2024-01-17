@@ -46,6 +46,8 @@ import {
     IProvinceOutside,
     IDistrictOutside,
     IWardOutside,
+    IHomepage,
+    IPetDetailPageResponse,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { RolesName } from './enum';
@@ -66,6 +68,8 @@ export type ApiRegister = (data: RegisterFormData) => Promise<ISignDataResponse>
 export type ApiTakeActionType = () => Promise<IBaseResponse<IApiTakeAction>>;
 
 export type ApiDetailProductType = (idProduct: string) => Promise<IBaseResponse<IDetailProduct>>;
+
+export type ApiPetDetailPage = (id: string) => Promise<IBaseResponse<IPetDetailPageResponse>>;
 
 export type ApiReportType = () => Promise<IBaseResponse<IReports>>;
 
@@ -100,6 +104,8 @@ export type ApiChangePassword = (data: IFormChangePassword) => Promise<IBaseResp
 export type ApiGetCurUser = () => Promise<IBaseResponse<IProfile>>;
 
 export type ApiFilterPage = (data: IDataRequestFilter) => Promise<IBaseResponse<IDataFilterPage>>;
+
+export type ApiHomePage = () => Promise<IBaseResponse<IHomepage>>;
 
 export type ApiDetailProductManaege = (id: string) => Promise<IBaseResponse<DataProductType>>;
 

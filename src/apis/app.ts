@@ -1,19 +1,7 @@
-import {
-    ApiBestSellerType,
-    ApiDetailHistory,
-    ApiFilterPage,
-    ApiGetUsers,
-    ApiHistory,
-    ApiLogin,
-    ApiPayment,
-    ApiTakeActionType,
-    ApiTypesAndBrands,
-    StateType,
-} from '@/configs/types';
+import { ApiBestSellerType, ApiFilterPage, ApiGetUsers, ApiHomePage, ApiTakeActionType, ApiTypesAndBrands } from '@/configs/types';
 
 import axios from '../configs/axios';
-import { setTokenToCookie } from '@/utils/cookie';
-import { IDataFormPayment, IDataRequestFilter } from '@/configs/interface';
+import { IDataRequestFilter } from '@/configs/interface';
 
 export const getUsers: ApiGetUsers = async () => {
     const res = await axios({
@@ -67,6 +55,17 @@ export const filterPage: ApiFilterPage = async (data: IDataRequestFilter) => {
         method: 'GET',
         url: 'filter-product/',
         params: data,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const homepage: ApiHomePage = async () => {
+    const res = await axios({
+        method: 'GET',
+        url: '/home-pages',
     });
 
     if (!res) return null;
