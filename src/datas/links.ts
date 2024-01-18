@@ -1,8 +1,9 @@
 const commonAdmin = '/admin/dashboard';
+const commonPet = '/pet/';
 
 export const links = {
     home: '/',
-    pet: '/pet/',
+    pet: commonPet,
     produt: '/product/',
     products: '/take-action/',
     admin: commonAdmin + '/',
@@ -35,5 +36,8 @@ export const links = {
     message: commonAdmin + '/message',
     profile: {
         notification: '/profile/notification',
+    },
+    pets: {
+        adopt: commonPet + 'adopt',
     },
 };

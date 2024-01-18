@@ -5,6 +5,7 @@ import { Feedback, ImpactOfYear, KnowldegeAboutFoster, Pets } from '..';
 import { AboutCom } from '../common';
 import { homepage } from '@/apis/app';
 import { notFound } from 'next/navigation';
+import { links } from '@/datas/links';
 
 export interface IHomePageProps {}
 
@@ -24,7 +25,13 @@ export default function HomePage(props: IHomePageProps) {
         <>
             <ImpactOfYear />
             <AboutCom />
-            <Pets data={(data && data.data.pets) || []} />
+            <Pets
+                options={{
+                    buttonTitle: 'See all',
+                    href: links.pets.adopt,
+                }}
+                data={(data && data.data.pets) || []}
+            />
             <Feedback />
         </>
     );
