@@ -6,9 +6,11 @@ import React, { ReactNode } from 'react';
 export interface ITableCellProps {
     children: ReactNode;
     onClick?: () => void;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
 }
 
-export default function TableRow({ children, onClick, ...props }: ITableCellProps) {
+export default function TableRow({ children, onClick, onMouseEnter, onMouseLeave, ...props }: ITableCellProps) {
     return (
         <Tr
             sx={{
@@ -27,6 +29,8 @@ export default function TableRow({ children, onClick, ...props }: ITableCellProp
             }}
             {...props}
             onClick={onClick}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
         >
             {children}
         </Tr>

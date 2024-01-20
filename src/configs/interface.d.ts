@@ -152,13 +152,21 @@ export interface IApiBestSeller {
     pages: number;
 }
 
+export interface IImpact {
+    image: string;
+    quantity: string;
+    title: string;
+    prefix?: string;
+}
+
 export interface IHomepage {
-    impactOfYear: any;
+    impactOfYear: IImpact[];
     pets: IPet[];
     postsPreview: IPost[];
 }
 
 export interface IPetDetail extends IPet {
+    sterilization: string;
     color: string;
     images: string[];
 }

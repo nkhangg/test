@@ -1,10 +1,11 @@
 import { uploadImagesMessage } from '@/apis/admin/images';
 import { db } from '@/configs/firebase';
-import { IImageDefaultNotification, INotification, IProfile } from '@/configs/interface';
+import { IImageDefaultNotification, INotification, IPet, IProfile } from '@/configs/interface';
 import { ImageType, TypeNotification } from '@/configs/types';
 import { links } from '@/datas/links';
 import { contants } from '@/utils/contants';
 import { generateKeywords } from '@/utils/firebaseUltils';
+import { stringToUrl } from '@/utils/format';
 import Validate from '@/utils/validate';
 import { addDoc, doc, serverTimestamp, setDoc, collection, query, where, orderBy, and, or, OrderByDirection, limit, QueryFilterConstraint, getDoc } from 'firebase/firestore';
 
@@ -181,6 +182,34 @@ const addSuccessfulPurchaseNotification = async ({ orderId, photourl, username }
             deleted: false,
             link: orderId ? links.history.orderHistory + `/${orderId}` : links.history.orderHistory,
             photourl: photourl,
+            read: [],
+            target: [username],
+            title: constNotification.title,
+            type: constNotification.type,
+            options: constNotification.options,
+            public: false,
+        });
+    } catch (error) {
+        console.log('addSuccessfulPurchaseNotification: Error setting addSuccessfulPurchaseNotification info in DB');
+    }
+};
+
+const publistFavoriteNotification = async (pet: IPet, username: string) => {
+    try {
+        const notificationRef = doc(db, 'config-constant-notifications', 'NwgpAJynez1II8sylmKF');
+        const notificationRefShapshot = await getDoc(notificationRef);
+
+        const constNotification = {
+            id: notificationRefShapshot.id,
+            ...notificationRefShapshot.data(),
+        } as INotification;
+
+        return await addDoc(collection(db, 'notifications'), {
+            content: constNotification.content.replaceAll('&&', pet.name),
+            createdAt: serverTimestamp(),
+            deleted: false,
+            link: links.pet + `${pet.id}/${stringToUrl(pet.name)}`,
+            photourl: pet.image,
             read: [],
             target: [username],
             title: constNotification.title,
@@ -455,6 +484,7 @@ const firebaseService = {
     setActionGimConversation,
     setNewMessageConversation,
     setImageDefaultNotification,
+    publistFavoriteNotification,
     addSuccessfulPurchaseNotification,
     querys: {
         getNotification,

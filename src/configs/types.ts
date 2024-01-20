@@ -71,6 +71,8 @@ export type ApiDetailProductType = (idProduct: string) => Promise<IBaseResponse<
 
 export type ApiPetDetailPage = (id: string) => Promise<IBaseResponse<IPetDetailPageResponse>>;
 
+export type ApiPetFavorite = (id: string) => Promise<IBaseResponse<any>>;
+
 export type ApiReportType = () => Promise<IBaseResponse<IReports>>;
 
 export type ApiSalesOverviewType = (year: string) => Promise<IBaseResponse<ISalesOverviews>>;

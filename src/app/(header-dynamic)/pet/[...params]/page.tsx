@@ -12,6 +12,5 @@ export interface IDetailPetProps {
 export default function DetailPet({ params }: IDetailPetProps) {
     const [id, name] = params.params;
 
-    console.log({ id, name });
     return <DetailPetPage params={params.params} />;
 }

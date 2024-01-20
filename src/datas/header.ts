@@ -3,10 +3,14 @@ import {
     faBox,
     faBoxesStacked,
     faCarSide,
+    faCat,
     faCircleCheck,
     faCircleXmark,
     faHeart,
+    faHourglassStart,
+    faPaw,
     faRightFromBracket,
+    faShield,
     faShoppingCart,
     faStar,
     faUser,
@@ -72,6 +76,25 @@ export const dataHeadHistory = [
     {
         title: 'Cancelled',
         icon: faCircleXmark,
+    },
+] as HeadTabType[];
+
+export const dataHeadPet = [
+    {
+        title: 'All',
+        icon: faPaw,
+    },
+    {
+        title: 'Adopted',
+        icon: faShield,
+    },
+    {
+        title: 'Awaiting adoption',
+        icon: faHourglassStart,
+    },
+    {
+        title: "Haven't adopted yet",
+        icon: faCat,
     },
 ] as HeadTabType[];
 

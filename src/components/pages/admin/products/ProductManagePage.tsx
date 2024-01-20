@@ -4,7 +4,7 @@ import React, { ChangeEvent, useCallback, useMemo, useState } from 'react';
 
 import Tippy from '@tippyjs/react/headless';
 import { productManageListData } from '@/datas/product-manage-data';
-import { BoxTitle, Comfirm, LoadingPrimary, LoadingSecondary, Pagination, RowListProduct, SekeletonTableItems, Table, TippyChooser } from '@/components';
+import { BoxTitle, Comfirm, LoadingPrimary, LoadingSecondary, Pagination, RowListProduct, SekeletonTableItems, Table, TableV2, TippyChooser } from '@/components';
 import Link from 'next/link';
 import { DashboardCard } from '@/components/dashboard';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -20,6 +20,7 @@ import { Box } from '@mui/material';
 import { useDebounce, useTypeAndBrand } from '@/hooks';
 import { TippyChooserType } from '@/configs/types';
 import Validate from '@/utils/validate';
+import { HeadItem } from '@/components/inputs/tables/TableV2';
 export interface IProductManagePageProps {}
 
 const dataHead = ['No', 'Id', 'Image', 'Name', 'Brand', 'Type', 'Total Repository', 'Actions'];
@@ -229,6 +230,7 @@ export default function ProductManagePage(props: IProductManagePageProps) {
                                 );
                             })}
                         </Table>
+
                         {data.data.length <= 0 && (
                             <div className="flex items-center justify-center py-5 text-violet-primary">
                                 <b>No data available</b>

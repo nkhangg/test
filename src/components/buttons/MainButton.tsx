@@ -20,7 +20,7 @@ export default function MainButton({ className, title, width, height, background
             <CustomButton
                 href={href}
                 style={width || height ? { width: width, height: height } : undefined}
-                className={classNames(' text-1xl font-medium text-white py-[14px] px-8 rounded-md', {
+                className={classNames(' text-1xl font-medium text-white py-[14px] px-8 rounded-md flex items-center justify-center', {
                     [className ?? '']: Boolean(className),
                     'w-[188px]': !Boolean(width),
                     'h-[48px]': !Boolean(height),

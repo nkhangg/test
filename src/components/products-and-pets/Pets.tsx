@@ -12,9 +12,14 @@ export interface IPetsProps {
     heading?: ReactNode;
     bottom?: bottomStyle;
     background?: string;
+
+    options?: {
+        buttonTitle?: string;
+        href?: string;
+    };
 }
 
-export default function Pets({ data, heading, bottom = 'load-more', background = 'bg-[#F5FAFF]' }: IPetsProps) {
+export default function Pets({ data, heading, bottom = 'load-more', background = 'bg-[#F5FAFF]', options }: IPetsProps) {
     const memoData = useMemo(() => {
         return data;
     }, [data]);
@@ -34,7 +39,7 @@ export default function Pets({ data, heading, bottom = 'load-more', background =
             </div>
             {bottom === 'load-more' && (
                 <div className="flex items-center justify-center w-full">
-                    <MainButton title="load more" className="my-11" />
+                    <MainButton href={options?.href} title={options?.buttonTitle || 'load more'} className="my-11" />
                 </div>
             )}
 

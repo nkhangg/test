@@ -11,6 +11,7 @@ export const homePageData = {
             image: 'cats.svg',
             quantity: '$12,000',
             title: 'In products  & donations',
+            prefix: '$',
         },
         {
             image: 'home-dog.svg',
