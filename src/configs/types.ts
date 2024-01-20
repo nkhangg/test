@@ -48,6 +48,9 @@ import {
     IWardOutside,
     IHomepage,
     IPetDetailPageResponse,
+    IRequestFilterPet,
+    IPet,
+    IPetAttribute,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { RolesName } from './enum';
@@ -72,6 +75,10 @@ export type ApiDetailProductType = (idProduct: string) => Promise<IBaseResponse<
 export type ApiPetDetailPage = (id: string) => Promise<IBaseResponse<IPetDetailPageResponse>>;
 
 export type ApiPetFavorite = (id: string) => Promise<IBaseResponse<any>>;
+
+export type ApiPetAttributes = () => Promise<IBaseResponse<IPetAttribute>>;
+
+export type ApiFilterPets = (params: IRequestFilterPet) => Promise<IBaseResponse<PagiantionResponse<IPet>>>;
 
 export type ApiReportType = () => Promise<IBaseResponse<IReports>>;
 

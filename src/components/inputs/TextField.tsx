@@ -3,7 +3,7 @@ import React from 'react';
 import { TextFieldProps, TextField as Tx } from '@mui/material';
 import Validate from '@/utils/validate';
 
-export default function TextField(props: TextFieldProps & { message?: string }) {
+export default function TextField({ ref, ...props }: TextFieldProps & { message?: string; ref?: any }) {
     return (
         <>
             <Tx
@@ -23,6 +23,7 @@ export default function TextField(props: TextFieldProps & { message?: string }) 
                         fontSize: '14px !important',
                     },
                 }}
+                ref={ref}
                 {...props}
                 error={Validate.isNotBlank(props.message || '')}
                 helperText={Validate.isNotBlank(props.message || '') && props.message}

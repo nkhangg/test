@@ -161,27 +161,7 @@ export default function ProductFilterPage(props: IProductFilterPageProps) {
                         title={'Price'}
                         data={dataProductFilter.fillters.prices}
                     />
-                    {/* <MenuDropDownRadio
-                  clearValue={{
-                     value: !conditionShowClearFiller(),
-                     option: {
-                        closeOnClear: true,
-                     },
-                  }}
-                  onValues={(stock) => {
-                     if (stock.length > 1) {
-                        if (page) {
-                           router.push(baseUrl);
-                        }
-                        setFilter({
-                           ...filter,
-                           stock: stock.length > 1,
-                        });
-                     }
-                  }}
-                  title={'Stock'}
-                  data={dataProductFilter.fillters.stock}
-               /> */}
+
                     <MenuDropDownRadio
                         clearValue={{
                             value: !conditionShowClearFiller(),
