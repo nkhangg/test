@@ -3,15 +3,15 @@ import { IFilter, IPet } from '@/configs/interface';
 export const dataTakeAction = {
     categories: [
         {
-            id: 'dogs',
+            id: 'dog',
             name: 'dogs',
         },
         {
-            id: 'cats',
+            id: 'cat',
             name: 'cats',
         },
         {
-            id: 'others',
+            id: 'other',
             name: 'others',
         },
     ] as IFilter[],
@@ -32,8 +32,15 @@ export const dataTakeAction = {
 
     fillters: {
         colors: ['White', 'Black', 'Green', 'Yellow'],
-        ages: ['0 - 6 month', '6 - 12 month', '1 - 2 years', '2 years other'],
-        genthers: ['Meal', 'Female'],
+        ages: [
+            { id: 'baby', name: 'Baby' },
+            { id: 'medium', name: 'Medium' },
+            { id: 'adult', name: 'Adult' },
+        ],
+        genthers: [
+            { id: 'male', name: 'Male' },
+            { id: 'female', name: 'Female' },
+        ],
     },
     pets: [
         {

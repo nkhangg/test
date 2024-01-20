@@ -28,7 +28,7 @@ export default function HomePage(props: IHomePageProps) {
             <Pets
                 options={{
                     buttonTitle: 'See all',
-                    href: links.pets.adopt,
+                    href: links.pets.adoptPage,
                 }}
                 data={(data && data.data.pets) || []}
             />

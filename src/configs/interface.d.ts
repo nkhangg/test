@@ -693,3 +693,20 @@ export interface IImageDefaultNotification {
     updatedAt: Timestamp | Date;
     file?: File;
 }
+
+export interface IRequestFilterPet {
+    name?: string;
+    page?: string;
+    typeName?: string;
+    age?: string;
+    colors?: string;
+    gender?: boolean;
+    sort?: string;
+}
+
+export interface IPetAttribute {
+    colors: IFilter[];
+    states: IFilter[];
+    breeds: IFilter[];
+    typies: IFilter[];
+}
