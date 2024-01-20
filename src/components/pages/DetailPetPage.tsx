@@ -25,11 +25,11 @@ export interface IDetailPetPageProps {
 const Li = ({ icon, title, content }: { icon: IconDefinition; title: string; content?: string }) => {
     return (
         <li className="flex items-center gap-4 w-full over">
-            <div className="text-lg flex items-center gap-2">
+            <div className="text-lg flex items-center gap-2 ">
                 <FontAwesomeIcon className="" icon={icon} />
                 <span>{title}:</span>
             </div>
-            <p className="truncate">{content && capitalize(content)}</p>
+            <p className="truncate capitalize">{content && capitalize(content)}</p>
         </li>
     );
 };
@@ -120,8 +120,8 @@ export default function DetailPetPage({ params }: IDetailPetPageProps) {
                                     <Li icon={faPalette} title="Colors" content={detailData?.pet.color} />
                                     <Li icon={faVenus} title="Genther" content={detailData?.pet.sex} />
                                     <Li icon={faSitemap} title="Size" content={detailData?.pet.size} />
-                                    {/* <Li icon={faBomb} title="Sterilization" content={detailData?.pet.sterilization} />
-                                    <Li icon={faSyringe} title="Vaccination" content={detailData?.pet.vaccination} /> */}
+                                    <Li icon={faBomb} title="Sterilization" content={detailData?.pet.sterilization} />
+                                    {/* <Li icon={faSyringe} title="Vaccination" content={detailData?.pet.vaccination} /> */}
                                     <li className="text-lg flex items-center gap-2 ">
                                         <FontAwesomeIcon className="" icon={faPaw} />
                                         <p className="truncate text-fill-heart">

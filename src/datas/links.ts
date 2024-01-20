@@ -16,6 +16,11 @@ export const links = {
             detail: commonAdmin + '/users/',
             create: commonAdmin + '/users/create',
         },
+        pets: {
+            create: commonAdmin + '/pets/create',
+            detail: commonAdmin + '/pets/',
+            index: commonAdmin + 'pets',
+        },
     },
     auth: {
         login: '/login',

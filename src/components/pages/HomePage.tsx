@@ -23,7 +23,7 @@ export default function HomePage(props: IHomePageProps) {
 
     return (
         <>
-            <ImpactOfYear />
+            <ImpactOfYear data={(data && data.data.impactOfYear) || []} />
             <AboutCom />
             <Pets
                 options={{

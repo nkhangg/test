@@ -41,6 +41,7 @@ export { default as NativeConfirm } from './inputs/NativeConfirm';
 
 // table
 export { default as Table } from './inputs/tables/Table';
+export { default as TableV2 } from './inputs/tables/TableV2';
 export { default as TableRow } from './inputs/tables/TableRow';
 export { default as RowBrand } from './inputs/tables/rows/RowBrand';
 export { default as RowReview } from './inputs/tables/rows/RowReview';
@@ -49,6 +50,7 @@ export { default as RowOrderSummaryUpdateStatus } from './inputs/tables/rows/Row
 export { default as RowListUser } from './inputs/tables/rows/RowListUser';
 export { default as RowListProduct } from './inputs/tables/rows/RowListProduct';
 export { default as RowPriceHistories } from './inputs/tables/rows/RowPriceHistories';
+export { default as RowListPet } from './inputs/tables/rows/RowListPet';
 
 // bages
 export { default as CustomBadge } from './badges/CustomBadge';
