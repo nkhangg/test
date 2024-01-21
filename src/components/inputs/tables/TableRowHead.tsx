@@ -21,7 +21,7 @@ export default function TableRowHead({ data, styleHead, onSort }: ITableRowHeadP
         setSort((prev) => !prev);
 
         if (onSort) {
-            onSort(sort ? item.asc : item.desc);
+            onSort(sort ? item.desc : item.asc);
         }
     };
 

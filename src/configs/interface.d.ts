@@ -705,6 +705,11 @@ export interface IRequestFilterPet {
     gender?: boolean;
     sort?: string;
 }
+export interface IRequestFilterPetAdmin extends IRequestFilterPet {
+    status?: string;
+    minDate?: string;
+    maxDate?: string;
+}
 
 export interface IPetAttribute {
     colors: IFilter[];

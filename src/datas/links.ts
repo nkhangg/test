@@ -19,7 +19,7 @@ export const links = {
         pets: {
             create: commonAdmin + '/pets/create',
             detail: commonAdmin + '/pets/',
-            index: commonAdmin + 'pets',
+            index: commonAdmin + '/pet',
         },
         orders: {
             index: commonAdmin + '/orders',

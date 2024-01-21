@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import { notFound, useRouter, useSearchParams } from 'next/navigation';
 import { links } from '@/datas/links';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { faL, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { useQuery } from '@tanstack/react-query';
 import { filterPets } from '@/apis/pets';
 import { IRequestFilterPet } from '@/configs/interface';
@@ -38,7 +38,6 @@ export default function AdoptPage({}: AdoptPageProps) {
     });
 
     // states
-
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -49,7 +48,7 @@ export default function AdoptPage({}: AdoptPageProps) {
     const conditionShowClearFiller = useCallback(() => {
         if (!filter) return false;
 
-        if (filter.colors || filter.gender || filter.age) {
+        if (filter.colors || filter.gender || filter.gender === false || filter.age) {
             return true;
         }
     }, [filter]);
