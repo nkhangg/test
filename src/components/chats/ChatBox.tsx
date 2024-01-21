@@ -122,7 +122,7 @@ export default function ChatBox(props: IChatBoxProps) {
 
                                 <ChatBody open={open} conversationId={conversationId} />
 
-                                <ChatFooter handleSubmit={handleSendMessage} />
+                                <ChatFooter conversationId={conversationId} handleSubmit={handleSendMessage} />
                             </div>
                         )
                     ) : (

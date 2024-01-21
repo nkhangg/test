@@ -21,6 +21,9 @@ export const links = {
             detail: commonAdmin + '/pets/',
             index: commonAdmin + 'pets',
         },
+        orders: {
+            index: commonAdmin + '/orders',
+        },
     },
     auth: {
         login: '/login',

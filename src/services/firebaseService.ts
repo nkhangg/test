@@ -371,10 +371,10 @@ const getMessageWithId = (id: string) => {
     return query(collection(db, `messages`));
 };
 
-const handleSendMessage = async (value: string, conversationId: string, username: string, differentData?: { images?: ImageType[] }) => {
+const handleSendMessage = async (value: string, conversationId: string, username: string, differentData?: { images?: ImageType[] }, type = 'message') => {
     let images: string[] | null = null;
 
-    if (differentData) {
+    if (differentData && differentData.images) {
         images = await handleImages(differentData);
     }
 
@@ -387,6 +387,7 @@ const handleSendMessage = async (value: string, conversationId: string, username
         recall: false,
         seen: true,
         images: images,
+        type,
     });
 
     const idNewMessage = newMessage.id;
@@ -394,10 +395,10 @@ const handleSendMessage = async (value: string, conversationId: string, username
     await firebaseService.setNewMessageConversation(conversationId, idNewMessage);
 };
 
-const handleSendMessageToUser = async (value: string, conversationId: string, username: string, differentData?: { images?: ImageType[] }) => {
+const handleSendMessageToUser = async (value: string, conversationId: string, username: string, differentData?: { images?: ImageType[]; orderId?: string }, type = 'message') => {
     let images: string[] | null = null;
 
-    if (differentData) {
+    if (differentData && differentData.images) {
         images = await handleImages(differentData);
     }
 
@@ -410,6 +411,28 @@ const handleSendMessageToUser = async (value: string, conversationId: string, us
         recall: false,
         seen: false,
         images: images,
+        type: type,
+    });
+};
+
+const handleSendOrder = async (conversationId: string, username: string, differentData?: { images?: ImageType[]; orderId?: string }, type = 'order') => {
+    let images: string[] | null = null;
+
+    if (differentData && differentData.images) {
+        images = await handleImages(differentData);
+    }
+
+    return await addDoc(collection(db, 'messages'), {
+        conversationId: conversationId,
+        currentUser: username,
+        message: null,
+        sendAt: serverTimestamp(),
+        username: username,
+        recall: false,
+        seen: false,
+        images: images,
+        orderId: differentData?.orderId,
+        type: type,
     });
 };
 
@@ -476,6 +499,7 @@ const firebaseService = {
     addNotification,
     addConversation,
     setNotification,
+    handleSendOrder,
     setRecallMessage,
     handleSendMessage,
     deleteNotification,

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Fab, Grid, Tooltip } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faEnvelope, faPhone, faAngleRight, faUserTie } from '@fortawesome/free-solid-svg-icons';
@@ -14,12 +14,26 @@ import { RootState } from '@/configs/types';
 import { closeNoty } from '@/redux/slice/appSlice';
 import { links } from '@/datas/links';
 import { contants } from '@/utils/contants';
+import { delay } from '@/utils/funtionals';
 
 export interface IFooterProps {}
 
 export default function Footer(props: IFooterProps) {
     const { notifycation } = useAppSelector((state: RootState) => state.appReducer);
     const { user } = useAppSelector((state: RootState) => state.userReducer);
+
+    const [showChatbox, setShowChatbox] = useState(false);
+
+    useEffect(() => {
+        (async () => {
+            if (user && user.role && !contants.roles.manageRoles.includes(user?.role)) {
+                await delay(2000);
+                setShowChatbox(true);
+            } else {
+                setShowChatbox(false);
+            }
+        })();
+    }, [user]);
 
     const dispath = useAppDispatch();
     return (
@@ -71,7 +85,7 @@ export default function Footer(props: IFooterProps) {
 
                 <div className="bg-white h-[1px] w-full mt-16"></div>
 
-                {user && user.role && !contants.roles.manageRoles.includes(user?.role) && (
+                {showChatbox && (
                     <div className="fixed bottom-[2%] right-[2%] flex flex-col gap-4">
                         <ChatBox />
                     </div>

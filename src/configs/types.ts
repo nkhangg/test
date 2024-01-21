@@ -92,7 +92,7 @@ export type ApiCreateOrder = (data: IOrder) => Promise<IBaseResponse<string>>;
 
 export type ApiBestSellerType = (page: number | undefined) => Promise<IBaseResponse<IApiBestSeller>>;
 
-export type ApiHistory = (page: number | undefined, status: StateType | string) => Promise<IBaseResponse<IOtherHistories>>;
+export type ApiHistory = (page?: number | undefined, status?: StateType | string) => Promise<IBaseResponse<IOtherHistories>>;
 
 export type ApiDetailHistory = (id: string | number) => Promise<IBaseResponse<IDetailOrder>>;
 

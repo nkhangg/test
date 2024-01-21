@@ -68,7 +68,7 @@ export default function NavChatItem({ data, currentUser }: INavChatItemProps) {
 
                 <div className="max-w-full flex flex-col">
                     <h6 className="text-1xl w-[140px] text-ellipsis overflow-hidden whitespace-nowrap ">{user?.username || 'user'}</h6>
-                    {lastMessage && lastMessage?.message.length > 0 && (
+                    {lastMessage && lastMessage?.message && lastMessage?.message.length > 0 && (
                         <p
                             className={classNames('text-sm w-[160px]  overflow-hidden truncate text-ellipsis', {
                                 ['font-semibold']: !lastMessage?.seen,
@@ -79,7 +79,31 @@ export default function NavChatItem({ data, currentUser }: INavChatItemProps) {
                         ></p>
                     )}
                     {!lastMessage ||
-                        (lastMessage?.message.length <= 0 && lastMessage.images && lastMessage.images.length > 0 && (
+                        (lastMessage?.message &&
+                            lastMessage?.message.length <= 0 &&
+                            lastMessage.images &&
+                            lastMessage.images.length > 0 &&
+                            (() => {
+                                // check if message type is message
+                                if (lastMessage.type === 'message') {
+                                    return (
+                                        <p
+                                            className={classNames('text-sm w-[160px]  overflow-hidden truncate text-ellipsis', {
+                                                ['font-semibold']: !lastMessage?.seen,
+                                            })}
+                                            dangerouslySetInnerHTML={{
+                                                __html:
+                                                    lastMessage?.currentUser === user?.username
+                                                        ? `${lastMessage?.currentUser}: ${lastMessage.images.length <= 1 ? 'sent an image' : 'sent images'}`
+                                                        : `you: ${lastMessage.images.length <= 1 ? 'sent an image' : 'sent images'}`,
+                                            }}
+                                        ></p>
+                                    );
+                                }
+                            })())}
+
+                    {!lastMessage ||
+                        (!lastMessage.message && lastMessage.type === 'order' && (
                             <p
                                 className={classNames('text-sm w-[160px]  overflow-hidden truncate text-ellipsis', {
                                     ['font-semibold']: !lastMessage?.seen,
@@ -87,8 +111,8 @@ export default function NavChatItem({ data, currentUser }: INavChatItemProps) {
                                 dangerouslySetInnerHTML={{
                                     __html:
                                         lastMessage?.currentUser === user?.username
-                                            ? `${lastMessage?.currentUser}: ${lastMessage.images.length <= 1 ? 'sent an image' : 'sent images'}`
-                                            : `you: ${lastMessage.images.length <= 1 ? 'sent an image' : 'sent images'}`,
+                                            ? `${lastMessage?.currentUser}: send an order [#${lastMessage.orderId}]`
+                                            : `you: send an order [#${lastMessage.orderId}]`,
                                 }}
                             ></p>
                         ))}

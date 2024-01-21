@@ -1,29 +1,37 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import React, { ClipboardEvent, KeyboardEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, ClipboardEvent, KeyboardEvent, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { EmojiPicker, WrapperAnimation } from '..';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFaceSmile, faPaperPlane, faPhotoFilm, faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
+import { faFaceSmile, faLocationDot, faPaperPlane, faPhotoFilm, faStore, faXmark, faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
 import { EmojiClickData } from 'emoji-picker-react';
 import classNames from 'classnames';
-import { wraperTextToLink } from '@/utils/format';
+import { getIconWithStatus, toCurrency, wraperTextToLink } from '@/utils/format';
 import { getValueOnClipboard } from '@/utils/clipboard';
 import Validate from '@/utils/validate';
 import { validImage } from '@/utils/image';
-import { ImageType } from '@/configs/types';
+import { ImageType, RootState } from '@/configs/types';
 import ImageChatItem from './ImageChatItem';
+import OrderPopup from './components/OrderPopup';
+import { Tooltip } from '@mui/material';
+import { useAppSelector } from '@/hooks/reduxHooks';
+import { contants } from '@/utils/contants';
 
 export interface IChatFooterProps {
     handleSubmit?: (value: string, images?: ImageType[]) => void;
     options?: {
         styleIcon?: string;
     };
+    conversationId?: string;
 }
 
-export default function ChatFooter({ options, handleSubmit }: IChatFooterProps) {
+export default function ChatFooter({ options, conversationId, handleSubmit }: IChatFooterProps) {
+    const { user } = useAppSelector((state: RootState) => state.userReducer);
+
     const refInput = useRef<HTMLInputElement>(null);
 
     const [images, setImages] = useState<ImageType[]>([]);
+    const [isValue, setIsValue] = useState(false);
 
     const handleClickSendMessage = () => {
         if (!refInput.current) return;
@@ -35,6 +43,7 @@ export default function ChatFooter({ options, handleSubmit }: IChatFooterProps) 
         setImages([]);
 
         refInput.current.value = '';
+        setIsValue(false);
     };
 
     const handleKeyOnEnter = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -78,14 +87,23 @@ export default function ChatFooter({ options, handleSubmit }: IChatFooterProps) 
         }
     };
 
+    const handleToggleIsValue = (e: ChangeEvent<HTMLInputElement>) => {
+        if (Validate.isBlank(e.target.value)) {
+            setIsValue(false);
+        } else {
+            setIsValue(true);
+        }
+    };
+
     return (
         <div className="flex flex-col w-full">
-            <div className="w-full flex items-center justify-between px-6 py-4 gap-3">
+            <div className="w-full flex items-center justify-between px-6 py-4 gap-3 ">
                 <div className="flex items-center justify-between bg-[#F3F4F6] flex-1 rounded-full px-5 py-1">
-                    <div className="flex-1 text-sm  text-black-main pr-3">
+                    <div className="flex-1 text-sm text-black-main pr-3 ">
                         <input
                             onPaste={handlePaste}
                             onKeyDown={handleKeyOnEnter}
+                            onChange={handleToggleIsValue}
                             ref={refInput}
                             type="text"
                             className="outline-none border-none bg-transparent w-full placeholder:text-sm "
@@ -93,6 +111,27 @@ export default function ChatFooter({ options, handleSubmit }: IChatFooterProps) 
                         />
                     </div>
                     <div className="flex items-center gap-2 text-[#ACABAB]">
+                        <WrapperAnimation
+                            className={classNames('py-2 cursor-pointer flex items-center justify-center', {
+                                [options?.styleIcon || '']: true,
+                            })}
+                            hover={{}}
+                        >
+                            <FontAwesomeIcon icon={faLocationDot} />
+                        </WrapperAnimation>
+                        {user && contants.roles.userRoles.includes(user.role) && (
+                            <OrderPopup
+                                conversationId={conversationId}
+                                username={user.username}
+                                className={classNames('py-2 cursor-pointer flex items-center justify-center', {
+                                    [options?.styleIcon || '']: true,
+                                })}
+                            >
+                                <Tooltip title="Orders" placement="top">
+                                    <FontAwesomeIcon icon={faStore} />
+                                </Tooltip>
+                            </OrderPopup>
+                        )}
                         <WrapperAnimation
                             className={classNames('py-2 cursor-pointer flex items-center justify-center', {
                                 [options?.styleIcon || '']: true,
@@ -142,17 +181,19 @@ export default function ChatFooter({ options, handleSubmit }: IChatFooterProps) 
                                 </WrapperAnimation>
                             }
                         />
+
+                        <WrapperAnimation
+                            onClick={handleClickSendMessage}
+                            hover={{}}
+                            className={classNames('py-2 cursor-pointer flex items-center justify-center pl-2', {
+                                ['text-green-main-dark']: isValue,
+                                ['text-[#ACABAB]']: !isValue,
+                            })}
+                        >
+                            <FontAwesomeIcon icon={faPaperPlane} />
+                        </WrapperAnimation>
                     </div>
                 </div>
-
-                <WrapperAnimation
-                    onClick={handleClickSendMessage}
-                    hover={{}}
-                    className="flex items-center bg-green-65a30d py-2 rounded-full px-6 text-sm gap-1 cursor-pointer text-white"
-                >
-                    <span>Send</span>
-                    <FontAwesomeIcon icon={faPaperPlane} />
-                </WrapperAnimation>
             </div>
             {images.length > 0 && (
                 <div className="flex items-center flex-wrap gap-2 px-6 mb-2">
