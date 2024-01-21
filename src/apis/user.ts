@@ -373,7 +373,7 @@ export const updateUserStatusOrder: ApiUpdateStatusOrder = async (data: UpdateSt
     return res?.data;
 };
 
-export const otherHistory: ApiHistory = async (page: number | undefined, status: StateType | string) => {
+export const otherHistory: ApiHistory = async (page?: number | undefined, status?: StateType | string) => {
     const res = await axios({
         method: 'GET',
         url: 'user/order/history',

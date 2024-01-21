@@ -7,6 +7,7 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { ChatItem } from '..';
 import { contants } from '@/utils/contants';
+import ChatOrderItem from './ChatOrderItem';
 
 export interface IChatBodyAdminProps {
     conversationId: string;
@@ -50,7 +51,10 @@ export default function ChatBodyAdmin({ conversationId, avartar }: IChatBodyAdmi
         <>
             <div className="bg-[#F3F4F6] flex-1 w-full relative py-8 pb-0 px-5 flex flex-col gap-5 overflow-y-auto scroll hide-scroll scroll-smooth rounded-md shadow-sm">
                 {messagesData.map((item) => {
-                    return <ChatItem avartar={avartar} key={item.id} data={item} me={item?.username === contants.usernameAdmin} />;
+                    if (item.type === 'message') {
+                        return <ChatItem avartar={avartar} key={item.id} data={item} me={item?.username === contants.usernameAdmin} />;
+                    }
+                    return <ChatOrderItem key={item.id} data={item} me={item?.username === contants.usernameAdmin} />;
                 })}
                 <div ref={refDiv} className="h-0"></div>
             </div>

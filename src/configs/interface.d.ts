@@ -585,6 +585,8 @@ export interface IMessage {
     recall: boolean;
     seen: boolean;
     images?: string[];
+    type?: 'message' | 'order' | 'map';
+    orderId?: string;
 }
 
 export interface IUserFirebase {

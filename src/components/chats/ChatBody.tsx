@@ -9,6 +9,7 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import firebaseService from '@/services/firebaseService';
 import { Timestamp } from 'firebase/firestore';
 import { convertFirestoreTimestampToString } from '@/utils/format';
+import ChatOrderItem from './ChatOrderItem';
 
 export interface IChatBodyProps {
     conversationId: string;
@@ -60,7 +61,10 @@ export default function ChatBody({ conversationId, open }: IChatBodyProps) {
         <>
             <div className="bg-[#F3F4F6] flex-1  w-full relative py-8 pb-0 px-5 flex flex-col gap-5 overflow-y-auto scroll hide-scroll scroll-smooth">
                 {messagesData.map((item) => {
-                    return <ChatItem styles={{ maxImageOnRow: 3, ojectFit: 'contain' }} key={item.id} data={item} me={user?.username === item.username} />;
+                    if (item.type === 'message') {
+                        return <ChatItem styles={{ maxImageOnRow: 3, ojectFit: 'contain' }} key={item.id} data={item} me={user?.username === item.username} />;
+                    }
+                    return <ChatOrderItem key={item.id} data={item} me={user?.username === item.username} />;
                 })}
                 <div ref={refDiv} className="h-0 flex-none"></div>
             </div>

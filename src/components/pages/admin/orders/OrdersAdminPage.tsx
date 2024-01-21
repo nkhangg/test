@@ -1,5 +1,5 @@
 'use client';
-import React, { ChangeEvent, createContext, useContext, useState } from 'react';
+import React, { ChangeEvent, createContext, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getOrdersAdminWithFilter } from '@/apis/admin/orders';
 import { HeadHistory, SortAdmin } from '@/components/common';
@@ -77,9 +77,9 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
     // params
     const searchParams = useSearchParams();
     const page = searchParams.get('page');
+    const orderIdParam = searchParams.get('orderId');
 
     // context
-
     const parentContext = useContext(OrderAdminPageContext);
 
     // states
@@ -102,6 +102,13 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
         queryKey: ['ordersAdminPage/getOrdersAdminWithFilter', page, { ...filter, search: searDebounce }],
         queryFn: () => getOrdersAdminWithFilter({ ...filter, search: searDebounce }, page),
     });
+
+    useEffect(() => {
+        if (!orderIdParam || Number.isNaN(orderIdParam)) return;
+
+        setDataOpen(Number(orderIdParam));
+        setOpen(true);
+    }, [orderIdParam]);
 
     if (error) {
         router.back();

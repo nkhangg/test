@@ -34,7 +34,7 @@ export default function ImpactOfYear({ data }: IImpactOfYearProps) {
                         <div className="w-full flex flex-col md:flex-row items-center justify-evenly md:justify-between lg:justify-evenly gap-16">
                             {data.map((item, index) => {
                                 return (
-                                    <DivAnitmation delay={index * 0.2} key={item.quantity}>
+                                    <DivAnitmation delay={index * 0.2} key={item.title}>
                                         <ImpactOfYearItem data={item} />
                                     </DivAnitmation>
                                 );
