@@ -7,27 +7,20 @@ import { TableCell, Typography } from '@mui/material';
 import { formatIndex } from '@/utils/format';
 import { links } from '@/datas/links';
 import Tippy from '@tippyjs/react/headless';
-import { delay } from '@/utils/funtionals';
+import { IPetDetail } from '@/configs/interface';
 
 export interface IRowListPetProps {
     index: number;
-    data: any;
+    data: IPetDetail;
     page: string | null;
 }
 
 export default function RowListPet({ index, data, page }: IRowListPetProps) {
-    const [openPopup, setOpenPopup] = useState(false);
+    // const [openPopup, setOpenPopup] = useState(false);
 
     const router = useRouter();
     return (
-        <TableRow
-            onMouseEnter={async () => {
-                await delay(400);
-                setOpenPopup(true);
-            }}
-            onMouseLeave={() => setOpenPopup(false)}
-            onClick={() => router.push(links.adminFuntionsLink.pets.detail + `/${data.id}`)}
-        >
+        <TableRow onClick={() => router.push(links.adminFuntionsLink.pets.detail + `/${data.id}`)}>
             <TableCell align="left">
                 <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
                     {formatIndex(parseInt(page || '0'), index)}
@@ -36,33 +29,30 @@ export default function RowListPet({ index, data, page }: IRowListPetProps) {
 
             <TableCell align="left">
                 <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
-                    P0001
+                    {data.id}
                 </Typography>
             </TableCell>
             <TableCell align="left">
                 <Tippy
-                    onClickOutside={() => setOpenPopup(false)}
-                    visible={openPopup}
+                    key={index}
+                    interactive
+                    placement="left-end"
+                    delay={200}
                     render={(attr) => {
                         return (
                             <div {...attr} tabIndex={-1} className="w-[200px] h-[200px] max-w-[240px] max-h-[240px] bg-white rounded-lg border border-gray-primary shadow-lg p-3">
-                                <img
-                                    className="w-full h-full object-contain"
-                                    alt="egweg"
-                                    loading="lazy"
-                                    src="https://i.pinimg.com/564x/b7/03/99/b703996784a452d70917b3ed90472498.jpg"
-                                />
+                                <img className="w-full h-full object-contain" alt={data.image} loading="lazy" src={data.image} />
                             </div>
                         );
                     }}
                 >
                     <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
-                        {'Lulu'}
+                        {data.name}
                     </Typography>
                 </Tippy>
             </TableCell>
-            <TableCell align="left">Brow</TableCell>
-            <TableCell align="left">Medium</TableCell>
+            <TableCell align="left">{data.color}</TableCell>
+            <TableCell align="left">{data.size}</TableCell>
             <TableCell align="left">
                 <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
                     <p className="block truncate max-w-[80px]">{"Haven't adopted yet"}</p>
@@ -70,22 +60,22 @@ export default function RowListPet({ index, data, page }: IRowListPetProps) {
             </TableCell>
             <TableCell align="left">
                 <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
-                    12/2/2023
+                    {data.fostered}
                 </Typography>
             </TableCell>
             <TableCell align="left">
                 <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
-                    Husky
+                    {data.breed}
                 </Typography>
             </TableCell>
             <TableCell align="left">
                 <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
-                    Male
+                    {data.sex}
                 </Typography>
             </TableCell>
             <TableCell align="left">
                 <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
-                    True
+                    {data.sterilization}
                 </Typography>
             </TableCell>
         </TableRow>

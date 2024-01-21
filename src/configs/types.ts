@@ -51,6 +51,8 @@ import {
     IRequestFilterPet,
     IPet,
     IPetAttribute,
+    IPetDetail,
+    IRequestFilterPetAdmin,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { RolesName } from './enum';
@@ -79,6 +81,8 @@ export type ApiPetFavorite = (id: string) => Promise<IBaseResponse<any>>;
 export type ApiPetAttributes = () => Promise<IBaseResponse<IPetAttribute>>;
 
 export type ApiFilterPets = (params: IRequestFilterPet) => Promise<IBaseResponse<PagiantionResponse<IPet>>>;
+
+export type ApiFilterPetsAdmin = (params: IRequestFilterPetAdmin) => Promise<IBaseResponse<PagiantionResponse<IPetDetail>>>;
 
 export type ApiReportType = () => Promise<IBaseResponse<IReports>>;
 
