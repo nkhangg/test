@@ -13,7 +13,6 @@ const axiosConfig = axios.create({
 axiosConfig.interceptors.request.use(
     function (config) {
         // Do something before request is sent
-        console.log(config.data);
         const token = getTokenFromCookie();
 
         if (!token || token === '' || token === 'null') {

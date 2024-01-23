@@ -1,4 +1,4 @@
-import { IconBell, IconStars } from '@tabler/icons-react';
+import { IconBell, IconLetterCaseLower, IconQuestionMark, IconStars } from '@tabler/icons-react';
 import { IconLayoutDashboard, IconBox, IconDog, IconUser, IconBoxSeam, IconMessage, IconBrandCake } from '@tabler/icons-react';
 const Menuitems = [
     {
@@ -75,6 +75,16 @@ const Menuitems = [
         title: 'Notification',
         icon: IconBell,
         href: '/admin/dashboard/notification',
+    },
+    {
+        navlabel: true,
+        subheader: 'Feedback Management',
+    },
+    {
+        id: 10,
+        title: 'Feedbacks',
+        icon: IconQuestionMark,
+        href: '/admin/dashboard/feedbacks',
     },
 ];
 

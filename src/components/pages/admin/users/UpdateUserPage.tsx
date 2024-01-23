@@ -68,6 +68,8 @@ export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
         queryFn: () => getUserManage(param || ''),
     });
 
+    console.log(dataUser.data);
+
     const [avartar, setAvartar] = useState(contants.avartarDefault);
     const [openEditor, setOpenEditor] = useState(false);
     const [openPassword, setOpenPassword] = useState(param === 'create');
@@ -218,9 +220,10 @@ export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
                             </div>
 
                             <div className="text-xl font-semibold text-black-main">
-                                <h2>{data.username}</h2>
+                                <h2>{data.displayName || data.username}</h2>
                                 <div className="text-xs text-gray-400 font-normal mt-1 flex flex-col gap-[2px]">
                                     <p>id: {data.id}</p>
+                                    <p>username: {data.username}</p>
                                     <p>active: {data.active + ''}</p>
                                     <span className="">created: {moment(data.createAt).fromNow()}</span>
                                 </div>

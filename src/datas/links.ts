@@ -11,6 +11,7 @@ export const links = {
     adminFuntionsLink: {
         product: {
             create: commonAdmin + '/product/create',
+            index: commonAdmin + '/product',
         },
         users: {
             detail: commonAdmin + '/users/',
@@ -23,6 +24,9 @@ export const links = {
         },
         orders: {
             index: commonAdmin + '/orders',
+        },
+        feedbacks: {
+            index: commonAdmin + '/feedbacks',
         },
     },
     auth: {

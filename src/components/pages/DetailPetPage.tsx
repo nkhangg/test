@@ -131,7 +131,7 @@ export default function DetailPetPage({ params }: IDetailPetPageProps) {
                                 </ul>
                                 <div className="mt-10 flex items-center justify-center md:justify-start flex-col lg:flex-row gap-3">
                                     <MainButton onClick={handleLike} width={207} background="bg-orange-primary" title={data?.data.pet.like ? 'Unfavorite' : 'Favorite'} />
-                                    <MainButton width={207} title="adopt" />
+                                    {data?.data.pet.canAdopt && <MainButton width={207} title="adopt" />}
                                 </div>
                             </div>
                         </div>

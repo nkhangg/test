@@ -53,6 +53,9 @@ import {
     IPetAttribute,
     IPetDetail,
     IRequestFilterPetAdmin,
+    IFeedBackRequest,
+    IFeedback,
+    IManageFeedbackResponse,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { RolesName } from './enum';
@@ -119,6 +122,8 @@ export type ApiGetCurUser = () => Promise<IBaseResponse<IProfile>>;
 export type ApiFilterPage = (data: IDataRequestFilter) => Promise<IBaseResponse<IDataFilterPage>>;
 
 export type ApiHomePage = () => Promise<IBaseResponse<IHomepage>>;
+
+export type ApiSendFeedBack = (data: IFeedBackRequest) => Promise<IBaseResponse<any>>;
 
 export type ApiDetailProductManaege = (id: string) => Promise<IBaseResponse<DataProductType>>;
 
@@ -197,6 +202,10 @@ export type ApiUpdateCartUser = (data: ICart[]) => Promise<IBaseResponse<ICart[]
 export type ApiCreateCartUser = (data: ICart) => Promise<IBaseResponse<ICart>>;
 
 export type ApiGetBrands = () => Promise<IBaseResponse<IBrand[]>>;
+
+export type ApiUpdateSeenFeedback = (id: string) => Promise<IBaseResponse<any>>;
+
+export type ApiGetFeedbacks = (page?: string | null) => Promise<IBaseResponse<IManageFeedbackResponse>>;
 
 export type ApiGetReviews = (data: IReviewAdminFillterForm, page: string | null) => Promise<IBaseResponse<PagiantionResponse<IRowReviewTable>>>;
 
