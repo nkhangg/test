@@ -78,8 +78,6 @@ function SearchFilter(props: ISearchFilterProps) {
             router.push(links.message + `/${data.username}/${data.conversationId}`);
             return;
         }
-
-        console.log(data);
         handleOpenDialog(data);
 
         handleClose();

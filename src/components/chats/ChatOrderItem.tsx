@@ -68,7 +68,7 @@ export default function ChatOrderItem({ data, me }: ChatOrderItemProps) {
                             <>
                                 <div className="flex items-center justify-between px-3 w-full font-medium text-sm">
                                     {user && contants.roles.manageRoles.includes(user.role) ? (
-                                        <Link className="hover:underline" href={links.adminFuntionsLink.orders.index + `?orderId=${dataOrder.id}`}>
+                                        <Link target="_blank" className="hover:underline" href={links.adminFuntionsLink.orders.index + `?orderId=${dataOrder.id}`}>
                                             #{dataOrder?.id} {dataOrder?.state} {dataOrder?.placedDate}
                                         </Link>
                                     ) : (
@@ -82,7 +82,12 @@ export default function ChatOrderItem({ data, me }: ChatOrderItemProps) {
 
                                     <div className="w-full  flex-1">
                                         <Link
-                                            href={links.produt + `${dataOrder.products[0].id}/${stringToUrl(dataOrder.products[0].name)}`}
+                                            target="_blank"
+                                            href={
+                                                user && contants.roles.manageRoles.includes(user.role)
+                                                    ? links.adminFuntionsLink.product.index + `/${dataOrder.products[0].id}`
+                                                    : links.produt + `${dataOrder.products[0].id}/${stringToUrl(dataOrder.products[0].name)}`
+                                            }
                                             className="line-clamp-1 hover:underline"
                                         >
                                             {dataOrder.products[0].name}

@@ -16,7 +16,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React, { ChangeEvent, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 
-const listHead = ['No', 'Avatar', 'Username', 'Fullname', 'Email', 'Gender', 'Phone', 'Role', 'Actions'];
+const listHead = ['No', 'Avatar', 'Username', 'Display name', 'Fullname', 'Email', 'Gender', 'Phone', 'Role', 'Actions'];
 
 const listSort = [
     {

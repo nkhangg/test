@@ -43,20 +43,26 @@ export default function RowListUser({ data, index, handleDeleteUser }: IRowListU
 
             {/* username */}
             <TableCell>
-                <Typography color="textSecondary" variant="subtitle2" fontSize={'16px'} maxWidth={'200px'} fontWeight={400} className="truncate">
+                <Typography color="textSecondary" variant="subtitle2" fontSize={'16px'} maxWidth={'100px'} fontWeight={400} className="truncate">
                     {data.username}
+                </Typography>
+            </TableCell>
+            {/* Display name */}
+            <TableCell>
+                <Typography color="textSecondary" variant="subtitle2" fontSize={'16px'} maxWidth={'100px'} fontWeight={400} className="truncate">
+                    {data.displayName}
                 </Typography>
             </TableCell>
 
             {/* fullname */}
             <TableCell align="left">
-                <Typography color="textSecondary" variant="subtitle2" fontSize={'16px'} maxWidth={'200px'} fontWeight={400} className="truncate">
+                <Typography color="textSecondary" variant="subtitle2" fontSize={'16px'} maxWidth={'100px'} fontWeight={400} className="truncate">
                     {data.fullname}
                 </Typography>
             </TableCell>
             {/* email */}
             <TableCell align="left">
-                <Typography color="textSecondary" variant="subtitle2" fontSize={'16px'} maxWidth={'200px'} fontWeight={400} className="truncate">
+                <Typography color="textSecondary" variant="subtitle2" fontSize={'16px'} maxWidth={'100px'} fontWeight={400} className="truncate">
                     {data.email}
                 </Typography>
             </TableCell>
@@ -71,7 +77,7 @@ export default function RowListUser({ data, index, handleDeleteUser }: IRowListU
             {/* role */}
             <TableCell align="center">{formatRole((data.role as RoleType) || 'ROLE_USER')}</TableCell>
 
-            <TableCell align="center">
+            <TableCell align="left">
                 {(() => {
                     let conditionShowBtn = false;
 

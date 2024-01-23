@@ -169,6 +169,7 @@ export interface IPetDetail extends IPet {
     sterilization: string;
     color: string;
     images: string[];
+    canAdopt: boolean;
 }
 
 export interface IPetDetailPageResponse {
@@ -360,6 +361,7 @@ export interface IUserManage {
     createAt: string;
     password: string;
     active: boolean;
+    displayName?: string;
 }
 
 export interface IDetailOrder {
@@ -716,4 +718,24 @@ export interface IPetAttribute {
     states: IFilter[];
     breeds: IFilter[];
     typies: IFilter[];
+}
+
+export interface IFeedBackRequest {
+    fullname: string;
+    phone: string;
+    email: string;
+    message: string;
+}
+
+export interface IFeedback {
+    id: string;
+    fullname: string;
+    phone: string;
+    email: string;
+    message: string;
+    seen: boolean;
+}
+
+export interface IManageFeedbackResponse extends PagiantionResponse<IFeedback> {
+    total: number;
 }

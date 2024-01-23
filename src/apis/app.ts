@@ -1,7 +1,7 @@
-import { ApiBestSellerType, ApiFilterPage, ApiGetUsers, ApiHomePage, ApiTakeActionType, ApiTypesAndBrands } from '@/configs/types';
+import { ApiBestSellerType, ApiFilterPage, ApiGetUsers, ApiHomePage, ApiSendFeedBack, ApiTakeActionType, ApiTypesAndBrands } from '@/configs/types';
 
 import axios from '../configs/axios';
-import { IDataRequestFilter } from '@/configs/interface';
+import { IDataRequestFilter, IFeedBackRequest } from '@/configs/interface';
 
 export const getUsers: ApiGetUsers = async () => {
     const res = await axios({
@@ -66,6 +66,18 @@ export const homepage: ApiHomePage = async () => {
     const res = await axios({
         method: 'GET',
         url: '/home-pages',
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const sendFeedback: ApiSendFeedBack = async (data: IFeedBackRequest) => {
+    const res = await axios({
+        method: 'POST',
+        url: '/feedbacks',
+        data,
     });
 
     if (!res) return null;

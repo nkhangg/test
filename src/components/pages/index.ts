@@ -64,5 +64,7 @@ export { default as ArableSnapshotsPage } from './arable-snapshots/ArableSnapsho
 export { default as AdorableSnapshotsProfilePage } from './arable-snapshots/AdorableSnapshotsProfilePage';
 
 // pets
-
 export { default as PetManagePage } from './pets/PetManagePage';
+
+// feedbacks
+export { default as FeedbackManagementPage } from './admin/feedbacks/FeedbackManagementPage';
