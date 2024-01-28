@@ -8,9 +8,10 @@ export interface IAddressItemProps {
     handleEdit?: (e?: MouseEvent<HTMLSpanElement>, data?: IInfoAddress) => void;
     handleDelete?: (e?: MouseEvent<HTMLSpanElement>, data?: IInfoAddress) => void;
     handleClick?: (e?: MouseEvent<HTMLSpanElement>, data?: IInfoAddress) => void;
+    disableControll?: boolean;
 }
 
-export default function AddressItem({ data, handleEdit, handleClick, handleDelete }: IAddressItemProps) {
+export default function AddressItem({ data, disableControll = false, handleEdit, handleClick, handleDelete }: IAddressItemProps) {
     return (
         <div
             onClick={(e) => {
@@ -31,29 +32,31 @@ export default function AddressItem({ data, handleEdit, handleClick, handleDelet
                     </div>
                 </Grid>
                 <Grid item lg={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <div className="flex items-center justify-center h-full gap-2 text-violet-primary font-medium text-sm">
-                        <span
-                            onClick={(e) => {
-                                if (!handleEdit) return;
-                                e.stopPropagation();
-                                handleEdit(e, data);
-                            }}
-                            className="hover:underline cursor-pointer"
-                        >
-                            Edit
-                        </span>
-                        <span className="w-[2px] h-[18px] bg-[#BCB9B9]"></span>
-                        <span
-                            onClick={(e) => {
-                                if (!handleDelete) return;
-                                e.stopPropagation();
-                                handleDelete(e, data);
-                            }}
-                            className="hover:underline cursor-pointer"
-                        >
-                            Remove
-                        </span>
-                    </div>
+                    {!disableControll && (
+                        <div className="flex items-center justify-center h-full gap-2 text-violet-primary font-medium text-sm">
+                            <span
+                                onClick={(e) => {
+                                    if (!handleEdit) return;
+                                    e.stopPropagation();
+                                    handleEdit(e, data);
+                                }}
+                                className="hover:underline cursor-pointer"
+                            >
+                                Edit
+                            </span>
+                            <span className="w-[2px] h-[18px] bg-[#BCB9B9]"></span>
+                            <span
+                                onClick={(e) => {
+                                    if (!handleDelete) return;
+                                    e.stopPropagation();
+                                    handleDelete(e, data);
+                                }}
+                                className="hover:underline cursor-pointer"
+                            >
+                                Remove
+                            </span>
+                        </div>
+                    )}
                 </Grid>
             </Grid>
         </div>

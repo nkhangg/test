@@ -21,6 +21,20 @@ export const getProvinces: ApiProvinces<IProvinces[]> = async (data?: string | n
     return res?.data;
 };
 
+export const searchProvincesWithName: ApiProvinces<IProvinces[]> = async (data?: string | number) => {
+    const res = await axios({
+        method: 'GET',
+        url: contants.apis.provinces + `search/?q=` + data,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
 export const searchProvinces: ApiProvincesOutside = async (data?: string | number) => {
     const res = await axios({
         method: 'GET',

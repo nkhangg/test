@@ -1,5 +1,5 @@
 import exp from 'constants';
-import { StateType, TypeNotification, UserFormType } from './types';
+import { AddressFirebase, Point, StateType, TypeNotification, UserFormType } from './types';
 import { Timestamp } from 'firebase/firestore';
 
 export interface Action<T, P> {
@@ -589,6 +589,8 @@ export interface IMessage {
     images?: string[];
     type?: 'message' | 'order' | 'map';
     orderId?: string;
+    location?: Point;
+    address?: IAddress | string;
 }
 
 export interface IUserFirebase {

@@ -86,7 +86,9 @@ export default function AddressTippy({ data, placeholder, messageUndefined, init
 
     useEffect(() => {
         if (!initData) return;
-        setValue(initData);
+        requestIdleCallback(() => {
+            setValue(initData);
+        });
     }, [initData]);
 
     useEffect(() => {
@@ -146,7 +148,7 @@ export default function AddressTippy({ data, placeholder, messageUndefined, init
                     <TextField
                         label={label}
                         message={error}
-                        autoComplete={name}
+                        autoComplete={'off'}
                         onBlur={!showPopup ? handleBlur : undefined}
                         name={name}
                         value={value}

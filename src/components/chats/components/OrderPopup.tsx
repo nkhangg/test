@@ -38,7 +38,7 @@ export default function OrderPopup({ children, className, conversationId, userna
             return null;
         }
 
-        if (rawOrder.length > 1) {
+        if (rawOrder && rawOrder.length > 1) {
             return rawOrder;
         }
 

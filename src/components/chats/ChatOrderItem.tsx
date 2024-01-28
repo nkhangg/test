@@ -67,15 +67,20 @@ export default function ChatOrderItem({ data, me }: ChatOrderItemProps) {
                         {!data.recall && dataOrder && !rawOrder.isLoading && (
                             <>
                                 <div className="flex items-center justify-between px-3 w-full font-medium text-sm">
-                                    {user && contants.roles.manageRoles.includes(user.role) ? (
-                                        <Link target="_blank" className="hover:underline" href={links.adminFuntionsLink.orders.index + `?orderId=${dataOrder.id}`}>
-                                            #{dataOrder?.id} {dataOrder?.state} {dataOrder?.placedDate}
-                                        </Link>
-                                    ) : (
-                                        <span>
-                                            #{dataOrder?.id} {dataOrder?.state} {dataOrder?.placedDate}
-                                        </span>
-                                    )}
+                                    <Link
+                                        target="_blank"
+                                        className="hover:underline"
+                                        href={
+                                            user && contants.roles.manageRoles.includes(user.role)
+                                                ? links.adminFuntionsLink.orders.index + `?orderId=${dataOrder.id}`
+                                                : links.history.orderHistory + `/${dataOrder.id}`
+                                        }
+                                    >
+                                        #{dataOrder?.id} {dataOrder?.state} {dataOrder?.placedDate}
+                                    </Link>
+                                    {/* <Link target="_blank" className="hover:underline" href={links.adminFuntionsLink.orders.index + `?orderId=${dataOrder.id}`}>
+                                        #{dataOrder?.id} {dataOrder?.state} {dataOrder?.placedDate}
+                                    </Link> */}
                                 </div>
                                 <div className="flex items-center gap-2 text-sm px-3 py-2 w-full">
                                     <img loading="lazy" className="w-[60px] h-[60px] object-contain" src={dataOrder?.products[0].image} alt={dataOrder?.products[0].image} />
@@ -113,7 +118,14 @@ export default function ChatOrderItem({ data, me }: ChatOrderItemProps) {
                     {me && !data.recall && <PopupMessage data={data} />}
                 </div>
 
-                <span className="text-xs px-2 text-[#8D8D8D] italic text-right w-full">{moment(data.sendAt).fromNow()}</span>
+                <span
+                    className={classNames('text-xs px-2 text-[#8D8D8D] italic w-full', {
+                        [' text-right']: me,
+                        'text-left': !me,
+                    })}
+                >
+                    {moment(data.sendAt).fromNow()}
+                </span>
             </div>
         </div>
     );

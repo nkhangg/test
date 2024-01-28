@@ -16,6 +16,8 @@ export interface IPetsProps {
     options?: {
         buttonTitle?: string;
         href?: string;
+        baseHref?: string;
+        pages?: number;
     };
 }
 
@@ -43,7 +45,7 @@ export default function Pets({ data, heading, bottom = 'load-more', background =
                 </div>
             )}
 
-            {bottom === 'pagination' && <Pagination pages={10} />}
+            {bottom === 'pagination' && options?.pages && options.pages > 1 && <Pagination baseHref={options?.baseHref} pages={options?.pages || 1} />}
         </ContainerContent>
     );
 }

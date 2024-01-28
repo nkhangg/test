@@ -89,6 +89,7 @@ export { default as WraperTippy } from './boxs/WraperTippy';
 export { default as BoxPost } from './boxs/posts/BoxPost';
 export { default as BoxPostHighlight } from './boxs/posts/BoxPostHighlight';
 export { default as InfinityPosts } from './boxs/posts/InfinityPosts';
+export { default as MapWraper } from './boxs/maps/MapWraper';
 
 // paginations
 export { default as Pagination } from './pagination/Pagination';
@@ -122,6 +123,8 @@ export { default as UpdateNotificationDialog } from './dialogs/notification-dial
 export { default as SettingNotificationDialog } from './dialogs/notification-dialog/SettingNotificationDialog';
 export { default as PostDialog } from './dialogs/posts/PostDialog';
 export { default as PostDetailDialog } from './dialogs/posts/PostDetailDialog';
+export { default as MapDialog } from './dialogs/maps/MapDialog';
+export { default as Markers } from './dialogs/maps/Markers';
 
 // chats
 

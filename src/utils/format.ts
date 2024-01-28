@@ -4,6 +4,7 @@ import { RoleType, StateType, TypeNotification } from '@/configs/types';
 import { faBox, faCarSide, faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { Timestamp } from 'firebase/firestore';
 import moment from 'moment';
+import Validate from './validate';
 
 const floor = Math.floor,
     abs = Math.abs,
@@ -106,6 +107,9 @@ export function dataURLtoFile(dataurl: string) {
 }
 
 export const addressToString = (value: IAddress) => {
+    if (Validate.isBlank(value.address)) {
+        return `${value.ward}, ${value.district}, ${value.province}`;
+    }
     return `${value.address}, ${value.ward}, ${value.district}, ${value.province}`;
 };
 

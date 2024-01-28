@@ -85,6 +85,32 @@ html {
     -webkit-text-fill-color: transparent;
 }
 
+.speech::after {
+    display: block;
+    width: 0;
+    content: '';
+    border: 12px solid transparent;
+}
+
+/* (C) "CALLOUT" DIRECTIONS */
+
+.speech.down::after {
+    border-top-color: #fff;
+    border-bottom: 0;
+}
+
+.speech {
+    position: relative;
+}
+.speech::after {
+    position: absolute;
+}
+
+.speech.down::after {
+    bottom: -11px;
+    left: calc(50% - 12px);
+}
+
 @layer base {
     .gradient-btn {
         @apply bg-gradient-to-r from-[rgba(179,168,255,1)] via-[rgba(200,173,255,1)] to-[rgba(73,182,255,1)];
