@@ -11,6 +11,7 @@ import {
     ApiGetCartUser,
     ApiGetCurUser,
     ApiGetDefaultAddress,
+    ApiGetFavorite,
     ApiGetRecentViews,
     ApiGetSearchHistories,
     ApiHandleAddresses,
@@ -461,6 +462,26 @@ export const updateRecentViews: ApiActionRecentViews = async (id: string) => {
     const res = await axios({
         method: 'PUT',
         url: 'user/recent-views/' + id,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const getFavorite: ApiGetFavorite = async (page?: string | null) => {
+    const params: { page?: string } = {};
+
+    if (!page && params.page) {
+        delete params.page;
+    } else if (page) {
+        params.page = page;
+    }
+
+    const res = await axios({
+        method: 'GET',
+        url: 'user/pets/favorites',
+        params,
     });
 
     if (!res) return null;

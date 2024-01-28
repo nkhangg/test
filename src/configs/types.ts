@@ -56,6 +56,7 @@ import {
     IFeedBackRequest,
     IFeedback,
     IManageFeedbackResponse,
+    IAddress,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { RolesName } from './enum';
@@ -110,6 +111,8 @@ export type ApiActionSearchHistories = (data: ISearchItem) => Promise<IBaseRespo
 export type ApiGetRecentViews = () => Promise<IBaseResponse<IProduct[]>>;
 
 export type ApiActionRecentViews = (id: string) => Promise<IBaseResponse<IProduct[]>>;
+
+export type ApiGetFavorite = (page?: string | null) => Promise<IBaseResponse<PagiantionResponse<IPet>>>;
 
 export type ApiTypesAndBrands = () => Promise<IBaseResponse<TypesAndBrands>>;
 
@@ -188,6 +191,8 @@ export type ApiUpdateStatusOrder = (data: UpdateStatusOrderType) => Promise<IBas
 export type ApiGetDefaultAddress = () => Promise<IBaseResponse<IInfoAddress>>;
 
 export type ApiGetAddresses = () => Promise<IBaseResponse<IInfoAddress[]>>;
+
+export type ApiGetAddressesWithUsernameByAdmin = (username: string) => Promise<IBaseResponse<IInfoAddress[]>>;
 
 export type ApiGetAddressesById = (id: number) => Promise<IBaseResponse<IInfoAddress>>;
 
@@ -335,3 +340,5 @@ export type ImageType = {
     link: string;
     data: File | null;
 };
+
+export type Point = google.maps.LatLngLiteral & { key: string; yourLocation?: boolean };

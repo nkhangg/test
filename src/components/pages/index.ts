@@ -68,3 +68,6 @@ export { default as PetManagePage } from './pets/PetManagePage';
 
 // feedbacks
 export { default as FeedbackManagementPage } from './admin/feedbacks/FeedbackManagementPage';
+
+// favorite page
+export { default as FavoritePage } from './FavoritePage';

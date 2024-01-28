@@ -1,6 +1,6 @@
 import { uploadImagesMessage } from '@/apis/admin/images';
 import { db } from '@/configs/firebase';
-import { IImageDefaultNotification, INotification, IPet, IProfile } from '@/configs/interface';
+import { IImageDefaultNotification, IMessage, INotification, IPet, IProfile } from '@/configs/interface';
 import { ImageType, TypeNotification } from '@/configs/types';
 import { links } from '@/datas/links';
 import { contants } from '@/utils/contants';
@@ -436,6 +436,28 @@ const handleSendOrder = async (conversationId: string, username: string, differe
     });
 };
 
+const handleSendMap = async (conversationId: string, username: string, data: { address: IMessage['address']; location: IMessage['location'] }, isAdmin = false) => {
+    const newMessage = await addDoc(collection(db, 'messages'), {
+        conversationId: conversationId,
+        currentUser: username,
+        message: null,
+        sendAt: serverTimestamp(),
+        username: isAdmin ? contants.usernameAdmin : username,
+        recall: false,
+        seen: false,
+        images: null,
+        orderId: null,
+        type: 'map',
+        ...data,
+    });
+
+    const idNewMessage = newMessage.id;
+
+    await firebaseService.setNewMessageConversation(conversationId, idNewMessage);
+
+    return newMessage;
+};
+
 const handleMarkAllAsRead = async (dataNotifications: INotification[], user: IProfile | null) => {
     if (!user) return;
 
@@ -495,6 +517,7 @@ const firebaseService = {
     setRead,
     setLastseen,
     setUserInBd,
+    handleSendMap,
     setSeenMessage,
     addNotification,
     addConversation,

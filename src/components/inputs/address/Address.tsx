@@ -8,7 +8,7 @@ import Validate from '@/utils/validate';
 import AddressTippy from './AddressTippy';
 import TextField from '../TextField';
 
-interface Address {
+export interface Address {
     province: IProvinces | undefined;
     district: IDistrict | undefined;
     ward: IWard | undefined;

@@ -3,7 +3,7 @@ import { IConversationId, IProfile } from '@/configs/interface';
 import { links } from '@/datas/links';
 import { useGetInfoNavbarItem } from '@/hooks';
 import { contants } from '@/utils/contants';
-import { convertFirestoreTimestampToString } from '@/utils/format';
+import { addressToString, convertFirestoreTimestampToString } from '@/utils/format';
 import { Avatar } from '@mui/material';
 import moment from 'moment';
 import Link from 'next/link';
@@ -113,6 +113,24 @@ export default function NavChatItem({ data, currentUser }: INavChatItemProps) {
                                         lastMessage?.currentUser === user?.username
                                             ? `${lastMessage?.currentUser}: send an order [#${lastMessage.orderId}]`
                                             : `you: send an order [#${lastMessage.orderId}]`,
+                                }}
+                            ></p>
+                        ))}
+                    {!lastMessage ||
+                        (!lastMessage.message && lastMessage.type === 'map' && (
+                            <p
+                                className={classNames('text-sm w-[160px]  overflow-hidden truncate text-ellipsis', {
+                                    ['font-semibold']: !lastMessage?.seen,
+                                })}
+                                dangerouslySetInnerHTML={{
+                                    __html:
+                                        lastMessage?.currentUser === user?.username
+                                            ? `${lastMessage?.currentUser}: send an address [#${
+                                                  lastMessage.address && (typeof lastMessage.address === 'string' ? lastMessage.address : addressToString(lastMessage.address))
+                                              }]`
+                                            : `you: send an address [#${
+                                                  lastMessage.address && (typeof lastMessage.address === 'string' ? lastMessage.address : addressToString(lastMessage.address))
+                                              }]`,
                                 }}
                             ></p>
                         ))}

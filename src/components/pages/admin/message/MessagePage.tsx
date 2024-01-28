@@ -75,7 +75,9 @@ export default function MessagePage({ params }: IMessagePageProps) {
                 options={{
                     styleIcon: 'text-lg',
                 }}
+                params={params}
                 handleSubmit={handleSendMessage}
+                conversationId={params.id}
             />
         </div>
     );
