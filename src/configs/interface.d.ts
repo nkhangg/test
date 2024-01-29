@@ -367,7 +367,7 @@ export interface IUserManage {
 export interface IDetailOrder {
     id: number;
     placedDate: string;
-    state: String;
+    state: string;
     name: string;
     phone: string;
     address: string;
@@ -689,6 +689,14 @@ export interface INotification {
         start?: number | null;
         end?: number | null;
     };
+    meta?: {
+        keys?: INotificationKey[];
+    };
+}
+
+export interface INotificationKey {
+    name: string;
+    color: string;
 }
 
 export interface IImageDefaultNotification {

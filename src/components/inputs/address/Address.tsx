@@ -2,7 +2,6 @@
 import React, { ChangeEvent, FocusEvent, createContext, memo, useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getDistrichts, getProvinces, getWards } from '@/apis/outside';
-import AddressItem from './AddressItem';
 import { IAddress, IDistrict, IProvinces, IWard } from '@/configs/interface';
 import Validate from '@/utils/validate';
 import AddressTippy from './AddressTippy';
@@ -139,7 +138,6 @@ function Address({ initData, onValidate, onAddress }: IAddressProps) {
                     name="province"
                     initData={initData && initData.province}
                     onValue={async (value) => {
-                        console.log(value);
                         setAddress({
                             ...address,
                             province: value as IProvinces,

@@ -1,5 +1,5 @@
 import { RolesName } from '@/configs/enum';
-import { IAddress } from '@/configs/interface';
+import { IAddress, INotification, INotificationKey } from '@/configs/interface';
 import { RoleType, StateType, TypeNotification } from '@/configs/types';
 import { faBox, faCarSide, faCheckCircle, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { Timestamp } from 'firebase/firestore';
@@ -218,4 +218,22 @@ export function convertMsToTime(milliseconds: number) {
     hours = hours % 24;
 
     return hours;
+}
+
+export function paseDataNotification<T>(noti: INotification, data: T) {
+    let result = noti.content;
+    if (!noti || !noti.meta || !noti.meta.keys) return result;
+
+    noti.meta.keys.forEach((key, index) => {
+        if (result.includes(`@${key.name}`)) {
+            result = result.replaceAll(`@${key.name}`, `<span style="color: ${key.color};">${data[key.name as keyof T]}</span>`);
+        }
+    });
+    return result;
+}
+
+export function paseDataNotificationPreview(value: string, keys: INotificationKey[]) {
+    return keys.reduce((curentItem, item) => {
+        return curentItem.replaceAll(`@${item.name}`, `<span style="color: ${item.color};">@${item.name}</span>`);
+    }, value);
 }

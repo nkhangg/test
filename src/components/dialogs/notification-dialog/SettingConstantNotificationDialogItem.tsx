@@ -24,6 +24,11 @@ export default function SettingConstantNotificationDialogItem({ data, user }: IS
 
             {open && (
                 <UpdateNotificationDialog
+                    disableDeleteButton={true}
+                    disableImageDefault={true}
+                    disableRecipient={true}
+                    disableLink={true}
+                    disableAdvanced={false}
                     options={{ queryFn: firebaseService.querys.getConstantNotification, conllectionName: 'config-constant-notifications' }}
                     open={open}
                     setOpen={setOpen}

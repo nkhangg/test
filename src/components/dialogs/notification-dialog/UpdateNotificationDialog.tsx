@@ -19,6 +19,8 @@ import { toast } from 'react-toastify';
 import { contants } from '@/utils/contants';
 import { useGetNotification } from '@/hooks';
 import { DocumentData, DocumentSnapshot } from 'firebase/firestore';
+import { paseDataNotification, paseDataNotificationPreview } from '@/utils/format';
+import ColorItem from './ColorItem';
 
 const typesArr = ['none', 'success', 'error', 'warning', 'info'];
 
@@ -52,10 +54,25 @@ export interface IUpdateNotificationDialogProps {
         queryFn?: (notificationId: string) => Promise<DocumentSnapshot<DocumentData, DocumentData> | undefined>;
         conllectionName?: string;
     };
+    disableRecipient?: boolean;
+    disableImageDefault?: boolean;
+    disableDeleteButton?: boolean;
+    disableAdvanced?: boolean;
+    disableLink?: boolean;
     setOpen: (open: boolean) => void;
 }
 
-export default function UpdateNotificationDialog({ idOpen, open, options, setOpen }: IUpdateNotificationDialogProps) {
+export default function UpdateNotificationDialog({
+    idOpen,
+    open,
+    options,
+    disableImageDefault = false,
+    disableRecipient = false,
+    disableDeleteButton = false,
+    disableAdvanced = true,
+    disableLink = false,
+    setOpen,
+}: IUpdateNotificationDialogProps) {
     // redux
     const { user } = useAppSelector((state: RootState) => state.userReducer);
 
@@ -87,8 +104,8 @@ export default function UpdateNotificationDialog({ idOpen, open, options, setOpe
     // default
     const [form, setForm] = useState<TypeForm>(initData);
     const [photo, setPhoto] = useState<IImageDefaultNotification | undefined>(undefined);
-
     const [errors, setErrors] = useState({ ...initData });
+    const [keys, setKeys] = useState(dataNotification?.meta?.keys);
 
     // confirm
     const [openComfirm, setOpenComfirm] = useState({ open: false, comfirm: 'cancel' });
@@ -143,6 +160,9 @@ export default function UpdateNotificationDialog({ idOpen, open, options, setOpe
                 photourl: dataNotification.photourl,
                 type: dataNotification.type,
             });
+            if (!dataNotification || !dataNotification.meta || !dataNotification.meta.keys) return;
+
+            setKeys(dataNotification.meta.keys);
         });
 
         if (!dataNotification.options || !dataNotification.options.end || !dataNotification.options.start) return;
@@ -243,6 +263,12 @@ export default function UpdateNotificationDialog({ idOpen, open, options, setOpe
     const handleSubmit = async () => {
         if (validate()) return;
 
+        const meta: INotification['meta'] = {};
+
+        if (keys && keys.length) {
+            meta.keys = keys;
+        }
+
         if (photo?.file) {
             try {
                 const response = await uploadImagesNotification([{ link: photo.photourl, data: photo.file }]);
@@ -266,6 +292,7 @@ export default function UpdateNotificationDialog({ idOpen, open, options, setOpe
                     options: {
                         ...positionText,
                     },
+                    ...meta,
                 });
             } catch (error) {
                 toast.error(contants.messages.errors.server);
@@ -291,6 +318,9 @@ export default function UpdateNotificationDialog({ idOpen, open, options, setOpe
                 type: typeNotification,
                 options: {
                     ...positionText,
+                },
+                meta: {
+                    ...meta,
                 },
             },
             options?.conllectionName,
@@ -364,17 +394,19 @@ export default function UpdateNotificationDialog({ idOpen, open, options, setOpe
                 <div className="flex items-center justify-between py-6 mx-7 border-b border-gray-primary">
                     <span className="text-xl font-semibold">PUSH NOTIFICATION</span>
                     <div className="flex items-center gap-8">
-                        <WrapperAnimation
-                            hover={{}}
-                            onClick={handleOpenConfirmDelete}
-                            className={classNames('rounded-2xl border  text-sm py-2 px-4 cursor-pointer font-semibold capitalize min-w-[80px] text-center', {
-                                [`border-[#EF4444]`]: true,
+                        {!disableDeleteButton && (
+                            <WrapperAnimation
+                                hover={{}}
+                                onClick={handleOpenConfirmDelete}
+                                className={classNames('rounded-2xl border  text-sm py-2 px-4 cursor-pointer font-semibold capitalize min-w-[80px] text-center', {
+                                    [`border-[#EF4444]`]: true,
 
-                                [`bg-[#FADCD9]`]: true,
-                            })}
-                        >
-                            delete
-                        </WrapperAnimation>
+                                    [`bg-[#FADCD9]`]: true,
+                                })}
+                            >
+                                delete
+                            </WrapperAnimation>
+                        )}
 
                         <WrapperAnimation onClick={() => setOpen(false)} className="cursor-pointer">
                             <FontAwesomeIcon icon={faXmark} />
@@ -405,28 +437,30 @@ export default function UpdateNotificationDialog({ idOpen, open, options, setOpe
                             })}
                         </div>
                     </div>
-                    <div className="flex items-center gap-5">
-                        <span className="text-1xl font-medium">Recipient: </span>
+                    {!disableRecipient && (
+                        <div className="flex items-center gap-5">
+                            <span className="text-1xl font-medium">Recipient: </span>
 
-                        <div className="flex items-center gap-4 flex-wrap">
-                            {recipientArr.map((item, index) => {
-                                return (
-                                    <WrapperAnimation
-                                        onClick={(e) => handleChooseTypeRecipient(item)}
-                                        key={item.id}
-                                        hover={{}}
-                                        className={classNames('rounded-2xl border  text-sm py-2 px-4 cursor-pointer font-semibold min-w-[80px] text-center', {
-                                            'border-[#505DE8]': typeRecipient.id === index,
-                                        })}
-                                    >
-                                        {item.title}
-                                    </WrapperAnimation>
-                                );
-                            })}
+                            <div className="flex items-center gap-4 flex-wrap">
+                                {recipientArr.map((item, index) => {
+                                    return (
+                                        <WrapperAnimation
+                                            onClick={(e) => handleChooseTypeRecipient(item)}
+                                            key={item.id}
+                                            hover={{}}
+                                            className={classNames('rounded-2xl border  text-sm py-2 px-4 cursor-pointer font-semibold min-w-[80px] text-center', {
+                                                'border-[#505DE8]': typeRecipient.id === index,
+                                            })}
+                                        >
+                                            {item.title}
+                                        </WrapperAnimation>
+                                    );
+                                })}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
-                    {typeRecipient.id !== 0 && (
+                    {typeRecipient.id !== 0 && !disableRecipient && (
                         <div className="flex items-center ">
                             <div className="flex flex-1 items-center gap-4 w-full flex-wrap">
                                 {recipients.map((item, index) => {
@@ -477,25 +511,65 @@ export default function UpdateNotificationDialog({ idOpen, open, options, setOpe
                             placeholder="Title..."
                         />
                     </div>
-                    <div className="flex flex-col justify-between gap-2">
-                        <span className='className="text-1xl font-medium"'>Link: </span>
-                        <TextField
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={form.link}
-                            message={errors.link}
-                            id="link"
-                            name="link"
-                            fullWidth
-                            size="small"
-                            placeholder="Link..."
-                        />
-                    </div>
+                    {!disableLink && (
+                        <div className="flex flex-col justify-between gap-2">
+                            <span className='className="text-1xl font-medium"'>Link: </span>
+                            <TextField
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={form.link}
+                                message={errors.link}
+                                id="link"
+                                name="link"
+                                fullWidth
+                                size="small"
+                                placeholder="Link..."
+                            />
+                        </div>
+                    )}
                     <div className="flex flex-col justify-between gap-2">
                         <div className="flex items-center gap-2">
-                            <span className='className="text-1xl font-medium"'>Message: </span>
-                            <small className="text-gray-400 italic text-sm">You can select the text to highlight according to the style you have chosen</small>
-                            {positionText.end && positionText.start && typeNotification !== 'none' && (
+                            {disableAdvanced && (
+                                <>
+                                    <span className='className="text-1xl font-medium"'>Message: </span>
+                                    <small className="text-gray-400 italic text-sm">You can select the text to highlight according to the style you have chosen</small>
+                                </>
+                            )}
+
+                            {!disableAdvanced && (
+                                <div className="flex flex-col">
+                                    <span className='className="text-1xl font-medium"'>Message: </span>
+                                    <ul className="list-disc pl-5 flex flex-col gap-2">
+                                        <li className="text-gray-400 italic text-sm flex items-center gap-2">
+                                            <span>You can select the text to highlight according to the style you have chosen</span>
+                                            <small onClick={handleClearSelectText} className="text-fill-heart hover:underline text-sm cursor-pointer">
+                                                cancel
+                                            </small>
+                                        </li>
+
+                                        {dataNotification?.meta &&
+                                            dataNotification.meta.keys &&
+                                            dataNotification.meta.keys.map((item) => {
+                                                return (
+                                                    <ColorItem
+                                                        onColor={(data) => {
+                                                            if (!keys) return;
+
+                                                            let dataFound = keys.find((i) => data.name === i.name);
+
+                                                            if (!dataFound) return;
+
+                                                            dataFound.color = data.color;
+                                                        }}
+                                                        key={item.name}
+                                                        item={item}
+                                                    />
+                                                );
+                                            })}
+                                    </ul>
+                                </div>
+                            )}
+                            {positionText.end && positionText.start && typeNotification !== 'none' && disableAdvanced && (
                                 <small onClick={handleClearSelectText} className="text-fill-heart hover:underline text-sm cursor-pointer">
                                     cancel
                                 </small>
@@ -514,36 +588,38 @@ export default function UpdateNotificationDialog({ idOpen, open, options, setOpe
                             rangeSelect={positionText}
                         />
                     </div>
-                    <div className="flex items-center gap-5">
-                        <span className='className="text-1xl font-medium"'>Images: </span>
+                    {!disableImageDefault && (
+                        <div className="flex items-center gap-5">
+                            <span className='className="text-1xl font-medium"'>Images: </span>
 
-                        <div className="flex items-center gap-4">
-                            {imagesDefault.map((item, index) => {
-                                return (
-                                    <img
-                                        className={classNames('w-[80px] h-[80px] border-2 object-cover rounded-lg cursor-pointer hover:scale-105 transition-all ease-linear', {
-                                            ['border-[#505DE8]']: photo?.id === item.id,
-                                        })}
-                                        onClick={(e) => handleSetPhoto(item)}
-                                        onDoubleClick={() => openImageViewer(index)}
-                                        key={item.type}
-                                        alt={item.photourl}
-                                        src={item.photourl}
-                                    />
-                                );
-                            })}
+                            <div className="flex items-center gap-4">
+                                {imagesDefault.map((item, index) => {
+                                    return (
+                                        <img
+                                            className={classNames('w-[80px] h-[80px] border-2 object-cover rounded-lg cursor-pointer hover:scale-105 transition-all ease-linear', {
+                                                ['border-[#505DE8]']: photo?.id === item.id,
+                                            })}
+                                            onClick={(e) => handleSetPhoto(item)}
+                                            onDoubleClick={() => openImageViewer(index)}
+                                            key={item.type}
+                                            alt={item.photourl}
+                                            src={item.photourl}
+                                        />
+                                    );
+                                })}
 
-                            <WrapperAnimation hover={{}}>
-                                <label
-                                    className="border-dashed border-2 rounded-lg flex items-center justify-center border-[#505DE8] text-[#505DE8] py-4 px-5 cursor-pointer font-semibold text-1xl"
-                                    htmlFor="input-image-notification"
-                                >
-                                    <span>SELECT AN IMAGE</span>
-                                </label>
-                            </WrapperAnimation>
-                            <input onChange={handleChangeImageFile} id="input-image-notification" type="file" hidden />
+                                <WrapperAnimation hover={{}}>
+                                    <label
+                                        className="border-dashed border-2 rounded-lg flex items-center justify-center border-[#505DE8] text-[#505DE8] py-4 px-5 cursor-pointer font-semibold text-1xl"
+                                        htmlFor="input-image-notification"
+                                    >
+                                        <span>SELECT AN IMAGE</span>
+                                    </label>
+                                </WrapperAnimation>
+                                <input onChange={handleChangeImageFile} id="input-image-notification" type="file" hidden />
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     <div className="flex flex-col items-start gap-5">
                         <span className="text-1xl font-medium">Preview: </span>
@@ -555,7 +631,8 @@ export default function UpdateNotificationDialog({ idOpen, open, options, setOpe
                             user={user}
                             data={{
                                 id: 'previewid',
-                                content: form.message,
+                                content:
+                                    dataNotification?.meta && dataNotification.meta.keys ? paseDataNotificationPreview(form.message, dataNotification.meta.keys) : form.message,
                                 createdAt: new Date(),
                                 deleted: false,
                                 link: form.link,
