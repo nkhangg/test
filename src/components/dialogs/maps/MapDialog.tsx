@@ -1,9 +1,9 @@
 'use client';
 import React, { MouseEvent, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import WraperDialog from '../WraperDialog';
-import { AddressItem, AddressTippy, LoadingSecondary, MapWraper, SocialButton, WrapperAnimation } from '@/components';
-import { IAddress, IDistrict, IInfoAddress, IMessage, IProvinces, IWard } from '@/configs/interface';
-import { getDistrichts, getProvinces, getWards } from '@/apis/outside';
+import { AddressItem, Districtes, LoadingSecondary, MapWraper, Provinces, SocialButton, Wards, WrapperAnimation } from '@/components';
+import { IAddress, IDistrictOutside, IInfoAddress, IMessage, IProvinceOutside, IProvinces, IWardOutside } from '@/configs/interface';
+import { getDevisionDistrictes, getDevisionProvinces, getDevisionWards } from '@/apis/outside';
 import { useQuery } from '@tanstack/react-query';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faCompass, faLocationDot, faMap, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
@@ -12,7 +12,6 @@ import classNames from 'classnames';
 import { Tooltip } from '@mui/material';
 import Markers from './Markers';
 import { Point, RootState } from '@/configs/types';
-import { Address } from '@/components/inputs/address/Address';
 import { geocodeByAddress, geocodeByLatLng, getLatLng } from 'react-google-places-autocomplete';
 import Directions from './Directions';
 import { getAddresses } from '@/apis/user';
@@ -20,10 +19,11 @@ import { ChatFooterContext } from '@/components/chats/ChatFooter';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { contants } from '@/utils/contants';
 import { getAddressesWithUsernameByAdmin } from '@/apis/admin/addresses';
-import firebaseService from '@/services/firebaseService';
-import { toast } from 'react-toastify';
 import { clearDataMap } from '@/redux/slice/chatSlice';
 import { delay } from '@/utils/funtionals';
+import { Address } from '@/components/inputs/address/Address';
+import firebaseService from '@/services/firebaseService';
+import { toast } from 'react-toastify';
 export interface IMapDialogProps {
     open: boolean;
     setOpen: (v: boolean) => void;
@@ -31,21 +31,62 @@ export interface IMapDialogProps {
 
 const initAddress = {
     district: {
-        code: 0,
-        codename: '',
-        name: '',
-        province_code: 0,
+        DistrictID: 0,
+        ProvinceID: 0,
+        DistrictName: 'string',
+        Code: 'string',
+        Type: 0,
+        SupportType: 0,
+        NameExtension: [],
+        IsEnable: 0,
+        UpdatedBy: 0,
+        CreatedAt: 'string',
+        UpdatedAt: 'string',
+        CanUpdateCOD: false,
+        Status: 0,
+        PickType: 0,
+        DeliverType: 0,
+        ReasonCode: 'string',
+        ReasonMessage: 'string',
+        OnDates: 0,
+        UpdatedDate: 'string',
     },
     province: {
-        code: 0,
-        codename: '',
-        name: '',
-        phone_code: 1,
+        ProvinceID: 269,
+        ProvinceName: 'Lào Cai',
+        CountryID: 1,
+        Code: '20',
+        NameExtension: ['Lào Cai', 'Tỉnh Lào Cai', 'T.Lào Cai', 'T Lào Cai', 'laocai'],
+        IsEnable: 1,
+        RegionID: 6,
+        RegionCPN: 5,
+        UpdatedBy: 1718600,
+        CreatedAt: '2019-12-05 15:41:26.891384 +0700 +07 m=+0.010448463',
+        UpdatedAt: '2019-12-05 15:41:26.891384 +0700 +07 m=+0.010449016',
+        CanUpdateCOD: false,
+        Status: 1,
+        UpdatedIP: '203.205.29.215',
+        UpdatedEmployee: 3028550,
+        UpdatedSource: 'internal',
+        UpdatedDate: '2023-07-28T03:43:18.783Z',
     },
     ward: {
-        code: 0,
-        codename: '',
-        district_code: 0,
+        WardCode: 'string',
+        DistrictID: 0,
+        WardName: 'string',
+        NameExtension: [],
+        IsEnable: 0,
+        CanUpdateCOD: false,
+        UpdatedBy: 0,
+        CreatedAt: 'string',
+        UpdatedAt: 'string',
+        SupportType: 0,
+        PickType: 0,
+        DeliverType: 0,
+        Status: 0,
+        ReasonCode: 'string',
+        ReasonMessage: 'string',
+        OnDates: 0,
     },
 } as Address;
 
@@ -60,7 +101,7 @@ export default function MapDialog({ open, setOpen }: IMapDialogProps) {
     //use Query
     const { data } = useQuery({
         queryKey: ['getProvinces'],
-        queryFn: () => getProvinces(),
+        queryFn: () => getDevisionProvinces(),
     });
 
     //use Query
@@ -75,8 +116,8 @@ export default function MapDialog({ open, setOpen }: IMapDialogProps) {
         },
     });
 
-    const [districhs, setDistrichs] = useState<IDistrict[] | undefined | null>(undefined);
-    const [wards, setWards] = useState<IWard[] | undefined | null>(undefined);
+    const [districhs, setDistrichs] = useState<IDistrictOutside[] | undefined | null>(undefined);
+    const [wards, setWards] = useState<IWardOutside[] | undefined | null>(undefined);
 
     const [loading, setLoading] = useState(true);
 
@@ -112,7 +153,7 @@ export default function MapDialog({ open, setOpen }: IMapDialogProps) {
 
     const adddressToString = () => {
         if (!address) return '';
-        const names = [address.ward?.name, address.district?.name, address.province?.name];
+        const names = [address.ward?.WardName, address.district?.DistrictName, address.province?.ProvinceName];
 
         return names.join(', ');
     };
@@ -174,6 +215,7 @@ export default function MapDialog({ open, setOpen }: IMapDialogProps) {
     };
 
     const handleClickAddressItem = async (e?: MouseEvent<HTMLSpanElement>, data?: IInfoAddress) => {
+        console.log(data);
         if (!data) return;
 
         const names = [data.address.ward, data.address.district, data.address.province];
@@ -185,9 +227,9 @@ export default function MapDialog({ open, setOpen }: IMapDialogProps) {
         const { province, district, ward } = initAddress;
 
         setIniDataAddress({
-            province: { ...province, name: data.address.province } as IProvinces,
-            district: { ...district, name: data.address.district } as IDistrict,
-            ward: { ...ward, name: data.address.ward } as IWard,
+            province: { ...province, ProvinceName: data.address.province } as IProvinceOutside,
+            district: { ...district, DistrictName: data.address.district } as IDistrictOutside,
+            ward: { ...ward, WardName: data.address.ward } as IWardOutside,
         });
 
         requestIdleCallback(handleClearCurLocation);
@@ -207,9 +249,9 @@ export default function MapDialog({ open, setOpen }: IMapDialogProps) {
             address: (valid
                 ? curAddressLocation
                 : {
-                      province: address?.province?.name,
-                      district: address?.district?.name,
-                      ward: address?.ward?.name,
+                      province: address?.province?.ProvinceName,
+                      district: address?.district?.DistrictName,
+                      ward: address?.ward?.WardName,
                       address: '',
                   }) as IMessage['address'],
         };
@@ -254,9 +296,9 @@ export default function MapDialog({ open, setOpen }: IMapDialogProps) {
                     const { province, district, ward } = initAddress;
 
                     setIniDataAddress({
-                        province: { ...province, name: (dataChatItem.address as IAddress).province } as IProvinces,
-                        district: { ...district, name: (dataChatItem.address as IAddress).district } as IDistrict,
-                        ward: { ...ward, name: (dataChatItem.address as IAddress).ward } as IWard,
+                        province: { ...province, ProvinceName: (dataChatItem.address as IAddress).province } as IProvinceOutside,
+                        district: { ...district, DistrictName: (dataChatItem.address as IAddress).district } as IDistrictOutside,
+                        ward: { ...ward, WardName: (dataChatItem.address as IAddress).ward } as IWardOutside,
                     });
                 }
             });
@@ -348,13 +390,13 @@ export default function MapDialog({ open, setOpen }: IMapDialogProps) {
                                                         For security and accuracy reasons, the exact address will not be displayed
                                                     </li>
                                                 </ul>
-                                                <AddressTippy
-                                                    initData={(iniDataAddress && iniDataAddress.province?.name) || undefined}
+                                                <Provinces
+                                                    initData={(iniDataAddress && iniDataAddress.province?.ProvinceName) || undefined}
                                                     name="province"
                                                     onValue={async (value) => {
                                                         setAddress({
                                                             ...address,
-                                                            province: value as IProvinces,
+                                                            province: value as IProvinceOutside,
                                                             district: undefined,
                                                             ward: undefined,
                                                         });
@@ -366,12 +408,12 @@ export default function MapDialog({ open, setOpen }: IMapDialogProps) {
                                                         }
 
                                                         try {
-                                                            const response = await getDistrichts(value.code);
+                                                            const response = await getDevisionDistrictes(value);
 
                                                             setDistrichs(null);
                                                             setWards(null);
                                                             if (response) {
-                                                                setDistrichs(response.districts);
+                                                                setDistrichs(response.data);
                                                                 return;
                                                             }
 
@@ -381,18 +423,19 @@ export default function MapDialog({ open, setOpen }: IMapDialogProps) {
                                                             console.log(error);
                                                         }
                                                     }}
-                                                    data={data}
+                                                    data={data?.data}
                                                     label="Province"
                                                 />
-                                                <AddressTippy
-                                                    initData={(iniDataAddress && iniDataAddress.district?.name) || undefined}
+                                                <Districtes
+                                                    initData={(iniDataAddress && iniDataAddress.district?.DistrictName) || undefined}
                                                     name="district"
                                                     messageUndefined="Please choose your province"
                                                     onValue={async (value) => {
                                                         if (!address) return;
+
                                                         setAddress({
                                                             ...address,
-                                                            district: value as IDistrict,
+                                                            district: undefined,
                                                             ward: undefined,
                                                         });
 
@@ -402,11 +445,11 @@ export default function MapDialog({ open, setOpen }: IMapDialogProps) {
                                                         }
 
                                                         try {
-                                                            const response = await getWards(value.code);
+                                                            const response = await getDevisionWards(value);
 
                                                             setWards(null);
                                                             if (response) {
-                                                                setWards(response.wards);
+                                                                setWards(response.data);
                                                                 return;
                                                             }
                                                             setWards(null);
@@ -417,16 +460,16 @@ export default function MapDialog({ open, setOpen }: IMapDialogProps) {
                                                     data={districhs}
                                                     label="District"
                                                 />
-                                                <AddressTippy
+                                                <Wards
                                                     name="ward"
-                                                    initData={(iniDataAddress && iniDataAddress.ward?.name) || undefined}
+                                                    initData={(iniDataAddress && iniDataAddress.ward?.WardName) || undefined}
                                                     messageUndefined="Please choose your district"
                                                     onValue={(value) => {
                                                         if (!address) return;
 
                                                         setAddress({
                                                             ...address,
-                                                            ward: value as IWard,
+                                                            ward: value as IWardOutside,
                                                         });
                                                     }}
                                                     data={wards}

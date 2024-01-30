@@ -1,24 +1,24 @@
 'use client';
 import { useDebounce } from '@/hooks';
 import Tippy from '@tippyjs/react/headless';
-import React, { ChangeEvent, forwardRef, useCallback, useEffect, useRef, useState, Ref, FocusEvent, memo, useContext } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useRef, useState, Ref, FocusEvent, memo, useContext } from 'react';
 import TextField from '../TextField';
-import { IDistrict, IDistrictOutside, IProvinceOutside, IProvinces, IWard, IWardOutside } from '@/configs/interface';
+import { IDistrict, IDistrictOutside, IWardOutside } from '@/configs/interface';
 import classNames from 'classnames';
 import Validate from '@/utils/validate';
 
-export interface IAddressTippyProps {
-    data: IProvinceOutside[] | IDistrictOutside[] | IWardOutside[] | undefined | null;
+export interface IWardsProps {
+    data: IWardOutside[] | undefined | null;
     placeholder?: string;
     messageUndefined?: string;
     initData?: string;
     label?: string;
     name: 'province' | 'district' | 'ward';
-    onValue?: (value: IProvinceOutside | IDistrictOutside | IWardOutside | undefined) => void;
+    onValue?: (value: IWardOutside | undefined) => void;
     onValidate?: (validateFuc: () => boolean) => void;
 }
 
-export default function AddressTippy({ data, placeholder, messageUndefined, initData, name, label, onValue, onValidate }: IAddressTippyProps) {
+export default function Wards({ data, placeholder, messageUndefined, initData, name, label, onValue, onValidate }: IWardsProps) {
     const ref = useRef<HTMLDivElement>(null);
     const [showPopup, setShowPopup] = useState(false);
     const [value, setValue] = useState(initData || '');
@@ -56,25 +56,25 @@ export default function AddressTippy({ data, placeholder, messageUndefined, init
     }, [ref]);
 
     useEffect(() => {
-        // if (!onValue) return;
-        // if (!data) return;
-        // const item = data.find((i) => {
-        //     return i. === value;
-        // });
-        // onValue(item);
+        if (!onValue) return;
+        if (!data) return;
+        const item = data.find((i) => {
+            return i.WardName === value;
+        });
+        onValue(item);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
     useEffect(() => {
-        // if (data === null || !data) {
-        //     setValue('');
-        //     return;
-        // }
-        // if (!onValue) return;
-        // const item = data.find((i) => {
-        //     return i.name === value;
-        // });
-        // onValue(item);
+        if (data === null || !data) {
+            setValue('');
+            return;
+        }
+        if (!onValue) return;
+        const item = data.find((i) => {
+            return i.WardName === value;
+        });
+        onValue(item);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
@@ -100,7 +100,7 @@ export default function AddressTippy({ data, placeholder, messageUndefined, init
 
         if (value.length > 0) {
             curData = data.filter((item) => {
-                return item.CreatedAt.toLowerCase().includes(value.toLowerCase());
+                return item.WardName.toLowerCase().includes(value.toLowerCase()) || item.NameExtension.includes(value.toLowerCase());
             });
         }
 
@@ -111,11 +111,11 @@ export default function AddressTippy({ data, placeholder, messageUndefined, init
         return curData.map((item) => {
             return (
                 <li
-                    onClick={() => handleClickItem(item.CreatedAt)}
+                    onClick={() => handleClickItem(item.WardName)}
                     className={classNames('py-[6px] hover:bg-[rgba(93,135,255,0.08)] px-[14px] text-sm cursor-pointer')}
-                    key={item.CreatedAt}
+                    key={item.WardName}
                 >
-                    {item.CreatedAt}
+                    {item.WardName}
                 </li>
             );
         });

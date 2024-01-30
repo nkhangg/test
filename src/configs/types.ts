@@ -57,6 +57,7 @@ import {
     IFeedback,
     IManageFeedbackResponse,
     IAddress,
+    ApiDivision,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { RolesName } from './enum';
@@ -225,6 +226,12 @@ export type ApiActionBrand = (data: IBrand) => Promise<IBaseResponse<IBrand>>;
 export type ApiProvinces<T> = (id?: string | number) => Promise<T>;
 
 export type ApiProvincesOutside = (id?: string | number) => Promise<IProvinceOutside>;
+
+export type ApiDevisionProvincesOutside = () => Promise<ApiDivision<IProvinceOutside[]>>;
+
+export type ApiDevisionDistrictOutside = (data: IProvinceOutside) => Promise<ApiDivision<IDistrictOutside[]>>;
+
+export type ApiDevisionWardOutside = (data: IDistrictOutside) => Promise<ApiDivision<IWardOutside[]>>;
 
 export type ApiDistrictOutside = (data: IProvinceOutside, district: string) => Promise<IDistrictOutside>;
 
