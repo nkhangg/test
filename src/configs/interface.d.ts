@@ -612,6 +612,12 @@ export interface IProfileMessageManage extends Pick<IProfile, 'id' | 'avatar' | 
     address: string;
 }
 
+export interface ApiDivision<T> {
+    code: string;
+    message: string;
+    data: T;
+}
+
 export interface IProvinceOutside {
     ProvinceID: number;
     ProvinceName: string;

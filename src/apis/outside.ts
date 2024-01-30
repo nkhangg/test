@@ -1,6 +1,15 @@
 import { ICart, IDistrict, IDistrictOutside, IProvinceOutside, IProvinces, IWardOutside } from '@/configs/interface';
 import { ApiGetShippingFee, DataFormShippingFee } from '@/configs/type-ousite';
-import { AddressCodeType, ApiDistrictOutside, ApiProvinces, ApiProvincesOutside, ApiWardOutside } from '@/configs/types';
+import {
+    AddressCodeType,
+    ApiDevisionDistrictOutside,
+    ApiDevisionProvincesOutside,
+    ApiDevisionWardOutside,
+    ApiDistrictOutside,
+    ApiProvinces,
+    ApiProvincesOutside,
+    ApiWardOutside,
+} from '@/configs/types';
 import { contants } from '@/utils/contants';
 import { replaceValidDistrich } from '@/utils/format';
 import axios from 'axios';
@@ -56,6 +65,21 @@ export const searchProvinces: ApiProvincesOutside = async (data?: string | numbe
     return null;
 };
 
+export const getDevisionProvinces: ApiDevisionProvincesOutside = async () => {
+    const res = await axios({
+        method: 'GET',
+        url: 'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province',
+        headers: {
+            'Content-Type': 'application/json',
+            token: contants.apis.ghn.token,
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
 export const getDistrichts: ApiProvinces<IProvinces> = async (data?: string | number) => {
     const res = await axios({
         method: 'GET',
@@ -96,6 +120,42 @@ export const searchDistrichts: ApiDistrictOutside = async (data: IProvinceOutsid
     }
 
     return null;
+};
+
+export const getDevisionDistrictes: ApiDevisionDistrictOutside = async (data: IProvinceOutside) => {
+    const res = await axios({
+        method: 'GET',
+        url: 'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district',
+        headers: {
+            'Content-Type': 'application/json',
+            token: contants.apis.ghn.token,
+        },
+        params: {
+            province_id: data.ProvinceID,
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const getDevisionWards: ApiDevisionWardOutside = async (data: IDistrictOutside) => {
+    const res = await axios({
+        method: 'GET',
+        url: 'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward',
+        headers: {
+            'Content-Type': 'application/json',
+            token: contants.apis.ghn.token,
+        },
+        params: {
+            district_id: data.DistrictID,
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
 };
 
 export const getWards: ApiProvinces<IDistrict> = async (data?: string | number) => {

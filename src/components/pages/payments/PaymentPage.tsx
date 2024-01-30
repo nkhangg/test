@@ -144,7 +144,7 @@ export default function PaymentPage(props: IPaymentPageProps) {
                 ...form,
                 ship: shippingFee,
                 addressId: addresses.id,
-                deliveryId: contants.instantProvince === addresses.address.province ? dataCard[0].id : shippingItem.id,
+                deliveryId: contants.instantProvince.includes(addresses.address.province) ? dataCard[0].id : shippingItem.id,
             });
         } catch (error) {
             setloadingShippingItem(false);
@@ -194,7 +194,7 @@ export default function PaymentPage(props: IPaymentPageProps) {
             // set line
             setLine(4);
 
-            if (addresses.address.province != contants.instantProvince) {
+            if (!contants.instantProvince.includes(addresses.address.province)) {
                 setChecked(1);
                 setForm({
                     ...form,
@@ -256,6 +256,8 @@ export default function PaymentPage(props: IPaymentPageProps) {
 
             const valid = validateArr.some((item) => item <= 0);
 
+            setLoading(true);
+
             if (responseCode === '24') {
                 try {
                     const response = await updateUserStatusOrder({ id: parseInt(searchParams.get('order_Id') || '0'), status: 'cancelled_by_customer', reason: 'Payment failed' });
@@ -274,12 +276,17 @@ export default function PaymentPage(props: IPaymentPageProps) {
                     router.push(links.home);
                 } catch (error) {
                     toast.error(contants.messages.errors.server);
+                } finally {
+                    setLoading(false);
                 }
 
                 return;
             }
 
-            if (valid) return;
+            if (valid) {
+                setLoading(false);
+                return;
+            }
 
             const form: IPayment = {
                 orderId: parseInt(searchParams.get('order_Id') || '0'),
@@ -309,6 +316,8 @@ export default function PaymentPage(props: IPaymentPageProps) {
                 handleClearWhenSuccess(response.data.photourl, form.orderId);
             } catch (error) {
                 toast.error(contants.messages.errors.server);
+            } finally {
+                setLoading(false);
             }
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -349,7 +358,8 @@ export default function PaymentPage(props: IPaymentPageProps) {
                                         setForm({
                                             ...form,
                                             addressId: data.id,
-                                            deliveryId: contants.instantProvince === data.address.province ? dataCard[0].id : shippingItem.id,
+                                            // deliveryId: contants.instantProvince === data.address.province ? dataCard[0].id : shippingItem.id,
+                                            deliveryId: contants.instantProvince.includes(data.address.province) ? dataCard[0].id : shippingItem.id,
                                         });
                                     }
                                 }}
@@ -358,7 +368,7 @@ export default function PaymentPage(props: IPaymentPageProps) {
                             <PaymentItem title="Delivery method">
                                 <div className="flex flex-col md:flex-row items-center justify-between gap-5 mt-6">
                                     <PaymentCard
-                                        disabled={addresses ? addresses.address.province != contants.instantProvince : true}
+                                        disabled={addresses ? !contants.instantProvince.includes(addresses.address.province) : true}
                                         onClick={() => handleDelivery(dataCard[0], 0)}
                                         data={dataCard[0]}
                                         checked={checked === 0}

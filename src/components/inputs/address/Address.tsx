@@ -1,16 +1,19 @@
 'use client';
 import React, { ChangeEvent, FocusEvent, createContext, memo, useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getDistrichts, getProvinces, getWards } from '@/apis/outside';
-import { IAddress, IDistrict, IProvinces, IWard } from '@/configs/interface';
+import { getDevisionDistrictes, getDevisionProvinces, getDevisionWards, getDistrichts, getProvinces, getWards } from '@/apis/outside';
+import { IAddress, IDistrict, IDistrictOutside, IProvinceOutside, IProvinces, IWard, IWardOutside } from '@/configs/interface';
 import Validate from '@/utils/validate';
 import AddressTippy from './AddressTippy';
 import TextField from '../TextField';
+import Provinces from './Provinces';
+import Districtes from './Districtes';
+import Wards from './Wards';
 
 export interface Address {
-    province: IProvinces | undefined;
-    district: IDistrict | undefined;
-    ward: IWard | undefined;
+    province: IProvinceOutside | undefined;
+    district: IDistrictOutside | undefined;
+    ward: IWardOutside | undefined;
 }
 
 export interface IAddressProps {
@@ -23,7 +26,7 @@ function Address({ initData, onValidate, onAddress }: IAddressProps) {
     //use Query
     const { data, isLoading } = useQuery({
         queryKey: ['getProvinces'],
-        queryFn: () => getProvinces(),
+        queryFn: () => getDevisionProvinces(),
     });
 
     // variables
@@ -50,8 +53,8 @@ function Address({ initData, onValidate, onAddress }: IAddressProps) {
         },
     );
 
-    const [districhs, setDistrichs] = useState<IDistrict[] | undefined | null>(undefined);
-    const [wards, setWards] = useState<IWard[] | undefined | null>(undefined);
+    const [districhs, setDistrichs] = useState<IDistrictOutside[] | undefined | null>(undefined);
+    const [wards, setWards] = useState<IWardOutside[] | undefined | null>(undefined);
 
     const [error, setError] = useState('');
 
@@ -107,9 +110,9 @@ function Address({ initData, onValidate, onAddress }: IAddressProps) {
     useEffect(() => {
         setForm({
             ...form,
-            province: address.province?.name || '',
-            district: address.district?.name || '',
-            ward: address.ward?.name || '',
+            province: address.province?.ProvinceName || '',
+            district: address.district?.DistrictName || '',
+            ward: address.ward?.WardName || '',
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [address]);
@@ -131,7 +134,7 @@ function Address({ initData, onValidate, onAddress }: IAddressProps) {
     return (
         <div className="flex flex-col justify-between gap-[26px] w-full">
             <div className="flex md:flex-row flex-col items-center justify-between gap-5">
-                <AddressTippy
+                <Provinces
                     onValidate={(validFuc) => {
                         validFucs.province = validFuc;
                     }}
@@ -140,7 +143,7 @@ function Address({ initData, onValidate, onAddress }: IAddressProps) {
                     onValue={async (value) => {
                         setAddress({
                             ...address,
-                            province: value as IProvinces,
+                            province: value as IProvinceOutside,
                             district: undefined,
                             ward: undefined,
                         });
@@ -152,12 +155,12 @@ function Address({ initData, onValidate, onAddress }: IAddressProps) {
                         }
 
                         try {
-                            const response = await getDistrichts(value.code);
+                            const response = await getDevisionDistrictes(value);
 
                             setDistrichs(null);
-                            // setWards(null);
+                            setWards(null);
                             if (response) {
-                                setDistrichs(response.districts);
+                                setDistrichs(response.data);
                                 return;
                             }
 
@@ -167,10 +170,10 @@ function Address({ initData, onValidate, onAddress }: IAddressProps) {
                             console.log(error);
                         }
                     }}
-                    data={data}
+                    data={data?.data}
                     label="Province"
                 />
-                <AddressTippy
+                <Districtes
                     onValidate={(validFuc) => {
                         validFucs.districh = validFuc;
                     }}
@@ -180,7 +183,7 @@ function Address({ initData, onValidate, onAddress }: IAddressProps) {
                     onValue={async (value) => {
                         setAddress({
                             ...address,
-                            district: value as IDistrict,
+                            district: value as IDistrictOutside,
                             ward: undefined,
                         });
 
@@ -190,11 +193,11 @@ function Address({ initData, onValidate, onAddress }: IAddressProps) {
                         }
 
                         try {
-                            const response = await getWards(value.code);
+                            const response = await getDevisionWards(value);
 
                             setWards(null);
                             if (response) {
-                                setWards(response.wards);
+                                setWards(response.data);
                                 return;
                             }
                             setWards(null);
@@ -205,7 +208,7 @@ function Address({ initData, onValidate, onAddress }: IAddressProps) {
                     data={districhs}
                     label="District"
                 />
-                <AddressTippy
+                <Wards
                     onValidate={(validFuc) => {
                         validFucs.ward = validFuc;
                     }}
@@ -215,7 +218,7 @@ function Address({ initData, onValidate, onAddress }: IAddressProps) {
                     onValue={(value) => {
                         setAddress({
                             ...address,
-                            ward: value as IWard,
+                            ward: value as IWardOutside,
                         });
                     }}
                     data={wards}

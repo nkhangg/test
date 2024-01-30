@@ -7,18 +7,18 @@ import { IDistrict, IDistrictOutside, IProvinceOutside, IProvinces, IWard, IWard
 import classNames from 'classnames';
 import Validate from '@/utils/validate';
 
-export interface IAddressTippyProps {
-    data: IProvinceOutside[] | IDistrictOutside[] | IWardOutside[] | undefined | null;
+export interface IProvincesProps {
+    data: IProvinceOutside[] | undefined | null;
     placeholder?: string;
     messageUndefined?: string;
     initData?: string;
     label?: string;
     name: 'province' | 'district' | 'ward';
-    onValue?: (value: IProvinceOutside | IDistrictOutside | IWardOutside | undefined) => void;
+    onValue?: (value: IProvinceOutside | undefined) => void;
     onValidate?: (validateFuc: () => boolean) => void;
 }
 
-export default function AddressTippy({ data, placeholder, messageUndefined, initData, name, label, onValue, onValidate }: IAddressTippyProps) {
+export default function Provinces({ data, placeholder, messageUndefined, initData, name, label, onValue, onValidate }: IProvincesProps) {
     const ref = useRef<HTMLDivElement>(null);
     const [showPopup, setShowPopup] = useState(false);
     const [value, setValue] = useState(initData || '');
@@ -56,25 +56,25 @@ export default function AddressTippy({ data, placeholder, messageUndefined, init
     }, [ref]);
 
     useEffect(() => {
-        // if (!onValue) return;
-        // if (!data) return;
-        // const item = data.find((i) => {
-        //     return i. === value;
-        // });
-        // onValue(item);
+        if (!onValue) return;
+        if (!data) return;
+        const item = data.find((i) => {
+            return i.ProvinceName === value;
+        });
+        onValue(item);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
     useEffect(() => {
-        // if (data === null || !data) {
-        //     setValue('');
-        //     return;
-        // }
-        // if (!onValue) return;
-        // const item = data.find((i) => {
-        //     return i.name === value;
-        // });
-        // onValue(item);
+        if (data === null || !data) {
+            setValue('');
+            return;
+        }
+        if (!onValue) return;
+        const item = data.find((i) => {
+            return i.ProvinceName === value;
+        });
+        onValue(item);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
@@ -100,7 +100,7 @@ export default function AddressTippy({ data, placeholder, messageUndefined, init
 
         if (value.length > 0) {
             curData = data.filter((item) => {
-                return item.CreatedAt.toLowerCase().includes(value.toLowerCase());
+                return item.ProvinceName.toLowerCase().includes(value.toLowerCase()) || item.NameExtension.includes(value.toLowerCase());
             });
         }
 
@@ -111,11 +111,11 @@ export default function AddressTippy({ data, placeholder, messageUndefined, init
         return curData.map((item) => {
             return (
                 <li
-                    onClick={() => handleClickItem(item.CreatedAt)}
+                    onClick={() => handleClickItem(item.ProvinceName)}
                     className={classNames('py-[6px] hover:bg-[rgba(93,135,255,0.08)] px-[14px] text-sm cursor-pointer')}
-                    key={item.CreatedAt}
+                    key={item.ProvinceID}
                 >
-                    {item.CreatedAt}
+                    {item.ProvinceName}
                 </li>
             );
         });
