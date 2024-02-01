@@ -88,7 +88,9 @@ export type ApiPetAttributes = () => Promise<IBaseResponse<IPetAttribute>>;
 
 export type ApiAdoptions = () => Promise<IBaseResponse<PagiantionResponse<IAdoption>>>;
 
-export type ApiAdoption = (data: { userId: string; petId: string }) => Promise<IBaseResponse<IAdoption>>;
+export type ApiAdoption = (data: { userId: string; petId: string; addressId: number }) => Promise<IBaseResponse<IAdoption>>;
+
+export type ApiCancelAdoption = (petId: string) => Promise<IBaseResponse<IAdoption>>;
 
 export type ApiFilterPets = (params: IRequestFilterPet) => Promise<IBaseResponse<PagiantionResponse<IPet>>>;
 
@@ -355,4 +357,4 @@ export type ImageType = {
 
 export type Point = google.maps.LatLngLiteral & { key: string; yourLocation?: boolean };
 
-export type LabelAdopt = 'adopted' | 'waiting' | 'Cancelled By Admin' | 'Cancelled By Customer';
+export type LabelAdopt = 'adopted' | 'waiting' | 'cancelled by admin' | 'cancelled by customer';

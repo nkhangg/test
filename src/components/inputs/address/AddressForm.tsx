@@ -17,19 +17,25 @@ import { addAddress, updateAddress } from '@/apis/user';
 import { toast } from 'react-toastify';
 import { AddressDialogContext } from './AddressDialog';
 import { AddressInfoPaymentContext } from './AddressInfoPayment';
+import Link from 'next/link';
+import { links } from '@/datas/links';
+import { useAppSelector } from '@/hooks/reduxHooks';
+import { RootState } from '@/configs/types';
 
 export interface IAddressFormProps {
     initData?: IInfoAddress;
     updateMode?: boolean;
     onBeforeAdd?: () => void;
     onBeforeUpdate?: () => void;
+    showNotiAdopt?: boolean;
 }
 
-export default function AddressForm({ initData, updateMode = false, onBeforeAdd, onBeforeUpdate }: IAddressFormProps) {
+export default function AddressForm({ initData, updateMode = false, showNotiAdopt = false, onBeforeAdd, onBeforeUpdate }: IAddressFormProps) {
     // context
     const context = useContext(AddressDialogContext);
 
     const parentContext = useContext(AddressInfoPaymentContext);
+    const { petAdopt, asked } = useAppSelector((state: RootState) => state.adoptReducer);
 
     // cutum hooks
 
@@ -82,6 +88,21 @@ export default function AddressForm({ initData, updateMode = false, onBeforeAdd,
             ...form,
             address: addresses,
         });
+    };
+
+    const handleShowGoToAdoptPet = () => {
+        if (!petAdopt || !asked) return;
+
+        toast.success(
+            <div className="flex items-center gap-2 text-black-main">
+                <span>
+                    <b>{petAdopt.name}</b> is waiting for you.
+                    <Link className="hover:underline text-blue-primary" href={links.pets.ask}>
+                        Click to continue to register
+                    </Link>
+                </span>
+            </div>,
+        );
     };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -137,6 +158,11 @@ export default function AddressForm({ initData, updateMode = false, onBeforeAdd,
             } else {
                 onBeforeAdd();
             }
+
+            // show noti
+            if (showNotiAdopt) {
+                handleShowGoToAdoptPet();
+            }
         } catch (error) {
             toast.error(contants.messages.errors.server);
         }
@@ -160,6 +186,11 @@ export default function AddressForm({ initData, updateMode = false, onBeforeAdd,
                 context.back();
             } else {
                 onBeforeUpdate();
+            }
+
+            // show noti
+            if (showNotiAdopt) {
+                handleShowGoToAdoptPet();
             }
         } catch (error) {
             toast.error(contants.messages.errors.server);

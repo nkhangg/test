@@ -1,13 +1,29 @@
 import { uploadImagesMessage } from '@/apis/admin/images';
 import { db } from '@/configs/firebase';
-import { IDetailOrder, IImageDefaultNotification, IMessage, INotification, IPet, IProfile } from '@/configs/interface';
+import { IAdoptPetNotification, IDetailOrder, IImageDefaultNotification, IMessage, INotification, IPet, IProfile } from '@/configs/interface';
 import { ImageType, TypeNotification } from '@/configs/types';
 import { links } from '@/datas/links';
 import { contants } from '@/utils/contants';
 import { generateKeywords } from '@/utils/firebaseUltils';
 import { paseDataNotification, stringToUrl } from '@/utils/format';
 import Validate from '@/utils/validate';
-import { addDoc, doc, serverTimestamp, setDoc, collection, query, where, orderBy, and, or, OrderByDirection, limit, QueryFilterConstraint, getDoc } from 'firebase/firestore';
+import {
+    addDoc,
+    doc,
+    serverTimestamp,
+    setDoc,
+    collection,
+    query,
+    where,
+    orderBy,
+    and,
+    or,
+    OrderByDirection,
+    limit,
+    QueryFilterConstraint,
+    getDoc,
+    collectionGroup,
+} from 'firebase/firestore';
 
 const setUserInBd = async (user: IProfile) => {
     try {
@@ -223,7 +239,37 @@ const publistFavoriteNotification = async (pet: IPet, username: string) => {
     }
 };
 
-const publistStateOrder = async (order: IDetailOrder, username: string) => {
+const publistAdoptPetNotification = async (pet: IPet, username: string, phone: string) => {
+    try {
+        const notificationRefShapshot = await getConstantNotification('eZl5uAq6XalWL317fB6k');
+
+        if (!notificationRefShapshot) return null;
+
+        const constNotification = {
+            id: notificationRefShapshot.id,
+            ...notificationRefShapshot.data(),
+        } as INotification;
+
+        return await addDoc(collection(db, 'notifications'), {
+            // content: constNotification.content.replaceAll('&&', pet.name),
+            content: paseDataNotification<IAdoptPetNotification>(constNotification, { ...pet, phone }),
+            createdAt: serverTimestamp(),
+            deleted: false,
+            link: links.users.profiles.adoption,
+            photourl: pet.image,
+            read: [],
+            target: [username],
+            title: constNotification.title,
+            type: constNotification.type,
+            options: constNotification.options,
+            public: false,
+        });
+    } catch (error) {
+        console.log('publistAdoptPetNotification: Error setting publistAdoptPetNotification info in DB');
+    }
+};
+
+const publistStateOrderNotification = async (order: IDetailOrder, username: string) => {
     try {
         const notificationRef = doc(db, 'config-constant-notifications', 'id order notifi');
         const notificationRefShapshot = await getDoc(notificationRef);
@@ -369,6 +415,7 @@ const getNotifications = (username: string) => {
         collection(db, 'notifications'),
         and(where('deleted', '==', false), or(where('target', 'array-contains', 'all'), where('target', 'array-contains', username))),
         orderBy('createdAt', 'desc'),
+        limit(8),
     );
 };
 
@@ -569,15 +616,16 @@ const firebaseService = {
     addConversation,
     setNotification,
     setRecallMessage,
-    publistStateOrder,
     handleSendMessage,
     deleteNotification,
     handleMarkAllAsRead,
     handleSendMessageToUser,
     setActionGimConversation,
     setNewMessageConversation,
-    setImageDefaultNotification,
+    publistAdoptPetNotification,
     publistFavoriteNotification,
+    setImageDefaultNotification,
+    publistStateOrderNotification,
     addSuccessfulPurchaseNotification,
     querys: {
         getNotification,

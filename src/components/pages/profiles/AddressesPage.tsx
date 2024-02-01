@@ -1,5 +1,5 @@
 'use client';
-import React, { MouseEvent, createContext, useState } from 'react';
+import React, { MouseEvent, createContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { BaseProfilePage } from '../common';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -138,6 +138,7 @@ export default function AddressesPage(props: IAddressesPageProps) {
             >
                 {open && (
                     <AddressForm
+                        showNotiAdopt={true}
                         initData={updateData.data || undefined}
                         updateMode={updateData.updateMode}
                         onBeforeAdd={() => {
