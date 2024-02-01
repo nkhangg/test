@@ -1,4 +1,4 @@
-import { ApiFilterPets, ApiPetAttributes, ApiPetDetailPage, ApiPetFavorite } from '@/configs/types';
+import { ApiAdoption, ApiAdoptions, ApiFilterPets, ApiPetAttributes, ApiPetDetailPage, ApiPetFavorite } from '@/configs/types';
 import axios from '../configs/axios';
 import { IRequestFilterPet } from '@/configs/interface';
 
@@ -40,6 +40,29 @@ export const getPetAttibutes: ApiPetAttributes = async () => {
     const res = await axios({
         method: 'GET',
         url: '/pets/attributes',
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const getAdoptions: ApiAdoptions = async () => {
+    const res = await axios({
+        method: 'GET',
+        url: '/user/adopts',
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const adoptionPet: ApiAdoption = async (data: { userId: string; petId: string }) => {
+    const res = await axios({
+        method: 'POST',
+        url: '/user/adopts',
+        data,
     });
 
     if (!res) return null;

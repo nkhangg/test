@@ -100,7 +100,7 @@ export default function Districtes({ data, placeholder, messageUndefined, initDa
 
         if (value.length > 0) {
             curData = data.filter((item) => {
-                return item.DistrictName.toLowerCase().includes(value.toLowerCase()) || item.NameExtension.includes(value.toLowerCase());
+                return item.DistrictName.toLowerCase().includes(value.toLowerCase()) || (item.NameExtension && item.NameExtension.includes(value.toLowerCase()));
             });
         }
 

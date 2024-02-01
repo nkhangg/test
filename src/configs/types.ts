@@ -58,6 +58,7 @@ import {
     IManageFeedbackResponse,
     IAddress,
     ApiDivision,
+    IAdoption,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { RolesName } from './enum';
@@ -84,6 +85,10 @@ export type ApiPetDetailPage = (id: string) => Promise<IBaseResponse<IPetDetailP
 export type ApiPetFavorite = (id: string) => Promise<IBaseResponse<any>>;
 
 export type ApiPetAttributes = () => Promise<IBaseResponse<IPetAttribute>>;
+
+export type ApiAdoptions = () => Promise<IBaseResponse<PagiantionResponse<IAdoption>>>;
+
+export type ApiAdoption = (data: { userId: string; petId: string }) => Promise<IBaseResponse<IAdoption>>;
 
 export type ApiFilterPets = (params: IRequestFilterPet) => Promise<IBaseResponse<PagiantionResponse<IPet>>>;
 
@@ -349,3 +354,5 @@ export type ImageType = {
 };
 
 export type Point = google.maps.LatLngLiteral & { key: string; yourLocation?: boolean };
+
+export type LabelAdopt = 'adopted' | 'waiting' | 'Cancelled By Admin' | 'Cancelled By Customer';

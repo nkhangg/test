@@ -15,18 +15,26 @@ export const getOrdersAdmin: ApiGetOrders = async () => {
 };
 
 export const getOrdersAdminWithFilter: ApiGetFilterOrderAdmin = async (data: IOrderAdminFillterForm, page: string | null) => {
+    const other: { status?: string } = { status: data.status };
+
+    const params = {
+        username: !Validate.isNumber(data.search) ? data.search : '',
+        orderId: Validate.isNumber(data.search) ? data.search : '',
+        sort: data.sort,
+        maxDate: data.dateEnd,
+        minDate: data.dateStart,
+        page: page ? parseInt(page) - 1 : 0,
+        ...other,
+    };
+
+    if (!data.status || Validate.isBlank(data.status)) {
+        delete params.status;
+    }
+
     const res = await axios({
         method: 'GET',
         url: 'admin/orders/filter',
-        params: {
-            username: !Validate.isNumber(data.search) ? data.search : '',
-            status: data.status,
-            orderId: Validate.isNumber(data.search) ? data.search : '',
-            sort: data.sort,
-            maxDate: data.dateEnd,
-            minDate: data.dateStart,
-            page: page ? parseInt(page) - 1 : 0,
-        },
+        params,
     });
 
     if (!res) return null;

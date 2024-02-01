@@ -52,5 +52,6 @@ export const links = {
     pets: {
         adopt: commonPet + 'adopt',
         adoptPage: '/adopt',
+        ask: '/ask-condition',
     },
 };

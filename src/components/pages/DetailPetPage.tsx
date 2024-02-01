@@ -8,15 +8,17 @@ import { IconDefinition, faBomb, faCat, faPalette, faPaw, faSitemap, faSyringe, 
 import { capitalize } from '@/utils/format';
 import { useQuery } from '@tanstack/react-query';
 import { homePageData } from '@/datas/home-page';
-import { favorite, petDetail } from '@/apis/pets';
-import { notFound } from 'next/navigation';
+import { adoptionPet, favorite, petDetail } from '@/apis/pets';
+import { notFound, useRouter } from 'next/navigation';
 import { contants } from '@/utils/contants';
 import { toast } from 'react-toastify';
-import { useAppSelector } from '@/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
 import { delay } from '@/utils/funtionals';
 import firebaseService from '@/services/firebaseService';
 import WraperDialog from '../dialogs/WraperDialog';
+import { links } from '@/datas/links';
+import { setPetAdoptId } from '@/redux/slice/adoptSlide';
 
 export interface IDetailPetPageProps {
     params: [string, string];
@@ -40,7 +42,10 @@ export default function DetailPetPage({ params }: IDetailPetPageProps) {
         queryFn: () => petDetail(params[0]),
     });
 
+    const router = useRouter();
     const { user } = useAppSelector((state: RootState) => state.userReducer);
+
+    const dispath = useAppDispatch();
 
     const [openModal, setOpenModal] = useState(false);
 
@@ -97,6 +102,13 @@ export default function DetailPetPage({ params }: IDetailPetPageProps) {
         setOpenModal(false);
     };
 
+    const handleAdopt = async () => {
+        if (!user || !data?.data || !data?.data.pet) return;
+
+        dispath(setPetAdoptId(data?.data.pet));
+        router.push(links.pets.ask);
+    };
+
     if (error) {
         notFound();
     }
@@ -131,7 +143,7 @@ export default function DetailPetPage({ params }: IDetailPetPageProps) {
                                 </ul>
                                 <div className="mt-10 flex items-center justify-center md:justify-start flex-col lg:flex-row gap-3">
                                     <MainButton onClick={handleLike} width={207} background="bg-orange-primary" title={data?.data.pet.like ? 'Unfavorite' : 'Favorite'} />
-                                    {data?.data.pet.canAdopt && <MainButton width={207} title="adopt" />}
+                                    {data?.data.pet.canAdopt && <MainButton onClick={handleAdopt} width={207} title="adopt" />}
                                 </div>
                             </div>
                         </div>

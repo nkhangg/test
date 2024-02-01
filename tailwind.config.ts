@@ -72,6 +72,8 @@ const config: Config = {
                 shipping: '#FADCD9',
                 delivered: '#BBEAD9',
                 cancelled: '#DFDFDF',
+                register: '#FADCD9',
+                adopted: '#BBEAD9',
             },
             backgroundColor: {
                 'green-65a30d': '#65A30D',
@@ -83,6 +85,8 @@ const config: Config = {
                 shipping: '#FADCD9',
                 delivered: '#BBEAD9',
                 cancelled: '#DFDFDF',
+                register: '#FADCD9',
+                adopted: '#BBEAD9',
             },
             fontSize: {
                 '1xl': '16px',

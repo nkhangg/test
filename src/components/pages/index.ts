@@ -71,3 +71,7 @@ export { default as FeedbackManagementPage } from './admin/feedbacks/FeedbackMan
 
 // favorite page
 export { default as FavoritePage } from './FavoritePage';
+
+// Adoption page
+export { default as AdoptionPage } from './profiles/adoption/AdoptionPage';
+export { default as AdoptionPageItem } from './profiles/adoption/AdoptionPageItem';
