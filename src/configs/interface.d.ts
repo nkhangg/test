@@ -54,6 +54,7 @@ export interface IPet {
     fosterDate: number;
     like: boolean;
 }
+
 export interface IProduct {
     id: string | number;
     name: string;
@@ -754,4 +755,14 @@ export interface IFeedback {
 
 export interface IManageFeedbackResponse extends PagiantionResponse<IFeedback> {
     total: number;
+}
+
+export interface IAdoption {
+    id: number;
+    state: string;
+    user: IProfile;
+    pet: IPet;
+    registerAt: string;
+    adoptAt: string;
+    reason?: string | null;
 }

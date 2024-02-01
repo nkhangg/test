@@ -191,6 +191,7 @@ export default function MapDialog({ open, setOpen }: IMapDialogProps) {
     };
 
     const hocValidateFN = (callback: Function) => {
+        console.log(validate());
         if (validate()) return;
 
         callback();
@@ -199,6 +200,8 @@ export default function MapDialog({ open, setOpen }: IMapDialogProps) {
     const handleShowOnMap = async () => {
         hocValidateFN(async () => {
             const { lat, lng } = await getLocation(adddressToString());
+
+            console.log({ lat, lng });
 
             setCoordes({ lat, lng } as Point);
         });
@@ -215,7 +218,6 @@ export default function MapDialog({ open, setOpen }: IMapDialogProps) {
     };
 
     const handleClickAddressItem = async (e?: MouseEvent<HTMLSpanElement>, data?: IInfoAddress) => {
-        console.log(data);
         if (!data) return;
 
         const names = [data.address.ward, data.address.district, data.address.province];
@@ -435,7 +437,7 @@ export default function MapDialog({ open, setOpen }: IMapDialogProps) {
 
                                                         setAddress({
                                                             ...address,
-                                                            district: undefined,
+                                                            district: value as IDistrictOutside,
                                                             ward: undefined,
                                                         });
 
