@@ -5,7 +5,7 @@ import { BoxTitle, LoadingPrimary, MainButton, WrapperAnimation } from '@/compon
 import { contants } from '@/utils/contants';
 import { Box, Checkbox, Stack, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
-import { useAppSelector } from '@/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
 import { adoptionPet } from '@/apis/pets';
 import WraperDialog from '../dialogs/WraperDialog';
@@ -14,19 +14,37 @@ import { useQuery } from '@tanstack/react-query';
 import { getAddresses } from '@/apis/user';
 import classNames from 'classnames';
 import { addressToString } from '@/utils/format';
+import { clear, clearAsked, setAsked } from '@/redux/slice/adoptSlide';
+import Link from 'next/link';
+import { links } from '@/datas/links';
+import { useRouter } from 'next/navigation';
+import { delay } from '@/utils/funtionals';
+import firebaseService from '@/services/firebaseService';
 export interface IAskConditionPageProps {}
 
-const _Item = ({ title, onChecked }: { title: string; onChecked?: (v: string, check?: boolean) => void }) => {
-    return (
-        <Box component={'div'} className="py-2 px-3 rounded-lg bg-[#F2F2F2] text-black-main text-1xl flex items-center justify-between gap-2">
-            <p className="flex-1">{title}</p>
-            <Checkbox
-                onChange={(e) => {
-                    if (!onChecked) return;
+const _Item = ({ title, initData, onChecked }: { title: string; initData?: string[] | null; onChecked?: (v: string, check?: boolean) => void }) => {
+    const [check, setCheck] = useState((initData && initData.includes(title)) || false);
 
-                    onChecked(title, e.target.checked);
-                }}
-            />
+    useEffect(() => {
+        if (initData && onChecked && initData.includes(title)) {
+            onChecked(title, check);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return (
+        <Box
+            onClick={() => {
+                setCheck((prev) => !prev);
+                if (onChecked) {
+                    onChecked(title, check);
+                }
+            }}
+            component={'div'}
+            className="py-2 px-3 rounded-lg bg-[#F2F2F2] text-black-main text-1xl flex items-center justify-between gap-2"
+        >
+            <p className="flex-1">{title}</p>
+            <Checkbox checked={check} />
         </Box>
     );
 };
@@ -34,11 +52,15 @@ const _Item = ({ title, onChecked }: { title: string; onChecked?: (v: string, ch
 export default function AskConditionPage(props: IAskConditionPageProps) {
     const [conditions, setConditions] = useState(() => new Set<string>());
 
+    const router = useRouter();
+
     const { user } = useAppSelector((state: RootState) => state.userReducer);
-    const { petAdopt } = useAppSelector((state: RootState) => state.adoptReducer);
+    const { petAdopt, asked } = useAppSelector((state: RootState) => state.adoptReducer);
+
+    const dispath = useAppDispatch();
 
     const [loading, setLoading] = useState(false);
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const [phone, setPhone] = useState<IInfoAddress | null>(null);
 
@@ -61,23 +83,51 @@ export default function AskConditionPage(props: IAskConditionPageProps) {
             return toast.warn("You haven't chosen a pet yet !");
         }
 
+        if (!phone) {
+            return toast.warn('Please select contact information !');
+        }
+
         if (validate()) {
             return toast.warn('You must meet at least one requirement !');
         }
 
         try {
-            console.log(user.id, petAdopt.id);
-            const res = await adoptionPet({ userId: user.id, petId: petAdopt.id as string });
+            setLoading(true);
+            const res = await adoptionPet({ userId: user.id, petId: petAdopt.id as string, addressId: phone?.id });
 
             if (!res || res.errors) {
                 return toast.warn(res.message);
             }
 
             toast.success('Your request has been sent. We will contact as soon as possible !');
+            router.push(links.users.profiles.adoption);
+            await delay(1000);
+            await firebaseService.publistAdoptPetNotification(petAdopt, user.username, phone.phone);
+            dispath(clear());
         } catch (error) {
+            toast.error(contants.messages.errors.server);
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleClickContactIntoview = () => {
+        if (!user) {
+            return toast.warn('Plese login to use !');
+        }
+
+        if (!petAdopt) {
+            return toast.warn("You haven't chosen a pet yet !");
+        }
+
+        if (validate()) {
+            return toast.warn('You must meet at least one requirement !');
+        }
+
+        setOpen(true);
+
+        if (conditions.size <= 0) return;
+        dispath(setAsked(Array.from(conditions)));
     };
 
     const dataPhone = useMemo(() => {
@@ -106,7 +156,9 @@ export default function AskConditionPage(props: IAskConditionPageProps) {
                     {contants.askConditions.map((item, index) => {
                         return (
                             <_Item
+                                initData={asked}
                                 onChecked={(e, check) => {
+                                    console.log(conditions, asked);
                                     if (conditions.has(e) && !check) {
                                         setConditions((prev) => {
                                             const next = new Set(prev);
@@ -133,7 +185,7 @@ export default function AskConditionPage(props: IAskConditionPageProps) {
                         justifyContent: 'center',
                     }}
                 >
-                    <MainButton onClick={handleContactToView} width={'fit-content'} title="CONTACT TO INTERVIEW" />
+                    <MainButton onClick={handleClickContactIntoview} width={'fit-content'} title="CONTACT TO INTERVIEW" />
                 </Box>
             </Box>
 
@@ -159,7 +211,11 @@ export default function AskConditionPage(props: IAskConditionPageProps) {
                             <span className="font-medium">Contact phone number: </span>
                             <div className="flex items-center flex-wrap gap-2">
                                 <small className="text-xs italic ">
-                                    Select a phone number from the list or <span className="text-blue-primary hover:underline cursor-pointer">another phone number</span> to contact
+                                    Select a phone number from the list or{' '}
+                                    <Link href={links.users.profiles.address} className="text-blue-primary hover:underline cursor-pointer">
+                                        another phone number
+                                    </Link>{' '}
+                                    to contact
                                 </small>
                                 {dataPhone.length &&
                                     dataPhone.map((item) => {
@@ -202,6 +258,26 @@ export default function AskConditionPage(props: IAskConditionPageProps) {
                                 <img className="w-full h-full object-cover" src={petAdopt?.image} alt={petAdopt?.image} />
                             </div>
                         </div>
+                    </div>
+
+                    <div className="flex items-center justify-end text-sm gap-5 mt-5">
+                        <WrapperAnimation
+                            onClick={() => {
+                                setOpen(false);
+                                dispath(clearAsked());
+                            }}
+                            hover={{}}
+                            className="py-2 px-6 rounded-full hover:bg-[rgba(0,0,0,.2)] transition-all ease-linear cursor-pointer hover:text-white"
+                        >
+                            Cancel
+                        </WrapperAnimation>
+                        <WrapperAnimation
+                            onClick={handleContactToView}
+                            hover={{}}
+                            className="py-2 px-6 rounded-full transition-all ease-linear cursor-pointer text-blue-primary border-blue-primary border"
+                        >
+                            Ok
+                        </WrapperAnimation>
                     </div>
                 </div>
             </WraperDialog>

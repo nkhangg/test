@@ -2,10 +2,11 @@
 import { delay } from '@/utils/funtionals';
 import React, { useRef, useState } from 'react';
 import useIntersectionObserver from './useIntersectionObserver';
+import { IBaseResponse, PagiantionResponse } from '@/configs/interface';
 
-export default function useInfinities() {
+export default function useInfinities<T>({ queryFN }: { queryFN: (page?: number) => Promise<IBaseResponse<PagiantionResponse<T>>> }) {
     const refCountPage = useRef<number>(1);
-    const [data, setData] = useState<any[]>([]);
+    const [data, setData] = useState<T[]>([]);
     const [loading, setLoading] = useState(false);
     const [hasNextPage, setHasNextPage] = useState(true);
 
@@ -13,15 +14,19 @@ export default function useInfinities() {
         setLoading(true);
 
         // test loading
-        await delay(2000);
-        const res = await fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}`);
+        await delay(1000);
+        const res = await queryFN(skip);
 
-        const data = await res.json();
+        if (!res || res.errors) {
+            return [];
+        }
 
-        if (data.total <= skip + limit) setHasNextPage(false);
+        const data = res.data;
+
+        if (refCountPage.current >= data.pages) setHasNextPage(false);
         setLoading(false);
 
-        return data.products;
+        return data.data;
     };
 
     const lastDataRef = useIntersectionObserver<HTMLDivElement>(() => {

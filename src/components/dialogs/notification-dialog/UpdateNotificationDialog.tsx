@@ -146,7 +146,7 @@ export default function UpdateNotificationDialog({
 
         setTypeNotification(dataNotification.type);
 
-        if (dataNotification.target.length > 0 && dataNotification.target[0] !== 'all') {
+        if (dataNotification.target && dataNotification.target.length > 0 && dataNotification.target[0] !== 'all') {
             setTypeRecipient(recipientArr[1]);
 
             setRecipients(dataNotification.target);

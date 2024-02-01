@@ -38,6 +38,11 @@ export const links = {
         payment: '/payment',
         cart: '/cart',
         profile: '/profile',
+        profiles: {
+            address: '/profile/addresses',
+            noti: '/profile/notification',
+            adoption: '/profile/adoption',
+        },
     },
     history: {
         orderHistory: '/other-history',

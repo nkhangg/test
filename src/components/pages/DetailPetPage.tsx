@@ -18,7 +18,7 @@ import { delay } from '@/utils/funtionals';
 import firebaseService from '@/services/firebaseService';
 import WraperDialog from '../dialogs/WraperDialog';
 import { links } from '@/datas/links';
-import { setPetAdoptId } from '@/redux/slice/adoptSlide';
+import { setPetAdopt } from '@/redux/slice/adoptSlide';
 
 export interface IDetailPetPageProps {
     params: [string, string];
@@ -105,7 +105,7 @@ export default function DetailPetPage({ params }: IDetailPetPageProps) {
     const handleAdopt = async () => {
         if (!user || !data?.data || !data?.data.pet) return;
 
-        dispath(setPetAdoptId(data?.data.pet));
+        dispath(setPetAdopt(data?.data.pet));
         router.push(links.pets.ask);
     };
 

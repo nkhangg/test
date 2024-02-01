@@ -764,5 +764,9 @@ export interface IAdoption {
     pet: IPet;
     registerAt: string;
     adoptAt: string;
-    reason?: string | null;
+    cancelReason?: string | null;
+}
+
+export interface IAdoptPetNotification extends IPet {
+    phone: string;
 }
