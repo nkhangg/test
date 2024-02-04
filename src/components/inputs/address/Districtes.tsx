@@ -1,7 +1,7 @@
 'use client';
 import { useDebounce } from '@/hooks';
 import Tippy from '@tippyjs/react/headless';
-import React, { ChangeEvent, useCallback, useEffect, useRef, useState, Ref, FocusEvent, memo, useContext } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useRef, useState, Ref, FocusEvent, memo, useContext, useMemo } from 'react';
 import TextField from '../TextField';
 import { IDistrict, IDistrictOutside } from '@/configs/interface';
 import classNames from 'classnames';
@@ -38,6 +38,13 @@ export default function Districtes({ data, placeholder, messageUndefined, initDa
     const validate = () => {
         const { error, message } = Validate.address(value, data as any[]);
 
+        const divisionValidate = Validate.division<IDistrictOutside>(value, dataBeforeValid, 'DistrictName');
+
+        if (divisionValidate.error) {
+            setError(divisionValidate.message);
+            return divisionValidate.error;
+        }
+
         setError(message);
 
         return error;
@@ -45,9 +52,22 @@ export default function Districtes({ data, placeholder, messageUndefined, initDa
 
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
         const { error, message } = Validate.address(e.target.value, data as any[]);
+        const divisionValidate = Validate.division<IDistrictOutside>(value, dataBeforeValid, 'DistrictName');
 
+        if (divisionValidate.error) {
+            setError(divisionValidate.message);
+            return;
+        }
         setError(message);
     };
+
+    const dataBeforeValid = useMemo(() => {
+        if (value.length <= 0 || !data) return [];
+
+        return data.filter((item) => {
+            return item.DistrictName.toLowerCase().includes(value.toLowerCase()) || (item.NameExtension && item.NameExtension.includes(value.toLowerCase()));
+        });
+    }, [value, data]);
 
     useEffect(() => {
         if (!ref.current) return;

@@ -195,6 +195,13 @@ const Validate = {
 
         return { message: '', error: false };
     },
+    division<T>(value: string, dataMatch: T[], key: keyof T): ValidateType {
+        if (!dataMatch) return { message: 'Address invalid', error: true };
+
+        if (!dataMatch.find((item) => item[key] === value)) return { message: 'Address invalid', error: true };
+
+        return { message: '', error: false };
+    },
 
     birthday(value: string): ValidateType {
         if (this.isBlank(value)) return { message: "Birthday can't be blank ", error: true };

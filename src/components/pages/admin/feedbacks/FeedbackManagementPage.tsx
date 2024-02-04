@@ -26,7 +26,7 @@ export default function FeedbackManagementPage(props: IFeedbackManagementPagePro
 
     const data = rawFeedbacks.data && rawFeedbacks.data.data;
     return (
-        <BoxTitle mt="mt-0" mbUnderline="mb-0" border={false} title="Brands MANAGEMENT" className="">
+        <BoxTitle mt="mt-0" mbUnderline="mb-0" border={false} title="FEEDBACKS MANAGEMENT" className="">
             {data && data.data.length <= 0 && <div className="py-5 text-sm">Total: {data?.total} feedback</div>}
             <div className="flex flex-col gap-5">
                 {data &&

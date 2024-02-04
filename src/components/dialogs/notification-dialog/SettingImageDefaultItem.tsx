@@ -147,7 +147,7 @@ export default function SettingImageDefaultItem({ data }: ISettingImageDefaultIt
                             <p>{moment(data.createdAt instanceof Date ? data.createdAt : convertFirestoreTimestampToString(data.createdAt)).format('dd/MM/yyyy')}</p>
                         </li>
                         <li className="flex items-center gap-2">
-                            <span>Created at: </span>
+                            <span>Updated at: </span>
                             <p>{moment(data.updatedAt instanceof Date ? data.updatedAt : convertFirestoreTimestampToString(data.updatedAt)).format('dd/MM/yyyy')}</p>
                         </li>
                     </motion.ul>
