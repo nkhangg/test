@@ -18,8 +18,8 @@ export const links = {
             create: commonAdmin + '/users/create',
         },
         pets: {
-            create: commonAdmin + '/pets/create',
-            detail: commonAdmin + '/pets/',
+            create: commonAdmin + '/pet/create',
+            detail: commonAdmin + '/pet/',
             index: commonAdmin + '/pet',
         },
         orders: {
