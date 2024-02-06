@@ -143,6 +143,7 @@ export default function PetManagePage(props: IPetManagePageProps) {
                     },
                 }}
                 dateProps={{
+                    label: 'Foster at',
                     onDatas: (date) => {
                         if (!data) return;
 

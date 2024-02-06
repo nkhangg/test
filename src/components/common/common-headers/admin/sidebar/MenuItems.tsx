@@ -1,4 +1,5 @@
-import { IconBell, IconLetterCaseLower, IconQuestionMark, IconStars } from '@tabler/icons-react';
+import { faShield } from '@fortawesome/free-solid-svg-icons';
+import { IconBell, IconLetterCaseLower, IconQuestionMark, IconShield, IconStars } from '@tabler/icons-react';
 import { IconLayoutDashboard, IconBox, IconDog, IconUser, IconBoxSeam, IconMessage, IconBrandCake } from '@tabler/icons-react';
 const Menuitems = [
     {
@@ -33,6 +34,12 @@ const Menuitems = [
         title: 'Pets',
         icon: IconDog,
         href: '/admin/dashboard/pet',
+    },
+    {
+        id: 11,
+        title: 'Adoption',
+        icon: IconShield,
+        href: '/admin/dashboard/adoption',
     },
     {
         id: 8,

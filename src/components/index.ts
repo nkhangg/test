@@ -34,6 +34,7 @@ export { default as Districtes } from './inputs/address/Districtes';
 export { default as Wards } from './inputs/address/Wards';
 export { default as AddressForm } from './inputs/address/AddressForm';
 export { default as TippyChooser } from './inputs/tippys/TippyChooser';
+export { default as DropdownTippy } from './inputs/tippys/DropdownTippy';
 export { default as SearchInput } from './inputs/SearchInput';
 export { default as RatingStar } from './inputs/RatingStar';
 export { default as EmojiPicker } from './inputs/EmojiPicker';
@@ -113,6 +114,7 @@ export { default as Comment } from './comments/Comment';
 // dialog
 export { default as RatingDialog } from './dialogs/RatingDialog';
 export { default as DialogDateChooser } from './dialogs/DialogDateChooser';
+export { default as DialogAceptChooser } from './dialogs/adoption/DialogAceptChooser';
 export { default as UpdateStateOrderDialog } from './dialogs/UpdateStateOrderDialog';
 export { default as ReasonDialog } from './dialogs/ReasonDialog';
 export { default as BaseAddressDialog } from './inputs/address/BaseAddressDialog';
@@ -128,6 +130,7 @@ export { default as PostDialog } from './dialogs/posts/PostDialog';
 export { default as PostDetailDialog } from './dialogs/posts/PostDetailDialog';
 export { default as MapDialog } from './dialogs/maps/MapDialog';
 export { default as Markers } from './dialogs/maps/Markers';
+export { default as CustomReasonDialog } from './dialogs/CustomReasonDialog';
 
 // chats
 

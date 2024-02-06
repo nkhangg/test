@@ -5,3 +5,7 @@ export const reasons = [
     'Found another product with a better price.',
     'Other reason.',
 ];
+
+export const adoptionReasons = ['We found your conditions are not suitable.', 'Your contact address is not available.', 'Pet currently has health problems.', 'Other reason.'];
+
+export const adoptionReasonsForUser = ['Change contact information.', 'The consulting team has problems', 'Other reason.'];

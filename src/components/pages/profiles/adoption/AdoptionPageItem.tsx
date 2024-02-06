@@ -1,16 +1,21 @@
 'use client';
+import { acceptAdoptionAdmin, cancelAdoptionAdmin, comfirmAdoptionAdmin } from '@/apis/admin/adoption';
 import { cancelAdoptionPet } from '@/apis/pets';
-import { MiniLoading, WrapperAnimation } from '@/components';
+import { CustomReasonDialog, DialogAceptChooser, MiniLoading, WrapperAnimation } from '@/components';
 import WraperDialog from '@/components/dialogs/WraperDialog';
 /* eslint-disable @next/next/no-img-element */
 import { IAdoption } from '@/configs/interface';
 import { LabelAdopt } from '@/configs/types';
+import { links } from '@/datas/links';
+import { adoptionReasons, adoptionReasonsForUser } from '@/datas/reason';
 import { contants } from '@/utils/contants';
-import { faCat, faChevronUp, faFaceFrown, faHeart, faMars, faMaximize, faVenus } from '@fortawesome/free-solid-svg-icons';
+import { faCat, faChevronUp, faEllipsisVertical, faFaceFrown, faHeart, faMars, faMaximize, faVenus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Tippy from '@tippyjs/react/headless';
 import classNames from 'classnames';
 import moment from 'moment';
 import { Nunito_Sans } from 'next/font/google';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -22,35 +27,59 @@ const nunito = Nunito_Sans({
 
 export interface IAdoptionPageItemProps {
     data: IAdoption;
+    styles?: {
+        image?: string;
+    };
+    showHeart?: boolean;
+    showDetailType?: boolean;
+    advanced?: boolean;
+    onBeforeCancel?: () => void;
+    onBeforeAccept?: () => void;
+    onBeforeComfirm?: () => void;
 }
 
-const Label = ({ type }: { type: LabelAdopt }) => {
+const Label = ({ type, showDetailType = false }: { type: LabelAdopt; showDetailType?: boolean }) => {
     const cancelArr = ['cancelled by admin', 'cancelled by customer'];
     return (
         <div
             className={classNames('capitalize py-1 px-3 text-xs md:py-2 md:px-5 rounded-full  md:text-sm text-black-main font-medium', {
                 ['bg-adopted']: type.toLocaleLowerCase() === 'adopted',
                 ['bg-register']: type.toLocaleLowerCase() === 'waiting',
+                ['bg-[#D3D7FF]']: type.toLocaleLowerCase() === 'registered',
                 ['bg-cancelled']: cancelArr.includes(type.toLocaleLowerCase()),
             })}
         >
-            {cancelArr.includes(type.toLocaleLowerCase()) ? 'Cancel' : type}
+            {!showDetailType && (cancelArr.includes(type.toLocaleLowerCase()) ? 'Cancel' : type)}
+            {showDetailType && type}
         </div>
     );
 };
 
-export default function AdoptionPageItem({ data }: IAdoptionPageItemProps) {
+export default function AdoptionPageItem({
+    data,
+    styles,
+    showHeart = true,
+    showDetailType = false,
+    advanced,
+    onBeforeCancel,
+    onBeforeAccept,
+    onBeforeComfirm,
+}: IAdoptionPageItemProps) {
     const [loadmore, setLoadmore] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const [types, setTypes] = useState<LabelAdopt>(data.state.toLowerCase() as LabelAdopt);
 
+    // state when advanced
+    const [openAdvanced, setOpenAdvanced] = useState(false);
+    const [openReason, setOpenReason] = useState(false);
+    const [openAcept, setOpenAcept] = useState(false);
     const [openModal, setOpenModal] = useState(false);
 
-    const handleCancel = async () => {
+    const handleCancel = async (reason: string) => {
         try {
             setLoading(true);
-            const response = await cancelAdoptionPet(data.id + '');
+            const response = await cancelAdoptionPet({ id: String(data.id), reason });
 
             if (!response || response.errors) {
                 return toast.warn(response.message);
@@ -66,16 +95,139 @@ export default function AdoptionPageItem({ data }: IAdoptionPageItemProps) {
     };
 
     const handleClearWhenSuccess = () => {
-        setOpenModal(false);
         setTypes('cancelled by customer');
     };
 
+    const handleCancelByAdmin = async (reason: string) => {
+        try {
+            setLoading(true);
+            const response = await cancelAdoptionAdmin({ id: String(data.id), reason });
+
+            if (!response) return toast.warn(contants.messages.errors.handle);
+
+            if (response.errors) return toast.warn(response.message);
+
+            toast.success(response.message);
+        } catch (error) {
+            toast.error(contants.messages.errors.server);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSubmitCancel = async (reason: string) => {
+        if (advanced) {
+            await handleCancelByAdmin(reason);
+        } else {
+            await handleCancel(reason);
+        }
+
+        if (!advanced || !onBeforeCancel) return;
+        setOpenAdvanced(false);
+        onBeforeCancel();
+    };
+
+    const handleAcceptOrUpdateAppointment = async (date: string) => {
+        try {
+            setLoading(true);
+            const response = await acceptAdoptionAdmin({ id: String(data.id), data: date });
+
+            if (!response) return toast.warn(contants.messages.errors.handle);
+
+            if (response.errors) return toast.warn(response.message);
+
+            toast.success(response.message);
+        } catch (error) {
+            toast.error(contants.messages.errors.server);
+        } finally {
+            setLoading(false);
+        }
+
+        if (!advanced || !onBeforeAccept) return;
+        setOpenAdvanced(false);
+        onBeforeAccept();
+    };
+
+    const handleComfirm = async () => {
+        try {
+            setLoading(true);
+            const response = await comfirmAdoptionAdmin({ id: String(data.id), data: '' });
+
+            if (!response) return toast.warn(contants.messages.errors.handle);
+
+            if (response.errors) return toast.warn(response.message);
+
+            toast.success(response.message);
+        } catch (error) {
+            toast.error(contants.messages.errors.server);
+        } finally {
+            setLoading(false);
+        }
+
+        setOpenModal(false);
+
+        if (!advanced || !onBeforeComfirm) return;
+        setOpenAdvanced(false);
+        onBeforeComfirm();
+    };
+
     return (
-        <div className="relative overflow-hidden rounded-lg p-4 shadow-primary flex items-start gap-7 min-h-[100px] border border-gray-primary transition-all ease-linear w-full">
-            <div className="w-1/4 max-h-[180px] rounded-xl overflow-hidden hidden md:block hover:shadow-primary transition-all ease-linear ">
+        <div className="relative overflow-hidden rounded-lg p-4 shadow-primary flex gap-7 min-h-[100px] border border-gray-primary transition-all ease-linear w-full items-center">
+            <div
+                className={classNames('h-full aspect-square rounded-xl overflow-hidden hidden md:block hover:shadow-primary transition-all ease-linear ', {
+                    ['w-1/3']: !styles?.image,
+                    [styles?.image || '']: styles?.image,
+                })}
+            >
                 <img className="w-full h-full object-cover hover:scale-110 transition-all ease-linear" src={data.pet.image} alt={data.pet.image} />
             </div>
-            <div className="flex-1 flex flex-col justify-between py-4 w-full h-full gap-3 relative">
+            <div className=" flex-1 flex flex-col justify-between py-4 w-full h-full gap-3 relative select-none">
+                {advanced && !(['cancelled by customer', 'cancelled by admin', 'adopted'] as LabelAdopt[]).includes(types) && (
+                    <Tippy
+                        onClickOutside={() => setOpenAdvanced(false)}
+                        interactive
+                        visible={openAdvanced}
+                        placement="left"
+                        render={(attr) => {
+                            return (
+                                <div className="bg-white shadow-primary rounded-md border py-1 border-gray-primary flex flex-col gap-1" tabIndex={-1} {...attr}>
+                                    {types === 'waiting' && (
+                                        <DialogAceptChooser
+                                            onDatas={handleAcceptOrUpdateAppointment}
+                                            title="Select appointment date"
+                                            className="px-5 cursor-pointer hover:bg-gray-300 py-1 transition-all ease-linear"
+                                            label={'Accept'}
+                                        />
+                                    )}
+                                    {types === 'registered' && (
+                                        <span onClick={() => setOpenModal(true)} className="px-5 cursor-pointer hover:bg-gray-300 py-1 transition-all ease-linear">
+                                            Confirm
+                                        </span>
+                                    )}
+                                    {types === 'registered' && (
+                                        <DialogAceptChooser
+                                            iniData={moment(data.pickUpDate).format('yyyy-MM-DD')}
+                                            onDatas={handleAcceptOrUpdateAppointment}
+                                            title="Change appointment date"
+                                            className="px-5 cursor-pointer hover:bg-gray-300 py-1 transition-all ease-linear"
+                                            label={'Adjust'}
+                                        />
+                                    )}
+                                    <span onClick={() => setOpenReason(true)} className="px-5 cursor-pointer hover:bg-gray-300 py-1 transition-all ease-linear">
+                                        Cancel
+                                    </span>
+                                </div>
+                            );
+                        }}
+                    >
+                        <div
+                            onClick={() => setOpenAdvanced((prev) => !prev)}
+                            className="absolute cursor-pointer top-0 right-0 p-3 rounded-full hover:bg-slate-300 text-black-main w-10 h-10 flex items-center justify-center transition-all ease-linear"
+                        >
+                            <FontAwesomeIcon icon={faEllipsisVertical} />
+                        </div>
+                    </Tippy>
+                )}
                 <div className="flex items-center justify-between">
                     <h4
                         className={classNames('text-lg font-bold capitalize', {
@@ -85,8 +237,8 @@ export default function AdoptionPageItem({ data }: IAdoptionPageItemProps) {
                         {data.pet.name}
                     </h4>
 
-                    {!(['adopted', 'cancelled', 'cancelled by admin', 'cancelled by customer'] as LabelAdopt[]).includes(types) && (
-                        <span onClick={() => setOpenModal(true)} className="w-1/4 text-center text-[15px] text-[#505DE8] hover:underline cursor-pointer">
+                    {!(['adopted', 'cancelled', 'cancelled by admin', 'cancelled by customer'] as LabelAdopt[]).includes(types) && !advanced && (
+                        <span onClick={() => setOpenReason(true)} className="w-1/4 text-center text-[15px] text-[#505DE8] hover:underline cursor-pointer">
                             Cancel
                         </span>
                     )}
@@ -113,18 +265,48 @@ export default function AdoptionPageItem({ data }: IAdoptionPageItemProps) {
                 </ul>
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <Label type={types} />
-                        <span className="text-sm text-[#727272]">{moment(new Date()).format('MMM Do YY')}</span>
+                        <Label showDetailType={showDetailType} type={types} />
+                        {!['adopted', 'registered'].includes(types) && <span className="text-sm text-[#727272]">{moment(data.registerAt).format('MMM Do YY')}</span>}
+                        {types === 'registered' && (
+                            <span className="text-sm text-[#727272]">
+                                {moment(data.pickUpDate).format('MMM Do YY')} <small className="text-xs italic mr-1">Please arrive during this time to pick up</small>
+                            </span>
+                        )}
+                        {types === 'adopted' && <span className="text-sm text-[#727272]">{moment(data.adoptAt).format('MMM Do YY')}</span>}
                     </div>
-                    <div className="w-1/4 flex items-center justify-center">
-                        <FontAwesomeIcon
-                            className={classNames('', {
-                                ['text-fill-heart']: data.pet.like,
-                                ['text-inherit']: !data.pet.like,
-                            })}
-                            icon={faHeart}
-                        />
+                    {showHeart && (
+                        <div className="w-1/4 flex items-center justify-center">
+                            <FontAwesomeIcon
+                                className={classNames('', {
+                                    ['text-fill-heart']: data.pet.like,
+                                    ['text-inherit']: !data.pet.like,
+                                })}
+                                icon={faHeart}
+                            />
+                        </div>
+                    )}
+                </div>
+                <div className="text-sm text-black-main flex items-start gap-5">
+                    <div className="flex flex-col gap-1">
+                        {advanced && (
+                            <span>
+                                Fullname:{' '}
+                                <Link className="hover:text-blue-primary hover:underline" href={links.adminFuntionsLink.users.detail + data.user.id}>
+                                    {data.user.fullname}
+                                </Link>
+                            </span>
+                        )}
+                        <span>Phone: {data.phone}</span>
+                        <span>Address: {data.address}</span>
                     </div>
+
+                    {types === 'adopted' && (
+                        <div className="flex flex-col gap-1">
+                            <span>Adopted: {moment(data.adoptAt).format('DD/MM/yyyy')}</span>
+                            <span>Pickup: {moment(data.pickUpDate).format('DD/MM/yyyy')}</span>
+                            <span>Registered: {moment(data.registerAt).format('DD/MM/yyyy')}</span>
+                        </div>
+                    )}
                 </div>
                 {data.cancelReason && (
                     <div className="flex items-center gap-2 text-[#4C6B99] ">
@@ -155,12 +337,16 @@ export default function AdoptionPageItem({ data }: IAdoptionPageItemProps) {
                 )}
             </div>
 
+            {openReason && (
+                <CustomReasonDialog handleAfterClickSend={handleSubmitCancel} onClose={() => setOpenReason(false)} reasons={advanced ? adoptionReasons : adoptionReasonsForUser} />
+            )}
+
+            {advanced && openAcept && <DialogAceptChooser />}
+
             <WraperDialog open={openModal} setOpen={setOpenModal}>
-                <div className="p-6 flex flex-col gap-4 text-black-main">
-                    <span className="break-all max-w-[80%]">
-                        Do you really want to cancel your adoption registration for <b className="capitalize">{data.pet.name}</b>?
-                    </span>
-                    <div className="flex items-center justify-end text-sm gap-5">
+                <div className="p-6 flex flex-col gap-4 items-center text-black-main">
+                    Confirmed <b className="capitalize">{data.user.fullname}</b> has received <b className="capitalize">{data.pet.name}</b>
+                    <div className="flex items-center justify-between text-sm">
                         <WrapperAnimation
                             onClick={() => setOpenModal(false)}
                             hover={{}}
@@ -169,11 +355,11 @@ export default function AdoptionPageItem({ data }: IAdoptionPageItemProps) {
                             Cancel
                         </WrapperAnimation>
                         <WrapperAnimation
-                            onClick={handleCancel}
+                            onClick={handleComfirm}
                             hover={{}}
                             className="py-2 px-6 rounded-full hover:bg-[rgba(0,0,0,.2)] transition-all ease-linear cursor-pointer hover:text-white text-red-primary"
                         >
-                            Cancel registration
+                            Comfirm
                         </WrapperAnimation>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 import exp from 'constants';
-import { AddressFirebase, Point, StateType, TypeNotification, UserFormType } from './types';
+import { AddressFirebase, LabelAdopt, Point, StateType, TypeNotification, UserFormType } from './types';
 import { Timestamp } from 'firebase/firestore';
 
 export interface Action<T, P> {
@@ -171,6 +171,7 @@ export interface IPetDetail extends IPet {
     color: string;
     images: string[];
     canAdopt: boolean;
+    status: string;
 }
 
 export interface IPetDetailPageResponse {
@@ -765,8 +766,78 @@ export interface IAdoption {
     registerAt: string;
     adoptAt: string;
     cancelReason?: string | null;
+    address: string;
+    phone: string;
+    pickUpDate: string;
 }
 
 export interface IAdoptPetNotification extends IPet {
     phone: string;
+}
+
+export interface IPetManagementFormResuqest {
+    name: string;
+    breed: string;
+    sex: string;
+    spay: boolean;
+    size: string;
+    fosterDate: string;
+    description: string;
+    images: File[];
+    colors: Set<string>;
+    status: string;
+}
+
+export interface IPetManagement {
+    id: string;
+    breed: string;
+    name: string;
+    description: string;
+    fostered: string;
+    size: string;
+    sex: string;
+    type: string;
+    spay: boolean;
+    images: string[];
+    color: string;
+    status: string;
+}
+
+export interface IChatGPTResponse {
+    id: string;
+    object: string;
+    created: number;
+    model: string;
+    choices: IChatGPTChoice[];
+    usage: IChatGPTUsage;
+    system_fingerprint: any;
+}
+
+export interface IChatGPTChoice {
+    index: number;
+    message: IChatGPTMessage;
+    logprobs: any;
+    finish_reason: string;
+}
+
+export interface IChatGPTMessage {
+    role: string;
+    content: string;
+}
+
+export interface IChatGPTUsage {
+    prompt_tokens: number;
+    completion_tokens: number;
+    total_tokens: number;
+}
+
+export interface IRequestFilterAdoptionAdmin {
+    status: LabelAdopt | 'all';
+    petName: string;
+    registerStart: string;
+    registerEnd: string;
+    adoptStart: string;
+    adoptEnd: string;
+    sort: string;
+    page: string;
 }

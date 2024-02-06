@@ -59,6 +59,9 @@ import {
     IAddress,
     ApiDivision,
     IAdoption,
+    IPetManagement,
+    IRequestFilterAdoptionAdmin,
+    IPetManagementFormResuqest,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { RolesName } from './enum';
@@ -82,6 +85,8 @@ export type ApiDetailProductType = (idProduct: string) => Promise<IBaseResponse<
 
 export type ApiPetDetailPage = (id: string) => Promise<IBaseResponse<IPetDetailPageResponse>>;
 
+export type ApiPetManagement = (id: string) => Promise<IBaseResponse<IPetManagement>>;
+
 export type ApiPetFavorite = (id: string) => Promise<IBaseResponse<any>>;
 
 export type ApiPetAttributes = () => Promise<IBaseResponse<IPetAttribute>>;
@@ -90,11 +95,21 @@ export type ApiAdoptions = () => Promise<IBaseResponse<PagiantionResponse<IAdopt
 
 export type ApiAdoption = (data: { userId: string; petId: string; addressId: number }) => Promise<IBaseResponse<IAdoption>>;
 
-export type ApiCancelAdoption = (petId: string) => Promise<IBaseResponse<IAdoption>>;
+export type ApiCancelAdoption = (data: { id: string; reason: string }) => Promise<IBaseResponse<IAdoption>>;
 
 export type ApiFilterPets = (params: IRequestFilterPet) => Promise<IBaseResponse<PagiantionResponse<IPet>>>;
 
 export type ApiFilterPetsAdmin = (params: IRequestFilterPetAdmin) => Promise<IBaseResponse<PagiantionResponse<IPetDetail>>>;
+
+export type ApiActionPetAdmin = (data: IPetManagementFormResuqest, differentData: { id?: string; images?: ImageType[] }) => Promise<IBaseResponse<IPetDetail>>;
+
+export type ApiActionImagePetAdmin = (id: string, images: ImageType[]) => Promise<IBaseResponse<any>>;
+
+export type ApiFilterAdoptionAdmin = (params: Partial<IRequestFilterAdoptionAdmin>) => Promise<IBaseResponse<PagiantionResponse<IAdoption>>>;
+
+export type ApiCancelAdoptionAdmin = (data: { id: string; reason: string }) => Promise<IBaseResponse<IAdoption>>;
+
+export type ApiChangeStateAdoptionAdmin = (data: { id: string; state?: LabelAdopt; data: string }) => Promise<IBaseResponse<IAdoption>>;
 
 export type ApiReportType = () => Promise<IBaseResponse<IReports>>;
 
@@ -357,4 +372,4 @@ export type ImageType = {
 
 export type Point = google.maps.LatLngLiteral & { key: string; yourLocation?: boolean };
 
-export type LabelAdopt = 'adopted' | 'waiting' | 'cancelled by admin' | 'cancelled by customer';
+export type LabelAdopt = 'adopted' | 'waiting' | 'cancelled by admin' | 'cancelled by customer' | 'registered';

@@ -1,4 +1,4 @@
-import { ApiAdoption, ApiAdoptions, ApiCancelAdoption, ApiFilterPets, ApiPetAttributes, ApiPetDetailPage, ApiPetFavorite } from '@/configs/types';
+import { ApiAdoption, ApiAdoptions, ApiCancelAdoption, ApiFilterPets, ApiPetAttributes, ApiPetDetailPage, ApiPetFavorite, ApiPetManagement } from '@/configs/types';
 import axios from '../configs/axios';
 import { IRequestFilterPet } from '@/configs/interface';
 
@@ -6,6 +6,17 @@ export const petDetail: ApiPetDetailPage = async (id: string) => {
     const res = await axios({
         method: 'GET',
         url: '/pets/' + id,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const getPetManagement: ApiPetManagement = async (id: string) => {
+    const res = await axios({
+        method: 'GET',
+        url: 'admin/pets/' + id,
     });
 
     if (!res) return null;
@@ -58,7 +69,7 @@ export const getAdoptions: ApiAdoptions = async () => {
     return res?.data;
 };
 
-export const adoptionPet: ApiAdoption = async (data: { userId: string; petId: string }) => {
+export const adoptionPet: ApiAdoption = async (data: { userId: string; petId: string; addressId: number }) => {
     const res = await axios({
         method: 'POST',
         url: '/user/adopts',
@@ -70,12 +81,12 @@ export const adoptionPet: ApiAdoption = async (data: { userId: string; petId: st
     return res?.data;
 };
 
-export const cancelAdoptionPet: ApiCancelAdoption = async (petId: string) => {
+export const cancelAdoptionPet: ApiCancelAdoption = async (data: { id: string; reason: string }) => {
     const res = await axios({
         method: 'PUT',
-        url: '/user/adopts' + `/${petId}`,
+        url: '/user/adopts' + `/${data.id}`,
         data: {
-            cancelReason: 'Personal reason',
+            cancelReason: data.reason,
         },
     });
 

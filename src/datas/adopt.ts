@@ -41,6 +41,11 @@ export const dataTakeAction = {
             { id: 'male', name: 'Male' },
             { id: 'female', name: 'Female' },
         ],
+        status: [
+            { id: 'healthy', name: 'Healthy' },
+            { id: 'sick', name: 'Sick' },
+            { id: 'deceased', name: 'Deceased' },
+        ],
     },
     pets: [
         {

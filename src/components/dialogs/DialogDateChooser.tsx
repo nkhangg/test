@@ -14,9 +14,10 @@ const iniData = { start: undefined, end: undefined };
 export interface IDialogDateChooserProps {
     className?: string;
     onDatas?: (dates: DialogDateChooserType) => void;
+    label?: string;
 }
 
-export default function DialogDateChooser({ className, onDatas }: IDialogDateChooserProps) {
+export default function DialogDateChooser({ className, label = 'CHOOSE DATE', onDatas }: IDialogDateChooserProps) {
     const [dates, setDates] = useState<DialogDateChooserType>(iniData);
     const [open, setOpen] = useState(false);
     const handleChangeDate = (e: ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +43,7 @@ export default function DialogDateChooser({ className, onDatas }: IDialogDateCho
                     [className || '']: className,
                 })}
             >
-                CHOOSE DATE
+                {label}
             </span>
 
             <WraperDialog open={open} setOpen={setOpen}>
