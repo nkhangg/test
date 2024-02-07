@@ -55,7 +55,7 @@ export default function RowListPet({ index, data, page }: IRowListPetProps) {
             <TableCell align="left">{data.size}</TableCell>
             <TableCell align="left">
                 <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
-                    <p className="block truncate max-w-[80px]">{"Haven't adopted yet"}</p>
+                    <p className="block truncate max-w-[80px] capitalize">{data.status}</p>
                 </Typography>
             </TableCell>
             <TableCell align="left">

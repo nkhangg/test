@@ -6,17 +6,23 @@ import {
     faCat,
     faCircleCheck,
     faCircleXmark,
+    faFaceDizzy,
     faHeart,
     faHourglassStart,
+    faNotesMedical,
     faPaw,
     faRightFromBracket,
     faShield,
+    faShieldCat,
+    faShieldDog,
     faShoppingCart,
     faStar,
     faUser,
     faUserTie,
+    faVirus,
 } from '@fortawesome/free-solid-svg-icons';
 import { links } from './links';
+import { dataTakeAction } from './adopt';
 
 export const navbar = [
     { title: 'Home', href: '/' },
@@ -85,16 +91,16 @@ export const dataHeadPet = [
         icon: faPaw,
     },
     {
-        title: 'Adopted',
-        icon: faShield,
+        title: dataTakeAction.fillters.status[0].name,
+        icon: faNotesMedical,
     },
     {
-        title: 'Awaiting adoption',
-        icon: faHourglassStart,
+        title: dataTakeAction.fillters.status[1].name,
+        icon: faVirus,
     },
     {
-        title: "Haven't adopted yet",
-        icon: faCat,
+        title: dataTakeAction.fillters.status[2].name,
+        icon: faFaceDizzy,
     },
 ] as HeadTabType[];
 
@@ -137,6 +143,34 @@ export const dataHeadReviews = [
         styles: {
             iconPosition: 'end',
         },
+    },
+] as HeadTabType[];
+
+export const dataHeadAdoption = [
+    {
+        title: 'All',
+        icon: faCat,
+    },
+    {
+        title: 'Adopted',
+        icon: faShieldDog,
+    },
+
+    {
+        title: 'Waiting',
+        icon: faHourglassStart,
+    },
+    {
+        title: 'Registered',
+        icon: faShieldCat,
+    },
+    {
+        title: 'Cancelled By Admin',
+        icon: faUserTie,
+    },
+    {
+        title: 'Cancelled By Customer',
+        icon: faUser,
     },
 ] as HeadTabType[];
 

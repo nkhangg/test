@@ -28,6 +28,9 @@ export const links = {
         feedbacks: {
             index: commonAdmin + '/feedbacks',
         },
+        adoption: {
+            index: commonAdmin + '/adoption',
+        },
     },
     auth: {
         login: '/login',

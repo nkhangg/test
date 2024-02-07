@@ -1,9 +1,12 @@
-import * as React from 'react';
+'use client';
+import { updatePetAdmin } from '@/apis/admin/pets';
+import DetailPetManagementPage from '@/components/pages/pets/DetailPetManamentPage';
+import React from 'react';
 
 export interface IDetailPetManagementProps {
     params: { id: string };
 }
 
 export default function DetailPetManagement({ params }: IDetailPetManagementProps) {
-    return <div>This is detail {params.id}</div>;
+    return <DetailPetManagementPage actionFN={updatePetAdmin} id={params.id} />;
 }

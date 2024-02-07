@@ -72,6 +72,10 @@ const Validate = {
         if (this.isBlank(value)) return { message: `Description can't be blank `, error: true };
         return { message: '', error: false };
     },
+    fosterDate(value: string): ValidateType {
+        if (this.isBlank(value)) return { message: `Description can't be blank `, error: true };
+        return { message: '', error: false };
+    },
 
     message(value: string): ValidateType {
         if (this.isBlank(value)) return { message: `Message can't be blank `, error: true };
@@ -131,6 +135,18 @@ const Validate = {
     brand(value: string): ValidateType {
         return this.isValidAcceptNunString(value, 'Brand');
     },
+    breed(value: string): ValidateType {
+        return this.isValidAcceptNunString(value, 'Breed');
+    },
+    size(value: string): ValidateType {
+        return this.isValidAcceptNunString(value, 'Size');
+    },
+    sex(value: string): ValidateType {
+        return this.isValidAcceptNunString(value, 'Sex');
+    },
+    status(value: string): ValidateType {
+        return this.isValidAcceptNunString(value, 'Status');
+    },
 
     link(value: string): ValidateType {
         if (this.isBlank(value)) return { message: '', error: false };
@@ -174,6 +190,15 @@ const Validate = {
 
         return { message: '', error: false };
     },
+    date(value: string): ValidateType {
+        if (this.isBlank(value)) return { message: "Date can't be blank ", error: true };
+
+        const date = new Date(value);
+
+        if (date < new Date()) return { message: 'Date must be greater than or equal to the current date', error: true };
+
+        return { message: '', error: false };
+    },
 
     fullname(value: string): ValidateType {
         if (this.isBlank(value)) return { message: "Fullname can't be blank ", error: true };
@@ -191,6 +216,15 @@ const Validate = {
 
         if (dataMatch) {
             if (dataMatch.length <= 0) return { message: 'Address invalid ', error: true };
+        }
+
+        return { message: '', error: false };
+    },
+    dropdownTippy(value: string, option: { dataMatch?: any[]; name?: string }): ValidateType {
+        if (this.isBlank(value)) return { message: `${option?.name || ''} can't be blank `, error: true };
+
+        if (option.dataMatch) {
+            if (option.dataMatch.length <= 0) return { message: `${option?.name || ''} invalid `, error: true };
         }
 
         return { message: '', error: false };

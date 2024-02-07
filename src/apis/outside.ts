@@ -1,4 +1,4 @@
-import { ICart, IDistrict, IDistrictOutside, IProvinceOutside, IProvinces, IWardOutside } from '@/configs/interface';
+import { ICart, IChatGPTResponse, IDistrict, IDistrictOutside, IPetManagementFormResuqest, IProvinceOutside, IProvinces, IWardOutside } from '@/configs/interface';
 import { ApiGetShippingFee, DataFormShippingFee } from '@/configs/type-ousite';
 import {
     AddressCodeType,
@@ -230,4 +230,35 @@ export const getShippingFee = async (
     }
 
     return null;
+};
+
+export const generateContentWithAi = async (data: IPetManagementFormResuqest) => {
+    const prompt = `Write me an introduction about a pet with the following information: ${data.colors ? Array.from(data.colors).join(', ') : 'brown'} color, ${
+        data.size || 'adult'
+    } size, ${data.sex || 'male'} gender, ${data.name || ''} name, ${data.type || ''} type. limit 255 character`;
+    const res = await axios({
+        method: 'POST',
+        url: process.env.NEXT_PUBLIC_CHAT_GPT_API + `/completions`,
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + process.env.NEXT_PUBLIC_CHAT_GPT_TOKEN,
+        },
+        data: {
+            model: 'gpt-3.5-turbo',
+            messages: [
+                {
+                    role: 'system',
+                    content: 'You are a helpful assistant.',
+                },
+                {
+                    role: 'user',
+                    content: prompt,
+                },
+            ],
+        },
+    });
+
+    if (!res) return null;
+
+    return res?.data as IChatGPTResponse;
 };

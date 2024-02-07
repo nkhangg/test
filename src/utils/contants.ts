@@ -99,4 +99,6 @@ export const contants = {
         height: 'calc(100vh - 100px)',
     },
     instantProvince: ['Cần Thơ', 'TP.Cần Thơ', 'TP. Cần Thơ', 'TP Cần Thơ', 'Thành phố Cần Thơ', 'cantho'],
+
+    statusAdtoption: ['adopted', 'waiting', 'cancelled by admin', 'cancelled by customer'],
 };

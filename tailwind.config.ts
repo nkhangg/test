@@ -46,6 +46,7 @@ const config: Config = {
                 'gray-primary': '#838383',
                 'red-primary': '#EF4444',
                 'violet-primary': '#505DE8',
+                'violet-secondary-2': '#5F4EE0',
                 'violet-post-primary': '#B3A8FF',
                 'violet-secondary': '#6366F1',
                 'blue-primary': '#0EA5E9',

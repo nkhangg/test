@@ -42,24 +42,26 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }: ItemTyp
                     {/* ------------------------------------------- */}
                     {/* Sidebar Box */}
                     {/* ------------------------------------------- */}
-                    <Box
-                        sx={{
-                            height: '100%',
-                        }}
-                    >
-                        {/* ------------------------------------------- */}
-                        {/* Logo */}
-                        {/* ------------------------------------------- */}
-                        <Box px={3}>
-                            <Logo />
-                        </Box>
-                        <Box>
+                    <div className="scroll w-full h-full">
+                        <Box
+                            sx={{
+                                height: '100%',
+                            }}
+                        >
                             {/* ------------------------------------------- */}
-                            {/* Sidebar Items */}
+                            {/* Logo */}
                             {/* ------------------------------------------- */}
-                            <SidebarItems />
+                            <Box px={3}>
+                                <Logo />
+                            </Box>
+                            <Box>
+                                {/* ------------------------------------------- */}
+                                {/* Sidebar Items */}
+                                {/* ------------------------------------------- */}
+                                <SidebarItems />
+                            </Box>
                         </Box>
-                    </Box>
+                    </div>
                 </Drawer>
             </Box>
         );
@@ -67,6 +69,7 @@ const Sidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }: ItemTyp
 
     return (
         <Drawer
+            className="scroll"
             anchor="left"
             open={isMobileSidebarOpen}
             onClose={onSidebarClose}
