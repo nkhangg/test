@@ -45,6 +45,7 @@ type TypeForm = {
     title: string;
     link: string;
     message: string;
+    adminMessage?: string;
 };
 
 export interface IUpdateNotificationDialogProps {
@@ -142,6 +143,7 @@ export default function UpdateNotificationDialog({
             link: dataNotification.link ? dataNotification.link : '',
             message: dataNotification.content,
             title: dataNotification.title,
+            adminMessage: dataNotification.adminCotent,
         });
 
         setTypeNotification(dataNotification.type);
@@ -252,12 +254,15 @@ export default function UpdateNotificationDialog({
     const handleBlur = (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const dynamicKey = e.target.name as keyof TypeForm;
 
-        const { message } = Validate[dynamicKey](e.target.value);
-
-        setErrors({
-            ...errors,
-            [dynamicKey]: message,
-        });
+        if (dynamicKey === 'adminMessage') {
+            // do somehting
+        } else {
+            const { message } = Validate[dynamicKey](e.target.value);
+            setErrors({
+                ...errors,
+                [dynamicKey]: message,
+            });
+        }
     };
 
     const handleSubmit = async () => {
@@ -293,6 +298,7 @@ export default function UpdateNotificationDialog({
                         ...positionText,
                     },
                     ...meta,
+                    adminCotent: form.adminMessage ? form.adminMessage : form.message,
                 });
             } catch (error) {
                 toast.error(contants.messages.errors.server);
@@ -322,6 +328,7 @@ export default function UpdateNotificationDialog({
                 meta: {
                     ...meta,
                 },
+                adminCotent: form.adminMessage ? form.adminMessage : form.message,
             },
             options?.conllectionName,
         );
@@ -368,9 +375,11 @@ export default function UpdateNotificationDialog({
         keys.forEach((key) => {
             const dynamic = key as keyof TypeForm;
 
-            const { message, error } = Validate[dynamic](form[dynamic].toString());
-            validateErrors[dynamic] = message;
-            errorArr.push(error);
+            if (dynamic !== 'adminMessage') {
+                const { message, error } = Validate[dynamic](form[dynamic].toString());
+                validateErrors[dynamic] = message;
+                errorArr.push(error);
+            }
         });
 
         setErrors(validateErrors);
@@ -587,6 +596,20 @@ export default function UpdateNotificationDialog({
                             placeholder="Type your message here..."
                             rangeSelect={positionText}
                         />
+                        {!disableAdvanced && (
+                            <TextArea
+                                onSelected={handleSelected}
+                                spellCheck={false}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={form.adminMessage}
+                                id="admin-message"
+                                name="adminMessage"
+                                message={errors.adminMessage}
+                                placeholder="Type your admin message here..."
+                                rangeSelect={positionText}
+                            />
+                        )}
                     </div>
                     {!disableImageDefault && (
                         <div className="flex items-center gap-5">

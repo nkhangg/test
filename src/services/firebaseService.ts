@@ -1,6 +1,16 @@
 import { uploadImagesMessage } from '@/apis/admin/images';
 import { db } from '@/configs/firebase';
-import { IAdoptPetNotification, IDetailOrder, IImageDefaultNotification, IMessage, INotification, IPet, IProfile } from '@/configs/interface';
+import {
+    IAdoptPetNotification,
+    IDetailOrder,
+    IImageDefaultNotification,
+    IMessage,
+    INotification,
+    IPet,
+    IProductDetailOrders,
+    IProfile,
+    IPublistNotification,
+} from '@/configs/interface';
 import { ImageType, TypeNotification } from '@/configs/types';
 import { links } from '@/datas/links';
 import { contants } from '@/utils/contants';
@@ -23,6 +33,7 @@ import {
     QueryFilterConstraint,
     getDoc,
     collectionGroup,
+    QueryCompositeFilterConstraint,
 } from 'firebase/firestore';
 
 const setUserInBd = async (user: IProfile) => {
@@ -163,6 +174,7 @@ const addNotification = async (data: INotification) => {
     })();
 
     try {
+        //
         await addDoc(collection(db, 'notifications'), {
             content: data.content,
             createdAt: serverTimestamp(),
@@ -193,7 +205,7 @@ const addSuccessfulPurchaseNotification = async ({ orderId, photourl, username }
         } as INotification;
 
         return await addDoc(collection(db, 'notifications'), {
-            content: constNotification.content,
+            content: paseDataNotification<{ username: string; orderId?: number | string }>(constNotification, { username, orderId }),
             createdAt: serverTimestamp(),
             deleted: false,
             link: orderId ? links.history.orderHistory + `/${orderId}` : links.history.orderHistory,
@@ -204,6 +216,7 @@ const addSuccessfulPurchaseNotification = async ({ orderId, photourl, username }
             type: constNotification.type,
             options: constNotification.options,
             public: false,
+            adminCotent: paseDataNotification<{ username: string; orderId?: number | string }>(constNotification, { username, orderId }, true),
         });
     } catch (error) {
         console.log('addSuccessfulPurchaseNotification: Error setting addSuccessfulPurchaseNotification info in DB');
@@ -222,7 +235,7 @@ const publistFavoriteNotification = async (pet: IPet, username: string) => {
 
         return await addDoc(collection(db, 'notifications'), {
             // content: constNotification.content.replaceAll('&&', pet.name),
-            content: paseDataNotification<IPet>(constNotification, pet),
+            content: paseDataNotification<IPublistNotification<IPet>>(constNotification, { ...pet, username }, false),
             createdAt: serverTimestamp(),
             deleted: false,
             link: links.pet + `${pet.id}/${stringToUrl(pet.name)}`,
@@ -233,6 +246,7 @@ const publistFavoriteNotification = async (pet: IPet, username: string) => {
             type: constNotification.type,
             options: constNotification.options,
             public: false,
+            adminCotent: paseDataNotification<IPublistNotification<IPet>>(constNotification, { ...pet, username }, true),
         });
     } catch (error) {
         console.log('addSuccessfulPurchaseNotification: Error setting addSuccessfulPurchaseNotification info in DB');
@@ -252,7 +266,7 @@ const publistAdoptPetNotification = async (pet: IPet, username: string, phone: s
 
         return await addDoc(collection(db, 'notifications'), {
             // content: constNotification.content.replaceAll('&&', pet.name),
-            content: paseDataNotification<IAdoptPetNotification>(constNotification, { ...pet, phone }),
+            content: paseDataNotification<IAdoptPetNotification>(constNotification, { ...pet, phone, username }, false),
             createdAt: serverTimestamp(),
             deleted: false,
             link: links.users.profiles.adoption,
@@ -263,15 +277,16 @@ const publistAdoptPetNotification = async (pet: IPet, username: string, phone: s
             type: constNotification.type,
             options: constNotification.options,
             public: false,
+            adminCotent: paseDataNotification<IAdoptPetNotification>(constNotification, { ...pet, phone, username }, true),
         });
     } catch (error) {
         console.log('publistAdoptPetNotification: Error setting publistAdoptPetNotification info in DB');
     }
 };
 
-const publistStateOrderNotification = async (order: IDetailOrder, username: string) => {
+const publistStateShippingOrderNotification = async (order: IDetailOrder & { orderId: string }) => {
     try {
-        const notificationRef = doc(db, 'config-constant-notifications', 'id order notifi');
+        const notificationRef = doc(db, 'config-constant-notifications', 'RMGNinRXXoE4UdbYLH8C');
         const notificationRefShapshot = await getDoc(notificationRef);
 
         const constNotification = {
@@ -281,17 +296,143 @@ const publistStateOrderNotification = async (order: IDetailOrder, username: stri
 
         return await addDoc(collection(db, 'notifications'), {
             // content: constNotification.content.replaceAll('&&', pet.name),
-            content: paseDataNotification<IDetailOrder>(constNotification, order),
+            content: paseDataNotification<IDetailOrder>(constNotification, { ...order }, false),
             createdAt: serverTimestamp(),
             deleted: false,
             link: links.history.orderHistory + `/${order.id}`,
+            linkAdmin: links.adminFuntionsLink.orders.index + `?orderId=${order.id}`,
             photourl: order.products[0].image,
+            read: [],
+            target: [order.username],
+            title: constNotification.title,
+            type: constNotification.type,
+            options: constNotification.options,
+            public: false,
+            adminCotent: paseDataNotification<IDetailOrder>(constNotification, { ...order }, true),
+        });
+    } catch (error) {
+        console.log('publistStateOrder: Error setting publistStateOrder info in DB');
+    }
+};
+
+const publistStateDeleveredOrderNotification = async (order: IDetailOrder & { orderId: string }) => {
+    try {
+        const notificationRef = doc(db, 'config-constant-notifications', 'FXIc1iVyBEIK9YTDEG5Y');
+        const notificationRefShapshot = await getDoc(notificationRef);
+
+        const constNotification = {
+            id: notificationRefShapshot.id,
+            ...notificationRefShapshot.data(),
+        } as INotification;
+
+        return await addDoc(collection(db, 'notifications'), {
+            // content: constNotification.content.replaceAll('&&', pet.name),
+            content: paseDataNotification<IDetailOrder>(constNotification, { ...order }, false),
+            createdAt: serverTimestamp(),
+            deleted: false,
+            link: links.history.orderHistory + `/${order.id}`,
+            linkAdmin: links.adminFuntionsLink.orders.index + `?orderId=${order.id}`,
+            photourl: order.products[0].image,
+            read: [],
+            target: [order.username],
+            title: constNotification.title,
+            type: constNotification.type,
+            options: constNotification.options,
+            public: false,
+            adminCotent: paseDataNotification<IDetailOrder>(constNotification, { ...order }, true),
+        });
+    } catch (error) {
+        console.log('publistStateOrder: Error setting publistStateOrder info in DB');
+    }
+};
+
+const publistStateCancelByAdminOrderNotification = async (order: IDetailOrder & { orderId: string; reason: string }) => {
+    try {
+        const notificationRef = doc(db, 'config-constant-notifications', 'Fcwg09ypnEFYLN0iAJRU');
+        const notificationRefShapshot = await getDoc(notificationRef);
+
+        const constNotification = {
+            id: notificationRefShapshot.id,
+            ...notificationRefShapshot.data(),
+        } as INotification;
+
+        return await addDoc(collection(db, 'notifications'), {
+            // content: constNotification.content.replaceAll('&&', pet.name),
+            content: paseDataNotification<IDetailOrder & { orderId: string; reason: string }>(constNotification, { ...order }, false),
+            createdAt: serverTimestamp(),
+            deleted: false,
+            link: links.history.orderHistory + `/${order.id}`,
+            linkAdmin: links.adminFuntionsLink.orders.index + `?orderId=${order.id}`, // http://localhost:3000/admin/dashboard/orders?orderId=186
+            photourl: order.products[0].image,
+            read: [],
+            target: [order.username],
+            title: constNotification.title,
+            type: constNotification.type,
+            options: constNotification.options,
+            public: false,
+            adminCotent: paseDataNotification<IDetailOrder & { orderId: string; reason: string }>(constNotification, { ...order }, true),
+        });
+    } catch (error) {
+        console.log('publistStateOrder: Error setting publistStateOrder info in DB');
+    }
+};
+
+const publistStateCancelByCustomerOrderNotification = async (order: IDetailOrder & { orderId: string; reason: string }) => {
+    try {
+        const notificationRef = doc(db, 'config-constant-notifications', 'zqDeVsqeZMHNmkOK1j7B');
+        const notificationRefShapshot = await getDoc(notificationRef);
+
+        const constNotification = {
+            id: notificationRefShapshot.id,
+            ...notificationRefShapshot.data(),
+        } as INotification;
+
+        return await addDoc(collection(db, 'notifications'), {
+            // content: constNotification.content.replaceAll('&&', pet.name),
+            content: paseDataNotification<IDetailOrder & { orderId: string; reason: string }>(constNotification, { ...order }, false),
+            createdAt: serverTimestamp(),
+            deleted: false,
+            link: links.history.orderHistory + `/${order.id}`,
+            linkAdmin: links.adminFuntionsLink.orders.index + `?orderId=${order.id}`, // http://localhost:3000/admin/dashboard/orders?orderId=186
+            photourl: order.products[0].image,
+            read: [],
+            target: [order.username],
+            title: constNotification.title,
+            type: constNotification.type,
+            options: constNotification.options,
+            public: false,
+            adminCotent: paseDataNotification<IDetailOrder & { orderId: string; reason: string }>(constNotification, { ...order }, true),
+        });
+    } catch (error) {
+        console.log('publistStateOrder: Error setting publistStateOrder info in DB');
+    }
+};
+
+const publistRatingProductNotification = async (product: IProductDetailOrders, username: string) => {
+    try {
+        const notificationRef = doc(db, 'config-constant-notifications', 'tdGI6jAiqD4wtASFLjkW');
+        const notificationRefShapshot = await getDoc(notificationRef);
+
+        const constNotification = {
+            id: notificationRefShapshot.id,
+            ...notificationRefShapshot.data(),
+        } as INotification;
+
+        return await addDoc(collection(db, 'notifications'), {
+            // content: constNotification.content.replaceAll('&&', pet.name),
+            content: paseDataNotification<IProductDetailOrders & { username: string }>(constNotification, { ...product, username }, false),
+            createdAt: serverTimestamp(),
+            deleted: false,
+            link: links.produt + `/${product.id}/${stringToUrl(product.name)}`,
+            linkAdmin: links.adminFuntionsLink.reviews.index + `/${product.id}`,
+            photourl: product.image,
             read: [],
             target: [username],
             title: constNotification.title,
             type: constNotification.type,
             options: constNotification.options,
             public: false,
+            adminCotent: paseDataNotification<IProductDetailOrders & { username: string }>(constNotification, { ...product, username }, true),
         });
     } catch (error) {
         console.log('publistStateOrder: Error setting publistStateOrder info in DB');
@@ -303,14 +444,11 @@ const setNotification = async (data: INotification, collectionName?: string) => 
 
     const meta: INotification['meta'] = {};
 
-    console.log(data.meta);
     if (data.meta) {
         if (data.meta.keys) {
             meta.keys = data.meta.keys;
         }
     }
-
-    console.log(meta);
 
     try {
         await setDoc(
@@ -326,6 +464,7 @@ const setNotification = async (data: INotification, collectionName?: string) => 
                 meta: {
                     ...meta,
                 },
+                adminCotent: data.adminCotent ? data.adminCotent : data.content,
             },
             {
                 merge: true,
@@ -410,13 +549,24 @@ const getConversations = (typeSort: OrderByDirection = 'desc') => {
     return query(collection(db, 'conversations'), where('sendAt', '!=', 'null'), orderBy('sendAt', typeSort));
 };
 
-const getNotifications = (username: string) => {
-    return query(
-        collection(db, 'notifications'),
-        and(where('deleted', '==', false), or(where('target', 'array-contains', 'all'), where('target', 'array-contains', username))),
-        orderBy('createdAt', 'desc'),
-        limit(8),
-    );
+const getNotifications = (user: IProfile | null, options = { limit: 8 }) => {
+    if (!user) return null;
+
+    if (contants.roles.manageRoles.includes(user.role)) {
+        return query(
+            collection(db, 'notifications'),
+            and(where('deleted', '==', false), or(where('target', 'array-contains', 'all'), where('target', 'array-contains', user.username), where('public', '==', false))),
+            // orderBy('createdAt', 'desc'),
+            limit(8),
+        );
+    } else {
+        return query(
+            collection(db, 'notifications'),
+            and(where('deleted', '==', false), or(where('target', 'array-contains', 'all'), where('target', 'array-contains', user.username))),
+            // orderBy('createdAt', 'desc'),
+            limit(8),
+        );
+    }
 };
 
 const getAllNotification = (search?: string, type?: TypeNotification) => {
@@ -625,8 +775,12 @@ const firebaseService = {
     publistAdoptPetNotification,
     publistFavoriteNotification,
     setImageDefaultNotification,
-    publistStateOrderNotification,
+    publistRatingProductNotification,
     addSuccessfulPurchaseNotification,
+    publistStateShippingOrderNotification,
+    publistStateDeleveredOrderNotification,
+    publistStateCancelByAdminOrderNotification,
+    publistStateCancelByCustomerOrderNotification,
     querys: {
         getNotification,
         getNotifications,

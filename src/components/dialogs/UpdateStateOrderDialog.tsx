@@ -16,6 +16,7 @@ import { contants } from '@/utils/contants';
 import { OrderAdminPageContext } from '../pages/admin/orders/OrdersAdminPage';
 import Validate from '@/utils/validate';
 import moment from 'moment';
+import firebaseService from '@/services/firebaseService';
 
 const Header = ({ title, chip, options = { border: true } }: { title: string; chip?: StateType; options?: { border?: boolean } }) => {
     return (
@@ -120,8 +121,40 @@ export default function UpdateStateOrderDialog({ idOpen, open, setOpen }: IUpdat
 
             toast.success(`Change success #${dataDetail.id} form ${dataDetail.state} to ${capitalize(dataUpdate)}`);
             refetch();
+
+            // send notifycaiton
+            await sendNotifycation(reason);
         } catch (error) {
             toast.error(contants.messages.errors.server);
+        }
+    };
+
+    const sendNotifycation = async (reason?: string) => {
+        if (!dataDetail) return;
+
+        switch (dataUpdate) {
+            case 'shipping': {
+                await firebaseService.publistStateShippingOrderNotification({ ...dataDetail, orderId: idOpen + '' });
+                break;
+            }
+            case 'delivered': {
+                await firebaseService.publistStateDeleveredOrderNotification({ ...dataDetail, orderId: idOpen + '' });
+                break;
+            }
+            case 'cancelled': {
+                console.log('abc');
+                await firebaseService.publistStateCancelByAdminOrderNotification({ ...dataDetail, orderId: idOpen + '', reason: reason || '' });
+                break;
+            }
+            case 'cancelled_by_admin': {
+                return [];
+            }
+            case 'cancelled_by_customer': {
+                return [];
+            }
+            default: {
+                return status;
+            }
         }
     };
 

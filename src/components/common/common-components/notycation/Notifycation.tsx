@@ -22,7 +22,7 @@ export default function Notifycation({ icon }: INotifycationProps) {
     const [open, setOpen] = useState(false);
 
     const { user } = useAppSelector((state: RootState) => state.userReducer);
-    const [notificationSnapshot, loading] = useCollection(firebaseService.querys.getNotifications(user?.username || 'all'));
+    const [notificationSnapshot, loading] = useCollection(firebaseService.querys.getNotifications(user));
 
     const dataNotifications = useMemo(() => {
         if (!notificationSnapshot) return [];

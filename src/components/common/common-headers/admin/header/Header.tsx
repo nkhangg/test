@@ -78,7 +78,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
                 <Stack direction={'row'} alignItems={'center'}>
                     <NotifycationCom
                         icon={
-                            <div className="w-full h-full flex items-center justify-center">
+                            <div className="w-full h-full flex items-center justify-center cursor-pointer">
                                 <IconBellRinging size="21" stroke="1.5" />
                             </div>
                         }

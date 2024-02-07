@@ -31,6 +31,9 @@ export const links = {
         adoption: {
             index: commonAdmin + '/adoption',
         },
+        reviews: {
+            index: commonAdmin + '/reviews',
+        },
     },
     auth: {
         login: '/login',

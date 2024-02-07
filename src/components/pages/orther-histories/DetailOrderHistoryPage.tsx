@@ -11,13 +11,15 @@ import { faArrowRight, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { notFound } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { links } from '@/datas/links';
-import { StateType } from '@/configs/types';
+import { RootState, StateType } from '@/configs/types';
 import { IDetailOrder } from '@/configs/interface';
 import { Comfirm, ReasonDialog } from '@/components';
 import classNames from 'classnames';
 import { detailOtherHistory, updateUserStatusOrder } from '@/apis/user';
 import { contants } from '@/utils/contants';
 import { toast } from 'react-toastify';
+import firebaseService from '@/services/firebaseService';
+import { useAppSelector } from '@/hooks/reduxHooks';
 
 export const DetailOrderHistoryContext = createContext<{ data: IDetailOrder | undefined; refetch: () => void }>({ data: undefined, refetch: () => {} });
 
@@ -26,6 +28,8 @@ export interface IDetailOrderHistoryProps {
 }
 
 export default function DetailOrderHistory({ id }: IDetailOrderHistoryProps) {
+    const { user } = useAppSelector((state: RootState) => state.userReducer);
+
     const { data, isLoading, error, refetch } = useQuery({
         queryKey: ['histories/detail', id],
         queryFn: () => detailOtherHistory(id),
@@ -67,6 +71,8 @@ export default function DetailOrderHistory({ id }: IDetailOrderHistoryProps) {
 
             toast.success(`Thank you for your interest in the product. We will improve product and service quality.`);
             refetch();
+
+            await firebaseService.publistStateCancelByCustomerOrderNotification({ ...dataDetail, username: user?.username || '', orderId: id + '', reason });
         } catch (error) {
             toast.error(contants.messages.errors.server);
         }

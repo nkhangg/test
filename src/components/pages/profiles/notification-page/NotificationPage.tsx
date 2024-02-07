@@ -12,7 +12,7 @@ export interface INotificationPageProps {}
 
 export default function NotificationPage(props: INotificationPageProps) {
     const { user } = useAppSelector((state: RootState) => state.userReducer);
-    const [notificationSnapshot, loading] = useCollection(firebaseService.querys.getNotifications(user?.username || 'all'));
+    const [notificationSnapshot, loading] = useCollection(firebaseService.querys.getNotifications(user));
 
     const dataNotifications = useMemo(() => {
         if (!notificationSnapshot) return [];
