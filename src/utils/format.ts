@@ -220,8 +220,8 @@ export function convertMsToTime(milliseconds: number) {
     return hours;
 }
 
-export function paseDataNotification<T>(noti: INotification, data: T) {
-    let result = noti.content;
+export function paseDataNotification<T>(noti: INotification, data: T, isAdmin = false) {
+    let result = isAdmin ? noti.adminCotent || noti.content : noti.content;
     if (!noti || !noti.meta || !noti.meta.keys) return result;
 
     noti.meta.keys.forEach((key, index) => {

@@ -21,7 +21,7 @@ export default function NotifycationItem({ data, user }: INotifycationItemProps)
     };
     return (
         <CustomDynamicCom
-            href={data.link || undefined}
+            href={(contants.roles.manageRoles.includes(user?.role || '') ? data.linkAdmin || data.link : data.link) || undefined}
             onClick={handleIsRead}
             className={classNames('px-6 hover:bg-[#F1F1F1] py-4  w-full cursor-pointer transition-all duration-100', {
                 ['bg-[#F1F1F1]']: user && !data.read.includes(user.username),
@@ -44,13 +44,17 @@ export default function NotifycationItem({ data, user }: INotifycationItemProps)
                             className="text-1xl line-clamp-2"
                             dangerouslySetInnerHTML={{
                                 __html: (() => {
-                                    if (data.options && data.options.end && data.options.start && data.type !== 'none') {
-                                        const textWrap = data.content.substring(data.options.start, data.options.end);
+                                    if (!user) return '';
 
-                                        return data.content.replaceAll(textWrap, `<span class="text-${data.type}-notification">${textWrap}</span>`);
+                                    const content = contants.roles.manageRoles.includes(user?.role) ? data.adminCotent || data.content : data.content;
+
+                                    if (data.options && data.options.end && data.options.start && data.type !== 'none') {
+                                        const textWrap = content.substring(data.options.start, data.options.end);
+
+                                        return content.replaceAll(textWrap, `<span class="text-${data.type}-notification">${textWrap}</span>`);
                                     }
 
-                                    return data.content;
+                                    return content;
                                 })(),
                             }}
                         ></span>

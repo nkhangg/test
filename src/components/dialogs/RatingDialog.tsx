@@ -14,6 +14,9 @@ import Validate from '@/utils/validate';
 import { createReview } from '@/apis/user';
 import { toast } from 'react-toastify';
 import { contants } from '@/utils/contants';
+import firebaseService from '@/services/firebaseService';
+import { useAppSelector } from '@/hooks/reduxHooks';
+import { RootState } from '@/configs/types';
 
 export interface IRatingDialogProps {
     open: boolean;
@@ -23,6 +26,8 @@ export interface IRatingDialogProps {
 
 export default function RatingDialog({ open, data, setOpen }: IRatingDialogProps) {
     const context = useContext(DetailOrderHistoryContext);
+
+    const { user } = useAppSelector((state: RootState) => state.userReducer);
 
     const [form, setForm] = useState<IDataReview>({
         content: '',
@@ -69,6 +74,10 @@ export default function RatingDialog({ open, data, setOpen }: IRatingDialogProps
             context.refetch();
             setOpen(false);
             toast.success(contants.messages.success.review);
+
+            if (!user) return;
+
+            await firebaseService.publistRatingProductNotification(data, user?.username);
         } catch (error) {
             toast.warn(contants.messages.errors.server);
         }

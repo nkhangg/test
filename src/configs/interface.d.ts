@@ -381,6 +381,7 @@ export interface IDetailOrder {
     shippingFee: number;
     total: number;
     expectedTime: string | null;
+    username?: string;
 }
 
 export interface IProductDetailOrders {
@@ -693,6 +694,7 @@ export interface INotification {
     type: TypeNotification;
     link: string | null;
     public?: boolean;
+    adminCotent?: string;
     options?: {
         start?: number | null;
         end?: number | null;
@@ -700,6 +702,7 @@ export interface INotification {
     meta?: {
         keys?: INotificationKey[];
     };
+    linkAdmin?: string;
 }
 
 export interface INotificationKey {
@@ -773,6 +776,7 @@ export interface IAdoption {
 
 export interface IAdoptPetNotification extends IPet {
     phone: string;
+    username: string;
 }
 
 export interface IPetManagementFormResuqest {
@@ -840,4 +844,8 @@ export interface IRequestFilterAdoptionAdmin {
     adoptEnd: string;
     sort: string;
     page: string;
+}
+
+export interface IPublistNotification<T> extends T {
+    username: string;
 }
