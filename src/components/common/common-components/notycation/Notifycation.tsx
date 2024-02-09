@@ -13,6 +13,7 @@ import { RootState } from '@/configs/types';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import firebaseService from '@/services/firebaseService';
 import { INotification } from '@/configs/interface';
+import { contants } from '@/utils/contants';
 
 export interface INotifycationProps {
     icon: ReactNode;
@@ -79,7 +80,9 @@ export default function Notifycation({ icon }: INotifycationProps) {
 
                             <div className="mx-8 font-medium text-fill-heart flex items-center justify-center h-full border-t border-gray-primary bg-white text-[16px]">
                                 <WrapperAnimation hover={{}} className="py-4">
-                                    <Link href={links.profile.notification}>See all</Link>
+                                    <Link href={contants.roles.manageRoles.includes(user?.role || '') ? links.adminFuntionsLink.notifycation.system : links.profile.notification}>
+                                        See all
+                                    </Link>
                                 </WrapperAnimation>
                             </div>
                         </div>

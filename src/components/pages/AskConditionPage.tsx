@@ -102,7 +102,7 @@ export default function AskConditionPage(props: IAskConditionPageProps) {
             toast.success('Your request has been sent. We will contact as soon as possible !');
             router.push(links.users.profiles.adoption);
             await delay(1000);
-            await firebaseService.publistAdoptPetNotification(petAdopt, user.username, phone.phone);
+            await firebaseService.publistAdoptPetNotification(petAdopt, user.username, phone.phone, user.displayName);
             dispath(clear());
         } catch (error) {
             toast.error(contants.messages.errors.server);

@@ -58,6 +58,7 @@ export { default as BrandManagementPage } from './admin/brand/BrandManagementPag
 
 // notification manage page
 export { default as NotificationManagePage } from './admin/notification/NotificationManagePage';
+export { default as SystemNotification } from './admin/notification/SystemNotification';
 
 // arable snapshots
 export { default as ArableSnapshotsPage } from './arable-snapshots/ArableSnapshotsPage';

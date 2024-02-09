@@ -6,6 +6,7 @@ import {
     faCat,
     faCircleCheck,
     faCircleXmark,
+    faDog,
     faFaceDizzy,
     faHeart,
     faHourglassStart,
@@ -171,6 +172,17 @@ export const dataHeadAdoption = [
     {
         title: 'Cancelled By Customer',
         icon: faUser,
+    },
+] as HeadTabType[];
+
+export const dataHeadNotification = [
+    {
+        title: 'Website',
+        icon: faCat,
+    },
+    {
+        title: 'System',
+        icon: faDog,
     },
 ] as HeadTabType[];
 

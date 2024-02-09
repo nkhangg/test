@@ -8,6 +8,7 @@ import { IAdoption } from '@/configs/interface';
 import { LabelAdopt } from '@/configs/types';
 import { links } from '@/datas/links';
 import { adoptionReasons, adoptionReasonsForUser } from '@/datas/reason';
+import firebaseService from '@/services/firebaseService';
 import { contants } from '@/utils/contants';
 import { faCat, faChevronUp, faEllipsisVertical, faFaceFrown, faHeart, faMars, faMaximize, faVenus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -73,7 +74,6 @@ export default function AdoptionPageItem({
     // state when advanced
     const [openAdvanced, setOpenAdvanced] = useState(false);
     const [openReason, setOpenReason] = useState(false);
-    const [openAcept, setOpenAcept] = useState(false);
     const [openModal, setOpenModal] = useState(false);
 
     const handleCancel = async (reason: string) => {
@@ -91,10 +91,15 @@ export default function AdoptionPageItem({
             return toast.error(contants.messages.errors.server);
         } finally {
             setLoading(false);
+            await firebaseService.publistCancelAdoptPetNotification(data, reason);
         }
     };
 
     const handleClearWhenSuccess = () => {
+        if (advanced) {
+            setTypes('cancelled by admin');
+            return;
+        }
         setTypes('cancelled by customer');
     };
 
@@ -112,6 +117,8 @@ export default function AdoptionPageItem({
             toast.error(contants.messages.errors.server);
         } finally {
             setLoading(false);
+            handleClearWhenSuccess();
+            await firebaseService.publistCancelAdoptPetNotification(data, reason, true);
         }
     };
 
@@ -127,7 +134,7 @@ export default function AdoptionPageItem({
         onBeforeCancel();
     };
 
-    const handleAcceptOrUpdateAppointment = async (date: string) => {
+    const handleAcceptOrUpdateAppointment = async (date: string, reason?: string) => {
         try {
             setLoading(true);
             const response = await acceptAdoptionAdmin({ id: String(data.id), data: date });
@@ -141,6 +148,14 @@ export default function AdoptionPageItem({
             toast.error(contants.messages.errors.server);
         } finally {
             setLoading(false);
+
+            setTypes('registered');
+
+            if (!reason) {
+                await firebaseService.publistAceptAdoptPetNotification(data, moment(date).format('MMM Do YY'));
+            } else {
+                await firebaseService.publistAdjustAdoptPetNotification(data, moment(date).format('MMM Do YY'), reason);
+            }
         }
 
         if (!advanced || !onBeforeAccept) return;
@@ -162,6 +177,7 @@ export default function AdoptionPageItem({
             toast.error(contants.messages.errors.server);
         } finally {
             setLoading(false);
+            await firebaseService.publistComfirmAdoptPetNotification(data);
         }
 
         setOpenModal(false);
@@ -206,6 +222,7 @@ export default function AdoptionPageItem({
                                     )}
                                     {types === 'registered' && (
                                         <DialogAceptChooser
+                                            isShowreason={true}
                                             iniData={moment(data.pickUpDate).format('yyyy-MM-DD')}
                                             onDatas={handleAcceptOrUpdateAppointment}
                                             title="Change appointment date"
@@ -296,17 +313,16 @@ export default function AdoptionPageItem({
                                 </Link>
                             </span>
                         )}
+                        {types === 'adopted' && (
+                            <>
+                                <span>Adopted: {moment(data.adoptAt).format('DD/MM/yyyy')}</span>
+                                <span>Pickup: {moment(data.pickUpDate).format('DD/MM/yyyy')}</span>
+                                <span>Registered: {moment(data.registerAt).format('DD/MM/yyyy')}</span>
+                            </>
+                        )}
                         <span>Phone: {data.phone}</span>
                         <span>Address: {data.address}</span>
                     </div>
-
-                    {types === 'adopted' && (
-                        <div className="flex flex-col gap-1">
-                            <span>Adopted: {moment(data.adoptAt).format('DD/MM/yyyy')}</span>
-                            <span>Pickup: {moment(data.pickUpDate).format('DD/MM/yyyy')}</span>
-                            <span>Registered: {moment(data.registerAt).format('DD/MM/yyyy')}</span>
-                        </div>
-                    )}
                 </div>
                 {data.cancelReason && (
                     <div className="flex items-center gap-2 text-[#4C6B99] ">
@@ -341,7 +357,7 @@ export default function AdoptionPageItem({
                 <CustomReasonDialog handleAfterClickSend={handleSubmitCancel} onClose={() => setOpenReason(false)} reasons={advanced ? adoptionReasons : adoptionReasonsForUser} />
             )}
 
-            {advanced && openAcept && <DialogAceptChooser />}
+            {advanced && openAdvanced && <DialogAceptChooser />}
 
             <WraperDialog open={openModal} setOpen={setOpenModal}>
                 <div className="p-6 flex flex-col gap-4 items-center text-black-main">

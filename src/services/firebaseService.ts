@@ -2,6 +2,7 @@ import { uploadImagesMessage } from '@/apis/admin/images';
 import { db } from '@/configs/firebase';
 import {
     IAdoptPetNotification,
+    IAdoption,
     IDetailOrder,
     IImageDefaultNotification,
     IMessage,
@@ -161,7 +162,6 @@ const addConversation = async (usernameUser: string) => {
 };
 
 const addNotification = async (data: INotification) => {
-    console.log(data.options);
     const options = (() => {
         if (!data.options || !data.options.end || !data.options.start) {
             return {
@@ -174,7 +174,7 @@ const addNotification = async (data: INotification) => {
     })();
 
     try {
-        //
+        //await addDoc(collection(db, 'notifications')
         await addDoc(collection(db, 'notifications'), {
             content: data.content,
             createdAt: serverTimestamp(),
@@ -187,6 +187,13 @@ const addNotification = async (data: INotification) => {
             type: data.type,
             options: options,
             public: true,
+            // public: false,
+            // meta: {
+            //     keys: [
+            //         { name: 'username', color: '#cccccc' },
+            //         { name: 'displayName', color: '#cccccc' },
+            //     ],
+            // },
         });
     } catch (error) {
         console.log(error);
@@ -194,7 +201,17 @@ const addNotification = async (data: INotification) => {
     }
 };
 
-const addSuccessfulPurchaseNotification = async ({ orderId, photourl, username }: { orderId?: number | string; photourl: string; username: string }) => {
+const addSuccessfulPurchaseNotification = async ({
+    orderId,
+    photourl,
+    username,
+    displayName,
+}: {
+    orderId?: number | string;
+    photourl: string;
+    username: string;
+    displayName: string;
+}) => {
     try {
         const notificationRef = doc(db, 'config-constant-notifications', 'RPk9O04QQMTdMExcHUnK');
         const notificationRefShapshot = await getDoc(notificationRef);
@@ -205,10 +222,11 @@ const addSuccessfulPurchaseNotification = async ({ orderId, photourl, username }
         } as INotification;
 
         return await addDoc(collection(db, 'notifications'), {
-            content: paseDataNotification<{ username: string; orderId?: number | string }>(constNotification, { username, orderId }),
+            content: paseDataNotification<{ username: string; orderId?: number | string; displayName: string }>(constNotification, { username, orderId, displayName }),
             createdAt: serverTimestamp(),
             deleted: false,
             link: orderId ? links.history.orderHistory + `/${orderId}` : links.history.orderHistory,
+            linkAdmin: links.adminFuntionsLink.orders.index + `?orderId=${orderId}`,
             photourl: photourl,
             read: [],
             target: [username],
@@ -216,14 +234,14 @@ const addSuccessfulPurchaseNotification = async ({ orderId, photourl, username }
             type: constNotification.type,
             options: constNotification.options,
             public: false,
-            adminCotent: paseDataNotification<{ username: string; orderId?: number | string }>(constNotification, { username, orderId }, true),
+            adminCotent: paseDataNotification<{ username: string; orderId?: number | string; displayName: string }>(constNotification, { username, orderId, displayName }, true),
         });
     } catch (error) {
         console.log('addSuccessfulPurchaseNotification: Error setting addSuccessfulPurchaseNotification info in DB');
     }
 };
 
-const publistFavoriteNotification = async (pet: IPet, username: string) => {
+const publistFavoriteNotification = async (pet: IPet, user: IProfile) => {
     try {
         const notificationRef = doc(db, 'config-constant-notifications', 'NwgpAJynez1II8sylmKF');
         const notificationRefShapshot = await getDoc(notificationRef);
@@ -234,26 +252,30 @@ const publistFavoriteNotification = async (pet: IPet, username: string) => {
         } as INotification;
 
         return await addDoc(collection(db, 'notifications'), {
-            // content: constNotification.content.replaceAll('&&', pet.name),
-            content: paseDataNotification<IPublistNotification<IPet>>(constNotification, { ...pet, username }, false),
+            content: paseDataNotification<IPublistNotification<IPet & { displayName: string }>>(
+                constNotification,
+                { ...pet, username: user.username, displayName: user.displayName },
+                false,
+            ),
             createdAt: serverTimestamp(),
             deleted: false,
             link: links.pet + `${pet.id}/${stringToUrl(pet.name)}`,
+            linkAdmin: links.adminFuntionsLink.pets.index + `/${pet.id}`,
             photourl: pet.image,
             read: [],
-            target: [username],
+            target: [user.username],
             title: constNotification.title,
             type: constNotification.type,
             options: constNotification.options,
             public: false,
-            adminCotent: paseDataNotification<IPublistNotification<IPet>>(constNotification, { ...pet, username }, true),
+            adminCotent: paseDataNotification<IPublistNotification<IPet>>(constNotification, { ...pet, username: user.username, displayName: user.displayName }, true),
         });
     } catch (error) {
         console.log('addSuccessfulPurchaseNotification: Error setting addSuccessfulPurchaseNotification info in DB');
     }
 };
 
-const publistAdoptPetNotification = async (pet: IPet, username: string, phone: string) => {
+const publistAdoptPetNotification = async (pet: IPet, username: string, phone: string, displayName: string) => {
     try {
         const notificationRefShapshot = await getConstantNotification('eZl5uAq6XalWL317fB6k');
 
@@ -266,10 +288,11 @@ const publistAdoptPetNotification = async (pet: IPet, username: string, phone: s
 
         return await addDoc(collection(db, 'notifications'), {
             // content: constNotification.content.replaceAll('&&', pet.name),
-            content: paseDataNotification<IAdoptPetNotification>(constNotification, { ...pet, phone, username }, false),
+            content: paseDataNotification<IAdoptPetNotification>(constNotification, { ...pet, phone, username, displayName }, false),
             createdAt: serverTimestamp(),
             deleted: false,
             link: links.users.profiles.adoption,
+            linkAdmin: links.adminFuntionsLink.adoption.index + `?q=${stringToUrl(pet.name)}`,
             photourl: pet.image,
             read: [],
             target: [username],
@@ -277,7 +300,224 @@ const publistAdoptPetNotification = async (pet: IPet, username: string, phone: s
             type: constNotification.type,
             options: constNotification.options,
             public: false,
-            adminCotent: paseDataNotification<IAdoptPetNotification>(constNotification, { ...pet, phone, username }, true),
+            adminCotent: paseDataNotification<IAdoptPetNotification>(constNotification, { ...pet, phone, username, displayName }, true),
+        });
+    } catch (error) {
+        console.log('publistAdoptPetNotification: Error setting publistAdoptPetNotification info in DB');
+    }
+};
+
+const publistAceptAdoptPetNotification = async (adoption: IAdoption, appointmentDate: string) => {
+    try {
+        const notificationRefShapshot = await getConstantNotification('3ggKv18Cq1BK26mh0G5a');
+
+        if (!notificationRefShapshot) return null;
+
+        const constNotification = {
+            id: notificationRefShapshot.id,
+            ...notificationRefShapshot.data(),
+        } as INotification;
+
+        return await addDoc(collection(db, 'notifications'), {
+            // content: constNotification.content.replaceAll('&&', pet.name),
+            content: paseDataNotification<IPublistNotification<IAdoption> & { shopAddress: string; name: string; appointmentDate: string }>(
+                constNotification,
+                {
+                    ...adoption,
+                    shopAddress: process.env.NEXT_PUBLIC_DETAIL_ADDRESS || '',
+                    username: adoption.user.username,
+                    displayName: adoption.user.displayName,
+                    name: adoption.pet.name,
+                    appointmentDate,
+                },
+                false,
+            ),
+            createdAt: serverTimestamp(),
+            deleted: false,
+            link: links.users.profiles.adoption,
+            linkAdmin: links.adminFuntionsLink.adoption.index + `?q=${stringToUrl(adoption.pet.name)}`,
+            photourl: adoption.pet.image,
+            read: [],
+            target: [adoption.user.username],
+            title: constNotification.title,
+            type: constNotification.type,
+            options: constNotification.options,
+            public: false,
+            adminCotent: paseDataNotification<IPublistNotification<IAdoption> & { shopAddress: string; name: string; appointmentDate: string }>(
+                constNotification,
+                {
+                    ...adoption,
+                    shopAddress: process.env.NEXT_PUBLIC_DETAIL_ADDRESS || '',
+                    username: adoption.user.username,
+                    displayName: adoption.user.displayName,
+                    name: adoption.pet.name,
+                    appointmentDate,
+                },
+                true,
+            ),
+        });
+    } catch (error) {
+        console.log('publistAdoptPetNotification: Error setting publistAdoptPetNotification info in DB');
+    }
+};
+
+const publistCancelAdoptPetNotification = async (adoption: IAdoption, reason: string, isAdmin = false) => {
+    const id = isAdmin ? '0KIFLeKQr3D86qRLRyBF' : 'K4t9RIWpl6b3xKdbjKYI';
+    try {
+        const notificationRefShapshot = await getConstantNotification(id);
+
+        if (!notificationRefShapshot) return null;
+
+        const constNotification = {
+            id: notificationRefShapshot.id,
+            ...notificationRefShapshot.data(),
+        } as INotification;
+
+        return await addDoc(collection(db, 'notifications'), {
+            // content: constNotification.content.replaceAll('&&', pet.name),
+            content: paseDataNotification<IPublistNotification<IAdoption> & { shopAddress: string; name: string; reason: string }>(
+                constNotification,
+                {
+                    ...adoption,
+                    shopAddress: process.env.NEXT_PUBLIC_DETAIL_ADDRESS || '',
+                    username: adoption.user.username,
+                    displayName: adoption.user.displayName,
+                    name: adoption.pet.name,
+                    reason,
+                },
+                false,
+            ),
+            createdAt: serverTimestamp(),
+            deleted: false,
+            link: links.users.profiles.adoption,
+            linkAdmin: links.adminFuntionsLink.adoption.index + `?q=${stringToUrl(adoption.pet.name)}`,
+            photourl: adoption.pet.image,
+            read: [],
+            target: [adoption.user.username],
+            title: constNotification.title,
+            type: constNotification.type,
+            options: constNotification.options,
+            public: false,
+            adminCotent: paseDataNotification<IPublistNotification<IAdoption> & { shopAddress: string; name: string; reason: string }>(
+                constNotification,
+                {
+                    ...adoption,
+                    shopAddress: process.env.NEXT_PUBLIC_DETAIL_ADDRESS || '',
+                    username: adoption.user.username,
+                    displayName: adoption.user.displayName,
+                    name: adoption.pet.name,
+                    reason,
+                },
+                true,
+            ),
+        });
+    } catch (error) {
+        console.log('publistAdoptPetNotification: Error setting publistAdoptPetNotification info in DB');
+    }
+};
+
+const publistComfirmAdoptPetNotification = async (adoption: IAdoption) => {
+    try {
+        const notificationRefShapshot = await getConstantNotification('SI6YMnlbbQNfJ3OTmUIz');
+
+        if (!notificationRefShapshot) return null;
+
+        const constNotification = {
+            id: notificationRefShapshot.id,
+            ...notificationRefShapshot.data(),
+        } as INotification;
+
+        return await addDoc(collection(db, 'notifications'), {
+            // content: constNotification.content.replaceAll('&&', pet.name),
+            content: paseDataNotification<IPublistNotification<IAdoption> & { shopAddress: string; name: string }>(
+                constNotification,
+                {
+                    ...adoption,
+                    shopAddress: process.env.NEXT_PUBLIC_DETAIL_ADDRESS || '',
+                    username: adoption.user.username,
+                    displayName: adoption.user.displayName,
+                    name: adoption.pet.name,
+                },
+                false,
+            ),
+            createdAt: serverTimestamp(),
+            deleted: false,
+            link: links.users.profiles.adoption,
+            linkAdmin: links.adminFuntionsLink.adoption.index + `?q=${stringToUrl(adoption.pet.name)}`,
+            photourl: adoption.pet.image,
+            read: [],
+            target: [adoption.user.username],
+            title: constNotification.title,
+            type: constNotification.type,
+            options: constNotification.options,
+            public: false,
+            adminCotent: paseDataNotification<IPublistNotification<IAdoption> & { shopAddress: string; name: string }>(
+                constNotification,
+                {
+                    ...adoption,
+                    shopAddress: process.env.NEXT_PUBLIC_DETAIL_ADDRESS || '',
+                    username: adoption.user.username,
+                    displayName: adoption.user.displayName,
+                    name: adoption.pet.name,
+                },
+                true,
+            ),
+        });
+    } catch (error) {
+        console.log('publistAdoptPetNotification: Error setting publistAdoptPetNotification info in DB');
+    }
+};
+
+const publistAdjustAdoptPetNotification = async (adoption: IAdoption, appointmentDate: string, reason: string) => {
+    try {
+        const notificationRefShapshot = await getConstantNotification('NRRK2lUaVAhYfjYwws3w');
+
+        if (!notificationRefShapshot) return null;
+
+        const constNotification = {
+            id: notificationRefShapshot.id,
+            ...notificationRefShapshot.data(),
+        } as INotification;
+
+        return await addDoc(collection(db, 'notifications'), {
+            // content: constNotification.content.replaceAll('&&', pet.name),
+            content: paseDataNotification<IPublistNotification<IAdoption> & { shopAddress: string; name: string; appointmentDate: string; reason: string }>(
+                constNotification,
+                {
+                    ...adoption,
+                    shopAddress: process.env.NEXT_PUBLIC_DETAIL_ADDRESS || '',
+                    username: adoption.user.username,
+                    displayName: adoption.user.displayName,
+                    name: adoption.pet.name,
+                    appointmentDate,
+                    reason,
+                },
+                false,
+            ),
+            createdAt: serverTimestamp(),
+            deleted: false,
+            link: links.users.profiles.adoption,
+            linkAdmin: links.adminFuntionsLink.adoption.index + `?q=${stringToUrl(adoption.pet.name)}`,
+            photourl: adoption.pet.image,
+            read: [],
+            target: [adoption.user.username],
+            title: constNotification.title,
+            type: constNotification.type,
+            options: constNotification.options,
+            public: false,
+            adminCotent: paseDataNotification<IPublistNotification<IAdoption> & { shopAddress: string; name: string; appointmentDate: string; reason: string }>(
+                constNotification,
+                {
+                    ...adoption,
+                    shopAddress: process.env.NEXT_PUBLIC_DETAIL_ADDRESS || '',
+                    username: adoption.user.username,
+                    displayName: adoption.user.displayName,
+                    name: adoption.pet.name,
+                    appointmentDate,
+                    reason,
+                },
+                true,
+            ),
         });
     } catch (error) {
         console.log('publistAdoptPetNotification: Error setting publistAdoptPetNotification info in DB');
@@ -775,10 +1015,14 @@ const firebaseService = {
     publistAdoptPetNotification,
     publistFavoriteNotification,
     setImageDefaultNotification,
+    publistAceptAdoptPetNotification,
     publistRatingProductNotification,
+    publistAdjustAdoptPetNotification,
     addSuccessfulPurchaseNotification,
+    publistComfirmAdoptPetNotification,
     publistStateShippingOrderNotification,
     publistStateDeleveredOrderNotification,
+    publistCancelAdoptPetNotification,
     publistStateCancelByAdminOrderNotification,
     publistStateCancelByCustomerOrderNotification,
     querys: {

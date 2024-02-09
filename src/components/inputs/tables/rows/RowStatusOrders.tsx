@@ -4,6 +4,7 @@ import { Chip, TableCell, Typography, capitalize } from '@mui/material';
 import { IRowStatusOrders } from '@/configs/interface';
 import { formatIndex, formatStatus, toCurrency } from '@/utils/format';
 import { statusColor } from '../../../../../tailwind.config';
+import moment from 'moment';
 
 export interface IRowStatusProps {
     data: IRowStatusOrders;
@@ -37,7 +38,7 @@ export default function RowStatus({ data, index, page, handleOpen }: IRowStatusP
             </TableCell>
             <TableCell>
                 <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" fontWeight={400}>
-                    {data.placedData}
+                    {moment(data.placedData).format('DD/MM/yyyy')}
                 </Typography>
             </TableCell>
             <TableCell>

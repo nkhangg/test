@@ -51,6 +51,7 @@ function ComfirmPaymentDialog({ open, setOpen, setLoading, addresses, totalAndWe
         await firebaseService.addSuccessfulPurchaseNotification({
             photourl: paymentData[0].image,
             username: user.username,
+            displayName: user.displayName,
             orderId,
         });
     };

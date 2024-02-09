@@ -92,7 +92,7 @@ export default function DetailPetPage({ params }: IDetailPetPageProps) {
         if (!user || !data?.data.pet) return;
 
         await delay(1000);
-        await firebaseService.publistFavoriteNotification(data.data.pet, user?.username);
+        await firebaseService.publistFavoriteNotification(data.data.pet, user);
     };
 
     const handleUnfavorite = async () => {

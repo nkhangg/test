@@ -182,14 +182,6 @@ export default function AdoptionManagementPage(props: IAdoptionManagementPagePro
                         <b>No data available</b>
                     </div>
                 ))}
-            {/*  {dataOrders && dataOrders.orderFilters.length <= 0 && (
-            <div className="flex items-center justify-center py-5 text-violet-primary">
-                <b>No data available</b>
-            </div>
-        )}
-
-       
-    </div>*/}
 
             {data && data.pages > 1 && <Box mt={'-2%'}>{<Pagination baseHref={baseUrl + `?page=`} pages={data.pages} />}</Box>}
         </BoxTitle>
