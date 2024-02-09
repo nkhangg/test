@@ -25,6 +25,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { StateType } from '@/configs/types';
 import { useDebounce } from '@/hooks';
 import { Box } from '@mui/material';
+import { links } from '@/datas/links';
 export interface IOrdersAdminPageProps {}
 
 const dataHeadTable = ['No', 'Order ID', 'User', 'Total', 'Placed Date', 'Status', 'Action'];
@@ -84,7 +85,6 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
 
     // states
     const [open, setOpen] = useState(false);
-    const [anotherLayout, setAnotherLayout] = useState(true);
     const [filter, setFilter] = useState<IOrderAdminFillterForm>(iniData);
 
     const [dataOpen, setDataOpen] = useState<number>(0);
@@ -124,102 +124,99 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
 
     return (
         <div className="">
-            {
-                <div className="py-2 text-right w-full">
-                    <span onClick={() => setAnotherLayout(!anotherLayout)} className="hover:underline text-violet-primary cursor-pointer">
-                        Other Layout
-                    </span>
-                </div>
-            }
-            {!anotherLayout && <ThymeleafTable />}
-            {anotherLayout && (
-                <OrderAdminPageContext.Provider value={{ refetch }}>
-                    <BoxTitle mt="mt-0" mbUnderline="mb-0" border={false} title="ORDER MANAGEMENT" className="">
-                        <SortAdmin
-                            searchProps={{
-                                handleClose: () => setFilter({ ...filter, search: '' }),
-                                handleChange: handleChange,
-                                value: filter.search,
-                            }}
-                            sortProps={{
-                                onValue: (sort) => {
-                                    console.log(sort);
-                                    setFilter({
-                                        ...filter,
-                                        sort: sort.id,
-                                    });
-                                },
-                                data: dataPopup,
-                                title: 'Sort by',
-                                styles: {
-                                    minWidth: 'min-w-[150px]',
-                                },
-                            }}
-                            dateProps={{
-                                onDatas: (dates) => {
-                                    if (!dates) return;
-
-                                    setFilter({
-                                        ...filter,
-                                        dateStart: dates.start || '',
-                                        dateEnd: dates.end || '',
-                                    });
-                                },
-                            }}
-                        />
-                        <HeadHistory
-                            onTab={(tab) => {
+            <OrderAdminPageContext.Provider value={{ refetch }}>
+                <BoxTitle mt="mt-0" mbUnderline="mb-0" border={false} title="ORDER MANAGEMENT" className="">
+                    <SortAdmin
+                        searchProps={{
+                            handleClose: () => setFilter({ ...filter, search: '' }),
+                            handleChange: handleChange,
+                            value: filter.search,
+                        }}
+                        sortProps={{
+                            onValue: (sort) => {
+                                console.log(sort);
                                 setFilter({
                                     ...filter,
-                                    status: tab.title === 'All order' ? '' : tab.title,
+                                    sort: sort.id,
                                 });
-                            }}
-                            styles="outline"
-                            iniData={dataHeadHistory}
-                        />
+                            },
+                            data: dataPopup,
+                            title: 'Sort by',
+                            styles: {
+                                minWidth: 'min-w-[150px]',
+                            },
+                        }}
+                        dateProps={{
+                            label: 'Placed Date',
+                            onDatas: (dates) => {
+                                if (!dates) return;
 
-                        <div className="rounded-xl overflow-hidden border border-gray-primary relative">
-                            {dataOrders && (
-                                <Table dataHead={dataHeadTable}>
-                                    {dataOrders.orderFilters.length > 0 &&
-                                        dataOrders.orderFilters.map((order, index) => {
-                                            const status = order.status.toLowerCase().trim().replaceAll(' ', '_') as StateType;
-                                            return (
-                                                <RowStatusOrders
-                                                    page={page}
-                                                    key={order.orderId}
-                                                    handleOpen={handleOpen}
-                                                    index={index}
-                                                    data={{
-                                                        id: order.orderId,
-                                                        placedData: order.placedDate,
-                                                        price: order.total,
-                                                        status: status,
-                                                        user: order.username,
-                                                    }}
-                                                />
-                                            );
-                                        })}
-                                </Table>
-                            )}
-                            {dataOrders && dataOrders.orderFilters.length <= 0 && (
-                                <div className="flex items-center justify-center py-5 text-violet-primary">
-                                    <b>No data available</b>
-                                </div>
-                            )}
+                                setFilter({
+                                    ...filter,
+                                    dateStart: dates.start || '',
+                                    dateEnd: dates.end || '',
+                                });
+                            },
+                        }}
+                    />
+                    <HeadHistory
+                        onTab={(tab) => {
+                            if (page) {
+                                router.push(links.adminFuntionsLink.orders.index);
+                            }
 
-                            {isLoading && (
-                                <div className="w-full h-full flex items-center justify-center absolute inset-0 bg-[rgba(0,0,0,0.04)]">
-                                    <LoadingSecondary />
-                                </div>
-                            )}
-                        </div>
+                            setFilter({
+                                ...filter,
+                                status: tab.title === 'All order' ? '' : tab.title,
+                            });
+                        }}
+                        styles="outline"
+                        iniData={dataHeadHistory}
+                    />
 
-                        {dataOrders && <Box mt={'-2%'}>{<Pagination baseHref="/admin/dashboard/orders?page=" pages={dataOrders.pages} />}</Box>}
-                    </BoxTitle>
-                    {dataOpen ? <UpdateStateOrderDialog idOpen={dataOpen} open={open} setOpen={setOpen} /> : <span></span>}
-                </OrderAdminPageContext.Provider>
-            )}
+                    <div className="rounded-xl overflow-hidden border border-gray-primary relative">
+                        {dataOrders && (
+                            <Table dataHead={dataHeadTable}>
+                                {dataOrders.orderFilters.length > 0 &&
+                                    dataOrders.orderFilters.map((order, index) => {
+                                        const status = order.status.toLowerCase().trim().replaceAll(' ', '_') as StateType;
+                                        return (
+                                            <RowStatusOrders
+                                                page={page}
+                                                key={order.orderId}
+                                                handleOpen={handleOpen}
+                                                index={index}
+                                                data={{
+                                                    id: order.orderId,
+                                                    placedData: order.placedDate,
+                                                    price: order.total,
+                                                    status: status,
+                                                    user: order.username,
+                                                }}
+                                            />
+                                        );
+                                    })}
+                            </Table>
+                        )}
+                        {dataOrders && dataOrders.orderFilters.length <= 0 && (
+                            <div className="flex items-center justify-center py-5 text-violet-primary">
+                                <b>No data available</b>
+                            </div>
+                        )}
+
+                        {isLoading && (
+                            <div className="w-full h-full flex items-center justify-center absolute inset-0 bg-[rgba(0,0,0,0.04)]">
+                                <LoadingSecondary />
+                            </div>
+                        )}
+                    </div>
+
+                    {dataOrders && dataOrders.pages > 1 && (
+                        <Box mt={'-2%'}>{<Pagination baseHref={links.adminFuntionsLink.orders.index + `?page=`} pages={dataOrders.pages} />}</Box>
+                    )}
+                </BoxTitle>
+                {dataOpen ? <UpdateStateOrderDialog idOpen={dataOpen} open={open} setOpen={setOpen} /> : <span></span>}
+            </OrderAdminPageContext.Provider>
         </div>
     );
 }

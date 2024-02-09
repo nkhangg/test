@@ -1,3 +1,5 @@
+import { dataHeadNotification } from './header';
+
 const commonAdmin = '/admin/dashboard';
 const commonPet = '/pet/';
 
@@ -33,6 +35,11 @@ export const links = {
         },
         reviews: {
             index: commonAdmin + '/reviews',
+        },
+        notifycation: {
+            index: commonAdmin + '/notification',
+            website: commonAdmin + '/notification?layout=website',
+            system: commonAdmin + '/notification?layout=system',
         },
     },
     auth: {

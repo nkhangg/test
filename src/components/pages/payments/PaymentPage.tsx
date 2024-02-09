@@ -87,6 +87,7 @@ export default function PaymentPage(props: IPaymentPageProps) {
         await firebaseService.addSuccessfulPurchaseNotification({
             photourl,
             username: user.username,
+            displayName: user.displayName,
             orderId,
         });
     };

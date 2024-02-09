@@ -382,6 +382,7 @@ export interface IDetailOrder {
     total: number;
     expectedTime: string | null;
     username?: string;
+    displayName?: string;
 }
 
 export interface IProductDetailOrders {
@@ -777,6 +778,7 @@ export interface IAdoption {
 export interface IAdoptPetNotification extends IPet {
     phone: string;
     username: string;
+    displayName: string;
 }
 
 export interface IPetManagementFormResuqest {
@@ -848,4 +850,5 @@ export interface IRequestFilterAdoptionAdmin {
 
 export interface IPublistNotification<T> extends T {
     username: string;
+    displayName: string;
 }

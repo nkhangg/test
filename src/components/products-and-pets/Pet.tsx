@@ -72,7 +72,7 @@ export default function Pet({ data }: IPetProps) {
         if (!user) return;
 
         await delay(1000);
-        await firebaseService.publistFavoriteNotification(data, user?.username);
+        await firebaseService.publistFavoriteNotification(data, user);
     };
 
     const handleUnfavorite = async () => {

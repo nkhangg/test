@@ -1,17 +1,20 @@
 'use client';
 import { BoxTitle, DialogDateChooser, LoadingSecondary, NotificationDialog, SettingNotificationDialog, Table, WrapperAnimation } from '@/components';
-import { SortAdmin } from '@/components/common';
+import { HeadHistory, SortAdmin } from '@/components/common';
 import RowNotification from '@/components/inputs/tables/rows/RowNotification';
 import { INotification } from '@/configs/interface';
 import { TypeNotification } from '@/configs/types';
+import { dataHeadNotification } from '@/datas/header';
 import { useDebounce } from '@/hooks';
 import firebaseService from '@/services/firebaseService';
 import Validate from '@/utils/validate';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Timestamp } from 'firebase/firestore';
-import React, { ChangeEvent, useMemo, useState } from 'react';
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
+import SystemNotification from './SystemNotification';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 const dataHeadTable = ['#', 'Id', 'Image', 'Title', 'Message', 'Date', 'Type', 'Recipient', 'Action'];
 
@@ -41,8 +44,13 @@ const dataShort = [
 export interface INotificationManagePageProps {}
 
 export default function NotificationManagePage(props: INotificationManagePageProps) {
+    const searchParams = useSearchParams();
+    const pathLayout = searchParams.get('layout');
+
     const [search, setSearch] = useState('');
     const [type, setType] = useState<TypeNotification | undefined>(undefined);
+
+    const [layout, setLayout] = useState(dataHeadNotification[0].title);
 
     const [open, setOpen] = useState(false);
     const [openSetting, setOpenSetting] = useState(false);
@@ -118,19 +126,31 @@ export default function NotificationManagePage(props: INotificationManagePagePro
                 </div>
             </div>
 
-            <div className="rounded-xl overflow-hidden border border-gray-primary relative">
-                <Table
-                    styleHead={{
-                        align: 'center',
-                    }}
-                    dataHead={dataHeadTable}
-                >
-                    {dataNotifications.map((item, index) => {
-                        return <RowNotification key={item.id} index={index} data={item} />;
-                    })}
-                </Table>
+            <HeadHistory
+                layouts="flex-start"
+                onTab={(tab) => {
+                    setLayout(tab.title);
+                }}
+                styles="outline"
+                iniData={dataHeadNotification}
+            />
 
-                {dataNotifications.length <= 0 && (
+            <div className="rounded-xl overflow-hidden border border-gray-primary relative">
+                {layout === dataHeadNotification[0].title && (
+                    <Table
+                        styleHead={{
+                            align: 'center',
+                        }}
+                        dataHead={dataHeadTable}
+                    >
+                        {dataNotifications.map((item, index) => {
+                            return <RowNotification key={item.id} index={index} data={item} />;
+                        })}
+                    </Table>
+                )}
+                {layout === dataHeadNotification[1].title && <SystemNotification />}
+
+                {dataNotifications.length <= 0 && layout === dataHeadNotification[0].title && (
                     <div className="flex items-center justify-center py-5 text-violet-primary">
                         <b>No data available</b>
                     </div>

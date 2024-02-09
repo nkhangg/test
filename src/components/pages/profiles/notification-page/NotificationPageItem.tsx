@@ -51,7 +51,7 @@ export default function NotificationPageItem({ data, user, options, onClick }: I
                 />
 
                 <p
-                    className="text-[15px] max-w-full break-all"
+                    className="text-[15px] max-w-full"
                     dangerouslySetInnerHTML={{
                         __html: (() => {
                             if (data.options && data.options.end && data.options.start && data.type !== 'none') {
