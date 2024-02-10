@@ -78,3 +78,5 @@ export { default as FavoritePage } from './FavoritePage';
 export { default as AdoptionPage } from './profiles/adoption/AdoptionPage';
 export { default as AdoptionPageItem } from './profiles/adoption/AdoptionPageItem';
 export { default as AdoptionManagementPage } from './adoption-management/AdoptionManagementPage';
+
+export { default as DonationPage } from './donation/DonationPage';

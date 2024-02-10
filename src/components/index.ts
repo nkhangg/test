@@ -55,6 +55,7 @@ export { default as RowListUser } from './inputs/tables/rows/RowListUser';
 export { default as RowListProduct } from './inputs/tables/rows/RowListProduct';
 export { default as RowPriceHistories } from './inputs/tables/rows/RowPriceHistories';
 export { default as RowListPet } from './inputs/tables/rows/RowListPet';
+export { default as RowListTransaction } from './inputs/tables/rows/RowListTransaction';
 
 // bages
 export { default as CustomBadge } from './badges/CustomBadge';

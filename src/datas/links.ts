@@ -72,4 +72,5 @@ export const links = {
         adoptPage: '/adopt',
         ask: '/ask-condition',
     },
+    donation: '/donation',
 };
