@@ -457,6 +457,8 @@ export interface IRowStatusOrders {
     price: number;
     placedData: string;
     status: StateType;
+    read?: boolean;
+    token?: string;
 }
 
 export interface IPayment {
@@ -491,6 +493,8 @@ export interface IOrderAdminItem {
     total: number;
     placedDate: string;
     status: string;
+    read?: boolean;
+    token?: string;
 }
 
 export interface IOrderAdminFillterForm {
