@@ -8,6 +8,7 @@ import Validate from '@/utils/validate';
 import { sendFeedback } from '@/apis/app';
 import { toast } from 'react-toastify';
 import { contants } from '@/utils/contants';
+import { donationMethod } from '@/datas/donation';
 
 const initData = {
     fullname: '',
@@ -142,7 +143,21 @@ export default function DonationCom({ className }: IDonationComProps) {
                 <div className="w-full flex-col flex items-center justify-center lg:items-start lg:justify-center">
                     <h3 className="text-green-5FA503 font-semibold text-2xl mb-8 text-center lg:text-left w-full">{'or donate via'.toLocaleUpperCase()}</h3>
                     <ul className="relative max-w-[552px] w-full bg-[#F8F6FC] rounded-2xl text-black-main shadow-primary py-16 px-9 md:px-20 flex flex-col gap-11">
-                        <li className="grid grid-cols-2 gap-2 items-center">
+                        {donationMethod.map((item) => {
+                            return (
+                                <li key={item.image} className="grid grid-cols-2 gap-2 items-center">
+                                    <div className="relative w-[50%] h-[96px]">
+                                        <Image fill src={item.image} className="object-contain" alt="tp-bank" />
+                                    </div>
+                                    <div className="text-1xl text-black-main flex-1">
+                                        <span>{item.name}</span>
+                                        <p className="mt-1">{item.bankNumber}</p>
+                                    </div>
+                                </li>
+                            );
+                        })}
+
+                        {/* <li className="grid grid-cols-2 gap-2 items-center">
                             <div className="relative w-[50%] h-[96px]">
                                 <Image fill src={'/icons/tp-bank.svg'} className="object-contain" alt="tp-bank" />
                             </div>
@@ -168,7 +183,7 @@ export default function DonationCom({ className }: IDonationComProps) {
                                 <span>PetFoster</span>
                                 <p className="mt-1">petfoster@gmail.com</p>
                             </div>
-                        </li>
+                        </li> */}
 
                         <div className="absolute w-[127px] h-[135px] top-[-20%] right-0">
                             <Image src={'/icons/cat-cute.svg'} fill alt="cat-cute" />

@@ -65,6 +65,7 @@ import {
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { RolesName } from './enum';
+import { ITransactionResponse } from './interface-ousite';
 export type ValidTags = keyof JSX.IntrinsicElements;
 
 export type ApiGetUsers = () => Promise<IUser[]>;
@@ -82,6 +83,8 @@ export type ApiRegister = (data: RegisterFormData) => Promise<ISignDataResponse>
 export type ApiTakeActionType = () => Promise<IBaseResponse<IApiTakeAction>>;
 
 export type ApiDetailProductType = (idProduct: string) => Promise<IBaseResponse<IDetailProduct>>;
+
+export type ApiGetTransaction = (page?: string) => Promise<ITransactionResponse>;
 
 export type ApiPetDetailPage = (id: string) => Promise<IBaseResponse<IPetDetailPageResponse>>;
 
