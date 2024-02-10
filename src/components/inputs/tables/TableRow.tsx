@@ -25,6 +25,7 @@ export default function TableRow({ children, onClick, onMouseEnter, onMouseLeave
                     backgroundColor: '#f1f1f1',
                     transition: 'all ease-in .1s',
                 },
+
                 cursor: 'pointer',
             }}
             {...props}

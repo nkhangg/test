@@ -6,6 +6,9 @@ const baseApiGHTK = 'https://dev-online-gateway.ghn.vn/shiip/public-api/v2/';
 const TOKEN_GHN = '461c907b-8f99-11ee-a6e6-e60958111f48';
 const CLIENT_ID = '190422';
 
+const TOKEN_GHN_PRINT = '539096b5-8f95-11ee-a6e6-e60958111f48';
+const CLIENT_ID_PRINT = '190419';
+
 export const contants = {
     shopName: 'Pet Foster',
     avartarDefault: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
@@ -64,6 +67,9 @@ export const contants = {
         ghn: {
             token: TOKEN_GHN,
             clientId: CLIENT_ID,
+            tokenPrint: TOKEN_GHN_PRINT,
+            clientIdPrint: CLIENT_ID_PRINT,
+            base: baseApiGHTK,
             shippingFee: baseApiGHTK + 'shipping-order/fee',
         },
     },

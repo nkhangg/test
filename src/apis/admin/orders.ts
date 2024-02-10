@@ -1,6 +1,6 @@
 import axios from '@/configs/axios';
 import { IOrderAdminFillterForm } from '@/configs/interface';
-import { ApiGetDetailFilterOrderAdmin, ApiGetFilterOrderAdmin, ApiGetOrders, ApiUpdateStatusOrder, UpdateStatusOrderType } from '@/configs/types';
+import { ApiGetDetailFilterOrderAdmin, ApiGetFilterOrderAdmin, ApiGetOrders, ApiUpdateReadOrderAdmin, ApiUpdateStatusOrder, UpdateStatusOrderType } from '@/configs/types';
 import Validate from '@/utils/validate';
 
 export const getOrdersAdmin: ApiGetOrders = async () => {
@@ -35,6 +35,17 @@ export const getOrdersAdminWithFilter: ApiGetFilterOrderAdmin = async (data: IOr
         method: 'GET',
         url: 'admin/orders/filter',
         params,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const updateReadForOrder: ApiUpdateReadOrderAdmin = async (id: number) => {
+    const res = await axios({
+        method: 'PUT',
+        url: 'admin/orders/read/' + id,
     });
 
     if (!res) return null;

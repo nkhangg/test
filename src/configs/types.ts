@@ -207,6 +207,8 @@ export type ApiGetOrders = () => Promise<any>;
 
 export type ApiGetFilterOrderAdmin = (data: IOrderAdminFillterForm, page: string | null) => Promise<IBaseResponse<{ orderFilters: IOrderAdminItem[]; pages: number }>>;
 
+export type ApiUpdateReadOrderAdmin = (id: number) => Promise<IBaseResponse<IOrderAdminItem>>;
+
 export type ApiGetDetailFilterOrderAdmin = (id: number | undefined) => Promise<IBaseResponse<IDetailOrder>>;
 
 export type ApiUpdateStatusOrder = (data: UpdateStatusOrderType) => Promise<IBaseResponse<any>>;

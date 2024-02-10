@@ -262,3 +262,33 @@ export const generateContentWithAi = async (data: IPetManagementFormResuqest) =>
 
     return res?.data as IChatGPTResponse;
 };
+
+export const getTokenPrint = async (token: string) => {
+    const res = await axios({
+        method: 'POST',
+        url: contants.apis.ghn.base + `a5/gen-token`,
+        headers: {
+            'Content-Type': 'application/json',
+            token: contants.apis.ghn.tokenPrint,
+        },
+        data: {
+            order_codes: [token],
+            source: '5sao',
+        },
+    });
+
+    if (!res) return null;
+
+    const response = await axios({
+        method: 'GET',
+        url: `https://dev-online-gateway.ghn.vn/a5/public-api/print80x80?token=${res.data.data.token}`,
+        headers: {
+            'Content-Type': 'application/json',
+            token: contants.apis.ghn.tokenPrint,
+        },
+    });
+
+    if (!response) return null;
+
+    return response;
+};
