@@ -62,6 +62,10 @@ import {
     IPetManagement,
     IRequestFilterAdoptionAdmin,
     IPetManagementFormResuqest,
+    IRowTransaction,
+    IFilterDonationRequest,
+    PagiantionResponseWithTotal,
+    IReportDonate,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { RolesName } from './enum';
@@ -84,7 +88,11 @@ export type ApiTakeActionType = () => Promise<IBaseResponse<IApiTakeAction>>;
 
 export type ApiDetailProductType = (idProduct: string) => Promise<IBaseResponse<IDetailProduct>>;
 
-export type ApiGetTransaction = (page?: string) => Promise<ITransactionResponse>;
+export type ApiGetTransaction = (page?: string) => Promise<IBaseResponse<PagiantionResponse<IRowTransaction>>>;
+
+export type ApiReportDonation = (page?: string) => Promise<IBaseResponse<IReportDonate>>;
+
+export type ApiFilterTransaction = (filter: IFilterDonationRequest) => Promise<IBaseResponse<PagiantionResponseWithTotal<IRowTransaction>>>;
 
 export type ApiPetDetailPage = (id: string) => Promise<IBaseResponse<IPetDetailPageResponse>>;
 

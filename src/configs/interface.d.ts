@@ -326,6 +326,10 @@ export interface PagiantionResponse<T> {
     pages: number;
 }
 
+export interface PagiantionResponseWithTotal<T> extends PagiantionResponse<T> {
+    total: number;
+}
+
 export type DataProductType = {
     id: string;
     name: string;
@@ -855,4 +859,29 @@ export interface IRequestFilterAdoptionAdmin {
 export interface IPublistNotification<T> extends T {
     username: string;
     displayName: string;
+}
+
+export interface IRowTransaction {
+    id: number;
+    donateAt: string;
+    donater: string;
+    descriptions: string;
+    donateAmount: number;
+    beneficiaryBank: string;
+    toAccountNumber: string;
+    idTransactionl: number;
+}
+
+export interface IFilterDonationRequest {
+    search?: string;
+    minDate?: string;
+    maxDate?: string;
+    sort?: string;
+    page?: int;
+}
+
+export interface IReportDonate {
+    day: number;
+    month: number;
+    year: number;
 }

@@ -80,3 +80,4 @@ export { default as AdoptionPageItem } from './profiles/adoption/AdoptionPageIte
 export { default as AdoptionManagementPage } from './adoption-management/AdoptionManagementPage';
 
 export { default as DonationPage } from './donation/DonationPage';
+export { default as ManagementDonationPage } from './admin/donation/ManagementDonationPage';

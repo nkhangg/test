@@ -8,6 +8,7 @@ import { IDataCharts } from '@/configs/interface';
 import Chart from './Charts/Chart';
 import { useQuery } from '@tanstack/react-query';
 import { salesOverview } from '@/apis/dashboard';
+import moment from 'moment';
 interface ISalesOverviewProps {
     dataOusite: {
         revenue: IDataCharts;
@@ -17,7 +18,7 @@ interface ISalesOverviewProps {
 
 const SalesOverview = ({ dataOusite }: ISalesOverviewProps) => {
     // select
-    const [month, setMonth] = React.useState('2023');
+    const [month, setMonth] = React.useState(moment(new Date()).format('yyyy'));
 
     const { data, isLoading, error } = useQuery({
         queryKey: ['sales-overview', month],
@@ -56,9 +57,9 @@ const SalesOverview = ({ dataOusite }: ISalesOverviewProps) => {
             title="Sales Overview"
             action={
                 <Select labelId="month-dd" id="month-dd" value={month} size="small" onChange={handleChange}>
-                    <MenuItem value={'2021'}>2021</MenuItem>
-                    <MenuItem value={'2022'}>2022</MenuItem>
                     <MenuItem value={'2023'}>2023</MenuItem>
+                    <MenuItem value={'2024'}>2024</MenuItem>
+                    <MenuItem value={'2025'}>2025</MenuItem>
                 </Select>
             }
             middlecontent={

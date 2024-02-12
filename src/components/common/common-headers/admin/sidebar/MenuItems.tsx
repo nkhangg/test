@@ -1,5 +1,5 @@
 import { faShield } from '@fortawesome/free-solid-svg-icons';
-import { IconBell, IconLetterCaseLower, IconQuestionMark, IconShield, IconStars } from '@tabler/icons-react';
+import { IconBell, IconBellDollar, IconLetterCaseLower, IconQuestionMark, IconShield, IconStars } from '@tabler/icons-react';
 import { IconLayoutDashboard, IconBox, IconDog, IconUser, IconBoxSeam, IconMessage, IconBrandCake } from '@tabler/icons-react';
 const Menuitems = [
     {
@@ -92,6 +92,12 @@ const Menuitems = [
         title: 'Feedbacks',
         icon: IconQuestionMark,
         href: '/admin/dashboard/feedbacks',
+    },
+    {
+        id: 12,
+        title: 'Donations',
+        icon: IconBellDollar,
+        href: '/admin/dashboard/donation',
     },
 ];
 
