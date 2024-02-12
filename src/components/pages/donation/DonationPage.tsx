@@ -1,5 +1,5 @@
 'use client';
-import { RowListTransaction, TableV2 } from '@/components';
+import { Pagination, RowListTransaction, TableV2 } from '@/components';
 import { HeadItem } from '@/components/inputs/tables/TableV2';
 import { donationMethod } from '@/datas/donation';
 import { useQuery } from '@tanstack/react-query';
@@ -9,13 +9,23 @@ import { BaseBreadcrumbs } from '../common';
 import { links } from '@/datas/links';
 import { notFound, useRouter, useSearchParams } from 'next/navigation';
 import { getTransaction } from '@/apis/transaction';
+import { IRowTransaction } from '@/configs/interface';
+import { Box } from '@mui/material';
 
 export interface IDonationPageProps {}
 
-const dataHeadTable = [{ title: 'No' }, { title: 'Beneficiary bank' }, { title: 'To account number' }, { title: 'From account number' }, { title: 'When' }, { title: 'Amout' }];
+const dataHeadTable = [
+    { title: 'No' },
+    { title: 'Beneficiary bank' },
+    { title: 'To account number' },
+    { title: 'From account number' },
+    { title: 'When' },
+    { title: 'Amout' },
+    { title: 'Description' },
+];
 
 export default function DonationPage(props: IDonationPageProps) {
-    const baseUrl = links.pets.adoptPage;
+    const baseUrl = links.donation;
     const searchParams = useSearchParams();
 
     const router = useRouter();
@@ -24,23 +34,23 @@ export default function DonationPage(props: IDonationPageProps) {
 
     const rawData = useQuery({
         queryKey: ['donationPage', page],
-        queryFn: () => getTransaction(),
+        queryFn: () => getTransaction(page + ''),
     });
 
-    if (rawData.isError) {
+    if (rawData.isError || rawData.data?.errors) {
         notFound();
     }
 
     const data = useMemo(() => {
-        if (!rawData.data?.data.records) return [];
+        if (!rawData.data?.data.data) return [] as IRowTransaction[];
 
-        return rawData.data?.data.records;
+        return rawData.data?.data.data;
     }, [rawData]);
 
     return (
         <BaseBreadcrumbs
             isLoading={rawData.isLoading}
-            title="ORDER DETAIL"
+            title="List Donation"
             breadcrumb={[
                 {
                     title: 'donation',
@@ -55,6 +65,10 @@ export default function DonationPage(props: IDonationPageProps) {
                             return <RowListTransaction key={item.id} page={page} index={index} data={item} />;
                         })}
                     </TableV2>
+
+                    {data && data.length > 1 && rawData.data && rawData.data?.data.pages > 1 && (
+                        <Box mt={'-2%'}>{<Pagination baseHref={`${baseUrl}?page=`} pages={rawData.data?.data.pages || 0} />}</Box>
+                    )}
                 </div>
                 <ul className="flex flex-col gap-5 flex-1">
                     {donationMethod.map((item) => {

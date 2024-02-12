@@ -3,15 +3,18 @@ import { INotification } from '@/configs/interface';
 import { RootState } from '@/configs/types';
 import { useAppSelector } from '@/hooks/reduxHooks';
 import firebaseService from '@/services/firebaseService';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { NotificationPageItem } from '../..';
+import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 
 export interface ISystemNotificationProps {}
 
 export default function SystemNotification(props: ISystemNotificationProps) {
     const { user } = useAppSelector((state: RootState) => state.userReducer);
-    const [notificationSnapshot, loading] = useCollection(firebaseService.querys.getNotifications(user));
+    const [start, setStart] = useState<QueryDocumentSnapshot<DocumentData, DocumentData>>();
+    const [notificationSnapshot, loading] = useCollection(firebaseService.querys.getNotifications(user, { start, limit: Number(process.env.NEXT_PUBLIC_LIMIT_NOTIFI) }));
+    const [data, setData] = useState<INotification[]>([]);
 
     const dataNotifications = useMemo(() => {
         if (!notificationSnapshot) return [];
@@ -24,8 +27,18 @@ export default function SystemNotification(props: ISystemNotificationProps) {
         });
     }, [notificationSnapshot]);
 
+    useEffect(() => {
+        setData((prev) => [...prev, ...dataNotifications]);
+    }, [dataNotifications]);
+
     const handleMarkAllAsRead = async () => {
         await firebaseService.handleMarkAllAsRead(dataNotifications, user);
+    };
+
+    const handleSeemore = () => {
+        if (!notificationSnapshot?.docs) return;
+
+        setStart(notificationSnapshot?.docs[notificationSnapshot.docs.length - 1]);
     };
 
     return (
@@ -36,10 +49,18 @@ export default function SystemNotification(props: ISystemNotificationProps) {
                 </p>
             </div>
             <div className="py-6 flex flex-col gap-2">
-                {dataNotifications.map((item) => {
+                {data.map((item) => {
                     return <NotificationPageItem key={item.id} data={item} user={user} />;
                 })}
             </div>
+
+            {dataNotifications.length >= Number(process.env.NEXT_PUBLIC_LIMIT_NOTIFI) && (
+                <div className="flex items-center justify-center">
+                    <span onClick={handleSeemore} className="text-fill-heart hover:underline cursor-pointer">
+                        See more
+                    </span>
+                </div>
+            )}
         </div>
     );
 }

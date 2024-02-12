@@ -35,6 +35,11 @@ import {
     getDoc,
     collectionGroup,
     QueryCompositeFilterConstraint,
+    QueryConstraint,
+    QueryDocumentSnapshot,
+    DocumentData,
+    QueryNonFilterConstraint,
+    startAfter,
 } from 'firebase/firestore';
 
 const setUserInBd = async (user: IProfile) => {
@@ -789,23 +794,36 @@ const getConversations = (typeSort: OrderByDirection = 'desc') => {
     return query(collection(db, 'conversations'), where('sendAt', '!=', 'null'), orderBy('sendAt', typeSort));
 };
 
-const getNotifications = (user: IProfile | null, options = { limit: 8 }) => {
+const getNotifications = (
+    user: IProfile | null,
+    options: { limit: number; start?: QueryDocumentSnapshot<DocumentData, DocumentData> } = { limit: Number(process.env.NEXT_PUBLIC_LIMIT_NOTIFI) },
+) => {
     if (!user) return null;
 
+    const constraintsAdmin: any = [
+        and(where('deleted', '==', false), or(where('target', 'array-contains', 'all'), where('target', 'array-contains', user.username), where('public', '==', false))),
+        orderBy('createdAt', 'desc'),
+        limit(options.limit),
+    ];
+
+    const constraintsUser: any = [
+        and(where('deleted', '==', false), or(where('target', 'array-contains', 'all'), where('target', 'array-contains', user.username))),
+        orderBy('createdAt', 'desc'),
+        limit(options.limit),
+    ];
+
+    if (options.start) {
+        if (contants.roles.manageRoles.includes(user.role)) {
+            constraintsAdmin.push(startAfter(options.start));
+        } else {
+            constraintsUser.push(startAfter(options.start));
+        }
+    }
+
     if (contants.roles.manageRoles.includes(user.role)) {
-        return query(
-            collection(db, 'notifications'),
-            and(where('deleted', '==', false), or(where('target', 'array-contains', 'all'), where('target', 'array-contains', user.username), where('public', '==', false))),
-            // orderBy('createdAt', 'desc'),
-            limit(8),
-        );
+        return query(collection(db, 'notifications'), ...(constraintsAdmin as QueryNonFilterConstraint[]));
     } else {
-        return query(
-            collection(db, 'notifications'),
-            and(where('deleted', '==', false), or(where('target', 'array-contains', 'all'), where('target', 'array-contains', user.username))),
-            // orderBy('createdAt', 'desc'),
-            limit(8),
-        );
+        return query(collection(db, 'notifications'), ...(constraintsUser as QueryNonFilterConstraint[]));
     }
 };
 

@@ -41,6 +41,9 @@ export const links = {
             website: commonAdmin + '/notification?layout=website',
             system: commonAdmin + '/notification?layout=system',
         },
+        donation: {
+            index: commonAdmin + '/donation',
+        },
     },
     auth: {
         login: '/login',

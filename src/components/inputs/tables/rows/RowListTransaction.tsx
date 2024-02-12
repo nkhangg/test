@@ -4,11 +4,12 @@ import TableRow from '../TableRow';
 import { TableCell, Typography } from '@mui/material';
 import { formatIndex, toCurrency } from '@/utils/format';
 import moment from 'moment';
+import { IRowTransaction } from '@/configs/interface';
 
 export interface IRowListTransactionProps {
     page: string | null;
     index: number;
-    data: IRecordTransaction;
+    data: IRowTransaction;
 }
 
 export default function RowListTransaction({ index, page, data }: IRowListTransactionProps) {
@@ -26,25 +27,30 @@ export default function RowListTransaction({ index, page, data }: IRowListTransa
             </TableCell>
             <TableCell align="left">
                 <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
-                    {data.bankCodeName}
+                    {data.beneficiaryBank}
                 </Typography>
             </TableCell>
             <TableCell align="left">
                 <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
-                    {data.bankSubAccId}
+                    {data.toAccountNumber}
                 </Typography>
             </TableCell>
             <TableCell align="left">
                 <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
-                    {data.corresponsiveAccount}
+                    {data.donater}
                 </Typography>
             </TableCell>
 
-            <TableCell>{moment(data.when).format('DD/MM/yyyy')}</TableCell>
+            <TableCell>{data.donateAt}</TableCell>
 
             <TableCell align="left">
                 <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
-                    {toCurrency(data.amount)}
+                    {toCurrency(data.donateAmount)}
+                </Typography>
+            </TableCell>
+            <TableCell align="left">
+                <Typography color="textSecondary" fontSize={'16px'} variant="subtitle2" maxWidth={'200px'} fontWeight={400} className="truncate">
+                    <p className="block max-w-[80px] line-clamp-1">{data.descriptions}</p>
                 </Typography>
             </TableCell>
         </TableRow>
