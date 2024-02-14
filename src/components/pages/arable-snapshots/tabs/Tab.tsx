@@ -15,9 +15,10 @@ interface TabProps {
     icon?: IconProp;
     active: Active;
     setActive: ({ value, initBorder, left }: Active) => void;
+    onClick?: () => void;
 }
 
-const Tab = ({ title, selected, icon, active, setActive }: TabProps) => {
+const Tab = ({ title, selected, icon, active, setActive, onClick }: TabProps) => {
     const ref = useRef<HTMLParagraphElement>(null);
 
     const [width, setWidth] = useState(0);
@@ -32,14 +33,16 @@ const Tab = ({ title, selected, icon, active, setActive }: TabProps) => {
             onMouseEnter={() => setActive({ ...active, left: ref.current ? ref.current?.offsetLeft : 0 })}
             onMouseLeave={() => setActive({ ...active, left: active.initBorder })}
             ref={ref}
-            onClick={() =>
+            onClick={() => {
                 setActive({
                     value: title,
                     initBorder: ref.current ? ref.current?.offsetLeft : 0,
                     left: ref.current ? ref.current?.offsetLeft : 0,
                     width: width,
-                })
-            }
+                });
+                if (!onClick) return;
+                onClick();
+            }}
             className={` h-full flex items-center justify-center
              font-bold text-lg leading-[25px] w-1/2 py-3
            cursor-pointer ${selected ? 'text-post-primary' : 'text-white-opacity-50'}`}

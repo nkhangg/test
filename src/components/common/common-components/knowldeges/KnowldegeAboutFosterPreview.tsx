@@ -20,7 +20,7 @@ export default function KnowldegeAboutFosterPreview({ data }: IKnowldegeAboutFos
                     {data?.title}
                 </Link>
 
-                <p className="text-1xl text-black-main line-clamp-3 text-ellipsis">{data?.contents}</p>
+                <p className="text-1xl text-black-main line-clamp-3 text-ellipsis">{data?.title}</p>
             </div>
         </div>
     );

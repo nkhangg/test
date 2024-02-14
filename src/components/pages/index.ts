@@ -63,6 +63,7 @@ export { default as SystemNotification } from './admin/notification/SystemNotifi
 // arable snapshots
 export { default as ArableSnapshotsPage } from './arable-snapshots/ArableSnapshotsPage';
 export { default as AdorableSnapshotsProfilePage } from './arable-snapshots/AdorableSnapshotsProfilePage';
+export { default as AdorableSearchPage } from './arable-snapshots/AdorableSearchPage';
 
 // pets
 export { default as PetManagePage } from './pets/PetManagePage';

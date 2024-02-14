@@ -103,8 +103,23 @@ export interface IPost {
     id: number | string;
     title: string;
     thumbnail: string;
-    contents: string;
+    // contents: string;
     containVideo?: boolean;
+    isLike: boolean;
+    likes: number;
+    comments: number;
+    user: IProfile;
+}
+
+export interface IImagePost {
+    url: string;
+    isVideo: boolean;
+}
+
+export interface IPostDetail extends Omit<IPost, 'thumbnail' | 'containVideo' | 'thumbnail'> {
+    images: IImagePost[];
+    owner: boolean;
+    createdAt: string;
 }
 
 export interface ICart {
@@ -542,6 +557,16 @@ export interface IReview {
     createAt: string;
 }
 
+export interface IComment {
+    id: number;
+    user: IProfile;
+    comment: string;
+    createAt: string;
+    likes: number;
+    isLike: boolean;
+    children: IComment[];
+}
+
 export interface IReviewHasReplay extends IReview {
     replayItems: IReviewHasReplay[] | null;
 }
@@ -884,4 +909,11 @@ export interface IReportDonate {
     day: number;
     month: number;
     year: number;
+}
+
+export interface IParamsApiPostPage {
+    page?: number;
+    search?: string;
+    username?: string;
+    type?: string;
 }

@@ -4,55 +4,57 @@ import { LoadingSecondary, Post } from '@/components';
 import classNames from 'classnames';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { delay } from '@/utils/funtionals';
-import { getPosts } from '@/apis/posts';
+import { getPosts, getPostsOfUser } from '@/apis/posts';
 import { IPost } from '@/configs/interface';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleCheck, faFaceSadCry } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faFaceSadCry, faFaceSmile } from '@fortawesome/free-solid-svg-icons';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { links } from '@/datas/links';
+import { useAppSelector } from '@/hooks/reduxHooks';
+import { RootState } from '@/configs/types';
 
-export interface IInfinityPostsProps {}
+export interface IInfinityPostsProps {
+    type?: string;
+}
 
-export default function InfinityPosts(props: IInfinityPostsProps) {
+export default function InfinityPosts({ type }: IInfinityPostsProps) {
     const refCountPage = useRef<number>(1);
 
     const [posts, setPosts] = useState<IPost[]>([]);
     const [loading, setLoading] = useState(false);
     const [hasNextPage, setHasNextPage] = useState(true);
 
-    const pathname = usePathname();
+    const [loadingFullPage, setLoadingFullPage] = useState(false);
 
-    const searchParam = useSearchParams();
-    const search = searchParam.get('q');
+    const { user } = useAppSelector((state: RootState) => state.userReducer);
 
-    const searchQueries = useMemo(() => {
-        if (pathname !== links.adorables.search) return undefined;
+    const fetchPosts = useCallback(
+        async (page = 0) => {
+            setLoading(true);
 
-        if (search) {
-            return search;
-        }
-    }, [pathname, search]);
+            // test loading
+            const res = await getPostsOfUser({ page, type, username: user?.username });
 
-    const fetchPosts = useCallback(async (page = 0, search?: string) => {
-        setLoading(true);
+            if (!res || res.errors) {
+                setLoading(false);
+                setHasNextPage(false);
+                if (type) {
+                    setLoadingFullPage(false);
+                }
+                return [];
+            }
 
-        // test loading
-        await delay(800);
-        const res = await getPosts({ page, search });
+            const data = res.data;
 
-        if (!res || res.errors) {
+            if (page >= data.pages) setHasNextPage(false);
             setLoading(false);
-            setHasNextPage(false);
-            return [];
-        }
-
-        const data = res.data;
-
-        if (page >= data.pages) setHasNextPage(false);
-        setLoading(false);
-
-        return data.data;
-    }, []);
+            if (type) {
+                setLoadingFullPage(false);
+            }
+            return data.data;
+        },
+        [type, user],
+    );
 
     const lastPostRef = useIntersectionObserver<HTMLDivElement>(() => {
         refCountPage.current += 1;
@@ -60,18 +62,23 @@ export default function InfinityPosts(props: IInfinityPostsProps) {
     }, [hasNextPage, !loading]);
 
     useEffect(() => {
-        if (searchQueries) {
-            fetchPosts(refCountPage.current, searchQueries).then((newPosts) => setPosts((posts) => [...newPosts]));
-            return;
-        }
-
         fetchPosts().then(setPosts);
-    }, [fetchPosts, searchQueries]);
+    }, [fetchPosts]);
+
+    useEffect(() => {
+        refCountPage.current = 1;
+        setHasNextPage(true);
+        if (type) {
+            setLoadingFullPage(true);
+        }
+        fetchPosts().then(setPosts);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [type]);
 
     return (
         <>
             <div
-                className={classNames('grid', {
+                className={classNames('grid relative', {
                     ['lg:grid-cols-4 gap-4 py-4']: true,
                     ['md:grid-cols-3']: true,
                 })}
@@ -83,6 +90,12 @@ export default function InfinityPosts(props: IInfinityPostsProps) {
                         </div>
                     );
                 })}
+
+                {loadingFullPage && (
+                    <div className="absolute bg-black-040 inset-0">
+                        <LoadingSecondary color="#3E3771" defaultStyle={false} />
+                    </div>
+                )}
             </div>
             {loading && (
                 <div className="flex items-center justify-center py-10 overflow-hidden">
@@ -95,10 +108,10 @@ export default function InfinityPosts(props: IInfinityPostsProps) {
                     <span className="text-black-main font-medium">All the latest bulletin boards have been loaded</span>
                 </div>
             )}
-            {!hasNextPage && posts.length <= 0 && searchQueries && (
+            {!hasNextPage && posts.length <= 0 && (
                 <div className="flex items-center justify-center py-10 overflow-hidden flex-col gap-2 border-2 border-green-600 rounded-xl mb-10 mt-5">
-                    <FontAwesomeIcon className="text-green-600 text-4xl" icon={faFaceSadCry} />
-                    <span className="text-black-main font-medium">There are no results matching the keyword &quot;{searchQueries}&ldquo;</span>
+                    <FontAwesomeIcon className="text-green-600 text-4xl" icon={faFaceSmile} />
+                    <span className="text-black-main font-medium">{type ? 'Post your funny moments with your boss' : "You haven't liked any posts yet"}</span>
                 </div>
             )}
         </>

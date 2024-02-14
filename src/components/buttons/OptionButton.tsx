@@ -52,7 +52,7 @@ export default function OptionButton({ handleDelete, handleReport, options = { b
                     setOpen(true);
                 }}
                 hover={{}}
-                className={classNames(' p-3 rounded-full transition-all ease-linear flex items-center justify-center cursor-pointer', {
+                className={classNames(' p-3 pt-0 rounded-full transition-all ease-linear flex items-center justify-center cursor-pointer', {
                     ['hover:bg-gray-200']: options.hover,
                 })}
             >

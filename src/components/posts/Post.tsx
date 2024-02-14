@@ -5,22 +5,35 @@ import classNames from 'classnames';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Avatar } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment, faEllipsisVertical, faFlag, faHeart, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faComment, faHeart, faImage, faTrash, faVideo } from '@fortawesome/free-solid-svg-icons';
 import { toAbbrevNumber } from '@/utils/format';
 import Tippy from '@tippyjs/react/headless';
 import { OptionButton, PostDetailDialog } from '..';
+import { IPost } from '@/configs/interface';
+import { contants } from '@/utils/contants';
+import Link from 'next/link';
+import { links } from '@/datas/links';
+import { useQueryState } from 'nuqs';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { setuid } from 'process';
 export interface IPostProps {
     variant?: 'rounded' | 'circle';
+    data: IPost;
 }
 
-export default function Post({ variant = 'circle' }: IPostProps) {
+export default function Post({ variant = 'circle', data }: IPostProps) {
     // modals state
     const [model, setModel] = useState(false);
     const [openDetail, setOpenDetail] = useState(false);
 
+    const router = useRouter();
+    const [uuid, setUuid] = useQueryState('uuid');
+
     // handle funtionals
     const handleOpenDetail = (e: MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
+        setUuid(data.id as string);
+        console.log(data.id);
         setOpenDetail(true);
     };
 
@@ -35,18 +48,31 @@ export default function Post({ variant = 'circle' }: IPostProps) {
                 ['min-h-[300px] min-w-[300px] rounded-lg']: variant === 'rounded',
             })}
         >
-            <img className="absolute w-full h-full object-cover " src={'https://i.pinimg.com/564x/0f/1c/15/0f1c15c001c3afc9b338e4fe50bb9acf.jpg'} alt="/image/mockup/1.png" />
+            {!data.containVideo && <img className="absolute w-full h-full object-cover " src={data.thumbnail} alt={data.thumbnail} />}
+            {data.containVideo && (
+                <img
+                    alt={data.thumbnail}
+                    className="absolute w-full h-full object-cover "
+                    src={
+                        'https://scontent.fsgn5-15.fna.fbcdn.net/v/t39.30808-6/427990201_916831296489953_5769915569630552168_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=dd5e9f&_nc_ohc=IK0Mfs8tetgAX8ptXYa&_nc_ht=scontent.fsgn5-15.fna&oh=00_AfC51Bje8Nq9qb7YJ9DfkyMDs1B2FMJe4X-G4xt9fp_E4w&oe=65D0B6F4'
+                    }
+                />
+            )}
+
+            <div className="absolute top-0 left-0 p-4 text-white  flex items-center justify-center text-sm">
+                <FontAwesomeIcon className="shadow-primary" icon={data.containVideo ? faVideo : faImage} />
+            </div>
 
             <AnimatePresence>
                 {model && (
                     <motion.div
                         onClick={handleOpenDetail}
                         initial={{
-                            scale: 0.9,
+                            scale: 1.2,
                             opacity: 0,
                         }}
                         exit={{
-                            scale: 0.9,
+                            scale: 1.2,
                             opacity: 0,
                         }}
                         animate={{
@@ -58,16 +84,22 @@ export default function Post({ variant = 'circle' }: IPostProps) {
                             ['rounded-[6px]']: variant === 'rounded',
                         })}
                     >
-                        <div className="flex items-center justify-end w-full p-4 pr-0 select-none">{<OptionButton options={{ hover: false }} />}</div>
+                        {/* <div className="flex items-center justify-end w-full p-4 pr-0 select-none">{<OptionButton options={{ hover: false }} />}</div> */}
 
+                        <div className=""></div>
                         <div className="flex items-center gap-8 lowercase text-xl select-none">
-                            <div className={classNames('flex items-center gap-[6px]')}>
+                            <div
+                                className={classNames('flex items-center gap-[6px]', {
+                                    ['text-fill-heart']: data.isLike,
+                                    ['text-white']: !data.isLike,
+                                })}
+                            >
                                 <FontAwesomeIcon icon={faHeart} />
-                                <span className="text-white">{toAbbrevNumber(1000)}</span>
+                                <span className="text-white">{toAbbrevNumber(data.likes)}</span>
                             </div>
                             <div className="flex items-center gap-[6px]">
                                 <FontAwesomeIcon icon={faComment} />
-                                <span>{toAbbrevNumber(1200)}</span>
+                                <span>{toAbbrevNumber(data.comments)}</span>
                             </div>
                         </div>
                         <div className="flex items-center gap-2 w-full">
@@ -76,18 +108,29 @@ export default function Post({ variant = 'circle' }: IPostProps) {
                                     width: '48px',
                                     height: '48px',
                                 }}
-                                src="https://media-cdn-v2.laodong.vn/storage/newsportal/2023/7/25/1220914/Rose.jpg?w=800&h=496&crop=auto&scale=both"
+                                src={data.user.avatar || contants.avartarDefault}
                             />
                             <div className="flex flex-col w-full flex-1 max-w-full">
-                                <h4 className="truncate max-w-[70%] text-1xl font-medium">Roses BlackPink</h4>
-                                <p className="truncate  max-w-[70%] text-sm font-normal">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt, minus.</p>
+                                <Link href={links.users.profiles.personalpage + data.user.username} className="truncate max-w-[70%] text-1xl font-medium">
+                                    {data.user.displayName || data.user.username}
+                                </Link>
+                                <p className="truncate  max-w-[70%] text-sm font-normal">{data.title}</p>
                             </div>
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            {openDetail && <PostDetailDialog open={openDetail} setOpen={setOpenDetail} onClose={() => setModel(false)} />}
+            {openDetail && (
+                <PostDetailDialog
+                    open={openDetail}
+                    setOpen={setOpenDetail}
+                    onClose={() => {
+                        setUuid(null);
+                        setModel(false);
+                    }}
+                />
+            )}
         </div>
     );
 }

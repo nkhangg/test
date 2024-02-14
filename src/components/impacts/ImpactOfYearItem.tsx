@@ -20,7 +20,7 @@ export default function ImpactOfYearItem({ data }: IImpactOfYearItemProps) {
             </div>
             <h4 className="font-bold text-green-main-dark text-2xl lg:text-[48px] py-2 tracking-wider">
                 {data.prefix && data.prefix}
-                {data.quantity}
+                {data.prefix ? (Number(data.quantity) / Number(process.env.NEXT_PUBLIC_USD)).toFixed(1) : data.quantity}
             </h4>
             <span className="text-lg lg:text-xl font-semibold text-black-main tracking-wider">{`${data.title}`}</span>
         </div>

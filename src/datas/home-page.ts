@@ -130,30 +130,30 @@ export const homePageData = {
         {
             id: 1,
             title: 'TITLE GOES HERE',
-            contents:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non nulla doloremque at dolorem libero ut, sequi nam explicabo iste maxime beatae, magnam facere aut fuga laudantium amet tenetur consectetur ',
+            // contents:
+            //     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non nulla doloremque at dolorem libero ut, sequi nam explicabo iste maxime beatae, magnam facere aut fuga laudantium amet tenetur consectetur ',
             thumbnail:
                 'https://www.scotsman.com/webimg/b25lY21zOmYxYmQ2NGNjLTIwNTYtNGE1MC05NDYyLTRkMjg5YzU5NDAxYTowMWY5OWIzMC1iMTdjLTQ5NmQtOGMxZi0yN2YyODIzYzkwMzQ=.jpg?width=1200&enable=upscale',
         },
         {
             id: 2,
             title: 'TITLE GOES HERE',
-            contents:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non nulla doloremque at dolorem libero ut, sequi nam explicabo iste maxime beatae, magnam facere aut fuga laudantium amet tenetur consectetur ',
+            // contents:
+            //     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non nulla doloremque at dolorem libero ut, sequi nam explicabo iste maxime beatae, magnam facere aut fuga laudantium amet tenetur consectetur ',
             thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsjuRz2_skbCKi1qlMAJre_MyrSIqFsx3C2rofKBCkBddQ8eLtkPHgkHHg9EUwIwp7Ayc&usqp=CAU',
         },
         {
             id: 3,
             title: 'TITLE GOES HERE',
-            contents:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non nulla doloremque at dolorem libero ut, sequi nam explicabo iste maxime beatae, magnam facere aut fuga laudantium amet tenetur consectetur ',
+            // contents:
+            //     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non nulla doloremque at dolorem libero ut, sequi nam explicabo iste maxime beatae, magnam facere aut fuga laudantium amet tenetur consectetur ',
             thumbnail: 'https://i.pinimg.com/1200x/7b/4f/fd/7b4ffdec7e28d29fe2173ee0f7d9ba4a.jpg',
         },
         {
             id: 4,
             title: 'TITLE GOES HERE',
-            contents:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non nulla doloremque at dolorem libero ut, sequi nam explicabo iste maxime beatae, magnam facere aut fuga laudantium amet tenetur consectetur ',
+            // contents:
+            //     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non nulla doloremque at dolorem libero ut, sequi nam explicabo iste maxime beatae, magnam facere aut fuga laudantium amet tenetur consectetur ',
             thumbnail:
                 'https://images.unsplash.com/photo-1616058106290-8ec871aef47d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YmVhdXRpZnVsJTIwY2F0fGVufDB8fDB8fHww&w=1000&q=80',
         },

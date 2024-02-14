@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useMemo, useState } from 'react';
 import WraperDialog from '../WraperDialog';
 import { Avatar } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +11,11 @@ import { faHeart, faComment, faShareSquare, faFaceSmile } from '@fortawesome/fre
 import moment from 'moment';
 import { motion, AnimatePresence } from 'framer-motion';
 import classNames from 'classnames';
+import { useSearchParams } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { getDetailPost } from '@/apis/posts';
+import { contants } from '@/utils/contants';
+import { useQueryState } from 'nuqs';
 
 const icons = [faComment, faShareSquare];
 
@@ -52,15 +57,33 @@ export interface IPostDetailDialogProps {
 export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetailDialogProps) {
     const [like, setLike] = useState(false);
 
+    const [uuid, setUuid] = useQueryState('uuid');
+
+    const rawData = useQuery({
+        queryKey: ['postDetailDialog', uuid],
+        queryFn: () => {
+            if (!uuid) return null;
+            return getDetailPost(uuid);
+        },
+    });
+
+    const data = useMemo(() => {
+        if (rawData.isError || !rawData.data?.data) return null;
+
+        return rawData.data?.data;
+    }, [rawData]);
+
     //images
     const [curImage, setCurImage] = useState(0);
     const [direction, setDirection] = useState(0);
 
-    const [images, setImages] = useState([
-        'https://media-cdn-v2.laodong.vn/storage/newsportal/2023/7/25/1220914/Rose.jpg?w=800&h=496&crop=auto&scale=both',
-        'https://media-cdn-v2.laodong.vn/storage/newsportal/2023/7/25/1220914/Rose.jpg?w=800&h=496&crop=auto&scale=both',
-        'https://media-cdn-v2.laodong.vn/storage/newsportal/2023/7/25/1220914/Rose.jpg?w=800&h=496&crop=auto&scale=both',
-    ]);
+    const [images, setImages] = useState(data?.images || []);
+
+    useLayoutEffect(() => {
+        if (data?.images.length) {
+            setImages(data.images);
+        }
+    }, [data]);
 
     const handleClose = () => {
         if (!onClose) return;
@@ -93,74 +116,72 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
         }
         setCurImage(curImage - 1);
     }
+
+    if (!data) {
+        return;
+    }
     return (
         <WraperDialog fullWidth={true} maxWidth={'lg'} open={open} setOpen={setOpen} onClose={handleClose}>
             <div className="w-full text-post-primary flex items-center justify-between h-[80vh] select-none ">
                 <AnimatePresence initial={false} custom={direction}>
                     <div className="sm:hidden md:block flex-1 h-full overflow-hidden relative">
-                        <motion.img
-                            variants={variants}
-                            animate="animate"
-                            initial="initial"
-                            exit="exit"
-                            src={images[curImage]}
-                            alt="slides"
-                            className="w-full max-w-full h-full object-cover"
-                            key={images[curImage]}
-                            custom={direction}
-                        />
+                        {images.length && (
+                            <motion.img
+                                variants={variants}
+                                animate="animate"
+                                initial="initial"
+                                exit="exit"
+                                src={images[curImage]?.url}
+                                alt={images[curImage]?.url}
+                                className="w-full max-w-full h-full object-cover"
+                                key={images[curImage]?.url}
+                                custom={direction}
+                            />
+                        )}
 
-                        <div className="absolute inset-0 flex items-center justify-center z-30">
-                            <div className="w-full flex items-center justify-between px-6">
-                                <span className="text-2xl text-white cursor-pointer" onClick={prevStep}>
-                                    <FontAwesomeIcon icon={faChevronCircleLeft} />
-                                </span>
-                                <span className="text-2xl text-white cursor-pointer" onClick={nextStep}>
-                                    <FontAwesomeIcon icon={faChevronCircleRight} />
-                                </span>
+                        {images.length > 1 && (
+                            <div className="absolute inset-0 flex items-center justify-center z-30">
+                                <div className="w-full flex items-center justify-between px-6">
+                                    <span className="text-2xl text-white cursor-pointer" onClick={prevStep}>
+                                        <FontAwesomeIcon icon={faChevronCircleLeft} />
+                                    </span>
+                                    <span className="text-2xl text-white cursor-pointer" onClick={nextStep}>
+                                        <FontAwesomeIcon icon={faChevronCircleRight} />
+                                    </span>
+                                </div>
                             </div>
-                        </div>
+                        )}
 
-                        <div className="absolute flex items-end justify-center gap-[6px] w-full h-full inset-0 pb-4">
-                            {[1, 2, 3, 4].map((item, index) => {
-                                return (
-                                    <span
-                                        key={index}
-                                        className={classNames('w-2 h-2  rounded-full', {
-                                            ['bg-gray-300']: index !== curImage,
-                                            ['bg-white']: index === curImage,
-                                        })}
-                                    ></span>
-                                );
-                            })}
-                        </div>
+                        {images.length > 1 && (
+                            <div className="absolute flex items-end justify-center gap-[6px] w-full h-full inset-0 pb-4">
+                                {images.map((item, index) => {
+                                    return (
+                                        <span
+                                            key={index}
+                                            className={classNames('w-2 h-2  rounded-full', {
+                                                ['bg-gray-300']: index !== curImage,
+                                                ['bg-white']: index === curImage,
+                                            })}
+                                        ></span>
+                                    );
+                                })}
+                            </div>
+                        )}
                     </div>
                 </AnimatePresence>
                 <div className="md:w-1/2 lg:w-2/5 w-full h-full flex flex-col justify-between">
                     <div className="w-full h-fit p-8 pb-0">
                         <div className="w-full flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                                <Avatar
-                                    sx={{ width: '3.75rem', height: '3.75rem' }}
-                                    src="https://media-cdn-v2.laodong.vn/storage/newsportal/2023/7/25/1220914/Rose.jpg?w=800&h=496&crop=auto&scale=both"
-                                />
-                                <span className="text-lg font-semibold">Roses BlackPink</span>
+                                <Avatar sx={{ width: '3.75rem', height: '3.75rem' }} src={data.user.avatar || contants.avartarDefault} />
+                                <span className="text-lg font-semibold">{data.user.displayName || data.user.username}</span>
                             </div>
-                            <OptionButton options={{ border: true }} />
+                            {data.owner && <OptionButton options={{ border: true }} />}
                         </div>
-                        <p className="font-medium text-1xl mt-3 pb-[22px] md:border-b border-[#B5A8FF] text-[#444444]">
-                            My love path may lose, but my racing track, Ill give a handicap!!!
-                        </p>
+                        <p className="font-medium text-1xl mt-3 pb-[22px] md:border-b border-[#B5A8FF] text-[#444444]">{data.title}</p>
                     </div>
 
-                    <div className="px-8 flex-1 w-full h-full sm:hidden md:flex flex-col gap-2 overflow-y-auto overflow-x-hidden scroll py-6">
-                        {/* <Comment item={true} /> */}
-                        <Comment />
-                        <Comment />
-                        <Comment />
-                        <Comment />
-                        <Comment />
-                    </div>
+                    <div className="px-8 flex-1 w-full h-full sm:hidden md:flex flex-col gap-2 overflow-y-auto overflow-x-hidden scroll py-6">{/* <Comment item={true} /> */}</div>
 
                     {/* mobile */}
                     <AnimatePresence initial={false} custom={direction}>
@@ -170,10 +191,10 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
                                 animate="animate"
                                 initial="initial"
                                 exit="exit"
-                                src={images[curImage]}
-                                alt="slides"
+                                src={images[curImage]?.url}
+                                alt={images[curImage]?.url}
                                 className="w-full max-w-full h-full sm:object-contain md:object-fill"
-                                key={images[curImage]}
+                                key={images[curImage]?.url}
                                 custom={direction}
                             />
 
@@ -189,7 +210,7 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
                             </div>
 
                             <div className="absolute flex items-end justify-center gap-[6px] w-full h-full inset-0 pb-4">
-                                {[1, 2, 3, 4].map((item, index) => {
+                                {images.map((item, index) => {
                                     return (
                                         <span
                                             key={index}
@@ -208,8 +229,8 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
                     <div className="border-t border-gray-primary ">
                         <div className="flex items-center justify-between py-[14px] px-9">
                             <div className="flex flex-col gap-1 text-post-primary text-sm ">
-                                <span className="font-semibold tracking-wide">{toAbbrevNumber(1200000)} likes</span>
-                                <p className="text-[#666666]">{moment(new Date()).format('MMMM Do, YYYY')}</p>
+                                <span className="font-semibold tracking-wide">{toAbbrevNumber(data.likes)} likes</span>
+                                <p className="text-[#666666]">{moment(data.createdAt).format('MMMM Do, YYYY')}</p>
                             </div>
 
                             <div className="text-post-primary flex items-center gap-4">
