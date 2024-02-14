@@ -26,7 +26,7 @@ export default function KnowldegeAboutFosterItem({ data }: IKnowldegeAboutFoster
                 <Link href={'/'} className="text-2xl text-green-5FA503 font-semibold uppercase hover:underline">
                     {data.title}
                 </Link>
-                <p className="text-black-main text-1xl line-clamp-5">{data.contents}</p>
+                <p className="text-black-main text-1xl line-clamp-5">{data.title}</p>
             </div>
         </li>
     );

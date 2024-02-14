@@ -66,6 +66,9 @@ import {
     IFilterDonationRequest,
     PagiantionResponseWithTotal,
     IReportDonate,
+    IPost,
+    IParamsApiPostPage,
+    IPostDetail,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { RolesName } from './enum';
@@ -95,6 +98,12 @@ export type ApiReportDonation = (page?: string) => Promise<IBaseResponse<IReport
 export type ApiFilterTransaction = (filter: IFilterDonationRequest) => Promise<IBaseResponse<PagiantionResponseWithTotal<IRowTransaction>>>;
 
 export type ApiPetDetailPage = (id: string) => Promise<IBaseResponse<IPetDetailPageResponse>>;
+
+export type ApiPostPage = (params: IParamsApiPostPage) => Promise<IBaseResponse<PagiantionResponse<IPost>>>;
+
+export type ApiHightlightPostPage = (params: IParamsApiPostPage) => Promise<IBaseResponse<IPost[]>>;
+
+export type ApiDetailPost = (id: string) => Promise<IBaseResponse<IPostDetail>>;
 
 export type ApiPetManagement = (id: string) => Promise<IBaseResponse<IPetManagement>>;
 

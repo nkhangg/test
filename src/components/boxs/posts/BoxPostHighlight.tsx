@@ -1,18 +1,21 @@
-import React from 'react';
+'use client';
+import React, { useMemo } from 'react';
 import BoxPost from './BoxPost';
 import classNames from 'classnames';
 import { Post } from '@/components';
 
+import { IPost } from '@/configs/interface';
+
 export interface IBoxPostHighlightProps {
-    data: any[];
     title: string;
+    data: IPost[];
     options?: {
         captialize?: boolean | undefined;
         tracking?: string;
     };
 }
 
-export default function BoxPostHighlight({ data, title, options }: IBoxPostHighlightProps) {
+export default function BoxPostHighlight({ title, options, data }: IBoxPostHighlightProps) {
     return (
         <BoxPost options={options} title={title}>
             <div
@@ -21,11 +24,9 @@ export default function BoxPostHighlight({ data, title, options }: IBoxPostHighl
                     ['md:grid-cols-3']: true,
                 })}
             >
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
+                {data.map((item) => {
+                    return <Post key={item.id} data={item} />;
+                })}
             </div>
         </BoxPost>
     );

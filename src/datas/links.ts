@@ -58,6 +58,7 @@ export const links = {
             address: '/profile/addresses',
             noti: '/profile/notification',
             adoption: '/profile/adoption',
+            personalpage: '/adorable-snapshots/profile/',
         },
     },
     history: {
@@ -76,4 +77,8 @@ export const links = {
         ask: '/ask-condition',
     },
     donation: '/donation',
+    adorables: {
+        index: '/adorable-snapshots',
+        search: '/adorable-snapshots/search',
+    },
 };

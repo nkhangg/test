@@ -94,6 +94,7 @@ export { default as WraperTippy } from './boxs/WraperTippy';
 export { default as BoxPost } from './boxs/posts/BoxPost';
 export { default as BoxPostHighlight } from './boxs/posts/BoxPostHighlight';
 export { default as InfinityPosts } from './boxs/posts/InfinityPosts';
+export { default as InfinityProfilePosts } from './boxs/posts/InfinityProfilePosts';
 export { default as MapWraper } from './boxs/maps/MapWraper';
 
 // paginations
