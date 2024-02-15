@@ -8,6 +8,8 @@ import {
     IMessage,
     INotification,
     IPet,
+    IPost,
+    IPostDetail,
     IProductDetailOrders,
     IProfile,
     IPublistNotification,
@@ -180,7 +182,7 @@ const addNotification = async (data: INotification) => {
 
     try {
         //await addDoc(collection(db, 'notifications')
-        await addDoc(collection(db, 'notifications'), {
+        await addDoc(collection(db, 'config-constant-notifications'), {
             content: data.content,
             createdAt: serverTimestamp(),
             deleted: false,
@@ -191,14 +193,14 @@ const addNotification = async (data: INotification) => {
             title: data.title,
             type: data.type,
             options: options,
-            public: true,
-            // public: false,
-            // meta: {
-            //     keys: [
-            //         { name: 'username', color: '#cccccc' },
-            //         { name: 'displayName', color: '#cccccc' },
-            //     ],
-            // },
+            // public: true,
+            public: false,
+            meta: {
+                keys: [
+                    { name: 'username', color: '#cccccc' },
+                    { name: 'displayName', color: '#cccccc' },
+                ],
+            },
         });
     } catch (error) {
         console.log(error);
@@ -306,6 +308,58 @@ const publistAdoptPetNotification = async (pet: IPet, username: string, phone: s
             options: constNotification.options,
             public: false,
             adminCotent: paseDataNotification<IAdoptPetNotification>(constNotification, { ...pet, phone, username, displayName }, true),
+        });
+    } catch (error) {
+        console.log('publistAdoptPetNotification: Error setting publistAdoptPetNotification info in DB');
+    }
+};
+
+const publistPostsNotification = async (posts: IPostDetail, user: IProfile, type: 'comment' | 'like' | 'like-comment') => {
+    let id = null;
+
+    switch (type) {
+        case 'like': {
+            id = 'wX6NXRPWiC3zn19IvqsM';
+            break;
+        }
+        case 'comment': {
+            id = '7RO8xNmitb95RpiE7KmP';
+            break;
+        }
+        case 'like-comment': {
+            id = 'gKiQcsah5oZJ9xPWGGxq';
+            break;
+        }
+        default:
+            id = null;
+    }
+
+    if (!id) return;
+
+    try {
+        const notificationRefShapshot = await getConstantNotification(id);
+
+        if (!notificationRefShapshot) return null;
+
+        const constNotification = {
+            id: notificationRefShapshot.id,
+            ...notificationRefShapshot.data(),
+        } as INotification;
+
+        return await addDoc(collection(db, 'notifications'), {
+            content: paseDataNotification<IPostDetail>(constNotification, { ...posts, user }, false),
+            createdAt: serverTimestamp(),
+            deleted: false,
+            link: links.adorables.index + `?uuid=${posts.id}`,
+            linkAdmin: links.adorables.index + `?uuid=${posts.id}`,
+            photourl: posts.user.avatar,
+            read: [],
+            target: [user.username],
+            title: constNotification.title,
+            type: constNotification.type,
+            options: constNotification.options,
+            public: false,
+            adminCotent: paseDataNotification<IPostDetail>(constNotification, { ...posts, user }, true),
         });
     } catch (error) {
         console.log('publistAdoptPetNotification: Error setting publistAdoptPetNotification info in DB');
@@ -1028,6 +1082,7 @@ const firebaseService = {
     deleteNotification,
     handleMarkAllAsRead,
     handleSendMessageToUser,
+    publistPostsNotification,
     setActionGimConversation,
     setNewMessageConversation,
     publistAdoptPetNotification,
@@ -1036,11 +1091,11 @@ const firebaseService = {
     publistAceptAdoptPetNotification,
     publistRatingProductNotification,
     publistAdjustAdoptPetNotification,
+    publistCancelAdoptPetNotification,
     addSuccessfulPurchaseNotification,
     publistComfirmAdoptPetNotification,
     publistStateShippingOrderNotification,
     publistStateDeleveredOrderNotification,
-    publistCancelAdoptPetNotification,
     publistStateCancelByAdminOrderNotification,
     publistStateCancelByCustomerOrderNotification,
     querys: {

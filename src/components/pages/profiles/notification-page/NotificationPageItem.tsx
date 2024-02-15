@@ -2,6 +2,7 @@
 import { CustomDynamicCom } from '@/components';
 import { INotification, IProfile } from '@/configs/interface';
 import firebaseService from '@/services/firebaseService';
+import { contants } from '@/utils/contants';
 import { convertFirestoreTimestampToString } from '@/utils/format';
 import { Avatar } from '@mui/material';
 import classNames from 'classnames';
@@ -54,13 +55,24 @@ export default function NotificationPageItem({ data, user, options, onClick }: I
                     className="text-[15px] max-w-full"
                     dangerouslySetInnerHTML={{
                         __html: (() => {
-                            if (data.options && data.options.end && data.options.start && data.type !== 'none') {
-                                const textWrap = data.content.substring(data.options.start, data.options.end);
+                            // if (data.options && data.options.end && data.options.start && data.type !== 'none') {
+                            //     const textWrap = data.content.substring(data.options.start, data.options.end);
 
-                                return data.content.replaceAll(textWrap, `<span class="text-${data.type}-notification">${textWrap}</span>`);
+                            //     return data.content.replaceAll(textWrap, `<span class="text-${data.type}-notification">${textWrap}</span>`);
+                            // }
+
+                            // return data.content;
+                            if (!user) return '';
+
+                            const content = contants.roles.manageRoles.includes(user?.role) ? data.adminCotent || data.content : data.content;
+
+                            if (data.options && data.options.end && data.options.start && data.type !== 'none') {
+                                const textWrap = content.substring(data.options.start, data.options.end);
+
+                                return content.replaceAll(textWrap, `<span class="text-${data.type}-notification">${textWrap}</span>`);
                             }
 
-                            return data.content;
+                            return content;
                         })(),
                     }}
                 ></p>

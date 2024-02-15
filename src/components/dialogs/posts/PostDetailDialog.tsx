@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import React, { FormEvent, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { FormEvent, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import WraperDialog from '../WraperDialog';
 import { Avatar } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,11 +12,11 @@ import moment from 'moment';
 import { motion, AnimatePresence } from 'framer-motion';
 import classNames from 'classnames';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { commentWittPost, deleteCommentWittPost, deletePost, getCommentWithPost, getDetailPost, likeComment, likePost } from '@/apis/posts';
 import { contants } from '@/utils/contants';
 import { useQueryState } from 'nuqs';
-import { IComment, PagiantionResponse } from '@/configs/interface';
+import { IBaseResponse, IComment, PagiantionResponse } from '@/configs/interface';
 import { useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
 import { appService } from '@/services/appService';
@@ -25,38 +25,11 @@ import Validate from '@/utils/validate';
 import { EmojiClickData } from 'emoji-picker-react';
 import MediaPostDetail from './MediaPostDetail';
 import MediaPostDetailMobile from './MediaPostDetailMobile';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import firebaseService from '@/services/firebaseService';
 
 // const icons = [faComment, faShareSquare];
 const icons = [faShareSquare];
-
-const variants = {
-    initial: (direction: number) => {
-        return {
-            x: direction > 0 ? 100 : -100,
-            opacity: 0,
-        };
-    },
-    animate: {
-        x: 0,
-        opacity: 1,
-
-        transition: {
-            x: { type: 'spring', stiffness: 300, damping: 30 },
-            opacity: { duration: 0.2 },
-        },
-    },
-    exit: (direction: number) => {
-        return {
-            x: direction > 0 ? -100 : 100,
-            opacity: 0,
-
-            transition: {
-                x: { type: 'spring', stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 },
-            },
-        };
-    },
-};
 
 export interface IPostDetailDialogProps {
     open: boolean;
@@ -70,6 +43,8 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
 
     const refInput = useRef<HTMLInputElement>(null);
 
+    const refSpanTop = useRef<HTMLSpanElement>(null);
+
     const { user } = useAppSelector((state: RootState) => state.userReducer);
 
     const [like, setLike] = useState(false);
@@ -79,9 +54,6 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
     const [replay, setReplay] = useState<IComment | null>(null);
     const [loadingComment, setLoadingComment] = useState(false);
 
-    const [comments, setComments] = useState<PagiantionResponse<IComment> | null>(null);
-    const [pageComment, setPageComment] = useState(1);
-
     const rawData = useQuery({
         queryKey: ['postDetailDialog', uuid],
         queryFn: () => {
@@ -89,13 +61,36 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
             return getDetailPost(uuid);
         },
     });
-    const rawComments = useQuery({
-        queryKey: ['postDetailDialog/comments', uuid, pageComment],
-        queryFn: () => {
+
+    const rawComments = useInfiniteQuery({
+        queryKey: ['postDetailDialog/comments/infinity'],
+        queryFn: ({ pageParam = 1 }) => {
             if (!uuid) return null;
-            return getCommentWithPost(uuid, pageComment);
+            return getCommentWithPost(uuid, pageParam);
+        },
+        initialPageParam: 1,
+        getNextPageParam: (lastPage: any, allPages) => {
+            return lastPage.data.data.length ? allPages.length + 1 : undefined;
         },
     });
+
+    const intObserver: any = useRef();
+    const lastPostRef = useCallback(
+        (post: any) => {
+            if (rawComments.isFetchingNextPage) return;
+
+            if (intObserver.current) intObserver.current.disconnect();
+
+            intObserver.current = new IntersectionObserver((posts) => {
+                if (posts[0].isIntersecting && rawComments.hasNextPage) {
+                    rawComments.fetchNextPage();
+                }
+            });
+
+            if (post) intObserver.current.observe(post);
+        },
+        [rawComments],
+    );
 
     const data = useMemo(() => {
         if (rawData.isError || !rawData.data?.data) return null;
@@ -103,16 +98,7 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
         return rawData.data?.data;
     }, [rawData]);
 
-    // const comments = useMemo(() => {
-    //     if (rawComments.isError || !rawComments.data?.data) return null;
-
-    //     return rawComments.data?.data;
-    // }, [rawComments]);
-
     //images
-    const [curImage, setCurImage] = useState(0);
-    const [direction, setDirection] = useState(0);
-
     const [images, setImages] = useState(data?.images || []);
 
     useLayoutEffect(() => {
@@ -150,34 +136,20 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
 
             rawData.refetch();
             setLike((prev) => !prev);
+
+            if (!data.owner) {
+                firebaseService.publistPostsNotification(data, data.user, 'like');
+            }
         } catch (error) {
             return toast.warn(contants.messages.errors.server);
         }
     };
 
-    function nextStep() {
-        setDirection(1);
-        if (curImage === images.length - 1) {
-            setCurImage(0);
-            return;
-        }
-        setCurImage(curImage + 1);
-    }
-
-    function prevStep() {
-        setDirection(-1);
-        if (curImage === 0) {
-            setCurImage(images.length - 1);
-            return;
-        }
-        setCurImage(curImage - 1);
-    }
-
-    const handleClickLike = async (data: IComment) => {
+    const handleClickLike = async (dataComment: IComment) => {
         if (!user) return appService.handleNonLogin(pathname, router);
 
         try {
-            const response = await likeComment(data.id);
+            const response = await likeComment(dataComment.id);
 
             if (!response) {
                 return toast.warn(contants.messages.errors.handle);
@@ -188,6 +160,10 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
             }
 
             rawComments.refetch();
+
+            if (!dataComment.owner && data) {
+                firebaseService.publistPostsNotification(data, data.user, 'like-comment');
+            }
         } catch (error) {
             return toast.warn(contants.messages.errors.server);
         }
@@ -230,10 +206,19 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
             if (replay) {
                 setReplay(null);
             }
+
+            if (!data.owner) {
+                firebaseService.publistPostsNotification(data, data.user, 'comment');
+            }
         } catch (error) {
             return toast.warn(contants.messages.errors.server);
         } finally {
             setLoadingComment(false);
+            if (refSpanTop.current) {
+                refSpanTop.current.scrollIntoView({
+                    behavior: 'smooth',
+                });
+            }
         }
     };
 
@@ -265,6 +250,7 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
         } finally {
         }
     };
+
     const handleDeletePost = async () => {
         if (!user) return appService.handleNonLogin(pathname, router);
         if (!data || !data.owner) return;
@@ -287,12 +273,6 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
         }
     };
 
-    useLayoutEffect(() => {
-        if (rawComments.isError || !rawComments.data?.data) return;
-
-        setComments(rawComments.data?.data);
-    }, [rawComments]);
-
     if (!data) {
         return;
     }
@@ -313,18 +293,25 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
                         <p className="font-medium text-1xl mt-3 pb-[22px] md:border-b border-[#B5A8FF] text-[#444444]">{data.title}</p>
                     </div>
 
-                    {comments && comments.data.length > 0 && (
+                    {rawComments.data && rawComments.data.pages[0].data.data.length > 0 && (
                         <div className="px-8 flex-1 w-full h-full hidden md:flex flex-col gap-2 overflow-y-auto overflow-x-hidden scroll py-6">
+                            <span ref={refSpanTop}></span>
                             {!rawComments.isLoading &&
-                                comments.data.map((item) => {
-                                    return <Comment onDelete={handleDeleteComment} onReplay={handleReplay} onLike={handleClickLike} data={item} item={true} key={item.id} />;
+                                rawComments.data.pages.map((item) => {
+                                    return item.data.data.map((i: IComment) => {
+                                        return (
+                                            <div className="w-full h-fit" key={i.id} ref={lastPostRef}>
+                                                <Comment key={i.id} onDelete={handleDeleteComment} onReplay={handleReplay} onLike={handleClickLike} data={i} item={true} />
+                                            </div>
+                                        );
+                                    });
                                 })}
 
-                            {rawComments.isLoading && <MiniLoading color="#3E3771" className="w-full h-full flex items-center justify justify-center" />}
+                            {rawComments.isFetching && <MiniLoading color="#3E3771" className="w-full h-full flex items-center justify justify-center" />}
                         </div>
                     )}
 
-                    {comments && comments.data.length <= 0 && (
+                    {(!rawComments.data || (rawComments.data && rawComments.data.pages[0].data.data.length <= 0)) && (
                         <div className="px-8 hidden md:flex-1 w-full h-full sm:hidden md:flex gap-2 overflow-y-auto overflow-x-hidden scroll py-6 items-center">
                             <span className="text-center text-black-main">You are the first to comment on this article</span>
                             <FontAwesomeIcon className="" icon={faFaceSmileWink} />

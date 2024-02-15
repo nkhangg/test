@@ -8,7 +8,7 @@ import TableRowHead from './TableRowHead';
 export interface ITableV2Props {
     dataHead: HeadItem[];
     children: ReactNode;
-    styleHead?: TableCellProps;
+    styleHead?: TableCellProps & { className?: string };
     onSort?: (value: string) => void;
 }
 
