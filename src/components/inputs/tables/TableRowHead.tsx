@@ -9,9 +9,10 @@ export interface ITableRowHeadProps {
     data: HeadItem;
     styleHead?: TableCellProps;
     onSort?: (value: string) => void;
+    className?: string;
 }
 
-export default function TableRowHead({ data, styleHead, onSort }: ITableRowHeadProps) {
+export default function TableRowHead({ data, styleHead, className, onSort }: ITableRowHeadProps) {
     // sort is true => asc
     // sort is false => desc
     const [sort, setSort] = useState(true);
@@ -27,7 +28,7 @@ export default function TableRowHead({ data, styleHead, onSort }: ITableRowHeadP
 
     return (
         <TableCell onClick={() => handleClick(data)} {...styleHead} key={data.title}>
-            <div className="flex items-center gap-2 select-none">
+            <div className={'flex items-center gap-2 select-none ' + className}>
                 <Typography variant="subtitle2" fontSize={'16px'} fontWeight={600}>
                     {data.title}
                 </Typography>

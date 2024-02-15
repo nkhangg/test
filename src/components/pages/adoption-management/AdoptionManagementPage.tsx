@@ -142,6 +142,9 @@ export default function AdoptionManagementPage(props: IAdoptionManagementPagePro
             </SortAdmin>
             <HeadHistory
                 onTab={(tab) => {
+                    if (page) {
+                        router.push(baseUrl);
+                    }
                     setFilter({
                         ...filter,
                         status: tab.title === 'All' ? 'all' : (tab.title.toLowerCase() as LabelAdopt),

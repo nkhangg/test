@@ -17,8 +17,8 @@ export interface IDonationPageProps {}
 const dataHeadTable = [
     { title: 'No' },
     { title: 'Beneficiary bank' },
-    { title: 'To account number' },
-    { title: 'From account number' },
+    { title: 'To account' },
+    { title: 'From account' },
     { title: 'When' },
     { title: 'Amout' },
     { title: 'Description' },
@@ -73,7 +73,7 @@ export default function DonationPage(props: IDonationPageProps) {
                 <ul className="flex flex-col gap-5 flex-1">
                     {donationMethod.map((item) => {
                         return (
-                            <li key={item.image} className="grid grid-cols-2 gap-2 items-center">
+                            <li key={item.image} className="grid grid-cols-2 gap-2 items-center ">
                                 <div className="relative w-[50%] h-[96px]">
                                     <Image fill src={item.image} className="object-contain" alt="tp-bank" />
                                 </div>

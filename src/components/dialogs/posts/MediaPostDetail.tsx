@@ -5,10 +5,8 @@ import { faChevronCircleLeft, faChevronCircleRight, faPause, faPlay, faVolumeLow
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { MouseEvent, RefObject, useRef, useState } from 'react';
-import { commentWittPost } from '@/apis/posts';
 
 const variants = {
     initial: (direction: number) => {
@@ -55,7 +53,7 @@ export default function MediaPostDetail({ images }: IMediaPostDetailProps) {
 
     // video state
     const [hover, setHover] = useState(true);
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(true);
     const [isMute, setIsMute] = useState(true);
     const [persent, setPersent] = useState(0);
 
@@ -79,16 +77,6 @@ export default function MediaPostDetail({ images }: IMediaPostDetailProps) {
         }
         setCurImage(curImage - 1);
     }
-
-    const fetchPage = async (page: any) => {};
-
-    // const { fetchNextPage, data, hasNextPage } = useInfiniteQuery({
-    //     queryKey: ['gjwekjg'],
-    //     queryFn: ({ pageParam }) => fetchPage(pageParam),
-    //     // @ts-nocheck
-    //     initialPageParam: 1,
-    //     getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) => lastPage.nextCursor,
-    // });
 
     //video funtional
     const handlePlay = (e: MouseEvent<HTMLElement>) => {

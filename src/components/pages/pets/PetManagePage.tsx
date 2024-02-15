@@ -165,6 +165,9 @@ export default function PetManagePage(props: IPetManagePageProps) {
 
             <HeadHistory
                 onTab={(tabTitle) => {
+                    if (page) {
+                        router.push(baseUrl);
+                    }
                     if ((tabTitle.index === 0 && filter.status) || filter.status == 'ALL') {
                         delete filter.status;
                         setFilter({ ...filter });

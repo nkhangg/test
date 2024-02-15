@@ -16,15 +16,23 @@ export default function Logout(props: ILogoutProps) {
 
     const router = useRouter();
 
-    useEffect(() => {
-        dispatch(logout());
+    const handleLogout = () => {
+        try {
+            dispatch(logout());
 
-        if (user) {
-            handleSetLastSeenInfoFirebase(user);
+            if (user) {
+                handleSetLastSeenInfoFirebase(user);
+            }
+
+            router.prefetch('/');
+            router.push('/');
+        } catch (error) {
+            handleLogout();
         }
+    };
 
-        router.prefetch('/');
-        router.push('/');
+    useEffect(() => {
+        handleLogout();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

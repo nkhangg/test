@@ -13,7 +13,7 @@ import classNames from 'classnames';
 
 export interface ICommentProps {
     item?: boolean;
-    data: IComment;
+    data?: IComment;
     onLike?: (data: IComment) => void;
     onReplay?: (data: IComment) => void;
     onDelete?: (data: IComment) => void;
@@ -26,11 +26,11 @@ export default function Comment({ item, data, onLike, onReplay, onDelete }: ICom
 
     const comments = useMemo(() => {
         if (!showAllChildren) {
-            return data.children.slice(0, 1);
+            return data?.children?.slice(0, 1);
         }
 
-        return data.children;
-    }, [data.children, showAllChildren]);
+        return data?.children;
+    }, [data?.children, showAllChildren]);
 
     const handleLickShowAll = () => {
         setShowAllChildren((prev) => !prev);
@@ -40,22 +40,22 @@ export default function Comment({ item, data, onLike, onReplay, onDelete }: ICom
         <div className="w-full">
             <div className="flex items-center justify-between">
                 <div className="flex items-start gap-3">
-                    <Avatar sx={{ width: __SIZE_AVARTAR, height: __SIZE_AVARTAR }} src={data.user.avatar || contants.avartarDefault} />
+                    <Avatar sx={{ width: __SIZE_AVARTAR, height: __SIZE_AVARTAR }} src={data?.user?.avatar || contants.avartarDefault} />
 
                     <div className="flex flex-col items-start">
-                        <h4 className="text-[15px] font-medium text-post-primary">{data.user.displayName || data.user.username}</h4>
-                        <p className="text-sm">{data.comment}</p>
+                        <h4 className="text-[15px] font-medium text-post-primary">{data?.user?.displayName || data?.user?.username}</h4>
+                        <p className="text-sm">{data?.comment}</p>
                         <div className="text-xs flex items-center gap-2 mt-1 capitalize">
                             <span className="max-w-[64px] truncate">
-                                {moment(data.createAt).fromNow() === 'a few seconds ago' ? 'now' : moment(data.createAt).fromNow().replaceAll('ago', '')}
+                                {moment(data?.createAt).fromNow() === 'a few seconds ago' ? 'now' : moment(data?.createAt).fromNow().replaceAll('ago', '')}
                             </span>
-                            <span className={classNames('hover:underline cursor-pointer max-w-[40px] truncate', {})}>{toAbbrevNumber(data.likes)} Likes</span>
-                            <span onClick={onReplay ? () => onReplay(data) : undefined} className="hover:underline cursor-pointer">
+                            {data && <span className={classNames('hover:underline cursor-pointer max-w-[40px] truncate', {})}>{toAbbrevNumber(data?.likes)} Likes</span>}
+                            <span onClick={onReplay && data ? () => onReplay(data) : undefined} className="hover:underline cursor-pointer">
                                 Reply
                             </span>
-                            {data.owner && (
+                            {data?.owner && (
                                 <OptionButton
-                                    handleDelete={onDelete ? () => onDelete(data) : undefined}
+                                    handleDelete={onDelete && data ? () => onDelete(data) : undefined}
                                     options={{ size: 'small' }}
                                     className="flex items-center justify-center p-1 hover:bg-gray-200 rounded-xl transition-all ease-linear cursor-pointer"
                                 >
@@ -64,37 +64,38 @@ export default function Comment({ item, data, onLike, onReplay, onDelete }: ICom
                             )}
                         </div>
 
-                        {item && data.children.length > 2 && (
+                        {item && data && data?.children?.length > 2 && (
                             <div className="flex items-center text-sm hover:underline gap-1 mt-1 cursor-pointer">
                                 <span className="w-[25px] h-[1px] bg-[#333333]"></span>
-                                {!showAllChildren && <span onClick={handleLickShowAll}>Show more replies ({data.children.length})</span>}
+                                {!showAllChildren && <span onClick={handleLickShowAll}>Show more replies ({data?.children.length})</span>}
                                 {showAllChildren && <span onClick={handleLickShowAll}>Show less</span>}
                             </div>
                         )}
                     </div>
                 </div>
 
-                <WrapperAnimation onClick={onLike ? () => onLike(data) : undefined} className="cursor-pointer" hover={{}}>
+                <WrapperAnimation onClick={onLike && data ? () => onLike(data) : undefined} className="cursor-pointer" hover={{}}>
                     <FontAwesomeIcon
                         className={classNames('w-4 h-w-4', {
-                            ['text-inherit']: !data.isLike,
-                            ['text-fill-heart']: data.isLike,
+                            ['text-inherit']: !data?.isLike,
+                            ['text-fill-heart']: data?.isLike,
                         })}
-                        icon={data.isLike ? faHeartFill : faHeart}
+                        icon={data?.isLike ? faHeartFill : faHeart}
                     />
                 </WrapperAnimation>
             </div>
 
-            {item && data.children.length > 0 && (
+            {item && data && data?.children?.length > 0 && (
                 <div
                     style={{
                         paddingLeft: `calc(${__SIZE_AVARTAR} + 14px)`,
                     }}
                     className="mt-3 flex flex-col gap-2"
                 >
-                    {comments.map((item) => {
-                        return <Comment onDelete={onDelete} onReplay={onReplay} onLike={onLike} data={item} item={true} key={item.id} />;
-                    })}
+                    {comments &&
+                        comments.map((item) => {
+                            return <Comment onDelete={onDelete} onReplay={onReplay} onLike={onLike} data={item} item={true} key={item.id} />;
+                        })}
                 </div>
             )}
         </div>
