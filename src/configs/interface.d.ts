@@ -565,6 +565,13 @@ export interface IComment {
     likes: number;
     isLike: boolean;
     children: IComment[];
+    owner: boolean;
+}
+
+export interface ICommentRequest {
+    uuid: string;
+    comment: string;
+    replayId: null | number;
 }
 
 export interface IReviewHasReplay extends IReview {

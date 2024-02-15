@@ -7,6 +7,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { links } from '@/datas/links';
 import { useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
+import { appService } from '@/services/appService';
 
 export interface IAdorableSearchPageProps {}
 
@@ -26,14 +27,14 @@ export default function AdorableSearchPage(props: IAdorableSearchPageProps) {
     const [openPostModal, setOpenPostModal] = useState(false);
 
     const handleOpenPostModal = () => {
-        if (!user) return handleNonLogin();
+        if (!user) return appService.handleNonLogin(pathname, router);
         setOpenPostModal(true);
     };
 
-    const handleNonLogin = () => {
-        addPreviousUrl(pathname);
-        router.push(links.auth.login);
-    };
+    // const handleNonLogin = () => {
+    //     addPreviousUrl(pathname);
+    //     router.push(links.auth.login);
+    // };
 
     const handleSearch = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
