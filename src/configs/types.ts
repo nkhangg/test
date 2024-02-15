@@ -69,6 +69,8 @@ import {
     IPost,
     IParamsApiPostPage,
     IPostDetail,
+    IComment,
+    ICommentRequest,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { RolesName } from './enum';
@@ -104,6 +106,16 @@ export type ApiPostPage = (params: IParamsApiPostPage) => Promise<IBaseResponse<
 export type ApiHightlightPostPage = (params: IParamsApiPostPage) => Promise<IBaseResponse<IPost[]>>;
 
 export type ApiDetailPost = (id: string) => Promise<IBaseResponse<IPostDetail>>;
+
+export type ApiCommentsWithPost = (id: string, page?: number) => Promise<IBaseResponse<PagiantionResponse<IComment>>>;
+
+export type ApiPushCommentsWithPost = (data: ICommentRequest) => Promise<IBaseResponse<IComment>>;
+
+export type ApiDeleteCommentsWithPost = (id: number) => Promise<IBaseResponse<IComment>>;
+
+export type ApiLikeCommentsWithPost = (id: number) => Promise<IBaseResponse<IComment>>;
+
+export type ApiLikePostsWithPost = (id: string) => Promise<IBaseResponse<IComment>>;
 
 export type ApiPetManagement = (id: string) => Promise<IBaseResponse<IPetManagement>>;
 

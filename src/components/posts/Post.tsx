@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import React, { MouseEvent, useState } from 'react';
+import React, { MouseEvent, createContext, useState } from 'react';
 import classNames from 'classnames';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Avatar } from '@mui/material';
@@ -49,15 +49,7 @@ export default function Post({ variant = 'circle', data }: IPostProps) {
             })}
         >
             {!data.containVideo && <img className="absolute w-full h-full object-cover " src={data.thumbnail} alt={data.thumbnail} />}
-            {data.containVideo && (
-                <img
-                    alt={data.thumbnail}
-                    className="absolute w-full h-full object-cover "
-                    src={
-                        'https://scontent.fsgn5-15.fna.fbcdn.net/v/t39.30808-6/427990201_916831296489953_5769915569630552168_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=dd5e9f&_nc_ohc=IK0Mfs8tetgAX8ptXYa&_nc_ht=scontent.fsgn5-15.fna&oh=00_AfC51Bje8Nq9qb7YJ9DfkyMDs1B2FMJe4X-G4xt9fp_E4w&oe=65D0B6F4'
-                    }
-                />
-            )}
+            {data.containVideo && <video className="absolute w-full h-full object-cover " src={data.thumbnail} />}
 
             <div className="absolute top-0 left-0 p-4 text-white  flex items-center justify-center text-sm">
                 <FontAwesomeIcon className="shadow-primary" icon={data.containVideo ? faVideo : faImage} />

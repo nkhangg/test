@@ -237,3 +237,7 @@ export function paseDataNotificationPreview(value: string, keys: INotificationKe
         return curentItem.replaceAll(`@${item.name}`, `<span style="color: ${item.color};">@${item.name}</span>`);
     }, value);
 }
+
+export const secondsToMinute = (inp: number) => {
+    return moment.utc(inp * 1000).format('mm:ss') + '';
+};
