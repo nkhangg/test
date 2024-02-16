@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { MouseEvent, RefObject, useRef, useState } from 'react';
+import React, { MouseEvent, RefObject, useEffect, useRef, useState } from 'react';
 
 const variants = {
     initial: (direction: number) => {
@@ -142,6 +142,11 @@ export default function MediaPostDetail({ images }: IMediaPostDetailProps) {
         ref.current!.currentTime = second;
         setPersent(second);
     };
+
+    useEffect(() => {
+        if (!ref.current) return;
+        ref.current.muted = isMute;
+    }, [isMute]);
     return (
         <>
             <AnimatePresence initial={false} custom={direction}>
@@ -244,7 +249,7 @@ export default function MediaPostDetail({ images }: IMediaPostDetailProps) {
                                     className={`${hover ? 'opacity-100' : !isMute ? 'opacity-100' : 'opacity-0'} text-xl h-10 w-10 flex items-center 
                             justify-center right-3 absolute text-white bottom-[26px] transition duration-100 ease-in`}
                                 >
-                                    <FontAwesomeIcon icon={!isMute ? faVolumeMute : faVolumeLow} />
+                                    <FontAwesomeIcon icon={isMute ? faVolumeMute : faVolumeLow} />
                                 </span>
                             </Tippy>
                             <div

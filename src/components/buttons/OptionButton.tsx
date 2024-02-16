@@ -3,13 +3,14 @@ import { IconDefinition, faEllipsisVertical, faFlag, faTrash } from '@fortawesom
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react/headless';
 import React, { ReactNode, useState } from 'react';
-import { WrapperAnimation } from '..';
+import { CustomReasonDialog, WrapperAnimation } from '..';
 import classNames from 'classnames';
 import WraperDialog from '../dialogs/WraperDialog';
+import { reportReason } from '@/datas/reason';
 
 export interface IOptionButtonProps {
-    handleReport?: () => void;
-    handleDelete?: () => void;
+    handleReport?: (reason?: string) => void;
+    handleDelete?: (reason?: string) => void;
     icon?: IconDefinition;
     children?: ReactNode;
     className?: string;
@@ -18,19 +19,38 @@ export interface IOptionButtonProps {
         hover?: boolean;
         showReport?: boolean;
         size?: 'small' | 'medium';
+        typeComfirm?: 'reason' | 'comfirm';
+        reason?: string[];
     };
 }
 
 export default function OptionButton({
     handleDelete,
     handleReport,
-    options = { border: false, hover: true, showReport: false, size: 'medium' },
+    options = { border: false, hover: true, showReport: false, size: 'medium', typeComfirm: 'comfirm', reason: reportReason },
     icon = faEllipsisVertical,
     children,
     className,
 }: IOptionButtonProps) {
     const [open, setOpen] = useState(false);
     const [openModal, setOpenModal] = useState(false);
+    const [openReason, setOpenReason] = useState(false);
+    const [openReasonReport, setOpenReasonReport] = useState(false);
+
+    const handleClickDelete = () => {
+        if (options.typeComfirm === 'comfirm') {
+            return setOpenModal(true);
+        }
+
+        if (options.typeComfirm === 'reason') {
+            console.log(12124);
+            return setOpenReason(true);
+        }
+    };
+
+    const handleClickReport = () => {
+        setOpenReasonReport(true);
+    };
 
     return (
         <>
@@ -50,12 +70,12 @@ export default function OptionButton({
                             })}
                         >
                             {options.showReport && (
-                                <li onClick={handleReport} className="hover:bg-[#f2f2f2] transition-all cursor-pointer ease-linear px-6 py-2 flex items-center gap-3">
+                                <li onClick={handleClickReport} className="hover:bg-[#f2f2f2] transition-all cursor-pointer ease-linear px-6 py-2 flex items-center gap-3">
                                     <FontAwesomeIcon icon={faFlag} />
                                     <span>Report</span>
                                 </li>
                             )}
-                            <li onClick={() => setOpenModal(true)} className="hover:bg-[#f2f2f2] cursor-pointer transition-all ease-linear px-6 py-2 flex items-center gap-3">
+                            <li onClick={handleClickDelete} className="hover:bg-[#f2f2f2] cursor-pointer transition-all ease-linear px-6 py-2 flex items-center gap-3">
                                 <FontAwesomeIcon icon={faTrash} />
                                 <span>Delete</span>
                             </li>
@@ -93,7 +113,7 @@ export default function OptionButton({
                 </div>
             </Tippy>
 
-            {openModal && (
+            {openModal && options.typeComfirm === 'comfirm' && (
                 <WraperDialog open={openModal} setOpen={setOpenModal}>
                     <div className="p-6 flex flex-col gap-4 items-center text-black-main">
                         <b>Are you sure about this action?</b>
@@ -106,7 +126,7 @@ export default function OptionButton({
                                 Cancel
                             </WrapperAnimation>
                             <WrapperAnimation
-                                onClick={handleDelete}
+                                onClick={handleDelete ? () => handleDelete() : undefined}
                                 hover={{}}
                                 className="py-2 px-6 rounded-full hover:bg-[rgba(0,0,0,.2)] transition-all ease-linear cursor-pointer hover:text-white text-red-primary"
                             >
@@ -116,6 +136,11 @@ export default function OptionButton({
                     </div>
                 </WraperDialog>
             )}
+
+            {openReason && options.typeComfirm === 'reason' && (
+                <CustomReasonDialog handleAfterClickSend={handleDelete} onClose={() => setOpenReason(false)} reasons={options.reason || []} />
+            )}
+            {openReasonReport && handleReport && <CustomReasonDialog handleAfterClickSend={handleReport} onClose={() => setOpenReasonReport(false)} reasons={reportReason} />}
         </>
     );
 }

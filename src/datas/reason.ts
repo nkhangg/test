@@ -11,3 +11,5 @@ export const adoptionReasons = ['We found your conditions are not suitable.', 'Y
 export const adoptionReasonsForUser = ['Change contact information.', 'The consulting team has problems', 'Other reason.'];
 
 export const changeDataAdoptionReasons = ['Store holiday', 'Other reason.'];
+
+export const reportReason = ['Violate community rules', 'Sensitive images or videos', 'Other reason.'];

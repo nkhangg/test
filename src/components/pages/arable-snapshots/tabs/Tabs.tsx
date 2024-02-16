@@ -6,15 +6,18 @@ import { listTabsPostProfile } from '@/datas/header';
 
 interface TabsProps {
     onTab?: (value: string) => void;
+    dataTabs: {
+        title: string;
+    }[];
 }
 
-const Tabs = ({ onTab }: TabsProps) => {
-    const [active, setActive] = useState<Active>({ value: listTabsPostProfile[0].title, initBorder: 0, left: 0, width: 0 });
+const Tabs = ({ dataTabs, onTab }: TabsProps) => {
+    const [active, setActive] = useState<Active>({ value: dataTabs[0].title, initBorder: 0, left: 0, width: 0 });
 
     return (
         <div className={`w-full flex items-center relative mb-2`}>
             <div className="flex items-center relative w-2/6 justify-between">
-                {listTabsPostProfile.map((item) => {
+                {dataTabs.map((item) => {
                     return (
                         <Tab
                             onClick={() => {

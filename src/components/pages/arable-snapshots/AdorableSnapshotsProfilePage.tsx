@@ -9,6 +9,7 @@ import { contants } from '@/utils/contants';
 import { hightlightOfUserPost } from '@/apis/posts';
 import { useQuery } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
+import { listTabsPostProfile } from '@/datas/header';
 
 export interface IAdorableSnapshotsProfilePageProps {
     id: string;
@@ -49,6 +50,20 @@ export default function AdorableSnapshotsProfilePage({ id }: IAdorableSnapshotsP
         // do something
     }, [id, user]);
 
+    const dataTabs = useMemo(() => {
+        const tabs = [listTabsPostProfile[0]];
+
+        if (!id) return;
+
+        if (user) {
+            if (id === user?.username) {
+                return listTabsPostProfile;
+            }
+        }
+
+        return tabs;
+    }, [user, id]);
+
     return (
         <div className="w-full max-w-full">
             <div className="w-full flex flex-col items-center justify-center gap-2 py-8 text-post-primary">
@@ -68,14 +83,17 @@ export default function AdorableSnapshotsProfilePage({ id }: IAdorableSnapshotsP
             {data && data.length > 0 && <BoxPostHighlight data={data} options={{ captialize: false, tracking: 'tracking-wide' }} title="Highlight" />}
 
             <div className="my-16 w-full flex flex-col gap-6">
-                <Tabs
-                    onTab={(v) => {
-                        setType(v.toLowerCase());
-                    }}
-                />
+                {dataTabs && (
+                    <Tabs
+                        dataTabs={dataTabs}
+                        onTab={(v) => {
+                            setType(v.toLowerCase());
+                        }}
+                    />
+                )}
 
                 <div>
-                    <InfinityProfilePosts type={type} />
+                    <InfinityProfilePosts username={id} type={type} />
                 </div>
             </div>
         </div>

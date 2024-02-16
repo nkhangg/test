@@ -597,18 +597,21 @@ export default function UpdateNotificationDialog({
                             rangeSelect={positionText}
                         />
                         {!disableAdvanced && (
-                            <TextArea
-                                onSelected={handleSelected}
-                                spellCheck={false}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={form.adminMessage}
-                                id="admin-message"
-                                name="adminMessage"
-                                message={errors.adminMessage}
-                                placeholder="Type your admin message here..."
-                                rangeSelect={positionText}
-                            />
+                            <>
+                                <span className='className="text-1xl font-medium"'>Message admin: </span>
+                                <TextArea
+                                    onSelected={handleSelected}
+                                    spellCheck={false}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={form.adminMessage}
+                                    id="admin-message"
+                                    name="adminMessage"
+                                    message={errors.adminMessage}
+                                    placeholder="Type your admin message here..."
+                                    rangeSelect={positionText}
+                                />
+                            </>
                         )}
                     </div>
                     {!disableImageDefault && (
