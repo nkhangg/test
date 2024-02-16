@@ -56,7 +56,7 @@ export default function Comment({ item, data, onLike, onReplay, onDelete }: ICom
                             {data?.owner && (
                                 <OptionButton
                                     handleDelete={onDelete && data ? () => onDelete(data) : undefined}
-                                    options={{ size: 'small' }}
+                                    options={{ size: 'small', typeComfirm: 'comfirm' }}
                                     className="flex items-center justify-center p-1 hover:bg-gray-200 rounded-xl transition-all ease-linear cursor-pointer"
                                 >
                                     <FontAwesomeIcon icon={faEllipsis} />

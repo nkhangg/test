@@ -27,6 +27,7 @@ import MediaPostDetail from './MediaPostDetail';
 import MediaPostDetailMobile from './MediaPostDetailMobile';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import firebaseService from '@/services/firebaseService';
+import { reportReason } from '@/datas/reason';
 
 // const icons = [faComment, faShareSquare];
 const icons = [faShareSquare];
@@ -134,12 +135,12 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
                 return toast.warn(response.message);
             }
 
-            rawData.refetch();
-            setLike((prev) => !prev);
-
-            if (!data.owner) {
+            if (!data.owner && !data.isLike) {
                 firebaseService.publistPostsNotification(data, data.user, 'like');
             }
+
+            rawData.refetch();
+            setLike((prev) => !prev);
         } catch (error) {
             return toast.warn(contants.messages.errors.server);
         }
@@ -159,11 +160,11 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
                 return toast.warn(response.message);
             }
 
-            rawComments.refetch();
-
-            if (!dataComment.owner && data) {
-                firebaseService.publistPostsNotification(data, data.user, 'like-comment');
+            if (!dataComment.owner && data && !dataComment.isLike) {
+                firebaseService.publistPostsNotification(data, dataComment.user, 'like-comment');
             }
+
+            rawComments.refetch();
         } catch (error) {
             return toast.warn(contants.messages.errors.server);
         }
@@ -208,6 +209,10 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
             }
 
             if (!data.owner) {
+                if (replay) {
+                    firebaseService.publistPostsNotification(data, replay.user, 'comment');
+                    return;
+                }
                 firebaseService.publistPostsNotification(data, data.user, 'comment');
             }
         } catch (error) {
@@ -247,11 +252,10 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
             rawComments.refetch();
         } catch (error) {
             return toast.warn(contants.messages.errors.server);
-        } finally {
         }
     };
 
-    const handleDeletePost = async () => {
+    const handleDeletePost = async (reason?: string) => {
         if (!user) return appService.handleNonLogin(pathname, router);
         if (!data || !data.owner) return;
 
@@ -268,9 +272,24 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
 
             setOpen(false);
             toast.success('Your post has been successfully deleted');
+
+            if (reason) {
+                firebaseService.publistDeleteOrReportPostsNotification(data, data.user, reason, 'delete');
+            }
         } catch (error) {
             return toast.warn(contants.messages.errors.server);
         }
+    };
+
+    const handleClear = () => {
+        setOpen(false);
+    };
+
+    const handleReprotPost = (reason?: string) => {
+        if (!reason || !data || !user) return;
+        firebaseService.publistDeleteOrReportPostsNotification(data, user, reason, 'report');
+
+        handleClear();
     };
 
     if (!data) {
@@ -288,7 +307,18 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
                                 <Avatar sx={{ width: '3.75rem', height: '3.75rem' }} src={data.user.avatar || contants.avartarDefault} />
                                 <span className="text-lg font-semibold">{data.user.displayName || data.user.username}</span>
                             </div>
-                            {data.owner && <OptionButton handleDelete={handleDeletePost} options={{ border: true }} />}
+                            {data.owner && (
+                                <OptionButton
+                                    handleDelete={handleDeletePost}
+                                    handleReport={handleReprotPost}
+                                    options={{
+                                        border: true,
+                                        reason: reportReason,
+                                        showReport: true,
+                                        typeComfirm: contants.roles.manageRoles.includes(user?.role || '') ? 'reason' : 'comfirm',
+                                    }}
+                                />
+                            )}
                         </div>
                         <p className="font-medium text-1xl mt-3 pb-[22px] md:border-b border-[#B5A8FF] text-[#444444]">{data.title}</p>
                     </div>

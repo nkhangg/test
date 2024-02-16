@@ -350,8 +350,8 @@ const publistPostsNotification = async (posts: IPostDetail, user: IProfile, type
             content: paseDataNotification<IPostDetail>(constNotification, { ...posts, user }, false),
             createdAt: serverTimestamp(),
             deleted: false,
-            link: links.adorables.index + `?uuid=${posts.id}`,
-            linkAdmin: links.adorables.index + `?uuid=${posts.id}`,
+            link: links.adorables.index + `?uuid=${posts.id}&open=auto`,
+            linkAdmin: links.adorables.index + `?uuid=${posts.id}&open=auto`,
             photourl: posts.user.avatar,
             read: [],
             target: [user.username],
@@ -363,6 +363,55 @@ const publistPostsNotification = async (posts: IPostDetail, user: IProfile, type
         });
     } catch (error) {
         console.log('publistAdoptPetNotification: Error setting publistAdoptPetNotification info in DB');
+    }
+};
+
+const publistDeleteOrReportPostsNotification = async (posts: IPostDetail, user: IProfile, reason: string, type: 'delete' | 'report') => {
+    let id = null;
+
+    switch (type) {
+        case 'delete': {
+            id = 'wKPlLGxmnHi9d3bOfkBn';
+            break;
+        }
+        case 'report': {
+            id = '3hrP2FamEAmDDHjwFaWC';
+            break;
+        }
+
+        default:
+            id = null;
+    }
+
+    if (!id) return;
+
+    try {
+        const notificationRefShapshot = await getConstantNotification(id);
+
+        if (!notificationRefShapshot) return null;
+
+        const constNotification = {
+            id: notificationRefShapshot.id,
+            ...notificationRefShapshot.data(),
+        } as INotification;
+
+        return await addDoc(collection(db, 'notifications'), {
+            content: paseDataNotification<IPostDetail & { reason: string }>(constNotification, { ...posts, user, reason }, false),
+            createdAt: serverTimestamp(),
+            deleted: false,
+            link: type === 'report' ? links.adorables.index + `?uuid=${posts.id}&open=auto` : null,
+            linkAdmin: type === 'report' ? links.adorables.index + `?uuid=${posts.id}&open=auto` : null,
+            photourl: constNotification.photourl,
+            read: [],
+            target: [user.username],
+            title: constNotification.title,
+            type: constNotification.type,
+            options: constNotification.options,
+            public: false,
+            adminCotent: paseDataNotification<IPostDetail & { reason: string }>(constNotification, { ...posts, user, reason }, true),
+        });
+    } catch (error) {
+        console.log('publistDeleteOrReportPostsNotification: Error setting publistDeleteOrReportPostsNotification info in DB');
     }
 };
 
@@ -855,7 +904,15 @@ const getNotifications = (
     if (!user) return null;
 
     const constraintsAdmin: any = [
-        and(where('deleted', '==', false), or(where('target', 'array-contains', 'all'), where('target', 'array-contains', user.username), where('public', '==', false))),
+        and(
+            where('deleted', '==', false),
+            or(
+                where('target', 'array-contains', 'all'),
+                where('target', 'array-contains', user.username),
+                where('target', 'array-contains', contants.usernameAdmin),
+                where('public', '==', false),
+            ),
+        ),
         orderBy('createdAt', 'desc'),
         limit(options.limit),
     ];
@@ -1095,6 +1152,7 @@ const firebaseService = {
     addSuccessfulPurchaseNotification,
     publistComfirmAdoptPetNotification,
     publistStateShippingOrderNotification,
+    publistDeleteOrReportPostsNotification,
     publistStateDeleveredOrderNotification,
     publistStateCancelByAdminOrderNotification,
     publistStateCancelByCustomerOrderNotification,

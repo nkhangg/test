@@ -15,9 +15,10 @@ import { RootState } from '@/configs/types';
 
 export interface IInfinityPostsProps {
     type?: string;
+    username: string;
 }
 
-export default function InfinityPosts({ type }: IInfinityPostsProps) {
+export default function InfinityPosts({ type, username }: IInfinityPostsProps) {
     const refCountPage = useRef<number>(1);
 
     const [posts, setPosts] = useState<IPost[]>([]);
@@ -33,7 +34,7 @@ export default function InfinityPosts({ type }: IInfinityPostsProps) {
             setLoading(true);
 
             // test loading
-            const res = await getPostsOfUser({ page, type, username: user?.username });
+            const res = await getPostsOfUser({ page, type, username: username });
 
             if (!res || res.errors) {
                 setLoading(false);
@@ -53,7 +54,7 @@ export default function InfinityPosts({ type }: IInfinityPostsProps) {
             }
             return data.data;
         },
-        [type, user],
+        [type, username],
     );
 
     const lastPostRef = useIntersectionObserver<HTMLDivElement>(() => {

@@ -1,5 +1,5 @@
 'use client';
-import { BoxPost, BoxPostHighlight, InfinityPosts, LoadingSecondary, Post, PostDialog, PrimaryPostButton, SearchInput } from '@/components';
+import { BoxPost, BoxPostHighlight, InfinityPosts, LoadingSecondary, Post, PostDetailDialog, PostDialog, PrimaryPostButton, SearchInput } from '@/components';
 import classNames from 'classnames';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
@@ -13,6 +13,7 @@ import { RootState } from '@/configs/types';
 import { useQuery } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
 import { hightlightPost } from '@/apis/posts';
+import { useQueryState } from 'nuqs';
 export interface IArableSnapshotsPageProps {}
 
 export default function ArableSnapshotsPage(props: IArableSnapshotsPageProps) {
@@ -20,6 +21,7 @@ export default function ArableSnapshotsPage(props: IArableSnapshotsPageProps) {
     const router = useRouter();
 
     const [search, setSearch] = useState('');
+    const [autoOpenPostDetail, setAutoOpenPostDetail] = useState(false);
 
     const rawData = useQuery({
         queryKey: ['boxPostHighlight'],
@@ -39,6 +41,16 @@ export default function ArableSnapshotsPage(props: IArableSnapshotsPageProps) {
 
     // modals state
     const [openPostModal, setOpenPostModal] = useState(false);
+
+    const [uuid, setUuid] = useQueryState('uuid');
+    const [autoOpen, setAutoOpen] = useQueryState('open');
+
+    useEffect(() => {
+        if (uuid && !autoOpenPostDetail && autoOpen === 'auto') {
+            setAutoOpenPostDetail(true);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [uuid]);
 
     const handleOpenPostModal = () => {
         if (!user) return handleNonLogin();
@@ -86,6 +98,18 @@ export default function ArableSnapshotsPage(props: IArableSnapshotsPageProps) {
             </BoxPost>
 
             {openPostModal && <PostDialog open={openPostModal} setOpen={setOpenPostModal} />}
+
+            {autoOpenPostDetail && (
+                <PostDetailDialog
+                    open={autoOpenPostDetail}
+                    setOpen={setAutoOpenPostDetail}
+                    onClose={() => {
+                        setUuid(null);
+                        setAutoOpen(null);
+                        setAutoOpenPostDetail(false);
+                    }}
+                />
+            )}
         </div>
     );
 }

@@ -37,17 +37,6 @@ export default function Post({ variant = 'circle', data }: IPostProps) {
         setOpenDetail(true);
     };
 
-    useEffect(() => {
-        console.log(123);
-
-        if (uuid && data && !openDetail) {
-            console.log(data.id === uuid, uuid, data);
-
-            setOpenDetail(true);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     return (
         <div
             onMouseEnter={() => setModel(true)}
