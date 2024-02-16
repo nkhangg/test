@@ -112,7 +112,15 @@ export interface IPost {
 }
 
 export interface IImagePost {
+    id?: number;
+    index: number;
     url: string;
+    isVideo: boolean;
+}
+
+export interface IMediasPrev {
+    link: string;
+    data: File | null;
     isVideo: boolean;
 }
 
