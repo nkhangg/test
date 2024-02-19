@@ -8,12 +8,14 @@ import { delay } from '@/utils/funtionals';
 import { addPreviousUrl } from '@/utils/session';
 import { usePathname, useRouter } from 'next/navigation';
 import { links } from '@/datas/links';
-import { useAppSelector } from '@/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
 import { useQuery } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
 import { hightlightPost } from '@/apis/posts';
 import { useQueryState } from 'nuqs';
+import { appService } from '@/services/appService';
+import { setOpenPostModal } from '@/redux/slice/adorableSlide';
 export interface IArableSnapshotsPageProps {}
 
 export default function ArableSnapshotsPage(props: IArableSnapshotsPageProps) {
@@ -39,8 +41,12 @@ export default function ArableSnapshotsPage(props: IArableSnapshotsPageProps) {
     //redux
     const { user } = useAppSelector((state: RootState) => state.userReducer);
 
-    // modals state
-    const [openPostModal, setOpenPostModal] = useState(false);
+    const dispatch = useAppDispatch();
+
+    const handleOpenPostModal = () => {
+        if (!user) return appService.handleNonLogin(pathname, router);
+        dispatch(setOpenPostModal(true));
+    };
 
     const [uuid, setUuid] = useQueryState('uuid');
     const [autoOpen, setAutoOpen] = useQueryState('open');
@@ -51,16 +57,6 @@ export default function ArableSnapshotsPage(props: IArableSnapshotsPageProps) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [uuid]);
-
-    const handleOpenPostModal = () => {
-        if (!user) return handleNonLogin();
-        setOpenPostModal(true);
-    };
-
-    const handleNonLogin = () => {
-        addPreviousUrl(pathname);
-        router.push(links.auth.login);
-    };
 
     if (rawData.isError || rawData.data?.errors) {
         notFound();
@@ -96,8 +92,6 @@ export default function ArableSnapshotsPage(props: IArableSnapshotsPageProps) {
             <BoxPost title="OTHER POSTS" className="mt-20">
                 <InfinityPosts />
             </BoxPost>
-
-            {openPostModal && <PostDialog open={openPostModal} setOpen={setOpenPostModal} />}
 
             {autoOpenPostDetail && (
                 <PostDetailDialog

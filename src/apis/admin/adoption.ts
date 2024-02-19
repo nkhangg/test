@@ -1,4 +1,4 @@
-import { ApiCancelAdoptionAdmin, ApiChangeStateAdoptionAdmin, ApiFilterAdoptionAdmin, ApiFilterPets, ApiFilterPetsAdmin, LabelAdopt } from '@/configs/types';
+import { ApiCancelAdoptionAdmin, ApiChangeStateAdoptionAdmin, ApiFilterAdoptionAdmin, ApiFilterPets, ApiFilterPetsAdmin, ApiReportAdopt, LabelAdopt } from '@/configs/types';
 import axios from '../../configs/axios';
 import { IRequestFilterAdoptionAdmin, IRequestFilterPetAdmin } from '@/configs/interface';
 

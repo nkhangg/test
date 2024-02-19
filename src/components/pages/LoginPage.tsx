@@ -109,8 +109,11 @@ export default function LoginPage(props: ILoginPageProps) {
             }
 
             // all good
-            handleForward();
             dispatch(setToken(res.token));
+
+            requestIdleCallback(() => {
+                handleForward();
+            });
         } catch (error) {
             console.log('error in login page: ' + error);
             setLoading(false);

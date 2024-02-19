@@ -1,6 +1,6 @@
 'use client';
 import { PageContainer } from '@/components/common';
-import { ProductPerformance, Report, ReportDonation, SalesOverview } from '@/components/dashboard';
+import { ProductPerformance, Report, ReportAdopts, ReportDonation, SalesOverview } from '@/components/dashboard';
 import { dataDashboard } from '@/datas/dashboard';
 import { Box, Grid } from '@mui/material';
 import * as React from 'react';
@@ -11,6 +11,9 @@ function DashboardPage(props: IDashboarddPageProps) {
         <PageContainer title="Dashboard" description="this is Dashboard">
             <Box>
                 <Report />
+                <div className="w-full mt-10">
+                    <ReportAdopts />
+                </div>
                 <div className="w-full mt-10">
                     <ReportDonation />
                 </div>

@@ -1,15 +1,18 @@
 import {
     ApiCommentsWithPost,
+    ApiCreatePost,
     ApiDeleteCommentsWithPost,
+    ApiDeleteImage,
     ApiDetailPost,
     ApiHightlightPostPage,
     ApiLikeCommentsWithPost,
     ApiLikePostsWithPost,
     ApiPostPage,
     ApiPushCommentsWithPost,
+    ApiUpdatePost,
 } from '@/configs/types';
 import axios from '../configs/axios';
-import { ICommentRequest, IParamsApiPostPage } from '@/configs/interface';
+import { ICommentRequest, IParamsApiPostPage, IPostRequest } from '@/configs/interface';
 import Validate from '@/utils/validate';
 import { delay } from '@/utils/funtionals';
 
@@ -170,6 +173,70 @@ export const likePost: ApiLikePostsWithPost = async (id: string) => {
     const res = await axios({
         method: 'PUT',
         url: 'user/like-posts/' + id,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const createPost: ApiCreatePost = async (data: IPostRequest) => {
+    const formData = new FormData();
+
+    formData.append('title', data.title);
+
+    data.medias.forEach((item, index) => {
+        if (item.data) {
+            formData.append(`medias[${index}].index`, index + '');
+            formData.append(`medias[${index}].file`, item.data);
+        }
+    });
+
+    const res = await axios({
+        method: 'POST',
+        url: 'user/posts',
+        headers: {
+            'content-type': 'multipart/form-data',
+        },
+        data: formData,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const updatePost: ApiUpdatePost = async (data: IPostRequest, id: string) => {
+    const formData = new FormData();
+
+    formData.append('title', data.title);
+
+    data.medias.forEach((item, index) => {
+        if (item.id) {
+            formData.append(`medias[${index}].id`, item.id + '');
+        }
+        formData.append(`medias[${index}].index`, index + '');
+        formData.append(`medias[${index}].file`, item.data || new File(['empty'], 'foo.txt'));
+    });
+
+    const res = await axios({
+        method: 'PUT',
+        url: 'user/posts/' + id,
+        headers: {
+            'content-type': 'multipart/form-data',
+        },
+        data: formData,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const deleteImagePost: ApiDeleteImage = async (id: number) => {
+    const res = await axios({
+        method: 'DELETE',
+        url: 'user/posts/image/' + id,
     });
 
     if (!res) return null;

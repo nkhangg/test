@@ -5,9 +5,10 @@ import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { addPreviousUrl } from '@/utils/session';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { links } from '@/datas/links';
-import { useAppSelector } from '@/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
 import { appService } from '@/services/appService';
+import { setOpenPostModal } from '@/redux/slice/adorableSlide';
 
 export interface IAdorableSearchPageProps {}
 
@@ -23,18 +24,12 @@ export default function AdorableSearchPage(props: IAdorableSearchPageProps) {
     //redux
     const { user } = useAppSelector((state: RootState) => state.userReducer);
 
-    // modals state
-    const [openPostModal, setOpenPostModal] = useState(false);
+    const dispatch = useAppDispatch();
 
     const handleOpenPostModal = () => {
         if (!user) return appService.handleNonLogin(pathname, router);
-        setOpenPostModal(true);
+        dispatch(setOpenPostModal(true));
     };
-
-    // const handleNonLogin = () => {
-    //     addPreviousUrl(pathname);
-    //     router.push(links.auth.login);
-    // };
 
     const handleSearch = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -65,8 +60,6 @@ export default function AdorableSearchPage(props: IAdorableSearchPageProps) {
             <BoxPost title="OTHER POSTS" className="mt-20">
                 <InfinityPosts />
             </BoxPost>
-
-            {openPostModal && <PostDialog open={openPostModal} setOpen={setOpenPostModal} />}
         </div>
     );
 }
