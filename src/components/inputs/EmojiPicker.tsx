@@ -6,6 +6,7 @@ import { faFaceSmile } from '@fortawesome/free-regular-svg-icons';
 import dynamic from 'next/dynamic';
 import { EmojiClickData, EmojiStyle, PickerProps, SuggestionMode } from 'emoji-picker-react';
 import Tippy, { TippyProps } from '@tippyjs/react/headless';
+import classNames from 'classnames';
 
 const Picker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 export interface IEmojiPickerProps {
@@ -13,9 +14,10 @@ export interface IEmojiPickerProps {
     onEmoji?: (emojiObject: EmojiClickData, event: MouseEvent) => void;
     options?: TippyProps;
     stylePicker?: PickerProps;
+    classnNameIcon?: string;
 }
 
-export default function EmojiPicker({ icon, options, stylePicker, onEmoji }: IEmojiPickerProps) {
+export default function EmojiPicker({ icon, options, stylePicker, classnNameIcon, onEmoji }: IEmojiPickerProps) {
     const [open, setOpen] = useState(false);
 
     const handleClose = () => {
@@ -32,6 +34,7 @@ export default function EmojiPicker({ icon, options, stylePicker, onEmoji }: IEm
                 visible={open}
                 interactive
                 onClickOutside={handleClose}
+                placement="right-end"
                 render={(attr) => {
                     return (
                         <div {...attr}>
@@ -53,7 +56,7 @@ export default function EmojiPicker({ icon, options, stylePicker, onEmoji }: IEm
                 }}
             >
                 {!icon ? (
-                    <WrapperAnimation onClick={handleOpen} hover={{}} className="p-3 text-lg">
+                    <WrapperAnimation onClick={handleOpen} hover={{}} className={classNames('p-3 text-lg flex items-center justify-center ' + classnNameIcon)}>
                         <FontAwesomeIcon icon={faFaceSmile} className="text-xl" />
                     </WrapperAnimation>
                 ) : (

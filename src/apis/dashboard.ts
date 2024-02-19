@@ -1,5 +1,5 @@
 import axios from '@/configs/axios';
-import { ApiReportType, ApiRevenueDateType, ApiSalesOverviewType } from '@/configs/types';
+import { ApiReportAdopt, ApiReportType, ApiRevenueDateType, ApiSalesOverviewType } from '@/configs/types';
 
 export const dailyReport: ApiReportType = async () => {
     const res = await axios({
@@ -34,6 +34,17 @@ export const productRevenue: ApiRevenueDateType = async (dates: { start?: string
             minDate: dates.start,
             maxDate: dates.end,
         },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const reportsAdopt: ApiReportAdopt = async () => {
+    const res = await axios({
+        method: 'GET',
+        url: '/admin/adopts/report',
     });
 
     if (!res) return null;

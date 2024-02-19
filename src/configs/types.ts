@@ -71,6 +71,9 @@ import {
     IPostDetail,
     IComment,
     ICommentRequest,
+    IPostRequest,
+    IImagePost,
+    IReportAdopt,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { RolesName } from './enum';
@@ -106,6 +109,12 @@ export type ApiPostPage = (params: IParamsApiPostPage) => Promise<IBaseResponse<
 export type ApiHightlightPostPage = (params: IParamsApiPostPage) => Promise<IBaseResponse<IPost[]>>;
 
 export type ApiDetailPost = (id: string) => Promise<IBaseResponse<IPostDetail>>;
+
+export type ApiCreatePost = (data: IPostRequest) => Promise<IBaseResponse<IPostDetail>>;
+
+export type ApiUpdatePost = (data: IPostRequest, id: string) => Promise<IBaseResponse<IPostDetail>>;
+
+export type ApiDeleteImage = (id: number) => Promise<IBaseResponse<IImagePost>>;
 
 export type ApiCommentsWithPost = (id: string, page?: number) => Promise<IBaseResponse<PagiantionResponse<IComment>>>;
 
@@ -148,6 +157,8 @@ export type ApiReportType = () => Promise<IBaseResponse<IReports>>;
 export type ApiSalesOverviewType = (year: string) => Promise<IBaseResponse<ISalesOverviews>>;
 
 export type ApiRevenueDateType = (dates: { start?: string; end?: string }) => Promise<IBaseResponse<IProductRevenue>>;
+
+export type ApiReportAdopt = () => Promise<IBaseResponse<IReportAdopt[]>>;
 
 export type ApiPayment = (data: IPayment) => Promise<IBaseResponse<any>>;
 

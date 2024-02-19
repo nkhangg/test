@@ -105,6 +105,7 @@ export { default as LoadingPrimary } from './common/loadings/LoadingPrimary';
 export { default as LoadingSecondary } from './common/loadings/LoadingSecondary';
 export { default as MiniLoading } from './common/loadings/MiniLoading';
 export { default as BorderLinearProgress } from './common/loadings/BorderLinearProgress';
+export { default as LoadingLabel } from './common/loadings/LoadingLabel';
 
 // notifycation
 export { default as Notifycation } from './notifycations/Notifycation';
@@ -129,6 +130,7 @@ export { default as AddRecipient } from './dialogs/notification-dialog/AddRecipi
 export { default as UpdateNotificationDialog } from './dialogs/notification-dialog/UpdateNotificationDialog';
 export { default as SettingNotificationDialog } from './dialogs/notification-dialog/SettingNotificationDialog';
 export { default as PostDialog } from './dialogs/posts/PostDialog';
+export { default as UpdatePostDialog } from './dialogs/posts/UpdatePostDialog';
 export { default as PostDetailDialog } from './dialogs/posts/PostDetailDialog';
 export { default as MapDialog } from './dialogs/maps/MapDialog';
 export { default as Markers } from './dialogs/maps/Markers';

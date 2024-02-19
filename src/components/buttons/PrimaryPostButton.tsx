@@ -1,5 +1,5 @@
 'use client';
-import React, { MouseEventHandler } from 'react';
+import React, { MouseEventHandler, ReactNode } from 'react';
 import { CustomButton, WrapperAnimation } from '..';
 import classNames from 'classnames';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface IPrimaryPostButtonProps {
     href?: string;
-    title: string;
+    title: string | ReactNode;
     size?: 'sm' | 'md' | 'lg' | 'full' | 'none';
     variant?: 'rouded-fill' | 'circle-fill' | 'circle' | 'rouded';
     leftIcon?: IconProp;
@@ -84,7 +84,7 @@ export default function PrimaryPostButton({
             <CustomButton
                 onClick={onClick}
                 href={href}
-                className={classNames('flex items-center justify-center border gap-2', {
+                className={classNames('flex items-center justify-center border gap-2 cursor-pointer', {
                     [sizes[size]]: true,
                     [variants[variant]]: true,
                     [className || '']: className,

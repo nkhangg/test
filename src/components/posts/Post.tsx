@@ -26,15 +26,14 @@ export default function Post({ variant = 'circle', data }: IPostProps) {
     const [model, setModel] = useState(false);
     const [openDetail, setOpenDetail] = useState(false);
 
-    const router = useRouter();
     const [uuid, setUuid] = useQueryState('uuid');
 
     // handle funtionals
     const handleOpenDetail = (e: MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         setUuid(data.id as string);
-        console.log(data.id);
         setOpenDetail(true);
+        setModel(false);
     };
 
     return (
@@ -103,7 +102,7 @@ export default function Post({ variant = 'circle', data }: IPostProps) {
                                 src={data.user.avatar || contants.avartarDefault}
                             />
                             <div className="flex flex-col w-full flex-1 max-w-full">
-                                <Link href={links.users.profiles.personalpage + data.user.username} className="truncate max-w-[70%] text-1xl font-medium">
+                                <Link href={links.users.profiles.personalpage + data.user.username} className="truncate max-w-[70%] text-1xl font-medium hover:underline">
                                     {data.user.displayName || data.user.username}
                                 </Link>
                                 <p className="truncate  max-w-[70%] text-sm font-normal">{data.title}</p>

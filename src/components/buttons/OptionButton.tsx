@@ -1,5 +1,5 @@
 'use client';
-import { IconDefinition, faEllipsisVertical, faFlag, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition, faEllipsisVertical, faFlag, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react/headless';
 import React, { ReactNode, useState } from 'react';
@@ -11,6 +11,7 @@ import { reportReason } from '@/datas/reason';
 export interface IOptionButtonProps {
     handleReport?: (reason?: string) => void;
     handleDelete?: (reason?: string) => void;
+    handleEdit?: () => void;
     icon?: IconDefinition;
     children?: ReactNode;
     className?: string;
@@ -18,6 +19,7 @@ export interface IOptionButtonProps {
         border?: boolean;
         hover?: boolean;
         showReport?: boolean;
+        showEdit?: boolean;
         size?: 'small' | 'medium';
         typeComfirm?: 'reason' | 'comfirm';
         reason?: string[];
@@ -27,6 +29,7 @@ export interface IOptionButtonProps {
 export default function OptionButton({
     handleDelete,
     handleReport,
+    handleEdit,
     options = { border: false, hover: true, showReport: false, size: 'medium', typeComfirm: 'comfirm', reason: reportReason },
     icon = faEllipsisVertical,
     children,
@@ -69,6 +72,12 @@ export default function OptionButton({
                                 ['text-sm']: options.size === 'small',
                             })}
                         >
+                            {options.showEdit && (
+                                <li onClick={handleEdit} className="hover:bg-[#f2f2f2] transition-all cursor-pointer ease-linear px-6 py-2 flex items-center gap-3">
+                                    <FontAwesomeIcon icon={faPen} />
+                                    <span>Edit</span>
+                                </li>
+                            )}
                             {options.showReport && (
                                 <li onClick={handleClickReport} className="hover:bg-[#f2f2f2] transition-all cursor-pointer ease-linear px-6 py-2 flex items-center gap-3">
                                     <FontAwesomeIcon icon={faFlag} />

@@ -112,13 +112,33 @@ export interface IPost {
 }
 
 export interface IImagePost {
+    id?: number;
+    index: number;
     url: string;
     isVideo: boolean;
+}
+
+export interface IPostRequest {
+    title: string;
+    medias: IMediasPrev[];
+}
+
+export interface IMediasPrev {
+    id?: number;
+    link: string;
+    data: File | null;
+    isVideo: boolean;
+}
+
+export interface IMediadetected extends IMediasPrev {
+    result: boolean;
+    index: number;
 }
 
 export interface IPostDetail extends Omit<IPost, 'thumbnail' | 'containVideo' | 'thumbnail'> {
     images: IImagePost[];
     owner: boolean;
+    edit: boolean;
     createdAt: string;
 }
 
@@ -260,6 +280,13 @@ export interface IProductRevenueTableItem {
 export interface IReport {
     value: number;
     percentYesterday?: number;
+}
+
+export interface IReportAdopt {
+    title: string;
+    day: number;
+    month: number;
+    year: number;
 }
 
 export interface IDataCharts {

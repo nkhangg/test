@@ -1,6 +1,6 @@
 'use client';
-import React, { useMemo, useState } from 'react';
-import { BoxPostHighlight, InfinityPosts, InfinityProfilePosts } from '@/components';
+import React, { useEffect, useMemo, useState } from 'react';
+import { BoxPostHighlight, InfinityPosts, InfinityProfilePosts, UpdatePostDialog } from '@/components';
 import { Avatar } from '@mui/material';
 import { Tabs } from './tabs';
 import { useAppSelector } from '@/hooks/reduxHooks';
@@ -10,6 +10,7 @@ import { hightlightOfUserPost } from '@/apis/posts';
 import { useQuery } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
 import { listTabsPostProfile } from '@/datas/header';
+import { useQueryState } from 'nuqs';
 
 export interface IAdorableSnapshotsProfilePageProps {
     id: string;
@@ -20,6 +21,10 @@ export default function AdorableSnapshotsProfilePage({ id }: IAdorableSnapshotsP
     const { user } = useAppSelector((state: RootState) => state.userReducer);
 
     const [type, setType] = useState<string | undefined>();
+
+    const [openEdit, setOpenEdit] = useState(false);
+
+    const [idPost, setIdPost] = useQueryState('post-id');
 
     const rawData = useQuery({
         queryKey: ['hightlightOfUserPost', id],
@@ -64,6 +69,12 @@ export default function AdorableSnapshotsProfilePage({ id }: IAdorableSnapshotsP
         return tabs;
     }, [user, id]);
 
+    useEffect(() => {
+        if (!idPost) return;
+
+        setOpenEdit(true);
+    }, [idPost]);
+
     return (
         <div className="w-full max-w-full">
             <div className="w-full flex flex-col items-center justify-center gap-2 py-8 text-post-primary">
@@ -96,6 +107,8 @@ export default function AdorableSnapshotsProfilePage({ id }: IAdorableSnapshotsP
                     <InfinityProfilePosts username={id} type={type} />
                 </div>
             </div>
+
+            {openEdit && <UpdatePostDialog onClose={() => setIdPost(null)} open={openEdit} setOpen={setOpenEdit} />}
         </div>
     );
 }

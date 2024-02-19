@@ -28,6 +28,7 @@ import MediaPostDetailMobile from './MediaPostDetailMobile';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import firebaseService from '@/services/firebaseService';
 import { reportReason } from '@/datas/reason';
+import { links } from '@/datas/links';
 
 // const icons = [faComment, faShareSquare];
 const icons = [faShareSquare];
@@ -292,6 +293,14 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
         handleClear();
     };
 
+    const handleEdit = () => {
+        if (!user) return appService.handleNonLogin(pathname, router);
+        if (!data) return;
+
+        setOpen(false);
+        router.push(links.users.profiles.personalpage + `/${user.username}?post-id=${data?.id}`);
+    };
+
     if (!data) {
         return;
     }
@@ -311,9 +320,11 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
                                 <OptionButton
                                     handleDelete={handleDeletePost}
                                     handleReport={handleReprotPost}
+                                    handleEdit={handleEdit}
                                     options={{
                                         border: true,
                                         reason: reportReason,
+                                        showEdit: data.edit,
                                         showReport: true,
                                         typeComfirm: contants.roles.manageRoles.includes(user?.role || '') ? 'reason' : 'comfirm',
                                     }}

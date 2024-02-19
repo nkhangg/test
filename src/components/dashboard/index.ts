@@ -7,3 +7,4 @@ export { default as LabelCard } from './LabelCard';
 export { default as DashboardCard } from './shared/DashboardCard';
 export { default as Report } from './Report';
 export { default as ReportDonation } from './ReportDonation';
+export { default as ReportAdopts } from './ReportAdopts';

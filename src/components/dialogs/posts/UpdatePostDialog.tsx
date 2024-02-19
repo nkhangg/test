@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import WraperDialog from '../WraperDialog';
 import { Avatar, Button } from '@mui/material';
 import { EmojiPicker, LoadingLabel, LoadingSecondary, PrimaryPostButton, WrapperAnimation } from '@/components';
 import { faImage, faPhotoFilm, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
+import { useAppSelector } from '@/hooks/reduxHooks';
 import { ImageType, RootState } from '@/configs/types';
 import { contants } from '@/utils/contants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,18 +14,22 @@ import { fileToUrl } from '@/utils/format';
 import { IMediadetected, IMediasPrev } from '@/configs/interface';
 import { EmojiClickData } from 'emoji-picker-react';
 import Validate from '@/utils/validate';
-import classNames from 'classnames';
-import { delay } from '@/utils/funtionals';
 import ImageDetect from './ImageDetect';
-import { createPost } from '@/apis/posts';
+import { createPost, deleteImagePost, getDetailPost, updatePost } from '@/apis/posts';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { links } from '@/datas/links';
-import { setOpenPostModal } from '@/redux/slice/adorableSlide';
+import { useQuery } from '@tanstack/react-query';
+import { useQueryState } from 'nuqs';
+import { delay } from '@/utils/funtionals';
 
-export interface IPostDialogProps {}
+export interface IUpdatePostDialogProps {
+    open: boolean;
+    setOpen: (v: boolean) => void;
+    onClose?: () => void;
+}
 
-export default function PostDialog({}: IPostDialogProps) {
+function UpdatePostDialog({ open, setOpen, onClose }: IUpdatePostDialogProps) {
     // refs
     const refInput = useRef<HTMLTextAreaElement>(null);
     const dragImage = useRef(0);
@@ -35,9 +39,6 @@ export default function PostDialog({}: IPostDialogProps) {
 
     // redux
     const { user } = useAppSelector((state: RootState) => state.userReducer);
-    const { openPostModal } = useAppSelector((state: RootState) => state.adorableReducer);
-
-    const dispatch = useAppDispatch();
 
     const clearFileActive: string[] = [];
 
@@ -46,16 +47,29 @@ export default function PostDialog({}: IPostDialogProps) {
     const [messageMedias, setMessageMedias] = useState<string[]>([]);
     const [messageText, setMessageText] = useState('');
 
-    const [loadingFrom, setLoadingFrom] = useState(false);
+    const [openModal, setOpenModal] = useState<{ state: boolean; data: null | IMediasPrev }>({ state: false, data: null });
+
+    const [loadingFrom, setLoadingFrom] = useState(true);
+
+    const [id, setId] = useQueryState('post-id');
+
+    const rawData = useQuery({
+        queryKey: ['postDetailDialog', id],
+        queryFn: () => {
+            if (!id) return null;
+            return getDetailPost(id);
+        },
+    });
 
     const onDrop = useCallback(async (acceptedFiles: any) => {
         const files = acceptedFiles as File[];
 
-        if (!files || !files.length) return;
+        if (!files || !files.length || !data) return;
 
         setMessageMedias([]);
 
         const validVideoFile = files.find((item) => item.type === 'video/mp4');
+        const validVideoFileOnImages = images.find((item) => item.isVideo);
 
         if (validVideoFile) {
             if (validateMedia(validVideoFile)) {
@@ -74,6 +88,18 @@ export default function PostDialog({}: IPostDialogProps) {
             setMessageMedias(['Only one video per post is accepted']);
 
             return;
+        }
+
+        if (validVideoFileOnImages) {
+            const prevImage = data.images.map((item) => {
+                return {
+                    data: null,
+                    link: item.url,
+                    isVideo: item.isVideo,
+                    id: item.id,
+                } as IMediasPrev;
+            });
+            setImages(prevImage);
         }
         const messages: string[] = [];
 
@@ -106,7 +132,6 @@ export default function PostDialog({}: IPostDialogProps) {
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
     const validateMedia = (file: File) => {
-        console.log(file.size / Math.pow(10, 6), file.name);
         return file.size / Math.pow(10, 6) > Number(process.env.NEXT_PUBLIC_MEDIAS_SIZE);
     };
 
@@ -152,17 +177,25 @@ export default function PostDialog({}: IPostDialogProps) {
         setImages(imageClone);
     };
 
-    const handleCloseImage = useCallback(
-        (image: ImageType, index: number) => {
-            images.splice(index, 1);
-            setImages([...images]);
+    const handleCloseImage = async () => {
+        if (!data || !openModal.data || openModal.data?.isVideo || !openModal.data.id) return;
 
-            if (detectedArray.current.length) {
-                detectedArray.current = detectedArray.current.filter((item) => item.index !== index);
-            }
-        },
-        [images],
-    );
+        try {
+            setLoadingFrom(true);
+            const response = await deleteImagePost(openModal.data.id);
+
+            if (!response) return toast.warn(contants.messages.errors.handle);
+
+            if (response.errors) return toast.warn(response.message);
+
+            rawData.refetch();
+            setOpenModal({ state: false, data: null });
+        } catch (error) {
+            toast.error(contants.messages.errors.server);
+        } finally {
+            setLoadingFrom(false);
+        }
+    };
 
     const handleAddIcon = (emojiObject: EmojiClickData, event: MouseEvent) => {
         if (!refInput.current) return;
@@ -176,25 +209,18 @@ export default function PostDialog({}: IPostDialogProps) {
         if (validate()) return;
 
         try {
-            if (!refInput.current) return;
+            if (!refInput.current || !data) return;
             setLoadingFrom(true);
-            const response = await createPost({ title: refInput.current.value, medias: images });
+            const response = await updatePost({ title: refInput.current.value, medias: images }, data.id as string);
 
             if (!response) return toast.warn(contants.messages.errors.handle);
 
             if (response.errors) return toast.warn(response.message);
 
-            toast.success(
-                <span className="">
-                    <span>Your article has been uploaded successfully.</span>
-                    <Link className=" text-blue-primary hover:underline ml-1" href={links.adorables.index + `?uuid=${response.data.id}&open=auto`}>
-                        Now everyone can see your posts
-                    </Link>
-                </span>,
-            );
-
+            toast.success('Update succsessfuly');
             requestIdleCallback(() => {
-                dispatch(setOpenPostModal(false));
+                setOpen(false);
+                setId(null);
             });
         } catch (error) {
             toast.warn(contants.messages.errors.server);
@@ -202,6 +228,74 @@ export default function PostDialog({}: IPostDialogProps) {
             setLoadingFrom(false);
         }
     };
+
+    const data = useMemo(() => {
+        if (rawData.isError || !rawData.data?.data) return null;
+
+        return rawData.data?.data;
+    }, [rawData]);
+
+    const validateImages = useCallback(
+        (checkLastImage = true, image?: IMediasPrev) => {
+            if (!data) return true;
+
+            if (data.images.some((item) => item.isVideo)) return true;
+
+            if (checkLastImage) {
+                if (images.length === 1 && images[0].id && !images[0].data) return true;
+
+                if (images.length && images.filter((item) => item.id).length <= 1) return true;
+            }
+
+            return false;
+        },
+        [data, images],
+    );
+
+    const setUpdateData = useCallback(async () => {
+        if (!id || rawData.isError || !data || !user) {
+            setLoadingFrom(false);
+            return;
+        }
+
+        if (!data.edit) {
+            setLoadingFrom(false);
+            return;
+        }
+
+        requestIdleCallback(async () => {
+            await delay(1000);
+
+            const images = data.images.map((item) => {
+                return { data: null, link: item.url, isVideo: item.isVideo, id: item.id } as IMediasPrev;
+            });
+
+            setImages(images);
+
+            if (!refInput.current) return;
+            refInput.current.innerText = data.title;
+
+            setLoadingFrom(false);
+        });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data]);
+
+    const handlePrevColoseImage = useCallback(
+        (data: IMediasPrev, index: number) => {
+            if (data.id) {
+                setOpenModal({ state: true, data });
+            } else {
+                const newImages = images.filter((item) => item.link != data.link);
+                setImages([...newImages]);
+
+                if (detectedArray.current.length) {
+                    detectedArray.current = detectedArray.current.filter((item) => item.index !== index);
+                }
+            }
+        },
+        [images],
+    );
 
     useEffect(() => {
         if (images.length && !messageMedias.length) {
@@ -221,6 +315,10 @@ export default function PostDialog({}: IPostDialogProps) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+        setUpdateData();
+    }, [setUpdateData]);
+
     return (
         <WraperDialog
             sx={{
@@ -230,10 +328,9 @@ export default function PostDialog({}: IPostDialogProps) {
             }}
             fullWidth={true}
             maxWidth={'md'}
-            open={openPostModal}
-            setOpen={(v) => {
-                dispatch(setOpenPostModal(v));
-            }}
+            open={open}
+            setOpen={setOpen}
+            onClose={onClose}
         >
             <form onSubmit={handleSubmit} className="w-full h-full p-10 text-black-main flex flex-col justify-end relative">
                 {loadingFrom && (
@@ -265,16 +362,18 @@ export default function PostDialog({}: IPostDialogProps) {
                     />
                     {!Validate.isBlank(messageText) && <span className="text-sm text-fill-heart mb-2 italic">{messageText}</span>}
                     <div className="flex items-center justify-start gap-5">
-                        <div {...getRootProps()}>
-                            <WrapperAnimation hover={{}}>
-                                <div className="flex items-center justify-center border gap-2 py-3 px-6 text-sm bg-[#F6F6F6] text-violet-post-primary border-violet-post-primary font-medium rounded-lg w-fit">
-                                    <FontAwesomeIcon className="text-[20px]" icon={faPhotoFilm} />
-                                    <span>Media</span>
-                                </div>
-                            </WrapperAnimation>
+                        {!validateImages(false) && (
+                            <div {...getRootProps()}>
+                                <WrapperAnimation hover={{}}>
+                                    <div className="flex items-center justify-center border gap-2 py-3 px-6 text-sm bg-[#F6F6F6] text-violet-post-primary border-violet-post-primary font-medium rounded-lg w-fit">
+                                        <FontAwesomeIcon className="text-[20px]" icon={faPhotoFilm} />
+                                        <span>Media</span>
+                                    </div>
+                                </WrapperAnimation>
 
-                            <input {...getInputProps} hidden />
-                        </div>
+                                <input {...getInputProps} hidden />
+                            </div>
+                        )}
 
                         <EmojiPicker classnNameIcon="text-violet-post-primary" onEmoji={handleAddIcon} stylePicker={{ height: 300 }} />
                     </div>
@@ -304,13 +403,20 @@ export default function PostDialog({}: IPostDialogProps) {
                                 {images.map((item, index) => {
                                     return (
                                         <ImageDetect
+                                            options={{
+                                                showClose: (() => {
+                                                    if (item.id && images.filter((i) => i.id).length <= 1) return false;
+
+                                                    return true;
+                                                })(),
+                                            }}
                                             key={item.link}
                                             onDragStart={() => (dragImage.current = index)}
                                             onDragEnter={() => (draggedOverImage.current = index)}
                                             onDragEnd={handleSort}
                                             data={item}
                                             index={index}
-                                            handleCloseImage={handleCloseImage}
+                                            handleCloseImage={handlePrevColoseImage}
                                             onDedected={(result) => {
                                                 detectedArray.current.push(result);
                                             }}
@@ -337,6 +443,32 @@ export default function PostDialog({}: IPostDialogProps) {
                     <PrimaryPostButton title="Post" variant="circle-fill" size="sm" className="uppercase" />
                 </div>
             </form>
+
+            {openModal.state && (
+                <WraperDialog open={openModal.state} setOpen={(v) => setOpenModal({ ...openModal, state: v })}>
+                    <div className="p-6 flex flex-col gap-4 items-center text-black-main">
+                        <b>Are you sure about this action?</b>
+                        <div className="flex items-center justify-between text-sm">
+                            <WrapperAnimation
+                                onClick={() => setOpenModal({ ...openModal, state: false })}
+                                hover={{}}
+                                className="py-2 px-6 rounded-full hover:bg-[rgba(0,0,0,.2)] transition-all ease-linear cursor-pointer hover:text-white"
+                            >
+                                Cancel
+                            </WrapperAnimation>
+                            <WrapperAnimation
+                                onClick={handleCloseImage ? () => handleCloseImage() : undefined}
+                                hover={{}}
+                                className="py-2 px-6 rounded-full hover:bg-[rgba(0,0,0,.2)] transition-all ease-linear cursor-pointer hover:text-white text-red-primary"
+                            >
+                                Ok
+                            </WrapperAnimation>
+                        </div>
+                    </div>
+                </WraperDialog>
+            )}
         </WraperDialog>
     );
 }
+
+export default memo(UpdatePostDialog);

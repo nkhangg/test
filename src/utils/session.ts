@@ -8,6 +8,8 @@ export const getPreviousUrl = () => {
     }
     const url = sessionStorage?.getItem('prevUrl');
 
+    console.log(url);
+
     if (!url) {
         return undefined;
     }

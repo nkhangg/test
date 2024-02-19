@@ -18,7 +18,7 @@ export default function Report(props: IReportProps) {
     const dataDashboard: IReports | undefined = data?.data;
 
     return (
-        <DashboardCard title="Report">
+        <DashboardCard title="Store">
             <Grid container spacing={5}>
                 <Grid item xs={12} md={12} lg={4}>
                     <LabelCard
