@@ -29,9 +29,9 @@ import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import firebaseService from '@/services/firebaseService';
 import { reportReason } from '@/datas/reason';
 import { links } from '@/datas/links';
-
-// const icons = [faComment, faShareSquare];
-const icons = [faShareSquare];
+import Tippy from '@tippyjs/react/headless';
+import { faFacebook } from '@fortawesome/free-brands-svg-icons';
+import { FacebookShareButton } from 'react-share';
 
 export interface IPostDetailDialogProps {
     open: boolean;
@@ -56,6 +56,8 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
     const [replay, setReplay] = useState<IComment | null>(null);
     const [loadingComment, setLoadingComment] = useState(false);
 
+    const [openShares, setOpenShares] = useState(false);
+
     const rawData = useQuery({
         queryKey: ['postDetailDialog', uuid],
         queryFn: () => {
@@ -72,7 +74,7 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
         },
         initialPageParam: 1,
         getNextPageParam: (lastPage: any, allPages) => {
-            return lastPage.data.data.length ? allPages.length + 1 : undefined;
+            return lastPage?.data?.data.length ? allPages.length + 1 : undefined;
         },
     });
 
@@ -102,6 +104,20 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
 
     //images
     const [images, setImages] = useState(data?.images || []);
+
+    const linkShare = useMemo(() => {
+        const defaultLink = 'https://github.com/nkhangg';
+
+        if (!window || !data) return defaultLink;
+
+        const host = window.location.host;
+
+        if (host.includes('localhost')) return defaultLink;
+
+        console.log(host + links.adorables.index + `?uuid=${data?.id}&open=auto`);
+
+        return host + links.adorables.index + `?uuid=${data?.id}&open=auto`;
+    }, [data]);
 
     useLayoutEffect(() => {
         if (data?.images.length) {
@@ -383,13 +399,31 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
                                         icon={like ? faHeartFull : faHeart}
                                     />
                                 </motion.div>
-                                {icons.map((item, index) => {
-                                    return (
-                                        <WrapperAnimation className="cursor-pointer" key={index} hover={{}}>
-                                            <FontAwesomeIcon className="w-6 h-6" icon={item} />
-                                        </WrapperAnimation>
-                                    );
-                                })}
+                                <Tippy
+                                    interactive
+                                    onClickOutside={() => setOpenShares(false)}
+                                    visible={openShares}
+                                    render={(attr) => (
+                                        <div {...attr} tabIndex={-1} className="flex flex-col gap-2 bg-white shadow-primary rounded-lg py-2">
+                                            <FacebookShareButton
+                                                url={linkShare}
+                                                style={{
+                                                    width: '100%',
+                                                    height: '100%',
+                                                }}
+                                            >
+                                                <div className="flex items-center gap-2 px-5 hover:bg-gray-100 cursor-pointer transition-all ease-linear py-2">
+                                                    <FontAwesomeIcon icon={faFacebook} className="text-[#0965fe]" />
+                                                    <span className="text-sm text-black-main">Share on your facebook</span>
+                                                </div>
+                                            </FacebookShareButton>
+                                        </div>
+                                    )}
+                                >
+                                    <WrapperAnimation onClick={() => setOpenShares((prev) => !prev)} className="cursor-pointer" hover={{}}>
+                                        <FontAwesomeIcon className="w-6 h-6" icon={faShareSquare} />
+                                    </WrapperAnimation>
+                                </Tippy>
                             </div>
                         </div>
                         {replay && (

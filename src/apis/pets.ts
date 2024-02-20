@@ -58,10 +58,20 @@ export const getPetAttibutes: ApiPetAttributes = async () => {
     return res?.data;
 };
 
-export const getAdoptions: ApiAdoptions = async () => {
+export const getAdoptions: ApiAdoptions = async (page?: number) => {
+    const params: { page?: number } = {};
+
+    if (page) {
+        params.page = Number(page) - 1;
+    } else {
+        if (params.page) {
+            delete params.page;
+        }
+    }
     const res = await axios({
         method: 'GET',
         url: '/user/adopts',
+        params,
     });
 
     if (!res) return null;

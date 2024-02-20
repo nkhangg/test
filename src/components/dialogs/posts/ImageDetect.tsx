@@ -58,7 +58,7 @@ function ImageDetect({ index, data, handleCloseImage, onDedected, options = { sh
         if (!loading || data.isVideo) return;
         handleLoad();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [handleLoad, loading]);
+    }, []);
 
     return (
         <div

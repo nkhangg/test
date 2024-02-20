@@ -132,7 +132,7 @@ export type ApiPetFavorite = (id: string) => Promise<IBaseResponse<any>>;
 
 export type ApiPetAttributes = () => Promise<IBaseResponse<IPetAttribute>>;
 
-export type ApiAdoptions = () => Promise<IBaseResponse<PagiantionResponse<IAdoption>>>;
+export type ApiAdoptions = (page?: number) => Promise<IBaseResponse<PagiantionResponse<IAdoption>>>;
 
 export type ApiAdoption = (data: { userId: string; petId: string; addressId: number }) => Promise<IBaseResponse<IAdoption>>;
 
