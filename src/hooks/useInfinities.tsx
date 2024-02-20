@@ -23,6 +23,8 @@ export default function useInfinities<T>({ queryFN }: { queryFN: (page?: number)
 
         const data = res.data;
 
+        console.log(data);
+
         if (refCountPage.current >= data.pages) setHasNextPage(false);
         setLoading(false);
 
