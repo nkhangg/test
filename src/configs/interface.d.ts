@@ -429,6 +429,8 @@ export interface IDetailOrder {
     expectedTime: string | null;
     username?: string;
     displayName?: string;
+    print?: number;
+    read?: boolean;
 }
 
 export interface IProductDetailOrders {
@@ -504,6 +506,7 @@ export interface IRowStatusOrders {
     placedData: string;
     status: StateType;
     read?: boolean;
+    print?: number;
     token?: string;
 }
 
@@ -540,6 +543,7 @@ export interface IOrderAdminItem {
     placedDate: string;
     status: string;
     read?: boolean;
+    print?: number;
     token?: string;
 }
 

@@ -9,9 +9,17 @@ import { CustomBadge, SocialButton, WrapperAnimation } from '@/components';
 import { listProfile, navarMobileNonLogin, navbar } from '@/datas/header';
 import Link from 'next/link';
 import { contants } from '@/utils/contants';
-import { useAppSelector } from '@/hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
 import { faSquareFacebook, faSquareGooglePlus } from '@fortawesome/free-brands-svg-icons';
+import { useRouter } from 'next/navigation';
+import { useSignInWithFacebook, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { auth } from '@/configs/firebase';
+import { loginWithFacebook, loginWithGoogle } from '@/apis/user';
+import { setToken } from '@/redux/slice/userSlice';
+import { toast } from 'react-toastify';
+import { getPreviousUrl } from '@/utils/session';
+import { links } from '@/datas/links';
 
 export interface IMenuBarsProps {
     isScroll: boolean;
@@ -31,6 +39,97 @@ function MenuBars({ isScroll }: IMenuBarsProps) {
     useEffect(() => {
         setIsClient(true);
     }, []);
+
+    const router = useRouter();
+
+    const dispatch = useAppDispatch();
+
+    const [signInWithFacebook, userFb, _loadingFb, errorFb] = useSignInWithFacebook(auth);
+    const [signInWithGoogle, userGg, loadingGg, errorGg] = useSignInWithGoogle(auth);
+
+    useEffect(() => {
+        if (!userFb) return;
+
+        (async () => {
+            try {
+                const res = await loginWithFacebook({ uuid: userFb.user.uid, avartar: userFb.user.photoURL || '', username: userFb.user.displayName || '' });
+
+                if (res.errors && res.message === '401') {
+                    toast.warning('Your account has not been verified. Please check your email');
+                    return;
+                }
+
+                if (res.errors && Object.keys(res.errors).length > 0) {
+                    toast.error(contants.messages.errors.loginWithFacebook);
+
+                    return;
+                }
+
+                // all good
+                handleForward();
+                dispatch(setToken(res.token));
+            } catch (error) {
+                console.log('error in login page: ' + error);
+                toast.error(contants.messages.errors.server);
+            }
+        })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userFb]);
+
+    useEffect(() => {
+        if (!userGg) return;
+
+        (async () => {
+            try {
+                const res = await loginWithGoogle({
+                    uuid: userGg.user.uid,
+                    avartar: userGg.user.photoURL || '',
+                    username: userGg.user.displayName || '',
+                    email: userGg.user.email || '',
+                });
+
+                if (res.errors && res.message === '401') {
+                    toast.warning('Your account has not been verified. Please check your email');
+                    return;
+                }
+
+                if (res.errors && Object.keys(res.errors).length > 0) {
+                    toast.error(contants.messages.errors.loginWithFacebook);
+
+                    return;
+                }
+
+                // all good
+                handleForward();
+                dispatch(setToken(res.token));
+            } catch (error) {
+                console.log('error in login page: ' + error);
+                toast.error(contants.messages.errors.server);
+            }
+        })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userGg]);
+
+    const handleLoginWithFacebook = () => {
+        signInWithFacebook();
+    };
+    const handleLoginWithGoogle = () => {
+        signInWithGoogle();
+    };
+
+    const handleForward = () => {
+        const prevUrl = getPreviousUrl();
+        if (prevUrl) {
+            router.push(prevUrl);
+        } else {
+            router.push(links.home);
+        }
+    };
+
+    if (errorFb) {
+        toast.error(contants.messages.errors.loginWithFacebook);
+        return;
+    }
 
     return (
         <>
@@ -67,14 +166,14 @@ function MenuBars({ isScroll }: IMenuBarsProps) {
                                                     className="cursor-pointer border-2"
                                                     src={user?.avatar || contants.avartarDefault}
                                                 />
-                                                <h2 className="font-medium ">{user?.username}</h2>
+                                                <h2 className="font-medium ">{user.displayName || user?.username}</h2>
                                             </div>
                                             <ul className="py-2 mb-3 border-b border-[#ebebeb] text-sm">
                                                 {listProfile.map((item) => {
                                                     return (
                                                         <li
                                                             key={item.href}
-                                                            className="p-4 pr-0 font-medium rounded-tl-lg rounded-bl-lg hover:bg-[#f0f0f0] transition-all ease-linear "
+                                                            className="p-4 pr-0 font-medium rounded-tl-lg rounded-bl-lg hover:bg-[#f0f0f0] transition-all ease-linear capitalize"
                                                         >
                                                             <Link href={item.href} className="flex gap-4 items-center">
                                                                 <CustomBadge badgeContent={cartUser.length}>
@@ -105,8 +204,14 @@ function MenuBars({ isScroll }: IMenuBarsProps) {
                                                     );
                                                 })}
                                                 <div className="pr-4">
-                                                    <SocialButton maxWidth="max-w-full" title="Facebook" icon={faSquareFacebook} />
-                                                    <SocialButton maxWidth="max-w-full" title="Google" background="#0D9488" icon={faSquareGooglePlus} />
+                                                    <SocialButton onClick={handleLoginWithFacebook} maxWidth="max-w-full" title="Facebook" icon={faSquareFacebook} />
+                                                    <SocialButton
+                                                        onClick={handleLoginWithGoogle}
+                                                        maxWidth="max-w-full"
+                                                        title="Google"
+                                                        background="#0D9488"
+                                                        icon={faSquareGooglePlus}
+                                                    />
                                                 </div>
                                             </ul>
                                         </>

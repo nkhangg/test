@@ -18,11 +18,11 @@ export default function Logout(props: ILogoutProps) {
 
     const handleLogout = () => {
         try {
-            dispatch(logout());
-
             if (user) {
                 handleSetLastSeenInfoFirebase(user);
             }
+
+            dispatch(logout());
 
             router.prefetch('/');
             router.push('/');

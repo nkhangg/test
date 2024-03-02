@@ -277,18 +277,5 @@ export const getTokenPrint = async (token: string) => {
         },
     });
 
-    if (!res) return null;
-
-    const response = await axios({
-        method: 'GET',
-        url: `https://dev-online-gateway.ghn.vn/a5/public-api/print80x80?token=${res.data.data.token}`,
-        headers: {
-            'Content-Type': 'application/json',
-            token: contants.apis.ghn.tokenPrint,
-        },
-    });
-
-    if (!response) return null;
-
-    return response;
+    return res.data.data;
 };

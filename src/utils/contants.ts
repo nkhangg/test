@@ -71,6 +71,11 @@ export const contants = {
             clientIdPrint: CLIENT_ID_PRINT,
             base: baseApiGHTK,
             shippingFee: baseApiGHTK + 'shipping-order/fee',
+            printMethod: {
+                a5: 'https://dev-online-gateway.ghn.vn/a5/public-api/printA5',
+                '8080': 'https://dev-online-gateway.ghn.vn/a5/public-api/print80x80',
+                '5072': 'https://dev-online-gateway.ghn.vn/a5/public-api/print52x70',
+            },
         },
     },
 

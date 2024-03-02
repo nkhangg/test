@@ -276,7 +276,7 @@ export default function PostDialog({}: IPostDialogProps) {
                             <input {...getInputProps} hidden />
                         </div>
 
-                        <EmojiPicker classnNameIcon="text-violet-post-primary" onEmoji={handleAddIcon} stylePicker={{ height: 300 }} />
+                        <EmojiPicker placement="right-end" classnNameIcon="text-violet-post-primary" onEmoji={handleAddIcon} stylePicker={{ height: 300 }} />
                     </div>
 
                     {/* messages */}

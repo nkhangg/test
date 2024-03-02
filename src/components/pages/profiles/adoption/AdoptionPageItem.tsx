@@ -144,6 +144,17 @@ export default function AdoptionPageItem({
             if (response.errors) return toast.warn(response.message);
 
             toast.success(response.message);
+
+            if (response.data.length) {
+                console.log(response.data);
+                response.data.forEach(async (item) => {
+                    await firebaseService.publistCancelAdoptPetNotification(
+                        item,
+                        item.cancelReason || `Thank you for your interest in ${item.pet.name}. We are very sorry that ${item.pet.name} has been adopted by someone else.`,
+                        true,
+                    );
+                });
+            }
         } catch (error) {
             toast.error(contants.messages.errors.server);
         } finally {
