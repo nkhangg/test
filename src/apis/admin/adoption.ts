@@ -1,4 +1,13 @@
-import { ApiCancelAdoptionAdmin, ApiChangeStateAdoptionAdmin, ApiFilterAdoptionAdmin, ApiFilterPets, ApiFilterPetsAdmin, ApiReportAdopt, LabelAdopt } from '@/configs/types';
+import {
+    ApiAcceptStateAdoptionAdmin,
+    ApiCancelAdoptionAdmin,
+    ApiChangeStateAdoptionAdmin,
+    ApiFilterAdoptionAdmin,
+    ApiFilterPets,
+    ApiFilterPetsAdmin,
+    ApiReportAdopt,
+    LabelAdopt,
+} from '@/configs/types';
 import axios from '../../configs/axios';
 import { IRequestFilterAdoptionAdmin, IRequestFilterPetAdmin } from '@/configs/interface';
 
@@ -36,7 +45,7 @@ export const cancelAdoptionAdmin: ApiCancelAdoptionAdmin = async (data: { id: st
     return res?.data;
 };
 
-export const acceptAdoptionAdmin: ApiChangeStateAdoptionAdmin = async (data: { id: string; state?: LabelAdopt; data: string }) => {
+export const acceptAdoptionAdmin: ApiAcceptStateAdoptionAdmin = async (data: { id: string; state?: LabelAdopt; data: string }) => {
     const res = await axios({
         method: 'PUT',
         url: '/admin/adopts/' + data.id,

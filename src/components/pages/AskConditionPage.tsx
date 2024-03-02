@@ -217,7 +217,7 @@ export default function AskConditionPage(props: IAskConditionPageProps) {
                                     </Link>{' '}
                                     to contact
                                 </small>
-                                {dataPhone.length &&
+                                {dataPhone.length >= 0 &&
                                     dataPhone.map((item) => {
                                         return (
                                             <WrapperAnimation

@@ -194,6 +194,7 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                                                     user: order.username,
                                                     read: order.read,
                                                     token: order.token,
+                                                    print: order.print,
                                                 }}
                                             />
                                         );

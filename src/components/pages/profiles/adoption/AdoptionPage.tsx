@@ -1,8 +1,8 @@
 'use client';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import AdoptionPageItem from './AdoptionPageItem';
 import { BaseProfilePage } from '../../common';
-import { LoadingSecondary } from '@/components';
+import { LoadingSecondary, TippyChooser } from '@/components';
 import { useInfinities } from '@/hooks';
 import { getAdoptions } from '@/apis/pets';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -10,16 +10,42 @@ import { IAdoption } from '@/configs/interface';
 
 export interface IAdoptionPageProps {}
 
+const dataFilter = [
+    {
+        title: 'All',
+        id: 'all',
+    },
+    {
+        title: 'Adopted',
+        id: 'Adopted',
+    },
+
+    {
+        title: 'Waiting',
+        id: 'Waiting',
+    },
+    {
+        title: 'Registered',
+        id: 'Registered',
+    },
+    {
+        title: 'Cancelled',
+        id: 'Cancelled',
+    },
+];
+
 export default function AdoptionPage(props: IAdoptionPageProps) {
     // const { lastDataRef, loading, data } = useInfinities({
     //     queryFN: getAdoptions,
     // });
     const intObserver: any = useRef();
 
+    const [filter, setFilter] = useState({ status: dataFilter[0].id });
+
     const rawAdoptions = useInfiniteQuery({
-        queryKey: ['adoptions/infinity'],
+        queryKey: ['adoptions/infinity', filter],
         queryFn: ({ pageParam = 1 }) => {
-            return getAdoptions(pageParam);
+            return getAdoptions(filter.status, pageParam);
         },
         initialPageParam: 1,
         getNextPageParam: (lastPage: any, allPages) => {
@@ -45,16 +71,29 @@ export default function AdoptionPage(props: IAdoptionPageProps) {
     );
 
     return (
-        <BaseProfilePage title="MY PETS">
+        <BaseProfilePage
+            title="MY PETS"
+            action={
+                <div className="flex items-center ">
+                    <TippyChooser
+                        styles={{
+                            minWidth: 'min-w-[120px]',
+                            className: 'bg-[#f2f2f2] rounded px-5 py-2 text-sm',
+                            classNamePopup: 'bg-[#f2f2f2] rounded text-sm',
+                        }}
+                        title={dataFilter[0].title}
+                        data={dataFilter}
+                        onValue={(v) => {
+                            setFilter({
+                                ...filter,
+                                status: v.id,
+                            });
+                        }}
+                    />
+                </div>
+            }
+        >
             <div className="py-5 flex items-center flex-col gap-3">
-                {/* {data.map((item, index) => {
-                    return (
-                        <div className="w-full" key={item.id} ref={data.length - 1 === index ? lastDataRef : null}>
-                            <AdoptionPageItem data={item} />
-                        </div>
-                    );
-                })} */}
-
                 {rawAdoptions.data &&
                     rawAdoptions.data.pages[0].data.data.length > 0 &&
                     !rawAdoptions.isLoading &&

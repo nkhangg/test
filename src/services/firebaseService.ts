@@ -314,7 +314,7 @@ const publistAdoptPetNotification = async (pet: IPet, username: string, phone: s
     }
 };
 
-const publistPostsNotification = async (posts: IPostDetail, user: IProfile, type: 'comment' | 'like' | 'like-comment') => {
+const publistPostsNotification = async (posts: IPostDetail, user: IProfile, currentUser: IProfile, type: 'comment' | 'like' | 'like-comment') => {
     let id = null;
 
     switch (type) {
@@ -347,7 +347,7 @@ const publistPostsNotification = async (posts: IPostDetail, user: IProfile, type
         } as INotification;
 
         return await addDoc(collection(db, 'notifications'), {
-            content: paseDataNotification<IPostDetail>(constNotification, { ...posts, user }, false),
+            content: paseDataNotification<IPostDetail & { displayName: string }>(constNotification, { ...posts, user, displayName: currentUser.displayName }, false),
             createdAt: serverTimestamp(),
             deleted: false,
             link: links.adorables.index + `?uuid=${posts.id}&open=auto`,
@@ -359,7 +359,7 @@ const publistPostsNotification = async (posts: IPostDetail, user: IProfile, type
             type: constNotification.type,
             options: constNotification.options,
             public: false,
-            adminCotent: paseDataNotification<IPostDetail>(constNotification, { ...posts, user }, true),
+            adminCotent: paseDataNotification<IPostDetail & { displayName: string }>(constNotification, { ...posts, user, displayName: currentUser.displayName }, true),
         });
     } catch (error) {
         console.log('publistAdoptPetNotification: Error setting publistAdoptPetNotification info in DB');

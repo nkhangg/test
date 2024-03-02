@@ -15,9 +15,10 @@ export interface IEmojiPickerProps {
     options?: TippyProps;
     stylePicker?: PickerProps;
     classnNameIcon?: string;
+    placement?: 'right-end';
 }
 
-export default function EmojiPicker({ icon, options, stylePicker, classnNameIcon, onEmoji }: IEmojiPickerProps) {
+export default function EmojiPicker({ icon, options, stylePicker, classnNameIcon, placement, onEmoji }: IEmojiPickerProps) {
     const [open, setOpen] = useState(false);
 
     const handleClose = () => {
@@ -34,7 +35,7 @@ export default function EmojiPicker({ icon, options, stylePicker, classnNameIcon
                 visible={open}
                 interactive
                 onClickOutside={handleClose}
-                placement="right-end"
+                placement={placement}
                 render={(attr) => {
                     return (
                         <div {...attr}>

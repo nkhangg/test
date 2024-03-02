@@ -132,7 +132,7 @@ export type ApiPetFavorite = (id: string) => Promise<IBaseResponse<any>>;
 
 export type ApiPetAttributes = () => Promise<IBaseResponse<IPetAttribute>>;
 
-export type ApiAdoptions = (page?: number) => Promise<IBaseResponse<PagiantionResponse<IAdoption>>>;
+export type ApiAdoptions = (status: string, page?: number) => Promise<IBaseResponse<PagiantionResponse<IAdoption>>>;
 
 export type ApiAdoption = (data: { userId: string; petId: string; addressId: number }) => Promise<IBaseResponse<IAdoption>>;
 
@@ -151,6 +151,8 @@ export type ApiFilterAdoptionAdmin = (params: Partial<IRequestFilterAdoptionAdmi
 export type ApiCancelAdoptionAdmin = (data: { id: string; reason: string }) => Promise<IBaseResponse<IAdoption>>;
 
 export type ApiChangeStateAdoptionAdmin = (data: { id: string; state?: LabelAdopt; data: string }) => Promise<IBaseResponse<IAdoption>>;
+
+export type ApiAcceptStateAdoptionAdmin = (data: { id: string; state?: LabelAdopt; data: string }) => Promise<IBaseResponse<IAdoption[]>>;
 
 export type ApiReportType = () => Promise<IBaseResponse<IReports>>;
 

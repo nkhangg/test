@@ -135,6 +135,7 @@ export { default as PostDetailDialog } from './dialogs/posts/PostDetailDialog';
 export { default as MapDialog } from './dialogs/maps/MapDialog';
 export { default as Markers } from './dialogs/maps/Markers';
 export { default as CustomReasonDialog } from './dialogs/CustomReasonDialog';
+export { default as Printbill } from './dialogs/orders/Printbill';
 
 // chats
 

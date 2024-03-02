@@ -1,7 +1,7 @@
 'use client';
 import React, { ChangeEvent, ReactNode, useState } from 'react';
 import WraperDialog from '../WraperDialog';
-import { Button, DialogActions, DialogContent, DialogTitle, FormControlLabel, Radio, RadioGroup, Stack } from '@mui/material';
+import { Button, Checkbox, DialogActions, DialogContent, DialogTitle, FormControlLabel, Radio, RadioGroup, Stack } from '@mui/material';
 import { TextArea, TextField, WrapperAnimation } from '../..';
 import Validate from '@/utils/validate';
 import { changeDataAdoptionReasons } from '@/datas/reason';
@@ -15,9 +15,10 @@ export interface IDialogAceptChooserProps {
     title?: string;
     label?: ReactNode | string;
     isShowreason?: boolean;
+    id?: number;
 }
 
-export default function DialogAceptChooser({ className, label, title = 'Choose date you want to show on table', iniData, isShowreason, onDatas }: IDialogAceptChooserProps) {
+export default function DialogAceptChooser({ className, id, label, title = 'Choose date you want to show on table', iniData, isShowreason, onDatas }: IDialogAceptChooserProps) {
     const [dates, setDates] = useState<string | undefined>(iniData);
     const [message, setMessage] = useState('');
 
@@ -89,6 +90,12 @@ export default function DialogAceptChooser({ className, label, title = 'Choose d
                             <TextField message={message} value={dates || ''} type="date" name="date" onChange={handleChangeDate} fullWidth size="small" />
                         </div>
                     </Stack>
+
+                    {id && (
+                        <div className="mt-3">
+                            <FormControlLabel control={<Checkbox defaultChecked />} label="Have 3 same request. Are you want to cancel all other request ?" />
+                        </div>
+                    )}
                     {isShowreason && (
                         <div className="mt-3">
                             <RadioGroup aria-labelledby="demo-radio-buttons-group-label" defaultValue="female" name="radio-buttons-group">

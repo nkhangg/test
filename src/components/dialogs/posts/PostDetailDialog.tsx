@@ -30,8 +30,8 @@ import firebaseService from '@/services/firebaseService';
 import { reportReason } from '@/datas/reason';
 import { links } from '@/datas/links';
 import Tippy from '@tippyjs/react/headless';
-import { faFacebook } from '@fortawesome/free-brands-svg-icons';
-import { FacebookShareButton } from 'react-share';
+import { faFacebook, faTwitter, faXTwitter } from '@fortawesome/free-brands-svg-icons';
+import { FacebookShareButton, TwitterShareButton } from 'react-share';
 
 export interface IPostDetailDialogProps {
     open: boolean;
@@ -153,7 +153,7 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
             }
 
             if (!data.owner && !data.isLike) {
-                firebaseService.publistPostsNotification(data, data.user, 'like');
+                firebaseService.publistPostsNotification(data, data.user, user, 'like');
             }
 
             rawData.refetch();
@@ -178,7 +178,7 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
             }
 
             if (!dataComment.owner && data && !dataComment.isLike) {
-                firebaseService.publistPostsNotification(data, dataComment.user, 'like-comment');
+                firebaseService.publistPostsNotification(data, dataComment.user, user, 'like-comment');
             }
 
             rawComments.refetch();
@@ -225,12 +225,12 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
                 setReplay(null);
             }
 
-            if (!data.owner) {
-                if (replay) {
-                    firebaseService.publistPostsNotification(data, replay.user, 'comment');
-                    return;
-                }
-                firebaseService.publistPostsNotification(data, data.user, 'comment');
+            if (!data.owner && !replay) {
+                firebaseService.publistPostsNotification(data, data.user, user, 'comment');
+            }
+
+            if (replay) {
+                firebaseService.publistPostsNotification(data, replay.user, user, 'comment');
             }
         } catch (error) {
             return toast.warn(contants.messages.errors.server);
@@ -350,7 +350,7 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
                         <p className="font-medium text-1xl mt-3 pb-[22px] md:border-b border-[#B5A8FF] text-[#444444]">{data.title}</p>
                     </div>
 
-                    {rawComments.data && rawComments.data.pages[0].data.data.length > 0 && (
+                    {rawComments.data && rawComments.data.pages[0]?.data?.data.length > 0 && (
                         <div className="px-8 flex-1 w-full h-full hidden md:flex flex-col gap-2 overflow-y-auto overflow-x-hidden scroll py-6">
                             <span ref={refSpanTop}></span>
                             {!rawComments.isLoading &&
@@ -414,9 +414,22 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
                                             >
                                                 <div className="flex items-center gap-2 px-5 hover:bg-gray-100 cursor-pointer transition-all ease-linear py-2">
                                                     <FontAwesomeIcon icon={faFacebook} className="text-[#0965fe]" />
-                                                    <span className="text-sm text-black-main">Share on your facebook</span>
+                                                    <span className="text-sm text-black-main">Share on your Facebook</span>
                                                 </div>
                                             </FacebookShareButton>
+                                            <TwitterShareButton
+                                                url={linkShare}
+                                                style={{
+                                                    width: '100%',
+                                                    height: '100%',
+                                                }}
+                                            >
+                                                <div className="flex items-center gap-2 px-5 hover:bg-gray-100 cursor-pointer transition-all ease-linear py-2">
+                                                    <FontAwesomeIcon icon={faXTwitter} className="text-[#000]" />
+
+                                                    <span className="text-sm text-black-main">Share on your Twitter</span>
+                                                </div>
+                                            </TwitterShareButton>
                                         </div>
                                     )}
                                 >
@@ -436,6 +449,7 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
                             className="bg-[#F7F7F7] py-[14px] px-9 flex items-center justify-between gap-4 text-post-primary"
                         >
                             <EmojiPicker
+                                placement="right-end"
                                 icon={
                                     <WrapperAnimation className="cursor-pointer" hover={{}}>
                                         <FontAwesomeIcon className="w-6 h-6" icon={faFaceSmile} />

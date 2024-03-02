@@ -23,8 +23,6 @@ export default function useInfinities<T>({ queryFN }: { queryFN: (page?: number)
 
         const data = res.data;
 
-        console.log(data);
-
         if (refCountPage.current >= data.pages) setHasNextPage(false);
         setLoading(false);
 
@@ -38,6 +36,7 @@ export default function useInfinities<T>({ queryFN }: { queryFN: (page?: number)
 
     React.useEffect(() => {
         fetchPosts().then(setData);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return {

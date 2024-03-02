@@ -53,6 +53,17 @@ export const updateReadForOrder: ApiUpdateReadOrderAdmin = async (id: number) =>
     return res?.data;
 };
 
+export const updatePrintForOrder: ApiUpdateReadOrderAdmin = async (id: number) => {
+    const res = await axios({
+        method: 'PUT',
+        url: 'admin/orders/print/' + id,
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
 export const getOrdersDetailAdminWithFilter: ApiGetDetailFilterOrderAdmin = async (id: number | undefined) => {
     if (id === 0) return;
     const res = await axios({
