@@ -24,7 +24,7 @@ import ThymeleafTable from './ThymeleafTable';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { StateType } from '@/configs/types';
 import { useDebounce } from '@/hooks';
-import { Box } from '@mui/material';
+import { Box, Checkbox, FormControlLabel } from '@mui/material';
 import { links } from '@/datas/links';
 export interface IOrdersAdminPageProps {}
 
@@ -122,6 +122,16 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
         setOpen(true);
     };
 
+    const handleUnread = (e: ChangeEvent<HTMLInputElement>) => {
+        if (page) {
+            router.push(links.adminFuntionsLink.orders.index);
+        }
+        setFilter({
+            ...filter,
+            read: e.target.checked,
+        });
+    };
+
     return (
         <div className="">
             <OrderAdminPageContext.Provider value={{ refetch }}>
@@ -134,7 +144,6 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                         }}
                         sortProps={{
                             onValue: (sort) => {
-                                console.log(sort);
                                 setFilter({
                                     ...filter,
                                     sort: sort.id,
@@ -158,7 +167,9 @@ export default function OrdersAdminPage(props: IOrdersAdminPageProps) {
                                 });
                             },
                         }}
-                    />
+                    >
+                        <FormControlLabel control={<Checkbox onChange={handleUnread} />} label="Unread" />
+                    </SortAdmin>
                     <HeadHistory
                         onTab={(tab) => {
                             if (page) {

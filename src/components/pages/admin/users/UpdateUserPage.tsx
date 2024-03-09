@@ -68,8 +68,6 @@ export default function UpdateUser({ param }: ICreateOrUpdateUserProps) {
         queryFn: () => getUserManage(param || ''),
     });
 
-    console.log(dataUser.data);
-
     const [avartar, setAvartar] = useState(contants.avartarDefault);
     const [openEditor, setOpenEditor] = useState(false);
     const [openPassword, setOpenPassword] = useState(param === 'create');

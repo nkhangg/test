@@ -12,10 +12,14 @@ import Link from 'next/link';
 import { links } from '@/datas/links';
 import { reportDonation } from '@/apis/transaction';
 import { faDog, faShield, faShieldCat, faShieldDog } from '@fortawesome/free-solid-svg-icons';
+import { RowReportAdoption, Table, TableV2 } from '..';
+import { HeadItem } from '../inputs/tables/TableV2';
 export interface IReportAdoptsProps {}
 
 export default function ReportAdopts(props: IReportAdoptsProps) {
     const date = new Date();
+
+    const dataHeadTable = ['Status', `${moment(date).format('MMM Do YY')}`, `${moment(date).format('MM/yyyy')}`, `${moment(date).format('yyyy')}`];
 
     const { data, isLoading, error } = useQuery({
         queryKey: ['reports/adopt'],
@@ -35,7 +39,7 @@ export default function ReportAdopts(props: IReportAdoptsProps) {
                 </>
             }
         >
-            <div className="flex flex-col gap-8">
+            {/* <div className="flex flex-col gap-8">
                 {dataDashboard &&
                     dataDashboard.map((item, index) => {
                         return (
@@ -77,6 +81,20 @@ export default function ReportAdopts(props: IReportAdoptsProps) {
                             </div>
                         );
                     })}
+            </div> */}
+            <div className="border border-gray-primary rounded-lg overflow-hidden">
+                {dataDashboard && (
+                    <Table
+                        styleHead={{
+                            align: 'center',
+                        }}
+                        dataHead={dataHeadTable}
+                    >
+                        {dataDashboard?.map((item) => {
+                            return <RowReportAdoption key={item.title} data={item} />;
+                        })}
+                    </Table>
+                )}
             </div>
         </DashboardCard>
     );

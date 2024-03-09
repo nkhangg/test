@@ -1,7 +1,7 @@
 'use client';
 import { acceptAdoptionAdmin, cancelAdoptionAdmin, comfirmAdoptionAdmin } from '@/apis/admin/adoption';
 import { cancelAdoptionPet } from '@/apis/pets';
-import { CustomReasonDialog, DialogAceptChooser, MiniLoading, WrapperAnimation } from '@/components';
+import { CustomReasonDialog, DetailUserAdoptionDialog, DialogAceptChooser, MiniLoading, WrapperAnimation } from '@/components';
 import WraperDialog from '@/components/dialogs/WraperDialog';
 /* eslint-disable @next/next/no-img-element */
 import { IAdoption } from '@/configs/interface';
@@ -17,7 +17,7 @@ import classNames from 'classnames';
 import moment from 'moment';
 import { Nunito_Sans } from 'next/font/google';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { MouseEvent, MouseEventHandler, useState } from 'react';
 import { toast } from 'react-toastify';
 
 const nunito = Nunito_Sans({
@@ -41,6 +41,7 @@ export interface IAdoptionPageItemProps {
 
 const Label = ({ type, showDetailType = false }: { type: LabelAdopt; showDetailType?: boolean }) => {
     const cancelArr = ['cancelled by admin', 'cancelled by customer'];
+
     return (
         <div
             className={classNames('capitalize py-1 px-3 text-xs md:py-2 md:px-5 rounded-full  md:text-sm text-black-main font-medium', {
@@ -68,6 +69,8 @@ export default function AdoptionPageItem({
 }: IAdoptionPageItemProps) {
     const [loadmore, setLoadmore] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    const [openDetailUser, setOpenDetailUser] = useState(false);
 
     const [types, setTypes] = useState<LabelAdopt>(data.state.toLowerCase() as LabelAdopt);
 
@@ -198,8 +201,16 @@ export default function AdoptionPageItem({
         onBeforeComfirm();
     };
 
+    const handleOpenDetailUser: MouseEventHandler<HTMLDivElement> = (e) => {
+        e.stopPropagation();
+        setOpenDetailUser(true);
+    };
+
     return (
-        <div className="relative overflow-hidden rounded-lg p-4 shadow-primary flex gap-7 min-h-[100px] border border-gray-primary transition-all ease-linear w-full items-center">
+        <div
+            onDoubleClick={handleOpenDetailUser}
+            className="relative overflow-hidden rounded-lg p-4 select-none shadow-primary flex gap-7 min-h-[100px] border border-gray-primary transition-all ease-linear w-full items-center"
+        >
             <div
                 className={classNames('h-full aspect-square rounded-xl overflow-hidden hidden md:block hover:shadow-primary transition-all ease-linear ', {
                     ['w-1/3']: !styles?.image,
@@ -369,6 +380,8 @@ export default function AdoptionPageItem({
             )}
 
             {advanced && openAdvanced && <DialogAceptChooser />}
+
+            {advanced && openDetailUser && <DetailUserAdoptionDialog data={data} open={openDetailUser} setOpen={setOpenDetailUser} />}
 
             <WraperDialog open={openModal} setOpen={setOpenModal}>
                 <div className="p-6 flex flex-col gap-4 items-center text-black-main">

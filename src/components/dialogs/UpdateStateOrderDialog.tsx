@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import WraperDialog from './WraperDialog';
 import { Chip, Grid, capitalize } from '@mui/material';
-import { Comfirm, ReasonDialog, RowOrderSummaryUpdateStatus, Table, WrapperAnimation } from '..';
+import { Comfirm, PrintButton, ReasonDialog, RowOrderSummaryUpdateStatus, Table, WrapperAnimation } from '..';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { statusColor } from '../../../tailwind.config';
@@ -17,27 +17,36 @@ import { OrderAdminPageContext } from '../pages/admin/orders/OrdersAdminPage';
 import Validate from '@/utils/validate';
 import moment from 'moment';
 import firebaseService from '@/services/firebaseService';
+import { IRowStatusOrders } from '@/configs/interface';
 
-const Header = ({ title, chip, options = { border: true } }: { title: string; chip?: StateType; options?: { border?: boolean } }) => {
+const Header = ({ title, chip, options = { border: true }, buttonPrint }: { title: string; chip?: StateType; options?: { border?: boolean }; buttonPrint?: IRowStatusOrders }) => {
     return (
         <div
             className={classNames('flex items-center justify-between  text-2xl font-medium w-full  pb-4', {
                 ['border-b border-gray-primary']: options?.border,
             })}
         >
-            <div className="flex items-center gap-3">
-                <h2 className="capitalize">{title}</h2>
-                {chip && (
-                    <Chip
-                        label={formatStatus(chip)}
-                        variant="outlined"
-                        size="medium"
-                        sx={{
-                            backgroundColor: statusColor[chip],
-                            borderColor: statusColor[chip],
-                            textTransform: 'capitalize',
-                        }}
-                    />
+            <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-3">
+                    <h2 className="capitalize">{title}</h2>
+                    {chip && (
+                        <Chip
+                            label={formatStatus(chip)}
+                            variant="outlined"
+                            size="medium"
+                            sx={{
+                                backgroundColor: statusColor[chip],
+                                borderColor: statusColor[chip],
+                                textTransform: 'capitalize',
+                            }}
+                        />
+                    )}
+                </div>
+
+                {buttonPrint && (
+                    <div>
+                        <PrintButton data={buttonPrint} />
+                    </div>
                 )}
             </div>
         </div>
@@ -189,7 +198,20 @@ export default function UpdateStateOrderDialog({ idOpen, open, setOpen }: IUpdat
                 {dataDetail && (
                     <Grid container spacing={4}>
                         <Grid item xs={12} md={12} lg={5}>
-                            <Header title="DELIVERY DETAILS" chip={status} />
+                            <Header
+                                title="DELIVERY DETAILS"
+                                chip={status}
+                                buttonPrint={{
+                                    id: dataDetail.id,
+                                    placedData: dataDetail.placedDate,
+                                    price: dataDetail.total,
+                                    status: dataDetail.state as StateType,
+                                    user: dataDetail.username || '',
+                                    print: dataDetail.print,
+                                    read: dataDetail.read,
+                                    token: dataDetail.token,
+                                }}
+                            />
                             <div className="w-full text-black-main py-6 border-b border-gray-primary mb-6">
                                 <ul className="w-full flex flex-col gap-5">
                                     <li className="flex items-start gap-3">

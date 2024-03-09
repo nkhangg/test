@@ -74,6 +74,7 @@ import {
     IPostRequest,
     IImagePost,
     IReportAdopt,
+    IRowDetailUserAdoption,
 } from './interface';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { RolesName } from './enum';
@@ -245,6 +246,8 @@ export type ApiUpdateUserManage = (data: IUserManage) => Promise<IBaseResponse<a
 export type ApiCreateUserManage = (data: IUserManage) => Promise<IBaseResponse<any>>;
 
 export type ApiUpdateRoleUser = (data: { id: string; roleId: RolesName }) => Promise<IBaseResponse<any>>;
+
+export type ApiDataChartUser = (id: string) => Promise<IBaseResponse<IRowDetailUserAdoption[]>>;
 
 export type ApiHistories = () => Promise<IBaseResponse<IProfile>>;
 

@@ -61,36 +61,39 @@ function ImageDetect({ index, data, handleCloseImage, onDedected, options = { sh
     }, []);
 
     return (
-        <div
-            {...props}
-            onDragOver={(e) => e.preventDefault()}
-            draggable
-            className={classNames('w-20 relative select-none aspect-square rounded-lg border-2 flex items-center justify-center text-2xl text-black-main overflow-hidden ', {
-                ['border-post-primary']: index === 0,
-                ['border-gray-primary']: index !== 0,
-            })}
-        >
-            {!data.isVideo && (
-                <img
-                    className={classNames('w-full  h-full object-cover aspect-square', {
-                        ['blur-sm']: !loading && !isAnimal && data.data,
-                    })}
-                    src={data.link}
-                    alt={data.link}
-                />
-            )}
-            {data.isVideo && <video className="w-full h-full object-cover aspect-square" src={data.link} controls={false} />}
-            {options.showClose && (
-                <span onClick={() => handleCloseImage(data, index)} className="absolute top-0 right-0 px-2 text-1xl cursor-pointer text-white">
-                    <FontAwesomeIcon icon={faXmark} />
-                </span>
-            )}
+        <div className="flex flex-col gap-1 items-center">
+            <div
+                {...props}
+                onDragOver={(e) => e.preventDefault()}
+                draggable
+                className={classNames('w-20 relative select-none aspect-square rounded-lg border-2 flex items-center justify-center text-2xl text-black-main overflow-hidden ', {
+                    ['border-post-primary']: index === 0,
+                    ['border-gray-primary']: index !== 0,
+                })}
+            >
+                {!data.isVideo && (
+                    <img
+                        className={classNames('w-full  h-full object-cover aspect-square', {
+                            ['blur-sm']: !loading && !isAnimal && data.data,
+                        })}
+                        src={data.link}
+                        alt={data.link}
+                    />
+                )}
+                {data.isVideo && <video className="w-full h-full object-cover aspect-square" src={data.link} controls={false} />}
+                {options.showClose && (
+                    <span onClick={() => handleCloseImage(data, index)} className="absolute top-0 right-0 px-2 text-1xl cursor-pointer text-white">
+                        <FontAwesomeIcon icon={faXmark} />
+                    </span>
+                )}
 
-            {loading && (
-                <div className="absolute inset-0 bg-white-opacity-50">
-                    <MiniLoading className="w-full h-full flex items-center justify-center" />
-                </div>
-            )}
+                {loading && (
+                    <div className="absolute inset-0 bg-white-opacity-50">
+                        <MiniLoading className="w-full h-full flex items-center justify-center" />
+                    </div>
+                )}
+            </div>
+            <span className="text-sm text-gray-primary">{index + 1}</span>
         </div>
     );
 }

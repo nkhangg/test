@@ -4,10 +4,27 @@ import React, { ReactNode } from 'react';
 export interface ITableProps {
     dataHead: string[];
     children: ReactNode;
-    styleHead?: TableCellProps;
+    styleHead?: TableCellProps & {
+        ignores?: {
+            index: number;
+            style: TableCellProps;
+        }[];
+    };
 }
 
 export default function Table({ dataHead, children, styleHead }: ITableProps) {
+    const handleStyleHead = (index: number) => {
+        if (styleHead?.ignores && styleHead.ignores.length) {
+            const style = styleHead.ignores.find((item) => item.index === index);
+
+            if (!style) return styleHead;
+
+            return style.style;
+        }
+
+        return styleHead;
+    };
+
     return (
         <Tb
             stickyHeader
@@ -23,9 +40,9 @@ export default function Table({ dataHead, children, styleHead }: ITableProps) {
                 }}
             >
                 <TableRow>
-                    {dataHead.map((item) => {
+                    {dataHead.map((item, index) => {
                         return (
-                            <TableCell {...styleHead} key={item}>
+                            <TableCell {...handleStyleHead(index)} key={item}>
                                 <Typography variant="subtitle2" fontSize={'16px'} fontWeight={600}>
                                     {item}
                                 </Typography>

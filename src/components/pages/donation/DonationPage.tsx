@@ -14,15 +14,7 @@ import { Box } from '@mui/material';
 
 export interface IDonationPageProps {}
 
-const dataHeadTable = [
-    { title: 'No' },
-    { title: 'Beneficiary bank' },
-    { title: 'To account' },
-    { title: 'From account' },
-    { title: 'When' },
-    { title: 'Amout' },
-    { title: 'Description' },
-];
+const dataHeadTable = [{ title: 'No' }, { title: 'Beneficiary bank' }, { title: 'To account' }, { title: 'When' }, { title: 'Amout' }, { title: 'Description' }];
 
 export default function DonationPage(props: IDonationPageProps) {
     const baseUrl = links.donation;
@@ -62,7 +54,7 @@ export default function DonationPage(props: IDonationPageProps) {
                 <div className="w-3/4">
                     <TableV2 dataHead={dataHeadTable as HeadItem[]}>
                         {data.map((item, index) => {
-                            return <RowListTransaction key={item.id} page={page} index={index} data={item} />;
+                            return <RowListTransaction showIdTransaction={false} key={item.id} page={page} index={index} data={item} />;
                         })}
                     </TableV2>
 
