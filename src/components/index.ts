@@ -12,6 +12,7 @@ export { default as SocialButton } from './buttons/SocialButton';
 export { default as RoudedButton } from './buttons/RoudedButton';
 export { default as PrimaryPostButton } from './buttons/PrimaryPostButton';
 export { default as OptionButton } from './buttons/OptionButton';
+export { default as PrintButton } from './buttons/PrintButton';
 
 // inputs
 export { default as Find } from './inputs/Find';
@@ -56,6 +57,9 @@ export { default as RowListProduct } from './inputs/tables/rows/RowListProduct';
 export { default as RowPriceHistories } from './inputs/tables/rows/RowPriceHistories';
 export { default as RowListPet } from './inputs/tables/rows/RowListPet';
 export { default as RowListTransaction } from './inputs/tables/rows/RowListTransaction';
+export { default as RowReportAdoption } from './inputs/tables/rows/RowReportAdoption';
+export { default as RowDetailAdopUser } from './inputs/tables/rows/RowDetailAdopUser';
+export { default as RowDetailPostUser } from './inputs/tables/rows/RowDetailPostUser';
 
 // bages
 export { default as CustomBadge } from './badges/CustomBadge';
@@ -136,6 +140,7 @@ export { default as MapDialog } from './dialogs/maps/MapDialog';
 export { default as Markers } from './dialogs/maps/Markers';
 export { default as CustomReasonDialog } from './dialogs/CustomReasonDialog';
 export { default as Printbill } from './dialogs/orders/Printbill';
+export { default as DetailUserAdoptionDialog } from './dialogs/adoption/DetailUserAdoptionDialog';
 
 // chats
 

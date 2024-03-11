@@ -1,7 +1,16 @@
 import axios from '@/configs/axios';
 import { RolesName } from '@/configs/enum';
 import { IUserManage } from '@/configs/interface';
-import { ApiAllUser, ApiCreateUserManage, ApiDelete, ApiGetUserManage, ApiGetUserProfileMessageManage, ApiUpdateRoleUser, ApiUpdateUserManage } from '@/configs/types';
+import {
+    ApiAllUser,
+    ApiCreateUserManage,
+    ApiDataChartUser,
+    ApiDelete,
+    ApiGetUserManage,
+    ApiGetUserProfileMessageManage,
+    ApiUpdateRoleUser,
+    ApiUpdateUserManage,
+} from '@/configs/types';
 import { dataURLtoFile } from '@/utils/format';
 
 export const usersManage: ApiAllUser = async (page: number | undefined, filter: {}) => {
@@ -108,6 +117,17 @@ export const updateRoleUser: ApiUpdateRoleUser = async (data: { id: string; role
             userId: data.id,
             roleId: data.roleId,
         },
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const getDataChartUsers: ApiDataChartUser = async (id: string) => {
+    const res = await axios({
+        method: 'GET',
+        url: 'admin/users/chart-info/' + id,
     });
 
     if (!res) return null;

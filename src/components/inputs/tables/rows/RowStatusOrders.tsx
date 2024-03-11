@@ -15,7 +15,7 @@ import Tippy from '@tippyjs/react/headless';
 import { getTokenPrint } from '@/apis/outside';
 import { appService } from '@/services/appService';
 import WraperDialog from '@/components/dialogs/WraperDialog';
-import { Printbill } from '@/components';
+import { PrintButton, Printbill } from '@/components';
 
 export interface IRowStatusProps {
     data: IRowStatusOrders;
@@ -26,14 +26,6 @@ export interface IRowStatusProps {
 
 export default function RowStatus({ data, index, page, handleOpen }: IRowStatusProps) {
     const [isRead, setIsRead] = useState(data.read);
-    const [print, setPrint] = useState(data.print);
-
-    const [link, setLink] = useState<string | null>(null);
-
-    const [openModal, setOpenModal] = useState(false);
-
-    const [openOption, setOpenOption] = useState(false);
-    const [openPrintModal, setOpenPrintModal] = useState(false);
 
     const handleUpdateRead = async () => {
         if (!handleOpen) return;
@@ -53,28 +45,6 @@ export default function RowStatus({ data, index, page, handleOpen }: IRowStatusP
             toast.error(contants.messages.errors.server);
         }
     };
-
-    const handlePrint = async (type: 'bill' | 'invoice') => {
-        if (type === 'invoice') {
-            setLink((process.env.NEXT_PUBLIC_BASE_API || '') + `orders/print/${data.id}`);
-            return;
-        }
-
-        if (!data.token) return;
-
-        setOpenPrintModal(true);
-    };
-
-    const handleCloseOption = () => {
-        setOpenOption(false);
-        setLink(null);
-    };
-
-    useEffect(() => {
-        document.addEventListener('afterprint', () => {
-            console.log('after print');
-        });
-    }, []);
 
     return (
         <TableRow>
@@ -119,7 +89,7 @@ export default function RowStatus({ data, index, page, handleOpen }: IRowStatusP
                     <span onClick={handleOpen ? handleUpdateRead : undefined} className="text-violet-primary hover:underline cursor-pointer select-none font-medium">
                         Open
                     </span>
-                    <Tippy
+                    {/* <Tippy
                         interactive
                         placement="right"
                         onClickOutside={handleCloseOption}
@@ -157,13 +127,14 @@ export default function RowStatus({ data, index, page, handleOpen }: IRowStatusP
                             className="w-6 h-6 hover:bg-gray-300 rounded-full transition-all ease-linear text-black-main flex items-center justify-center p-2"
                         >
                             <FontAwesomeIcon icon={faEllipsisVertical} />
+
+                            {openPrintModal && <Printbill open={openPrintModal} setOpen={setOpenPrintModal} data={data} />}
                         </span>
-                    </Tippy>
+                    </Tippy> */}
+                    <PrintButton data={data} />
                     {!isRead && <span className="bg-red-primary w-2 h-2 rounded-full block"></span>}
                 </div>
             </TableCell>
-
-            {openPrintModal && <Printbill open={openPrintModal} setOpen={setOpenPrintModal} data={data} />}
         </TableRow>
     );
 }

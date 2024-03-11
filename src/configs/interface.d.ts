@@ -431,6 +431,7 @@ export interface IDetailOrder {
     displayName?: string;
     print?: number;
     read?: boolean;
+    token?: string;
 }
 
 export interface IProductDetailOrders {
@@ -553,6 +554,12 @@ export interface IOrderAdminFillterForm {
     dateStart: string;
     dateEnd: string;
     status: string;
+    read?: boolean;
+}
+
+export interface IRowDetailUserAdoption {
+    title: string;
+    data: number[];
 }
 
 export interface IReviewAdminFillterForm {

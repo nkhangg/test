@@ -24,6 +24,7 @@ export const getOrdersAdminWithFilter: ApiGetFilterOrderAdmin = async (data: IOr
         maxDate: data.dateEnd,
         minDate: data.dateStart,
         page: page ? parseInt(page) - 1 : 0,
+        read: data.read || false,
         ...other,
     };
 

@@ -8,6 +8,7 @@ import { INotification } from '@/configs/interface';
 import { useAppSelector } from '@/hooks/reduxHooks';
 import { RootState } from '@/configs/types';
 import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
 export interface INotificationPageProps {}
 
@@ -45,9 +46,12 @@ export default function NotificationPage(props: INotificationPageProps) {
         <BaseProfilePage
             title="NOTIFICATIONS"
             action={
-                <p onClick={handleMarkAllAsRead} className="text-fill-heart text-[16px] hover:underline cursor-pointer font-medium">
-                    Mark all as read
-                </p>
+                <div className="flex items-center gap-5">
+                    {/* <FormControlLabel style={{ fontSize: '16px' }} control={<Checkbox size="small" />} label="Unread" /> */}
+                    <p onClick={handleMarkAllAsRead} className="text-fill-heart text-[16px] hover:underline cursor-pointer font-medium">
+                        Mark all as read
+                    </p>
+                </div>
             }
         >
             <div className="py-6 flex flex-col gap-2">

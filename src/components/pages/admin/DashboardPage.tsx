@@ -11,11 +11,12 @@ function DashboardPage(props: IDashboarddPageProps) {
         <PageContainer title="Dashboard" description="this is Dashboard">
             <Box>
                 <Report />
-                <div className="w-full mt-10">
-                    <ReportAdopts />
-                </div>
+
                 <div className="w-full mt-10">
                     <ReportDonation />
+                </div>
+                <div className="w-full mt-10">
+                    <ReportAdopts />
                 </div>
                 <Grid container spacing={3} mt={3}>
                     <Grid item xs={12} md={12} lg={12}>

@@ -15,6 +15,7 @@ import { toCurrency } from '@/utils/format';
 
 const dataHeadTable = [
     { title: 'No' },
+    { title: 'Id transaction' },
     { title: 'Beneficiary bank' },
     { title: 'To account number' },
     { title: 'From account number' },
