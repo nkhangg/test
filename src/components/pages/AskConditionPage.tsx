@@ -202,8 +202,8 @@ export default function AskConditionPage(props: IAskConditionPageProps) {
             >
                 <div className="p-5 text-black-main">
                     <h4 className="text-2xl font-bold mb-5">Confirm</h4>
-                    <div className="flex items-start  justify-between gap-5">
-                        <div className="w-1/2  flex justify-start flex-col gap-3">
+                    <div className="flex items-start justify-between flex-col md:flex-row gap-5">
+                        <div className=" w-full md:w-1/2  flex justify-start flex-col gap-3">
                             <span className="flex items-center gap-3 capitalize">
                                 <span className="font-medium">subscriber: </span>
                                 <p>{user?.fullname || user?.displayName}</p>
@@ -239,23 +239,33 @@ export default function AskConditionPage(props: IAskConditionPageProps) {
                                     })}
                             </div>
                         </div>
-                        <div className="capitalize flex-1 flex items-center gap-5">
+                        <div className="capitalize flex-1 flex flex-col gap-5">
                             <ul className=" flex flex-col gap-3">
-                                {petAdopt &&
-                                    Object.keys(petAdopt).map((item) => {
-                                        const ingnorKeys = ['like', 'image', 'description', 'canAdopt', 'images', 'fosterDate'] as (keyof IPetDetail)[];
-
-                                        if (!ingnorKeys.includes(item as keyof IPetDetail)) {
-                                            return (
-                                                <li key={item} className="flex items-center gap-3">
-                                                    <span className="font-medium">{item}: </span> <p>{petAdopt[item as keyof IPetDetail]}</p>
-                                                </li>
-                                            );
-                                        }
-                                    })}
+                                {petAdopt && (
+                                    <>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <li className="flex items-center gap-3 justify-center">
+                                                <span className="font-medium">Id: </span> <p>{petAdopt.id}</p>
+                                            </li>
+                                            <li className="flex items-center gap-3 justify-center">
+                                                <span className="font-medium">Name: </span> <p>{petAdopt.name}</p>
+                                            </li>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <li className="flex items-center gap-3 justify-center">
+                                                <span className="font-medium">Size: </span> <p>{petAdopt.size}</p>
+                                            </li>
+                                            <li className="flex items-center gap-3 justify-center">
+                                                <span className="font-medium">Type: </span> <p>{petAdopt.type}</p>
+                                            </li>
+                                        </div>
+                                    </>
+                                )}
                             </ul>
-                            <div className="w-[200px] h-[200px] overflow-hidden rounded">
-                                <img className="w-full h-full object-cover" src={petAdopt?.image} alt={petAdopt?.image} />
+                            <div className="flex items-center justify-center">
+                                <div className="w-full aspect-square md:w-[200px] overflow-hidden rounded">
+                                    <img className="w-full h-full object-cover" src={petAdopt?.image} alt={petAdopt?.image} />
+                                </div>
                             </div>
                         </div>
                     </div>

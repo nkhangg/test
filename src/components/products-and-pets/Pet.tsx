@@ -123,7 +123,16 @@ export default function Pet({ data }: IPetProps) {
 
                         <div className="flex items-center justify-between text-xs">
                             <span className="w-[80%] line-clamp-1">
-                                I have waited for <strong className="text-fill-heart font-bold">{data.fosterDate}</strong> days
+                                {!data.adoptAt && (
+                                    <>
+                                        I have waited for <strong className="text-fill-heart font-bold">{data.fosterDate}</strong> days
+                                    </>
+                                )}
+                                {data.adoptAt && (
+                                    <>
+                                        Adopt at <strong className="text-fill-heart font-bold">{data.adoptAt}</strong>
+                                    </>
+                                )}
                             </span>
 
                             <div className="flex items-center text cursor-pointer gap-1">

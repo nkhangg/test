@@ -53,6 +53,7 @@ export interface IPet {
     description: string;
     fosterDate: number;
     like: boolean;
+    adoptAt?: string | null;
 }
 
 export interface IProduct {

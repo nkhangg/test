@@ -195,7 +195,7 @@ const Validate = {
 
         const date = new Date(value);
 
-        if (date < new Date()) return { message: 'Date must be greater than or equal to the current date', error: true };
+        if (date < new Date()) return { message: 'Date must be greater than to the current date', error: true };
 
         return { message: '', error: false };
     },
