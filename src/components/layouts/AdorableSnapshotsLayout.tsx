@@ -10,6 +10,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Tooltip } from '@mui/material';
 import { setOpenPostModal } from '@/redux/slice/adorableSlide';
+import { faUser } from '@fortawesome/free-regular-svg-icons';
+import Link from 'next/link';
+import { links } from '@/datas/links';
 
 export interface IAdorableSnapshotsLayoutProps {
     children: ReactNode;
@@ -46,7 +49,6 @@ export default function AdorableSnapshotsLayout({ children }: IAdorableSnapshots
                     <Tooltip placement="top" title="New post">
                         <div
                             onClick={() => {
-                                console.log(12321);
                                 dispatch(setOpenPostModal(true));
                             }}
                         >
@@ -57,6 +59,16 @@ export default function AdorableSnapshotsLayout({ children }: IAdorableSnapshots
                                 <FontAwesomeIcon icon={faPlus} />
                             </WrapperAnimation>
                         </div>
+                    </Tooltip>
+                    <Tooltip placement="top" title="Profile">
+                        <Link href={links.users.profiles.personalpage + user?.username}>
+                            <WrapperAnimation
+                                hover={{}}
+                                className="flex items-center justify-center border cursor-pointer p-7 text-[15px] rounded-full bg-[#F6F6F6] text-violet-post-primary border-violet-post-primary font-medium  w-[56px] h-[56px]"
+                            >
+                                <FontAwesomeIcon icon={faUser} />
+                            </WrapperAnimation>
+                        </Link>
                     </Tooltip>
 
                     <ChatBox />

@@ -191,6 +191,8 @@ export type ApiChangePassword = (data: IFormChangePassword) => Promise<IBaseResp
 
 export type ApiGetCurUser = () => Promise<IBaseResponse<IProfile>>;
 
+export type ApiGetCurUserWithUsername = (username: string) => Promise<IBaseResponse<IProfile>>;
+
 export type ApiFilterPage = (data: IDataRequestFilter) => Promise<IBaseResponse<IDataFilterPage>>;
 
 export type ApiHomePage = () => Promise<IBaseResponse<IHomepage>>;

@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
 import { listTabsPostProfile } from '@/datas/header';
 import { useQueryState } from 'nuqs';
+import { getUserWithUsername } from '@/apis/user';
 
 export interface IAdorableSnapshotsProfilePageProps {
     id: string;
@@ -33,6 +34,13 @@ export default function AdorableSnapshotsProfilePage({ id }: IAdorableSnapshotsP
         },
     });
 
+    const profileData = useQuery({
+        queryKey: ['profile-data', id],
+        queryFn: () => {
+            return getUserWithUsername(id);
+        },
+    });
+
     if (rawData.isError || rawData.data?.errors) {
         notFound();
     }
@@ -52,8 +60,12 @@ export default function AdorableSnapshotsProfilePage({ id }: IAdorableSnapshotsP
             }
         }
 
+        if (!profileData.data || profileData.data.errors) return null;
+
+        return profileData.data.data;
+
         // do something
-    }, [id, user]);
+    }, [id, user, profileData]);
 
     const dataTabs = useMemo(() => {
         const tabs = [listTabsPostProfile[0]];
