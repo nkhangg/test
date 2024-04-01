@@ -10,6 +10,7 @@ import {
     ApiGetAddressesById,
     ApiGetCartUser,
     ApiGetCurUser,
+    ApiGetCurUserWithUsername,
     ApiGetDefaultAddress,
     ApiGetFavorite,
     ApiGetRecentViews,
@@ -92,6 +93,17 @@ export const curUser: ApiGetCurUser = async () => {
     const res = await axios({
         method: 'GET',
         url: 'user/profile',
+    });
+
+    if (!res) return null;
+
+    return res?.data;
+};
+
+export const getUserWithUsername: ApiGetCurUserWithUsername = async (username: string) => {
+    const res = await axios({
+        method: 'GET',
+        url: 'user/profile/' + username,
     });
 
     if (!res) return null;
