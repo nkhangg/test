@@ -182,7 +182,7 @@ const addNotification = async (data: INotification) => {
 
     try {
         //await addDoc(collection(db, 'notifications')
-        await addDoc(collection(db, 'config-constant-notifications'), {
+        await addDoc(collection(db, 'notifications'), {
             content: data.content,
             createdAt: serverTimestamp(),
             deleted: false,
@@ -193,14 +193,14 @@ const addNotification = async (data: INotification) => {
             title: data.title,
             type: data.type,
             options: options,
-            // public: true,
-            public: false,
-            meta: {
-                keys: [
-                    { name: 'username', color: '#cccccc' },
-                    { name: 'displayName', color: '#cccccc' },
-                ],
-            },
+            public: true,
+            // public: false,
+            // meta: {
+            //     keys: [
+            //         { name: 'username', color: '#cccccc' },
+            //         { name: 'displayName', color: '#cccccc' },
+            //     ],
+            // },
         });
     } catch (error) {
         console.log(error);
