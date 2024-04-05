@@ -335,12 +335,26 @@ export default function PostDetailDialog({ open, setOpen, onClose }: IPostDetail
                             {data.owner && (
                                 <OptionButton
                                     handleDelete={handleDeletePost}
-                                    handleReport={handleReprotPost}
+                                    // handleReport={handleReprotPost}
                                     handleEdit={handleEdit}
                                     options={{
                                         border: true,
                                         reason: reportReason,
                                         showEdit: data.edit,
+                                        showReport: false,
+                                        typeComfirm: contants.roles.manageRoles.includes(user?.role || '') ? 'reason' : 'comfirm',
+                                    }}
+                                />
+                            )}
+
+                            {!data.owner && (
+                                <OptionButton
+                                    showDelete={false}
+                                    handleReport={handleReprotPost}
+                                    options={{
+                                        border: true,
+                                        reason: reportReason,
+                                        showEdit: false,
                                         showReport: true,
                                         typeComfirm: contants.roles.manageRoles.includes(user?.role || '') ? 'reason' : 'comfirm',
                                     }}

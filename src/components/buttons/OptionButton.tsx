@@ -15,6 +15,7 @@ export interface IOptionButtonProps {
     icon?: IconDefinition;
     children?: ReactNode;
     className?: string;
+    showDelete?: boolean;
     options?: {
         border?: boolean;
         hover?: boolean;
@@ -30,6 +31,7 @@ export default function OptionButton({
     handleDelete,
     handleReport,
     handleEdit,
+    showDelete = true,
     options = { border: false, hover: true, showReport: false, size: 'medium', typeComfirm: 'comfirm', reason: reportReason },
     icon = faEllipsisVertical,
     children,
@@ -84,10 +86,12 @@ export default function OptionButton({
                                     <span>Report</span>
                                 </li>
                             )}
-                            <li onClick={handleClickDelete} className="hover:bg-[#f2f2f2] cursor-pointer transition-all ease-linear px-6 py-2 flex items-center gap-3">
-                                <FontAwesomeIcon icon={faTrash} />
-                                <span>Delete</span>
-                            </li>
+                            {showDelete && (
+                                <li onClick={handleClickDelete} className="hover:bg-[#f2f2f2] cursor-pointer transition-all ease-linear px-6 py-2 flex items-center gap-3">
+                                    <FontAwesomeIcon icon={faTrash} />
+                                    <span>Delete</span>
+                                </li>
+                            )}
                         </ul>
                     );
                 }}
