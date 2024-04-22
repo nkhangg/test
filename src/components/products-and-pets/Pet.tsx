@@ -107,7 +107,7 @@ export default function Pet({ data }: IPetProps) {
                         <ul className="flex flex-col gap-2 mt-2 text-black-main text-[13px]">
                             <li className="flex items-center gap-1">
                                 <FontAwesomeIcon className="h-[8px] w-[8px] text-fill-heart" icon={faHeart} />
-                                <p className="">{capitalize(`${data.size} ${data.sex} ${data.type}`)}</p>
+                                <p className="capitalize">{`${data.size} ${data.sex} ${data.type}`}</p>
                             </li>
                             <li className="flex items-center gap-1">
                                 <FontAwesomeIcon className="h-[8px] w-[8px] text-fill-heart" icon={faHeart} />

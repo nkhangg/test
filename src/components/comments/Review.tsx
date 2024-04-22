@@ -129,7 +129,7 @@ export default function Review({ data, option, handleAfterReplay, handleAffterDe
                             })}
                         />
                         <div className="flex flex-col">
-                            <h3 className="font-semibold">{data.name}</h3>
+                            <h3 className="font-semibold">{data.displayName || data.name}</h3>
                             {data.rating && data.sizes ? (
                                 <div className="flex items-center gap-4">
                                     <Rating

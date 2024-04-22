@@ -396,7 +396,11 @@ const publistDeleteOrReportPostsNotification = async (posts: IPostDetail, user: 
         } as INotification;
 
         return await addDoc(collection(db, 'notifications'), {
-            content: paseDataNotification<IPostDetail & { reason: string }>(constNotification, { ...posts, user, reason }, false),
+            content: paseDataNotification<IPostDetail & { reason: string; displayName: string }>(
+                constNotification,
+                { ...posts, user, displayName: user.displayName, reason },
+                false,
+            ),
             createdAt: serverTimestamp(),
             deleted: false,
             link: type === 'report' ? links.adorables.index + `?uuid=${posts.id}&open=auto` : null,
@@ -408,7 +412,11 @@ const publistDeleteOrReportPostsNotification = async (posts: IPostDetail, user: 
             type: constNotification.type,
             options: constNotification.options,
             public: false,
-            adminCotent: paseDataNotification<IPostDetail & { reason: string }>(constNotification, { ...posts, user, reason }, true),
+            adminCotent: paseDataNotification<IPostDetail & { reason: string; displayName: string }>(
+                constNotification,
+                { ...posts, user, displayName: user.displayName, reason },
+                true,
+            ),
         });
     } catch (error) {
         console.log('publistDeleteOrReportPostsNotification: Error setting publistDeleteOrReportPostsNotification info in DB');
