@@ -74,26 +74,16 @@ export default function PreviewImage({ images, width = 'md:w-[60%]' }: IPreviewI
                 [width]: true,
             })}
         >
-            <AnimatePresence initial={false} custom={direction}>
-                <div className="w-full h-full rounded-xl overflow-hidden relative">
-                    <motion.img
-                        variants={variants}
-                        animate="animate"
-                        initial="initial"
-                        exit="exit"
-                        src={images[curImage]}
-                        alt="slides"
-                        className="w-full h-[200px] md:h-full md:max-h-[392px] object-cover"
-                        key={images[curImage]}
-                        custom={direction}
-                    />
+            <div className=" w-full h-fit">
+                <figure className="relative w-full h-[200px] md:h-full md:max-h-[392px] rounded-xl overflow-hidden">
+                    <img className="w-full h-full object-cover" src={images[curImage]} alt={images[curImage]} />
 
-                    <div className="absolute px-5 top-[50%] flex items-center justify-between w-full">
+                    <div className="absolute top-0 flex items-center justify-between w-full h-full px-5">
                         <motion.div
                             onClick={prevStep}
                             whileHover={{ x: -10 }}
                             whileTap={{ scale: 0.9 }}
-                            className="w-slide-btn h-slide-btn bg-[rgba(255,255,255,0.4)] top-[50%] 
+                            className="w-slide-btn h-slide-btn bg-[rgba(255,255,255,0.4)] top-[50%]
                             flex items-center rounded-full justify-center cursor-pointer"
                         >
                             <FontAwesomeIcon icon={faChevronLeft} />
@@ -102,23 +92,23 @@ export default function PreviewImage({ images, width = 'md:w-[60%]' }: IPreviewI
                             onClick={nextStep}
                             whileHover={{ x: 10 }}
                             whileTap={{ scale: 0.9 }}
-                            className="w-slide-btn h-slide-btn bg-[rgba(255,255,255,0.4)] top-[50%] 
+                            className="w-slide-btn h-slide-btn bg-[rgba(255,255,255,0.4)] top-[50%]
                             flex items-center rounded-full justify-center cursor-pointer"
                         >
                             <FontAwesomeIcon icon={faChevronRight} />
                         </motion.div>
                     </div>
-                </div>
-            </AnimatePresence>
+                </figure>
+            </div>
 
-            <div className="grid-cols-4 h-[148px] gap-4 hidden md:grid">
+            <div className="grid-cols-4 gap-4 hidden md:grid h-[200px]">
                 {images.map((img, index) => {
                     return (
                         <div
                             onClick={() => handleClick(index)}
                             key={index}
                             className={classNames(
-                                `w-full h-full rounded-[11px] overflow-hidden border-2 
+                                `w-full aspect-square rounded-[11px] overflow-hidden border-2
                              hover:border-green-main-dark transition-all ease-linear`,
                                 { 'border-green-main-dark': curImage === index, ' border-transparent': curImage !== index },
                             )}

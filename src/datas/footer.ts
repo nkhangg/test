@@ -1,7 +1,7 @@
 import { faEnvelope, faHouse, faPhone } from '@fortawesome/free-solid-svg-icons';
 
 export const dataFooter = {
-    petfoster: `Lorem ipsum dolor sit amet, consectetu adipiscing elit, sed do eiusmod tempor cididunt ut labore et dolore mi`,
+    petfoster: `Welcome to our animal rescue website and pet community! We not only provide pet products but also a platform where you can share precious moments of your furry friends on social media. Join us in creating a loving and supportive community for all animals!`,
     aboutUs: [
         {
             title: 'Terms & privacy policy',

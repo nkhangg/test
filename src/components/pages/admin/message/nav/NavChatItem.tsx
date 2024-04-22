@@ -53,6 +53,7 @@ export default function NavChatItem({ data, currentUser }: INavChatItemProps) {
 
         audioService.messageAudio().play();
     }, [lastMessage]);
+
     return (
         <Link
             onClick={handleSeenMessage}
@@ -67,7 +68,7 @@ export default function NavChatItem({ data, currentUser }: INavChatItemProps) {
                 </BadgeAvartar>
 
                 <div className="max-w-full flex flex-col">
-                    <h6 className="text-1xl w-[140px] text-ellipsis overflow-hidden whitespace-nowrap ">{user?.username || 'user'}</h6>
+                    <h6 className="text-1xl w-[140px] text-ellipsis overflow-hidden whitespace-nowrap ">{user?.displayname || user?.username || 'user'}</h6>
                     {lastMessage && lastMessage?.message && lastMessage?.message.length > 0 && lastMessage.type === 'message' && (
                         <p
                             className={classNames('text-sm w-[160px]  overflow-hidden truncate text-ellipsis', {

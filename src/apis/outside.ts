@@ -235,7 +235,9 @@ export const getShippingFee = async (
 export const generateContentWithAi = async (data: IPetManagementFormResuqest) => {
     const prompt = `Write me an introduction about a pet with the following information: ${data.colors ? Array.from(data.colors).join(', ') : 'brown'} color, ${
         data.size || 'adult'
-    } size, ${data.sex || 'male'} gender, ${data.name || ''} name, ${data.breed || ''} breed. limit 255 character`;
+    } size, ${data.sex || 'male'} gender, ${data.name || ''} name. Limit 255 character`;
+
+    console.log(prompt);
     const res = await axios({
         method: 'POST',
         url: process.env.NEXT_PUBLIC_CHAT_GPT_API + `/completions`,

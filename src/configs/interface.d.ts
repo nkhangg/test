@@ -590,6 +590,7 @@ export interface IReview {
     id: number;
     avatar: string;
     name: string;
+    displayName?: string;
     rating: number | null;
     sizes: number[] | null;
     comment: string;
